@@ -25,14 +25,15 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <!-- Общие стили приложения. -->
-    <link rel="stylesheet" href="./css/base.css?v=20261126-1">
-    <link rel="stylesheet" href="./css/layout.css?v=20261126-1">
-    <link rel="stylesheet" href="./css/menu.css?v=20261126-2">
-    <link rel="stylesheet" href="./css/profile.css?v=20261126-1">
-    <link rel="stylesheet" href="./css/pages.css?v=20261126-3">
+    <link rel="stylesheet" href="./css/base.css?v=20261126-2">
+    <link rel="stylesheet" href="./css/layout.css?v=20261126-2">
+    <link rel="stylesheet" href="./css/menu.css?v=20261126-3">
+    <link rel="stylesheet" href="./css/profile.css?v=20261126-2">
+    <link rel="stylesheet" href="./css/pages.css?v=20261126-4">
+    <link rel="stylesheet" href="./css/events.css?v=20261126-1">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-4"></script>
+    <script type="module" src="./app.js?v=20261126-5"></script>
 </head>
 
 <body>
@@ -137,6 +138,13 @@
                             <path d="M16 12V20"></path>
                         </svg>
                         <span class="menu-item-label">События</span>
+                        <span
+                            id="events-unread-badge"
+                            class="menu-item-badge"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></span>
                     </button>
 
                     <button id="servers-nav-button" class="menu-item" type="button">

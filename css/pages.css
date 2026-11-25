@@ -16,7 +16,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    width: min(100%, 920px);
+    width: min(100%, var(--app-content-width));
     margin: 0 auto;
     text-align: center;
 }
