@@ -1,15 +1,21 @@
-/* SplitEvents — clean, centered empty states for content pages. */
+/* SplitEvents — shared section pages, titles, and empty states. */
 .section-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     width: 100%;
-    min-height: calc(var(--tg-viewport-stable-height, 100dvh) - 68px);
-    padding-top: clamp(24px, 4vw, 36px);
-    padding-right: max(16px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-    padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
-    padding-left: max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+    min-height: calc(var(--tg-viewport-stable-height, 100dvh) - var(--app-header-height));
+    padding: var(--app-page-top) max(
+        var(--app-page-gutter),
+        env(safe-area-inset-right, 0px),
+        var(--tg-safe-area-inset-right, 0px),
+        var(--tg-content-safe-area-inset-right, 0px)
+    ) calc(30px + env(safe-area-inset-bottom, 0px)) max(
+        var(--app-page-gutter),
+        env(safe-area-inset-left, 0px),
+        var(--tg-safe-area-inset-left, 0px),
+        var(--tg-content-safe-area-inset-left, 0px)
+    );
 }
 
 .section-page-content {
@@ -17,24 +23,39 @@
     flex: 1;
     flex-direction: column;
     width: min(100%, var(--app-content-width));
+    min-width: 0;
     margin: 0 auto;
     text-align: center;
 }
 
 .section-page-header {
-    margin: 0 0 clamp(22px, 4vw, 32px);
+    flex: 0 0 auto;
+    margin: 0 0 var(--app-section-gap);
     text-align: center;
 }
 
 .section-page-title {
     margin: 0;
     color: var(--app-text);
-    font-size: clamp(32px, 5vw, 46px);
-    font-weight: 760;
-    letter-spacing: -1.7px;
-    line-height: 1.08;
+    font-size: var(--app-font-size-page-title);
+    font-weight: var(--app-font-weight-bold);
+    letter-spacing: -0.045em;
+    line-height: var(--app-line-height-heading);
     text-align: center;
     text-wrap: balance;
+}
+
+.section-page-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.section-page-body--center {
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-state {
@@ -42,9 +63,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: var(--app-space-2);
     width: 100%;
-    margin: auto 0;
+    margin: 0;
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -55,24 +76,31 @@
 .empty-state-message {
     margin: 0;
     color: var(--app-hint);
-    font-size: clamp(17px, 2.5vw, 19px);
-    font-weight: 650;
+    font-size: 18px;
+    font-weight: var(--app-font-weight-semibold);
     line-height: 1.4;
 }
 
 .empty-state-note {
     margin: 0;
     color: var(--app-hint);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
+    font-size: var(--app-font-size-body);
+    font-weight: var(--app-font-weight-regular);
+    line-height: var(--app-line-height-body);
+}
+
+/* Events and servers use the same content width and page shell. */
+.events-page-content {
+    width: min(100%, var(--app-content-width));
+    text-align: left;
+}
+
+.events-page .section-page-title {
+    text-align: center;
 }
 
 @media (max-width: 480px) {
     .section-page {
-        padding-top: 24px;
-        padding-right: max(14px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-        padding-left: max(14px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
         padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     }
 }
