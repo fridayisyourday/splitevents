@@ -1,0 +1,334 @@
+/* SplitEvents — event listing and reusable event cards. */
+.events-page-content {
+    width: min(100%, 960px);
+    text-align: left;
+}
+
+.events-page-header {
+    margin-bottom: clamp(22px, 3vw, 30px);
+    text-align: center;
+}
+
+.events-page .section-page-title {
+    text-align: center;
+}
+
+.events-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    width: 100%;
+}
+
+.event-card {
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-card);
+    background: var(--app-card-background);
+    box-shadow: var(--app-shadow-card);
+}
+
+.event-card-poster {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    min-height: 190px;
+    max-height: 360px;
+    overflow: hidden;
+    background: #291019;
+    isolation: isolate;
+}
+
+.event-card-image,
+.event-card-poster-shade {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.event-card-image {
+    z-index: -2;
+    object-fit: cover;
+    object-position: center 52%;
+}
+
+.event-card-poster-shade {
+    z-index: -1;
+    background: linear-gradient(90deg, rgba(21, 5, 15, 0.62), rgba(21, 5, 15, 0.16) 64%, rgba(21, 5, 15, 0.05));
+}
+
+.event-card-poster-copy {
+    position: absolute;
+    left: clamp(20px, 4vw, 44px);
+    bottom: clamp(18px, 3.5vw, 34px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #fff8ed;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.32);
+}
+
+.event-card-poster-brand {
+    margin-bottom: 5px;
+    color: #e7c58e;
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.event-card-poster-title {
+    font-size: clamp(42px, 8vw, 88px);
+    font-weight: 850;
+    letter-spacing: -4px;
+    line-height: 0.9;
+}
+
+.event-card-poster-subtitle {
+    margin-top: 8px;
+    color: #f2d5a4;
+    font-size: clamp(12px, 1.8vw, 16px);
+    font-weight: 750;
+    letter-spacing: 5px;
+}
+
+.event-card-body {
+    padding: clamp(20px, 3.5vw, 34px);
+}
+
+.event-card-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 13px;
+}
+
+.event-card-category {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 0 11px;
+    border: 1px solid rgba(177, 137, 74, 0.3);
+    border-radius: var(--app-radius-pill);
+    background: rgba(177, 137, 74, 0.12);
+    color: #a77c3e;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.event-card-index {
+    color: var(--app-hint);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-align: right;
+}
+
+.event-card-title {
+    margin: 0;
+    color: var(--app-text);
+    font-size: clamp(25px, 4vw, 34px);
+    font-weight: 800;
+    letter-spacing: -1.1px;
+    line-height: 1.1;
+}
+
+.event-card-details {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1.5fr);
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.event-date-block,
+.event-countdown {
+    min-width: 0;
+    padding: 17px 18px;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-control);
+    background: var(--app-secondary);
+}
+
+.event-date-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 9px;
+}
+
+.event-detail-label {
+    color: var(--app-hint);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 1.1px;
+}
+
+.event-date-value {
+    color: var(--app-text);
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+.event-countdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.event-countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.event-countdown-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 58px;
+    padding: 6px 3px;
+    border: 1px solid var(--app-border);
+    border-radius: 9px;
+    background: var(--app-card-background);
+}
+
+.event-countdown-value {
+    color: var(--app-text);
+    font-size: clamp(18px, 3vw, 25px);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+}
+
+.event-countdown-unit {
+    margin-top: 4px;
+    color: var(--app-hint);
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.event-countdown-note {
+    color: var(--app-hint);
+    font-size: 11px;
+    font-weight: 550;
+}
+
+.event-countdown-status {
+    color: var(--app-hint);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.event-card-description {
+    margin: 23px 0 0;
+    color: var(--app-text);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+
+.event-card-description-lead {
+    font-weight: 800;
+}
+
+.event-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 25px;
+    padding-top: 21px;
+    border-top: 1px solid var(--app-border);
+}
+
+.event-card-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 190px;
+    min-height: 48px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: var(--app-radius-control);
+    background: var(--app-text);
+    color: var(--app-background);
+    font-size: 14px;
+    font-weight: 750;
+    cursor: not-allowed;
+}
+
+.event-card-action:disabled {
+    opacity: 0.58;
+}
+
+.event-card-action-note {
+    margin: 0;
+    color: var(--app-hint);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: right;
+}
+
+.is-event-ended .event-countdown-value {
+    opacity: 0.62;
+}
+
+@media (max-width: 640px) {
+    .event-card-poster {
+        aspect-ratio: 16 / 9;
+        min-height: 170px;
+    }
+
+    .event-card-poster-title {
+        font-size: clamp(42px, 13vw, 66px);
+        letter-spacing: -2px;
+    }
+
+    .event-card-details {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .event-date-block {
+        min-height: 78px;
+    }
+
+    .event-card-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .event-card-action {
+        width: 100%;
+    }
+
+    .event-card-action-note {
+        text-align: left;
+    }
+}
+
+@media (max-width: 380px) {
+    .event-card-body {
+        padding: 18px 15px;
+    }
+
+    .event-countdown-grid {
+        gap: 4px;
+    }
+
+    .event-countdown-unit {
+        font-size: 8px;
+    }
+
+    .event-card-topline {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
