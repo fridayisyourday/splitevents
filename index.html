@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моё приложение</title>
+
+    <!-- Подключение Telegram Mini Apps -->
+    <script src="https://telegram.org/js/telegram-web-app.js?65"></script>
+</head>
+<body>
+
+    <h2>Тест Telegram Mini App</h2>
+    <p id="status">Проверяем подключение...</p>
+    <p id="user"></p>
+
+    <script>
+        const tg = window.Telegram?.WebApp;
+
+        if (tg) {
+            tg.ready();
+            tg.expand();
+
+            document.getElementById("status").textContent =
+                "Успешно запущено внутри Telegram!";
+
+            const user = tg.initDataUnsafe?.user;
+
+            if (user) {
+                document.getElementById("user").textContent =
+                    "Привет, " + user.first_name +
+                    "! Твой Telegram ID: " + user.id;
+            }
+        } else {
+            document.getElementById("status").textContent =
+                "Приложение открыто вне Telegram.";
+        }
+    </script>
+
+</body>
+</html>
