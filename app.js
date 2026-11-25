@@ -13,11 +13,19 @@
 
     const el = {
         main: $("main-content"),
+        header: document.querySelector(".site-header"),
         home: $("home-page"),
         profile: $("profile-page"),
-        pageButton: $("profile-home-button"),
-        profileIcon: document.querySelector(".profile-icon"),
-        homeIcon: document.querySelector(".home-icon"),
+        menuButton: $("menu-button"),
+        menuOverlay: $("menu-overlay"),
+        menuBackdrop: $("menu-backdrop"),
+        menuPanel: $("menu-panel"),
+        menuCloseButton: $("menu-close-button"),
+        eventsNavButton: $("events-nav-button"),
+        profileNavButton: $("profile-nav-button"),
+        profileNavLabel: $("profile-nav-label"),
+        menuProfileIcon: document.querySelector(".menu-profile-icon"),
+        menuHomeIcon: document.querySelector(".menu-home-icon"),
         card: $("profile-card"),
         name: $("nickname-input"),
         editButton: $("nickname-edit-button"),
@@ -37,7 +45,9 @@
     };
 
     const required = [
-        "main", "home", "profile", "pageButton", "profileIcon", "homeIcon",
+        "main", "header", "home", "profile", "menuButton", "menuOverlay",
+        "menuBackdrop", "menuPanel", "menuCloseButton", "eventsNavButton",
+        "profileNavButton", "profileNavLabel", "menuProfileIcon", "menuHomeIcon",
         "card", "name", "editButton", "editIcon", "saveIcon", "tag",
         "avatar", "avatarPlaceholder", "banner", "bannerPlaceholder",
         "avatarButton", "bannerButton", "avatarInput", "bannerInput", "status"
@@ -57,6 +67,8 @@
     let nickname = readNickname();
     let editing = false;
     let currentPage = null;
+    let menuOpen = false;
+    let menuCloseTimer = null;
 
     /* ---------------- Telegram integration ---------------- */
 
@@ -142,7 +154,11 @@
 
         if (webApp.BackButton && typeof webApp.BackButton.onClick === "function") {
             webApp.BackButton.onClick(() => {
-                if (getCurrentPage() === "profile") navigateTo("home");
+                if (menuOpen) {
+                    closeMenu(true);
+                } else if (getCurrentPage() === "profile") {
+                    navigateTo("home");
+                }
             });
         }
 
@@ -539,13 +555,146 @@
     function updateBackButton(isProfile) {
         const backButton = webApp && webApp.BackButton;
         if (!backButton) return;
+
         try {
-            if (isProfile && typeof backButton.show === "function") backButton.show();
-            else if (!isProfile && typeof backButton.hide === "function") backButton.hide();
+            if ((isProfile || menuOpen) && typeof backButton.show === "function") {
+                backButton.show();
+            } else if (!isProfile && !menuOpen && typeof backButton.hide === "function") {
+                backButton.hide();
+            }
         } catch (error) {
             console.warn("SplitEvents: Telegram BackButton update failed", error);
         }
     }
+
+    /* ---------------- Side navigation drawer ---------------- */
+
+    function updateMenuNavigation() {
+        const isProfile = getCurrentPage() === "profile";
+        const isHome = !isProfile;
+
+        el.profileNavLabel.textContent = isProfile ? "Главная" : "Профиль";
+        el.menuProfileIcon.hidden = isProfile;
+        el.menuHomeIcon.hidden = !isProfile;
+
+        if (isHome) {
+            el.eventsNavButton.setAttribute("aria-current", "page");
+        } else {
+            el.eventsNavButton.removeAttribute("aria-current");
+        }
+    }
+
+    function openMenu() {
+        if (menuOpen) return;
+
+        if (menuCloseTimer !== null) {
+            window.clearTimeout(menuCloseTimer);
+            menuCloseTimer = null;
+        }
+
+        menuOpen = true;
+        el.menuOverlay.hidden = false;
+        el.menuButton.setAttribute("aria-expanded", "true");
+        document.body.classList.add("menu-open");
+        el.header.inert = true;
+        el.main.inert = true;
+        el.header.setAttribute("aria-hidden", "true");
+        el.main.setAttribute("aria-hidden", "true");
+        updateBackButton(getCurrentPage() === "profile");
+
+        // Reflow allows the drawer to animate from its closed position.
+        void el.menuOverlay.offsetWidth;
+        window.requestAnimationFrame(() => {
+            if (!menuOpen) return;
+            el.menuOverlay.classList.add("is-open");
+            el.eventsNavButton.focus();
+        });
+    }
+
+    function closeMenu(restoreFocus) {
+        if (!menuOpen && el.menuOverlay.hidden) return;
+
+        menuOpen = false;
+        el.menuOverlay.classList.remove("is-open");
+        el.menuButton.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+        el.header.inert = false;
+        el.main.inert = false;
+        el.header.removeAttribute("aria-hidden");
+        el.main.removeAttribute("aria-hidden");
+        updateBackButton(getCurrentPage() === "profile");
+
+        if (restoreFocus) {
+            el.menuButton.focus({ preventScroll: true });
+        }
+
+        if (menuCloseTimer !== null) {
+            window.clearTimeout(menuCloseTimer);
+        }
+
+        menuCloseTimer = window.setTimeout(() => {
+            if (!menuOpen) el.menuOverlay.hidden = true;
+            menuCloseTimer = null;
+        }, 240);
+    }
+
+    function getDrawerFocusables() {
+        return Array.from(
+            el.menuPanel.querySelectorAll(
+                'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            )
+        ).filter((element) => !element.hidden && element.getClientRects().length > 0);
+    }
+
+    function handleDrawerKeydown(event) {
+        if (!menuOpen) return;
+
+        if (event.key === "Escape") {
+            event.preventDefault();
+            closeMenu(true);
+            return;
+        }
+
+        if (event.key !== "Tab") return;
+
+        const focusables = getDrawerFocusables();
+        if (!focusables.length) {
+            event.preventDefault();
+            el.menuPanel.focus();
+            return;
+        }
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    }
+
+    el.menuButton.addEventListener("click", () => {
+        if (menuOpen) closeMenu(true);
+        else openMenu();
+    });
+
+    el.menuBackdrop.addEventListener("click", () => closeMenu(true));
+    el.menuCloseButton.addEventListener("click", () => closeMenu(true));
+    document.addEventListener("keydown", handleDrawerKeydown);
+
+    el.eventsNavButton.addEventListener("click", () => {
+        closeMenu(false);
+        navigateTo("home");
+    });
+
+    el.profileNavButton.addEventListener("click", () => {
+        const destination = getCurrentPage() === "profile" ? "home" : "profile";
+        closeMenu(false);
+        navigateTo(destination);
+    });
 
     function renderProfile() {
         el.name.value = currentNickname();
@@ -561,16 +710,13 @@
 
         el.home.hidden = isProfile;
         el.profile.hidden = !isProfile;
-        el.profileIcon.hidden = isProfile;
-        el.homeIcon.hidden = !isProfile;
-        el.pageButton.setAttribute("aria-label", isProfile ? "На главную" : "Открыть профиль");
-        el.pageButton.title = isProfile ? "На главную" : "Профиль";
         document.title = isProfile ? "Профиль — Сплит" : "Сплит — SplitEvents";
 
         if (changed && isProfile) renderProfile();
         if (changed && !isProfile && editing) finishEditing(false);
 
         currentPage = page;
+        updateMenuNavigation();
         updateBackButton(isProfile);
         if (moveFocus) el.main.focus({ preventScroll: true });
     }
@@ -581,11 +727,10 @@
         else window.location.hash = target;
     }
 
-    el.pageButton.addEventListener("click", () => {
-        navigateTo(getCurrentPage() === "home" ? "profile" : "home");
+    window.addEventListener("hashchange", () => {
+        if (menuOpen) closeMenu(false);
+        renderPage(true);
     });
-
-    window.addEventListener("hashchange", () => renderPage(true));
     window.addEventListener("pageshow", () => {
         updateViewport();
         renderPage(false);
