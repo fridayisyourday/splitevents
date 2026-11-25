@@ -22,7 +22,7 @@
     border: 0;
     border-radius: var(--app-radius-card);
     background: var(--app-placeholder);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+    box-shadow: var(--app-shadow-card);
 }
 
 .event-card-artwork {
