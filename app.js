@@ -46,7 +46,7 @@ if (missingPages.length || !mainContent) {
 
     function getCurrentPage() {
         const route = (window.location.hash || "#/")
-            .replace(/^#\\/?/, "")
+            .replace(/^#\/?/, "")
             .split(/[/?]/)[0];
 
         return Object.prototype.hasOwnProperty.call(pageElements, route)
