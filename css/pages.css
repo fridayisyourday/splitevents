@@ -2,7 +2,10 @@
 .section-page {
     width: 100%;
     min-height: 100%;
-    padding: clamp(28px, 5vw, 54px) max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px)) 44px;
+    padding-top: clamp(28px, 5vw, 54px);
+    padding-right: max(16px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
+    padding-bottom: 44px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
 }
 
 .section-page-header,
@@ -79,8 +82,8 @@
 @media (max-width: 480px) {
     .section-page {
         padding-top: 28px;
-        padding-right: max(14px, env(safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-        padding-left: max(14px, env(safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+        padding-right: max(14px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
+        padding-left: max(14px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
         padding-bottom: 32px;
     }
 
