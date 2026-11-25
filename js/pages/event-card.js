@@ -87,12 +87,6 @@ export function createEventCard(event) {
     );
     meta.append(date, separator, countdown);
 
-    const countdownNote = createElement(
-        "p",
-        "event-card-countdown-note",
-        event.countdownLabel || "до конца события:)"
-    );
-
     const action = createElement(
         "button",
         "event-card-action",
@@ -103,7 +97,7 @@ export function createEventCard(event) {
     action.setAttribute("aria-describedby", descriptionId);
     action.title = "Участие пока не подключено";
 
-    content.append(title, description, meta, countdownNote, action);
+    content.append(title, description, meta, action);
     card.append(artwork, wash, content);
 
     const endTime = new Date(event.endsAt).getTime();
@@ -117,10 +111,9 @@ export function createEventCard(event) {
     function updateCountdown(now = Date.now()) {
         if (!Number.isFinite(endTime)) {
             Object.values(countdownValues).forEach((node) => {
-                node.textContent = "—";
+                node.textContent = "-";
             });
             card.classList.remove("is-event-ended");
-            countdownNote.textContent = "Дата окончания не задана";
             return;
         }
 
@@ -140,9 +133,6 @@ export function createEventCard(event) {
 
         const ended = remaining === 0;
         card.classList.toggle("is-event-ended", ended);
-        countdownNote.textContent = ended
-            ? "событие завершилось"
-            : (event.countdownLabel || "до конца события:)");
     }
 
     updateCountdown();
