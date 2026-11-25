@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <!-- Основные настройки документа -->
     <meta charset="UTF-8">
 
     <meta
@@ -13,7 +12,6 @@
     <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- SEO -->
     <title>Сплит — SplitEvents</title>
 
     <meta
@@ -28,46 +26,32 @@
         href="https://fridayisyourday.github.io/splitevents/"
     >
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Сплит — SplitEvents">
-    <meta
-        property="og:description"
-        content="Приложение SplitEvents."
-    >
-    <meta
-        property="og:url"
-        content="https://fridayisyourday.github.io/splitevents/"
-    >
-
-    <!-- Telegram Mini Apps SDK -->
+    <!-- Telegram SDK -->
     <script
         src="https://telegram.org/js/telegram-web-app.js"
         defer
     ></script>
 
-    <!-- Основные стили -->
+    <!-- Стили -->
     <link rel="stylesheet" href="./style.css">
 
-    <!-- Основная логика -->
+    <!-- Логика приложения -->
     <script src="./app.js" defer></script>
 </head>
 
 <body>
 
-    <!-- Ссылка для быстрого перехода к содержимому -->
     <a class="skip-link" href="#main-content">
         Перейти к основному содержимому
     </a>
 
     <div id="app">
 
-        <!-- =================================
-             HEADER
-             ================================= -->
+        <!-- HEADER -->
 
         <header class="site-header">
 
+            <!-- Кнопка меню -->
             <button
                 id="menu-button"
                 class="header-button"
@@ -89,6 +73,7 @@
                 </svg>
             </button>
 
+            <!-- Логотип -->
             <div
                 class="header-logo"
                 aria-label="Сплит"
@@ -96,14 +81,18 @@
                 сплит
             </div>
 
+            <!-- Кнопка профиля / домой -->
             <button
-                id="profile-button"
+                id="profile-home-button"
                 class="header-button"
                 type="button"
                 aria-label="Открыть профиль"
                 title="Профиль"
             >
+
+                <!-- Иконка профиля -->
                 <svg
+                    class="profile-icon"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -115,33 +104,59 @@
                     <circle cx="12" cy="8" r="3.5"/>
                     <path d="M5 20C5 16.4 8.1 14 12 14C15.9 14 19 16.4 19 20"/>
                 </svg>
+
+                <!-- Иконка домой -->
+                <svg
+                    class="home-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    hidden
+                >
+                    <path d="M3 10.5L12 3L21 10.5"/>
+                    <path d="M5 9.5V20H19V9.5"/>
+                    <path d="M9 20V14H15V20"/>
+                </svg>
+
             </button>
 
         </header>
 
-        <!-- =================================
-             MAIN CONTENT
-             ================================= -->
+        <!-- MAIN CONTENT -->
 
         <main
             id="main-content"
             class="page-content"
+            tabindex="-1"
         >
 
-            <!--
-                Здесь будет находиться содержимое
-                приложения SplitEvents.
-            -->
+            <!-- ГЛАВНАЯ СТРАНИЦА -->
+            <section
+                id="home-page"
+                class="page-view"
+                aria-label="Главная страница"
+            >
+            </section>
+
+            <!-- СТРАНИЦА ПРОФИЛЯ -->
+            <section
+                id="profile-page"
+                class="page-view"
+                aria-label="Профиль"
+                hidden
+            >
+            </section>
 
         </main>
 
     </div>
 
-    <!-- Сообщение на случай отключённого JavaScript -->
     <noscript>
-        <p>
-            Для работы SplitEvents необходимо включить JavaScript.
-        </p>
+        <p>Для работы SplitEvents необходимо включить JavaScript.</p>
     </noscript>
 
 </body>
