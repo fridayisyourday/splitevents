@@ -65,7 +65,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Все элементы используют единый размер шрифта кнопок */
+/* Единый шрифт элементов форм */
 
 button,
 input,
@@ -121,7 +121,6 @@ select {
     height: auto;
 
     padding: 12px;
-
     margin: 0;
 
     overflow: visible;
@@ -264,25 +263,8 @@ select {
 }
 
 /* =========================================
-   REDUCED MOTION
-   ========================================= */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-    }
-}
-
-/* =========================================
    PAGE NAVIGATION
    ========================================= */
-
-/* Общие настройки экранов */
 
 .page-view {
     width: 100%;
@@ -296,8 +278,17 @@ select {
     display: none !important;
 }
 
-/* Иконки переключения */
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
 
-.header-button svg[hidden] {
-    display: none !important;
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
