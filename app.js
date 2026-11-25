@@ -9,7 +9,12 @@ import {
 } from "./js/telegram.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-2";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-2";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-3";
+import { EVENTS } from "./js/events/data.js?v=20261126-1";
+import {
+    getUnreadEventsCount,
+    markEventsAsSeen
+} from "./js/events/read-state.js?v=20261126-1";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-2";
 
 const pageElements = {
@@ -33,15 +38,16 @@ if (missingPages.length || !mainContent) {
     let currentPage = null;
     let menu = null;
 
+    const telegramUserId = getTelegramUserId();
     const profile = createProfile({
-        userId: getTelegramUserId(),
+        userId: telegramUserId,
         getTelegramName,
         getTelegramTag,
         getTelegramPhotoUrl
     });
 
-    // Static empty-state views are built by their own page modules.
-    renderEventsPage(pageElements.events);
+    // The event list is data-driven; each item uses the same card template.
+    const eventsPage = renderEventsPage(pageElements.events, EVENTS);
     renderServersPage(pageElements.servers);
 
     function getCurrentPage() {
@@ -77,6 +83,7 @@ if (missingPages.length || !mainContent) {
         onNavigate: navigateTo,
         onStateChange: updateTelegramBackButton
     });
+    menu.updateUnreadEventsCount(getUnreadEventsCount(EVENTS, telegramUserId));
 
     function renderPage(moveFocus = false) {
         const page = getCurrentPage();
@@ -84,6 +91,10 @@ if (missingPages.length || !mainContent) {
 
         if (changed && currentPage === "profile" && page !== "profile") {
             profile.leave();
+        }
+
+        if (changed && currentPage === "events" && page !== "events") {
+            eventsPage.stop();
         }
 
         Object.entries(pageElements).forEach(([pageName, element]) => {
@@ -96,6 +107,13 @@ if (missingPages.length || !mainContent) {
 
         currentPage = page;
         menu.updateForPage(page);
+
+        if (changed && page === "events") {
+            markEventsAsSeen(EVENTS, telegramUserId);
+            menu.updateUnreadEventsCount(getUnreadEventsCount(EVENTS, telegramUserId));
+            eventsPage.start();
+        }
+
         updateTelegramBackButton();
 
         const pageTitles = {
