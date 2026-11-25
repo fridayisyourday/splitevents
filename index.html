@@ -2,34 +2,77 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Основные настройки документа -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#ffffff">
 
-    <title>Сплит</title>
+    <!-- SEO -->
+    <title>Сплит — SplitEvents</title>
+
+    <meta
+        name="description"
+        content="SplitEvents — приложение для организации совместных мероприятий."
+    >
+
+    <meta name="robots" content="index, follow">
+
+    <link
+        rel="canonical"
+        href="https://fridayisyourday.github.io/splitevents/"
+    >
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Сплит — SplitEvents">
+    <meta
+        property="og:description"
+        content="Приложение SplitEvents."
+    >
+    <meta
+        property="og:url"
+        content="https://fridayisyourday.github.io/splitevents/"
+    >
 
     <!-- Telegram Mini Apps SDK -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script
+        src="https://telegram.org/js/telegram-web-app.js"
+        defer
+    ></script>
 
-    <!-- Стили -->
+    <!-- Основные стили -->
     <link rel="stylesheet" href="./style.css">
 
-    <!-- Логика -->
+    <!-- Основная логика -->
     <script src="./app.js" defer></script>
 </head>
+
 <body>
+
+    <!-- Ссылка для быстрого перехода к содержимому -->
+    <a class="skip-link" href="#main-content">
+        Перейти к основному содержимому
+    </a>
 
     <div id="app">
 
-        <!-- HEADER -->
+        <!-- =================================
+             HEADER
+             ================================= -->
+
         <header class="site-header">
 
-            <!-- Кнопка меню -->
             <button
+                id="menu-button"
                 class="header-button"
                 type="button"
-                aria-label="Меню"
+                aria-label="Открыть меню"
                 title="Меню"
             >
                 <svg
@@ -46,16 +89,18 @@
                 </svg>
             </button>
 
-            <!-- Название приложения -->
-            <div class="header-logo">
+            <div
+                class="header-logo"
+                aria-label="Сплит"
+            >
                 сплит
             </div>
 
-            <!-- Кнопка профиля -->
             <button
+                id="profile-button"
                 class="header-button"
                 type="button"
-                aria-label="Профиль"
+                aria-label="Открыть профиль"
                 title="Профиль"
             >
                 <svg
@@ -74,11 +119,30 @@
 
         </header>
 
-        <!-- Основная область приложения -->
-        <main class="page-content">
+        <!-- =================================
+             MAIN CONTENT
+             ================================= -->
+
+        <main
+            id="main-content"
+            class="page-content"
+        >
+
+            <!--
+                Здесь будет находиться содержимое
+                приложения SplitEvents.
+            -->
+
         </main>
 
     </div>
+
+    <!-- Сообщение на случай отключённого JavaScript -->
+    <noscript>
+        <p>
+            Для работы SplitEvents необходимо включить JavaScript.
+        </p>
+    </noscript>
 
 </body>
 </html>
