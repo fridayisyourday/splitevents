@@ -41,6 +41,10 @@ export function renderEventsPage(container, events = [], options = {}) {
         cards.delete(eventId);
 
         if (cards.size === 0) {
+            if (timerId !== null) {
+                window.clearInterval(timerId);
+                timerId = null;
+            }
             list.replaceChildren(createEmptyState());
         }
         return true;
