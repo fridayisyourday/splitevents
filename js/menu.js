@@ -9,7 +9,8 @@ export function createMenu({ onNavigate, onStateChange }) {
         overlay: $("menu-overlay"),
         backdrop: $("menu-backdrop"),
         panel: $("menu-panel"),
-        closeButton: $("menu-close-button")
+        closeButton: $("menu-close-button"),
+        eventsUnreadBadge: $("events-unread-badge")
     };
 
     const navigationItems = [
@@ -49,6 +50,21 @@ export function createMenu({ onNavigate, onStateChange }) {
                 item.button.removeAttribute("aria-current");
             }
         });
+    }
+
+    function updateUnreadEventsCount(count) {
+        const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+        elements.eventsUnreadBadge.hidden = safeCount === 0;
+        elements.eventsUnreadBadge.textContent = safeCount > 99 ? "99+" : String(safeCount);
+
+        const lastTwo = safeCount % 100;
+        const lastOne = safeCount % 10;
+        const word = lastOne === 1 && lastTwo !== 11
+            ? "новое событие"
+            : lastOne >= 2 && lastOne <= 4 && (lastTwo < 12 || lastTwo > 14)
+                ? "новых события"
+                : "новых событий";
+        elements.eventsUnreadBadge.setAttribute("aria-label", safeCount + " " + word);
     }
 
     function getFocusableElements() {
@@ -175,6 +191,7 @@ export function createMenu({ onNavigate, onStateChange }) {
         open,
         close,
         isOpen: () => isOpen,
-        updateForPage
+        updateForPage,
+        updateUnreadEventsCount
     };
 }
