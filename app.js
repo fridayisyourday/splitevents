@@ -9,8 +9,8 @@ import {
 } from "./js/telegram.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-1";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-1";
-import { renderServersPage } from "./js/pages/servers.js?v=20261126-1";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-2";
+import { renderServersPage } from "./js/pages/servers.js?v=20261126-2";
 
 const pageElements = {
     home: document.getElementById("home-page"),
