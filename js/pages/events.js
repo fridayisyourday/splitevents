@@ -1,5 +1,5 @@
 /* Events page — renders a list using the shared event card template. */
-import { createEventCard } from "./event-card.js?v=20261126-1";
+import { createEventCard } from "./event-card.js?v=20261126-2";
 
 function createElement(tagName, className, text) {
     const node = document.createElement(tagName);
