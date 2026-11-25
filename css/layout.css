@@ -51,7 +51,7 @@
     height: 44px;
     padding: 0;
     border: 0;
-    border-radius: 14px;
+    border-radius: var(--app-radius-control);
     background: var(--app-secondary);
     color: var(--app-text);
     cursor: pointer;
