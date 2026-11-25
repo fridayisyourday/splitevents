@@ -1,0 +1,91 @@
+/* SplitEvents — shared empty states for content pages. */
+.section-page {
+    width: 100%;
+    min-height: 100%;
+    padding: clamp(28px, 5vw, 54px) max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px)) 44px;
+}
+
+.section-page-header,
+.empty-state-card {
+    width: min(100%, 920px);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.section-page-header {
+    margin-bottom: clamp(24px, 4vw, 34px);
+}
+
+.section-page-title {
+    margin: 0;
+    color: var(--app-text);
+    font-size: clamp(32px, 5vw, 46px);
+    font-weight: 760;
+    letter-spacing: -1.7px;
+    line-height: 1.08;
+    text-wrap: balance;
+}
+
+.empty-state-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(280px, 42vh, 380px);
+    padding: clamp(28px, 5vw, 48px) 22px;
+    border: 1px solid var(--app-border);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(128, 128, 128, 0.055), transparent 56%),
+        var(--app-card-background);
+    text-align: center;
+}
+
+.empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 78px;
+    height: 78px;
+    margin-bottom: 24px;
+    border: 1px solid var(--app-border);
+    border-radius: 25px;
+    background: var(--app-secondary);
+    color: var(--app-hint);
+}
+
+.empty-state-icon svg {
+    display: block;
+    width: 34px;
+    height: 34px;
+}
+
+.empty-state-message {
+    margin: 0;
+    color: var(--app-hint);
+    font-size: clamp(17px, 2.5vw, 19px);
+    font-weight: 650;
+    line-height: 1.4;
+}
+
+.empty-state-note {
+    margin: 7px 0 0;
+    color: var(--app-hint);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+    .section-page {
+        padding-top: 28px;
+        padding-right: max(14px, env(safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
+        padding-left: max(14px, env(safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+        padding-bottom: 32px;
+    }
+
+    .empty-state-card {
+        min-height: 300px;
+        border-radius: 20px;
+    }
+}
