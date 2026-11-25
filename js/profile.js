@@ -1,0 +1,281 @@
+/* Profile view, editing, and profile image selection. */
+import {
+    readNickname,
+    writeNickname,
+    readImage,
+    writeImage,
+    optimizeImage
+} from "./storage.js?v=20261125-4";
+
+const $ = (id) => document.getElementById(id);
+
+export function createProfile({
+    userId,
+    getTelegramName,
+    getTelegramTag,
+    getTelegramPhotoUrl
+}) {
+    const el = {
+        card: $("profile-card"),
+        name: $("nickname-input"),
+        editButton: $("nickname-edit-button"),
+        editIcon: document.querySelector(".nickname-edit-icon"),
+        saveIcon: document.querySelector(".nickname-save-icon"),
+        tag: $("telegram-tag"),
+        avatar: $("profile-avatar-image"),
+        avatarPlaceholder: $("profile-avatar-placeholder"),
+        banner: $("profile-banner-image"),
+        bannerPlaceholder: $("profile-banner-placeholder"),
+        avatarButton: $("avatar-upload-button"),
+        bannerButton: $("banner-upload-button"),
+        avatarInput: $("avatar-file-input"),
+        bannerInput: $("banner-file-input"),
+        status: $("profile-media-status")
+    };
+
+    const missing = Object.entries(el)
+        .filter(([, value]) => !value)
+        .map(([name]) => name);
+
+    if (missing.length) {
+        throw new Error(`Profile elements not found: ${missing.join(", ")}`);
+    }
+
+    let nickname = readNickname(userId);
+    let editing = false;
+
+    const imageKeyPrefix = `user-${userId}-`;
+    const images = {
+        avatar: createImageState(el.avatar, el.avatarPlaceholder, `${imageKeyPrefix}avatar`),
+        banner: createImageState(el.banner, el.bannerPlaceholder, `${imageKeyPrefix}banner`)
+    };
+
+    function createImageState(element, placeholder, key) {
+        return {
+            element,
+            placeholder,
+            key,
+            objectUrl: "",
+            revision: 0,
+            loadId: 0
+        };
+    }
+
+    function currentNickname() {
+        return nickname || getTelegramName();
+    }
+
+    function showStatus(message) {
+        el.status.textContent = message || "";
+        el.status.hidden = !message;
+    }
+
+    function setEditing(enabled) {
+        editing = Boolean(enabled);
+        el.name.readOnly = !editing;
+        el.editIcon.hidden = editing;
+        el.saveIcon.hidden = !editing;
+        el.card.classList.toggle("is-media-editing", editing);
+        el.avatarButton.tabIndex = editing ? 0 : -1;
+        el.bannerButton.tabIndex = editing ? 0 : -1;
+        el.editButton.setAttribute(
+            "aria-label",
+            editing ? "Сохранить изменения" : "Изменить профиль"
+        );
+        el.editButton.title = editing
+            ? "Сохранить изменения"
+            : "Изменить профиль";
+
+        if (!editing) {
+            el.avatarInput.value = "";
+            el.bannerInput.value = "";
+        }
+    }
+
+    function startEditing() {
+        showStatus("");
+        el.name.value = currentNickname();
+        setEditing(true);
+        // Не открываем мобильную клавиатуру автоматически:
+        // иначе она может перекрыть кнопки загрузки изображений.
+    }
+
+    function finishEditing(save) {
+        if (save) {
+            nickname = el.name.value.trim();
+            const stored = writeNickname(userId, nickname);
+            el.name.value = currentNickname();
+            setEditing(false);
+
+            if (!stored) {
+                showStatus(
+                    "Имя изменено, но браузер не разрешил сохранить его после закрытия приложения."
+                );
+            }
+        } else {
+            el.name.value = currentNickname();
+            setEditing(false);
+            showStatus("");
+        }
+    }
+
+    function setImage(type, source, isObjectUrl) {
+        const item = images[type];
+        item.loadId += 1;
+        const loadId = item.loadId;
+
+        if (item.objectUrl) {
+            URL.revokeObjectURL(item.objectUrl);
+            item.objectUrl = "";
+        }
+
+        if (!source) {
+            item.element.removeAttribute("src");
+            item.element.hidden = true;
+            item.placeholder.hidden = false;
+            return;
+        }
+
+        item.element.onload = () => {
+            if (loadId !== item.loadId) return;
+            item.element.hidden = false;
+            item.placeholder.hidden = true;
+        };
+
+        item.element.onerror = () => {
+            if (loadId !== item.loadId) return;
+            item.element.removeAttribute("src");
+            item.element.hidden = true;
+            item.placeholder.hidden = false;
+            console.warn(`SplitEvents: ${type} image could not be loaded`);
+        };
+
+        item.element.src = source;
+        if (isObjectUrl) item.objectUrl = source;
+    }
+
+    async function loadImages() {
+        // Показываем Telegram-фото сразу, если Web App передал ссылку.
+        setImage("avatar", getTelegramPhotoUrl(), false);
+
+        const avatarRevision = images.avatar.revision;
+        const bannerRevision = images.banner.revision;
+
+        const [savedAvatar, savedBanner] = await Promise.all([
+            readImage(images.avatar.key).catch((error) => {
+                console.warn("SplitEvents: avatar storage unavailable", error);
+                return null;
+            }),
+            readImage(images.banner.key).catch((error) => {
+                console.warn("SplitEvents: banner storage unavailable", error);
+                return null;
+            })
+        ]);
+
+        if (savedAvatar && avatarRevision === images.avatar.revision) {
+            setImage("avatar", URL.createObjectURL(savedAvatar), true);
+        }
+
+        if (savedBanner && bannerRevision === images.banner.revision) {
+            setImage("banner", URL.createObjectURL(savedBanner), true);
+        }
+    }
+
+    async function handleImage(input, type) {
+        const file = input.files && input.files[0];
+        if (!file) return;
+
+        if (file.type && !file.type.startsWith("image/")) {
+            showStatus("Выбери файл изображения.");
+            input.value = "";
+            return;
+        }
+
+        if (file.size > 20 * 1024 * 1024) {
+            showStatus("Файл слишком большой. Максимальный размер — 20 МБ.");
+            input.value = "";
+            return;
+        }
+
+        const item = images[type];
+        const revision = ++item.revision;
+        input.disabled = true;
+        showStatus("Обрабатываем изображение…");
+
+        try {
+            const blob = await optimizeImage(
+                file,
+                type === "avatar" ? 900 : 1800
+            );
+
+            // Если пользователь выбрал другое изображение, старый результат не применяем.
+            if (revision !== item.revision) return;
+
+            let persisted = true;
+            try {
+                await writeImage(item.key, blob);
+            } catch (error) {
+                persisted = false;
+                console.warn("SplitEvents: image storage unavailable", error);
+            }
+
+            if (revision !== item.revision) return;
+
+            setImage(type, URL.createObjectURL(blob), true);
+            showStatus(
+                persisted
+                    ? "Изображение сохранено на этом устройстве."
+                    : "Изображение установлено, но не сохранится после закрытия приложения."
+            );
+        } catch (error) {
+            console.error(`SplitEvents: ${type} upload failed`, error);
+            showStatus("Не удалось обработать файл. Попробуй JPEG, PNG или WebP.");
+        } finally {
+            input.disabled = false;
+            input.value = "";
+        }
+    }
+
+    function openPicker(input) {
+        if (editing && !input.disabled) input.click();
+    }
+
+    el.editButton.addEventListener("click", () => {
+        if (editing) finishEditing(true);
+        else startEditing();
+    });
+
+    el.name.addEventListener("keydown", (event) => {
+        if (!editing) return;
+
+        if (event.key === "Enter") {
+            event.preventDefault();
+            finishEditing(true);
+        } else if (event.key === "Escape") {
+            event.preventDefault();
+            finishEditing(false);
+        }
+    });
+
+    el.avatarButton.addEventListener("click", () => openPicker(el.avatarInput));
+    el.bannerButton.addEventListener("click", () => openPicker(el.bannerInput));
+    el.avatarInput.addEventListener("change", () => handleImage(el.avatarInput, "avatar"));
+    el.bannerInput.addEventListener("change", () => handleImage(el.bannerInput, "banner"));
+
+    function render() {
+        el.name.value = currentNickname();
+        el.tag.textContent = getTelegramTag();
+        setEditing(false);
+        showStatus("");
+    }
+
+    function leave() {
+        if (editing) finishEditing(false);
+    }
+
+    return {
+        render,
+        leave,
+        loadImages
+    };
+}
