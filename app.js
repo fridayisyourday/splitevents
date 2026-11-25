@@ -43,6 +43,38 @@
     }
 
     // =====================================
+    // TELEGRAM USER DATA
+    // =====================================
+
+    const telegramUser = telegram?.initDataUnsafe?.user ?? null;
+
+    // Имя и фамилия пользователя из Telegram
+
+    function getTelegramDisplayName() {
+        const firstName = telegramUser?.first_name || "";
+        const lastName = telegramUser?.last_name || "";
+
+        const fullName = [firstName, lastName]
+            .filter(Boolean)
+            .join(" ")
+            .trim();
+
+        return fullName || "Пользователь Telegram";
+    }
+
+    // Telegram-тег пользователя
+
+    function getTelegramTag() {
+        const username = String(
+            telegramUser?.username || ""
+        ).trim().replace(/^@/, "");
+
+        return username
+            ? "@" + username
+            : "Тег не указан";
+    }
+
+    // =====================================
     // PAGE ELEMENTS
     // =====================================
 
@@ -64,7 +96,33 @@
         ".home-icon"
     );
 
-    // Проверка необходимых элементов
+    // =====================================
+    // PROFILE ELEMENTS
+    // =====================================
+
+    const nicknameInput = document.getElementById(
+        "nickname-input"
+    );
+
+    const nicknameEditButton = document.getElementById(
+        "nickname-edit-button"
+    );
+
+    const nicknameEditIcon = document.querySelector(
+        ".nickname-edit-icon"
+    );
+
+    const nicknameSaveIcon = document.querySelector(
+        ".nickname-save-icon"
+    );
+
+    const telegramTag = document.getElementById(
+        "telegram-tag"
+    );
+
+    // =====================================
+    // CHECK REQUIRED ELEMENTS
+    // =====================================
 
     if (
         !mainContent ||
@@ -72,7 +130,12 @@
         !profilePage ||
         !profileHomeButton ||
         !profileIcon ||
-        !homeIcon
+        !homeIcon ||
+        !nicknameInput ||
+        !nicknameEditButton ||
+        !nicknameEditIcon ||
+        !nicknameSaveIcon ||
+        !telegramTag
     ) {
         console.error(
             "SplitEvents: required page elements not found"
@@ -80,6 +143,162 @@
 
         return;
     }
+
+    // =====================================
+    // NICKNAME STORAGE
+    // =====================================
+
+    const NICKNAME_STORAGE_KEY = "splitevents.nickname.v1";
+
+    // Получаем сохранённый ник
+
+    function readSavedNickname() {
+        try {
+            return (
+                window.localStorage.getItem(
+                    NICKNAME_STORAGE_KEY
+                ) || ""
+            ).trim();
+
+        } catch (error) {
+            console.warn(
+                "SplitEvents: could not read saved nickname",
+                error
+            );
+
+            return "";
+        }
+    }
+
+    let savedNickname = readSavedNickname();
+
+    // Сохраняем ник.
+    // Пустое значение удаляет пользовательский ник.
+
+    function writeSavedNickname(value) {
+        try {
+            if (value) {
+                window.localStorage.setItem(
+                    NICKNAME_STORAGE_KEY,
+                    value
+                );
+            } else {
+                window.localStorage.removeItem(
+                    NICKNAME_STORAGE_KEY
+                );
+            }
+
+            return true;
+
+        } catch (error) {
+            console.warn(
+                "SplitEvents: could not save nickname",
+                error
+            );
+
+            return false;
+        }
+    }
+
+    // Текущий ник с учётом пользовательского изменения
+
+    function getCurrentNickname() {
+        return savedNickname || getTelegramDisplayName();
+    }
+
+    // =====================================
+    // PROFILE RENDERING
+    // =====================================
+
+    function setNicknameEditMode(isEditing) {
+        nicknameInput.readOnly = !isEditing;
+
+        nicknameEditIcon.hidden = isEditing;
+        nicknameSaveIcon.hidden = !isEditing;
+
+        nicknameEditButton.setAttribute(
+            "aria-label",
+            isEditing ? "Сохранить ник" : "Изменить ник"
+        );
+
+        nicknameEditButton.title = isEditing
+            ? "Сохранить ник"
+            : "Изменить ник";
+    }
+
+    function renderProfile() {
+        nicknameInput.value = getCurrentNickname();
+
+        telegramTag.textContent = getTelegramTag();
+
+        setNicknameEditMode(false);
+    }
+
+    // =====================================
+    // NICKNAME EDITING
+    // =====================================
+
+    function startNicknameEditing() {
+        setNicknameEditMode(true);
+
+        nicknameInput.focus();
+        nicknameInput.select();
+    }
+
+    function saveNickname() {
+        const newNickname = nicknameInput.value.trim();
+
+        // Пустое поле означает возврат к имени Telegram
+
+        savedNickname = newNickname;
+
+        writeSavedNickname(savedNickname);
+
+        // Обновляем отображение
+
+        nicknameInput.value = getCurrentNickname();
+
+        setNicknameEditMode(false);
+    }
+
+    function cancelNicknameEditing() {
+        nicknameInput.value = getCurrentNickname();
+
+        setNicknameEditMode(false);
+    }
+
+    // Нажатие на карандаш или галочку
+
+    nicknameEditButton.addEventListener(
+        "click",
+        function () {
+            if (nicknameInput.readOnly) {
+                startNicknameEditing();
+            } else {
+                saveNickname();
+            }
+        }
+    );
+
+    // Enter — сохранить ник.
+    // Escape — отменить редактирование.
+
+    nicknameInput.addEventListener(
+        "keydown",
+        function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+
+                saveNickname();
+            }
+
+            if (event.key === "Escape") {
+                event.preventDefault();
+
+                cancelNicknameEditing();
+            }
+        }
+    );
 
     // =====================================
     // ROUTING
@@ -108,6 +327,12 @@
 
         homePage.hidden = isProfile;
         profilePage.hidden = !isProfile;
+
+        // При открытии профиля обновляем данные
+
+        if (isProfile) {
+            renderProfile();
+        }
 
         // Переключение иконок
 
