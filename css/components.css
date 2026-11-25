@@ -27,8 +27,8 @@
 
 .ui-button--primary {
     border-color: transparent;
-    background: var(--app-text);
-    color: var(--app-background);
+    background: var(--ui-button-background, var(--app-text));
+    color: var(--ui-button-color, var(--app-background));
 }
 
 .ui-button--secondary {
