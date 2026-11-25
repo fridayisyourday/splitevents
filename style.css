@@ -6,9 +6,17 @@
 :root {
     color-scheme: light;
     background: #ffffff;
-}
 
-/* Сброс стандартных отступов */
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: #191919;
+}
 
 * {
     box-sizing: border-box;
@@ -19,16 +27,19 @@ body {
     width: 100%;
     min-width: 320px;
     min-height: 100%;
+
     margin: 0;
     padding: 0;
 
     background: #ffffff;
 }
 
-/* Основная область приложения */
-
 body {
     overflow-x: hidden;
+}
+
+button {
+    font: inherit;
 }
 
 #app {
@@ -36,5 +47,123 @@ body {
     min-height: 100vh;
     min-height: 100dvh;
 
+    background: #ffffff;
+}
+
+/* =================================
+   HEADER
+   ================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    display: grid;
+
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+
+    align-items: center;
+
+    width: 100%;
+    min-height: 68px;
+
+    padding:
+        max(8px, env(safe-area-inset-top, 0px))
+        16px
+        8px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+/* =================================
+   HEADER BUTTONS
+   ================================= */
+
+.header-button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #f3f4f6;
+
+    color: #222222;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.header-button svg {
+    display: block;
+
+    width: 22px;
+    height: 22px;
+}
+
+/* Реакция при наведении */
+
+@media (hover: hover) {
+    .header-button:hover {
+        background: #e9eaed;
+    }
+}
+
+/* Реакция при нажатии */
+
+.header-button:active {
+    background: #e1e3e7;
+    transform: scale(0.94);
+}
+
+/* Фокус с клавиатуры */
+
+.header-button:focus-visible {
+    outline: 2px solid #222222;
+    outline-offset: 3px;
+}
+
+/* =================================
+   HEADER LOGO
+   ================================= */
+
+.header-logo {
+    justify-self: center;
+
+    color: #171717;
+
+    font-size: 25px;
+    font-weight: 750;
+
+    letter-spacing: -1.3px;
+
+    line-height: 1;
+
+    user-select: none;
+}
+
+/* =================================
+   MAIN CONTENT
+   ================================= */
+
+.page-content {
+    width: 100%;
+    min-height: 1px;
     background: #ffffff;
 }
