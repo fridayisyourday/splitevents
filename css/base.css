@@ -20,6 +20,10 @@
 
     /* Shared typography. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    --app-font-size-brand: 25px;
+    --app-font-size-menu-title: 21px;
+    --app-font-size-navigation: 16px;
+    --app-font-size-profile-name: 20px;
     --app-font-size-body: 14px;
     --app-font-size-small: 12px;
     --app-font-size-page-title: clamp(32px, 4.5vw, 42px);
