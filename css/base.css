@@ -1,0 +1,130 @@
+/* SplitEvents — design tokens, reset, and accessibility. */
+:root {
+    color-scheme: light dark;
+    --app-background: var(--tg-theme-bg-color, #ffffff);
+    --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #ffffff));
+    --app-text: var(--tg-theme-text-color, #191919);
+    --app-hint: var(--tg-theme-subtitle-text-color, var(--tg-theme-hint-color, #858585));
+    --app-secondary: var(--tg-theme-secondary-bg-color, #f3f4f6);
+    --app-border: var(--tg-theme-section-separator-color, #e8e8eb);
+    --app-placeholder: var(--tg-theme-secondary-bg-color, #e9ebee);
+    --app-accent: var(--tg-theme-link-color, #3987d6);
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--app-text);
+    background: var(--app-background);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--app-background);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: var(--app-background);
+    color: var(--app-text);
+    font-family: inherit;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+img,
+svg {
+    max-width: 100%;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+:focus-visible {
+    outline: 2px solid var(--app-accent);
+    outline-offset: 3px;
+}
+
+.skip-link {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link:focus {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 2000;
+    width: auto;
+    height: auto;
+    padding: 12px;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: var(--app-card-background);
+    color: var(--app-text);
+    border: 2px solid var(--app-text);
+    border-radius: 8px;
+}
+
+.visually-hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
