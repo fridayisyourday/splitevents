@@ -1,11 +1,18 @@
 /* SplitEvents — profile page and profile media. */
 #profile-page {
-    padding-top: 20px;
-    padding-right: max(16px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-    padding-bottom: 20px;
-    padding-left: max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+    min-height: calc(var(--tg-viewport-stable-height, 100dvh) - var(--app-header-height));
+    padding: var(--app-page-top) max(
+        var(--app-page-gutter),
+        env(safe-area-inset-right, 0px),
+        var(--tg-safe-area-inset-right, 0px),
+        var(--tg-content-safe-area-inset-right, 0px)
+    ) calc(30px + env(safe-area-inset-bottom, 0px)) max(
+        var(--app-page-gutter),
+        env(safe-area-inset-left, 0px),
+        var(--tg-safe-area-inset-left, 0px),
+        var(--tg-content-safe-area-inset-left, 0px)
+    );
 }
-
 .profile-card {
     position: relative;
     width: 100%;
@@ -208,12 +215,6 @@
 }
 
 @media (max-width: 480px) {
-    #profile-page {
-        padding-top: 14px;
-        padding-right: max(12px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-        padding-left: max(12px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
-    }
-
     .profile-cover {
         height: 170px;
     }
