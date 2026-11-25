@@ -19,7 +19,7 @@ function formatPart(value) {
     return String(value).padStart(2, "0");
 }
 
-export function createEventCard(event) {
+export function createEventCard(event, { onHide } = {}) {
     const card = createElement("article", "event-card");
     card.dataset.eventId = event.id;
 
@@ -82,6 +82,7 @@ export function createEventCard(event) {
     );
     meta.append(date, separator, countdown);
 
+    const actions = createElement("div", "event-card-actions");
     const action = createElement(
         "button",
         "event-card-action",
@@ -92,7 +93,26 @@ export function createEventCard(event) {
     action.setAttribute("aria-describedby", descriptionId);
     action.title = "Участие пока не подключено";
 
-    content.append(title, description, meta, action);
+    const hideButton = createElement("button", "event-card-hide-action");
+    hideButton.type = "button";
+    hideButton.setAttribute("aria-label", "Скрыть событие");
+    hideButton.title = "Скрыть событие";
+    hideButton.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true" focusable="false">
+            <path d="M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"></path>
+            <circle cx="12" cy="12" r="2.8"></circle>
+        </svg>
+    `;
+    hideButton.addEventListener("click", () => {
+        if (typeof onHide === "function") {
+            onHide(event.id);
+        }
+    });
+
+    actions.append(action, hideButton);
+    content.append(title, description, meta, actions);
     card.append(artwork, wash, content);
 
     const endTime = new Date(event.endsAt).getTime();

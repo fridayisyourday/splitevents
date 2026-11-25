@@ -9,8 +9,9 @@ import {
 } from "./js/telegram.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-3";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-6";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-7";
 import { EVENTS } from "./js/events/data.js?v=20261126-4";
+import { getHiddenEventIds, hideEvent } from "./js/events/hidden-state.js?v=20261126-1";
 import {
     getUnreadEventsCount,
     markEventsAsSeen
@@ -46,8 +47,11 @@ if (missingPages.length || !mainContent) {
         getTelegramPhotoUrl
     });
 
-    // The event list is data-driven; each item uses the same card template.
-    const eventsPage = renderEventsPage(pageElements.events, EVENTS);
+    // The event list uses a shared card template and per-user hidden state.
+    const eventsPage = renderEventsPage(pageElements.events, EVENTS, {
+        hiddenEventIds: getHiddenEventIds(telegramUserId),
+        onHideEvent: (eventId) => hideEvent(eventId, telegramUserId)
+    });
     renderServersPage(pageElements.servers);
 
     function getCurrentPage() {

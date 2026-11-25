@@ -1,5 +1,5 @@
-/* Events page — renders a list using the shared event card template. */
-import { createEventCard } from "./event-card.js?v=20261126-4";
+/* Events page — renders visible events using the shared card template. */
+import { createEventCard } from "./event-card.js?v=20261126-5";
 
 function createElement(tagName, className, text) {
     const node = document.createElement(tagName);
@@ -8,7 +8,17 @@ function createElement(tagName, className, text) {
     return node;
 }
 
-export function renderEventsPage(container, events = []) {
+function createEmptyState() {
+    const empty = createElement("div", "empty-state");
+    empty.setAttribute("role", "status");
+    empty.append(
+        createElement("p", "empty-state-message", "пока ничего нет"),
+        createElement("p", "empty-state-note", "оставайтесь с нами!")
+    );
+    return empty;
+}
+
+export function renderEventsPage(container, events = [], options = {}) {
     const page = createElement("div", "section-page events-page");
     const content = createElement("div", "section-page-content events-page-content");
     const header = createElement("header", "section-page-header events-page-header");
@@ -18,17 +28,48 @@ export function renderEventsPage(container, events = []) {
     const list = createElement("div", "events-list");
     list.setAttribute("aria-label", "Список событий");
 
-    const cards = events.map((event) => createEventCard(event));
-    cards.forEach((card) => list.appendChild(card.element));
+    const hiddenIds = options.hiddenEventIds instanceof Set
+        ? options.hiddenEventIds
+        : new Set(options.hiddenEventIds || []);
+    const cards = new Map();
 
-    if (cards.length === 0) {
-        const empty = createElement("div", "empty-state");
-        empty.setAttribute("role", "status");
-        empty.append(
-            createElement("p", "empty-state-message", "пока ничего нет"),
-            createElement("p", "empty-state-note", "оставайтесь с нами!")
-        );
-        list.appendChild(empty);
+    function removeEventCard(eventId) {
+        const card = cards.get(eventId);
+        if (!card) return false;
+
+        card.element.remove();
+        cards.delete(eventId);
+
+        if (cards.size === 0) {
+            if (timerId !== null) {
+                window.clearInterval(timerId);
+                timerId = null;
+            }
+            list.replaceChildren(createEmptyState());
+        }
+        return true;
+    }
+
+    events
+        .filter((event) => !hiddenIds.has(event.id))
+        .forEach((event) => {
+            const card = createEventCard(event, {
+                onHide: (eventId) => {
+                    const result = typeof options.onHideEvent === "function"
+                        ? options.onHideEvent(eventId)
+                        : true;
+
+                    if (result !== false) {
+                        removeEventCard(eventId);
+                    }
+                }
+            });
+            cards.set(event.id, card);
+            list.appendChild(card.element);
+        });
+
+    if (cards.size === 0) {
+        list.appendChild(createEmptyState());
     }
 
     content.append(header, list);
@@ -45,7 +86,7 @@ export function renderEventsPage(container, events = []) {
         start() {
             if (timerId !== null) window.clearInterval(timerId);
             updateCountdowns();
-            if (cards.length) timerId = window.setInterval(updateCountdowns, 1000);
+            if (cards.size) timerId = window.setInterval(updateCountdowns, 1000);
         },
         stop() {
             if (timerId !== null) {
