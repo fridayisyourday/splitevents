@@ -7,8 +7,7 @@ export const EVENTS = Object.freeze([
         // The countdown runs until the end of December 15 in the visitor's local time.
         endsAt: "2026-12-15T23:59:59",
         descriptionLead: "SQUASH 2026",
-        descriptionText: " — ежегодная премия событий ρumρkin ρie. Это подведение итогов года, где лучшие из лучших будут вознаграждены за самые яркие события, завозы и моменты, которые войдут в историю компании.",
-        countdownLabel: "до конца события:)",
+        descriptionText: " - ежегодная премия событий ρumρkin ρie. Это подведение итогов года, где лучшие из лучших будут вознаграждены за самые яркие события, завозы и моменты, которые войдут в историю компании.",
         actionLabel: "Принять участие"
     })
 ]);
