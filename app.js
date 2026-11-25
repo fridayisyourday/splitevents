@@ -9,14 +9,14 @@ import {
 } from "./js/telegram.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-3";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-7";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-8";
 import { EVENTS } from "./js/events/data.js?v=20261126-4";
-import { getHiddenEventIds, hideEvent } from "./js/events/hidden-state.js?v=20261126-1";
+import { getHiddenEventIds, hideEvent } from "./js/events/hidden-state.js?v=20261126-2";
 import {
     getUnreadEventsCount,
     markEventsAsSeen
-} from "./js/events/read-state.js?v=20261126-1";
-import { renderServersPage } from "./js/pages/servers.js?v=20261126-2";
+} from "./js/events/read-state.js?v=20261126-2";
+import { renderServersPage } from "./js/pages/servers.js?v=20261126-3";
 
 const pageElements = {
     home: document.getElementById("home-page"),

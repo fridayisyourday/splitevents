@@ -1,6 +1,8 @@
 /* SplitEvents — design tokens, reset, and accessibility. */
 :root {
     color-scheme: light dark;
+
+    /* Theme-aware surfaces and text. */
     --app-background: var(--tg-theme-bg-color, #ffffff);
     --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #ffffff));
     --app-text: var(--tg-theme-text-color, #191919);
@@ -9,14 +11,53 @@
     --app-border: var(--tg-theme-section-separator-color, #e8e8eb);
     --app-placeholder: var(--tg-theme-secondary-bg-color, #e9ebee);
     --app-accent: var(--tg-theme-link-color, #3987d6);
-    --app-content-width: 960px;
+
+    /* Shared layout dimensions. */
+    --app-content-width: 970px;
+    --app-profile-width: 720px;
+    --app-header-height: 68px;
+    --app-control-height: 44px;
+
+    /* Shared typography. */
+    --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    --app-font-size-brand: 25px;
+    --app-font-size-menu-title: 21px;
+    --app-font-size-navigation: 16px;
+    --app-font-size-profile-name: 20px;
+    --app-font-size-body: 14px;
+    --app-font-size-small: 12px;
+    --app-font-size-page-title: clamp(32px, 4.5vw, 42px);
+    --app-font-weight-regular: 400;
+    --app-font-weight-medium: 550;
+    --app-font-weight-semibold: 650;
+    --app-font-weight-bold: 750;
+    --app-line-height-body: 1.5;
+    --app-line-height-heading: 1.08;
+
+    /* Shared spacing and shape. */
+    --app-space-1: 4px;
+    --app-space-2: 8px;
+    --app-space-3: 12px;
+    --app-space-4: 16px;
+    --app-space-5: 20px;
+    --app-space-6: 24px;
+    --app-space-7: 28px;
+    --app-space-8: 32px;
+    --app-page-gutter: 16px;
+    --app-page-top: 28px;
+    --app-section-gap: 28px;
     --app-radius-small: 8px;
     --app-radius-control: 12px;
     --app-radius-card: 20px;
     --app-radius-pill: 999px;
     --app-shadow-card: 0 12px 30px rgba(15, 23, 42, 0.06);
 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    /* Shared button system. */
+    --app-button-font-size: 14px;
+    --app-button-font-weight: 650;
+    --app-button-transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease, filter 150ms ease;
+
+    font-family: var(--app-font-family);
     color: var(--app-text);
     background: var(--app-background);
     font-synthesis: none;
@@ -51,7 +92,8 @@ body {
     background: var(--app-background);
     color: var(--app-text);
     font-family: inherit;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: var(--app-line-height-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -64,6 +106,7 @@ select {
 }
 
 button {
+    color: inherit;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
 }
@@ -109,7 +152,7 @@ svg {
     background: var(--app-card-background);
     color: var(--app-text);
     border: 2px solid var(--app-text);
-    border-radius: 8px;
+    border-radius: var(--app-radius-small);
 }
 
 .visually-hidden-input {
@@ -122,6 +165,14 @@ svg {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+@media (max-width: 480px) {
+    :root {
+        --app-page-gutter: 14px;
+        --app-page-top: 24px;
+        --app-section-gap: 24px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

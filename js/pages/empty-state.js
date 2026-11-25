@@ -1,35 +1,21 @@
-/* Shared accessible empty-state page renderer. */
+/* Shared empty-state renderer, used by every section page. */
+import {
+    createPageShell,
+    createEmptyStateElement
+} from "./page-shell.js?v=20261126-1";
+
 export function renderEmptyState(container, options) {
-    const page = document.createElement("div");
-    page.className = "section-page";
+    const shell = createPageShell({
+        title: options.title,
+        pageClass: options.pageClass || "",
+        contentClass: options.contentClass || ""
+    });
 
-    const content = document.createElement("div");
-    content.className = "section-page-content";
+    shell.body.classList.add("section-page-body--center");
+    shell.body.appendChild(createEmptyStateElement({
+        message: options.message,
+        note: options.note
+    }));
 
-    const header = document.createElement("header");
-    header.className = "section-page-header";
-
-    const title = document.createElement("h1");
-    title.className = "section-page-title";
-    title.textContent = options.title;
-
-    header.appendChild(title);
-
-    const state = document.createElement("div");
-    state.className = "empty-state";
-    state.setAttribute("role", "status");
-    state.setAttribute("aria-live", "polite");
-
-    const message = document.createElement("p");
-    message.className = "empty-state-message";
-    message.textContent = options.message;
-
-    const note = document.createElement("p");
-    note.className = "empty-state-note";
-    note.textContent = options.note;
-
-    state.append(message, note);
-    content.append(header, state);
-    page.appendChild(content);
-    container.replaceChildren(page);
+    container.replaceChildren(shell.page);
 }

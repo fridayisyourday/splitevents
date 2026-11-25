@@ -1,18 +1,4 @@
 /* SplitEvents — proportional 970 × 250 event banners. */
-.events-page-content {
-    width: min(100%, 970px);
-    text-align: left;
-}
-
-.events-page-header {
-    margin-bottom: clamp(22px, 3vw, 30px);
-    text-align: center;
-}
-
-.events-page .section-page-title {
-    text-align: center;
-}
-
 .events-list {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -36,7 +22,7 @@
     border: 0;
     border-radius: var(--app-radius-card);
     background: var(--app-placeholder);
-    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+    box-shadow: var(--app-shadow-card);
 }
 
 .event-card-artwork {
@@ -201,50 +187,24 @@
 }
 
 .event-card-action {
-    display: inline-flex;
     flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
     width: auto;
     max-width: 23.7cqw;
     min-width: 0;
-    min-height: 4.2cqw;
-    padding: 0 1.5cqw;
-    border: 0;
-    border-radius: 1.2cqw;
-    background: #191919;
-    color: #ffffff;
-    font-size: clamp(10px, 1.3cqw, 12.5px);
-    font-weight: 650;
-    letter-spacing: 0.01em;
-    opacity: 0.78;
-    cursor: not-allowed;
+    --app-button-font-size: clamp(10px, 1.3cqw, 12.5px);
+    --ui-button-background: #191919;
+    --ui-button-color: #ffffff;
 }
 
 .event-card-hide-action {
-    display: inline-flex;
-    flex: 0 0 clamp(34px, 3.8cqw, 40px);
-    align-items: center;
-    justify-content: center;
-    width: clamp(34px, 3.8cqw, 40px);
-    height: clamp(34px, 3.8cqw, 40px);
-    padding: 0;
-    border: 1px solid rgba(25, 25, 25, 0.14);
-    border-radius: 50%;
-    background: rgba(25, 25, 25, 0.045);
-    color: #343434;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    --ui-button-size: clamp(34px, 3.8cqw, 40px);
+    flex-shrink: 0;
 }
 
 .event-card-hide-action svg {
     display: block;
     width: 54%;
     height: 54%;
-}
-
-.event-card-action:disabled {
-    opacity: 0.78;
 }
 
 .is-event-ended .event-card-countdown {
@@ -310,16 +270,12 @@
         flex: 1 1 auto;
         width: auto;
         max-width: none;
-        min-height: 34px;
         padding: 0 6px;
-        border-radius: 8px;
-        font-size: 10px;
+        --app-button-font-size: 10px;
     }
 
     .event-card-hide-action {
-        flex-basis: 34px;
-        width: 34px;
-        height: 34px;
+        --ui-button-size: 34px;
     }
 }
 
@@ -349,18 +305,10 @@
     }
 
     .event-card-action {
-        font-size: 9.5px;
+        --app-button-font-size: 9.5px;
     }
 
     .event-card-hide-action {
-        flex-basis: 32px;
-        width: 32px;
-        height: 32px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .event-card {
-        scroll-behavior: auto;
+        --ui-button-size: 32px;
     }
 }
