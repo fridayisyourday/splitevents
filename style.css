@@ -1,11 +1,11 @@
 
-/* =================================
-   SplitEvents — Global Styles
-   ================================= */
+/* =========================================
+   SplitEvents
+   Global Styles
+   ========================================= */
 
 :root {
     color-scheme: light;
-    background: #ffffff;
 
     font-family:
         -apple-system,
@@ -16,14 +16,23 @@
         sans-serif;
 
     color: #191919;
+    background: #ffffff;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
 }
 
-* {
+/* =========================================
+   RESET
+   ========================================= */
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
-html,
-body {
+html {
     width: 100%;
     min-width: 320px;
     min-height: 100%;
@@ -32,17 +41,47 @@ body {
     padding: 0;
 
     background: #ffffff;
+
+    scroll-behavior: smooth;
 }
 
 body {
+    width: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
     overflow-x: hidden;
+
+    background: #ffffff;
+
+    font-family: inherit;
+    line-height: 1.5;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-button {
+/* Все элементы используют единый размер шрифта кнопок */
+
+button,
+input,
+textarea,
+select {
     font: inherit;
 }
 
+/* =========================================
+   APP LAYOUT
+   ========================================= */
+
 #app {
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
@@ -50,9 +89,61 @@ button {
     background: #ffffff;
 }
 
-/* =================================
+/* =========================================
+   ACCESSIBILITY
+   ========================================= */
+
+.skip-link {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+
+    border: 0;
+}
+
+.skip-link:focus {
+    position: fixed;
+
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+
+    width: auto;
+    height: auto;
+
+    padding: 12px;
+
+    margin: 0;
+
+    overflow: visible;
+
+    clip: auto;
+    white-space: normal;
+
+    background: #ffffff;
+    color: #191919;
+
+    border: 2px solid #191919;
+    border-radius: 6px;
+}
+
+:focus-visible {
+    outline: 2px solid #222222;
+    outline-offset: 3px;
+}
+
+/* =========================================
    HEADER
-   ================================= */
+   ========================================= */
 
 .site-header {
     position: sticky;
@@ -69,18 +160,31 @@ button {
     min-height: 68px;
 
     padding:
-        max(8px, env(safe-area-inset-top, 0px))
-        16px
-        8px;
+        max(
+            8px,
+            env(safe-area-inset-top, 0px),
+            var(--tg-safe-area-inset-top, 0px)
+        )
+        max(
+            16px,
+            env(safe-area-inset-right, 0px),
+            var(--tg-safe-area-inset-right, 0px)
+        )
+        8px
+        max(
+            16px,
+            env(safe-area-inset-left, 0px),
+            var(--tg-safe-area-inset-left, 0px)
+        );
 
     background: #ffffff;
 
     border-bottom: 1px solid #eeeeee;
 }
 
-/* =================================
+/* =========================================
    HEADER BUTTONS
-   ================================= */
+   ========================================= */
 
 .header-button {
     display: flex;
@@ -97,7 +201,6 @@ button {
     border-radius: 14px;
 
     background: #f3f4f6;
-
     color: #222222;
 
     cursor: pointer;
@@ -117,31 +220,20 @@ button {
     height: 22px;
 }
 
-/* Реакция при наведении */
-
 @media (hover: hover) {
     .header-button:hover {
         background: #e9eaed;
     }
 }
 
-/* Реакция при нажатии */
-
 .header-button:active {
     background: #e1e3e7;
     transform: scale(0.94);
 }
 
-/* Фокус с клавиатуры */
-
-.header-button:focus-visible {
-    outline: 2px solid #222222;
-    outline-offset: 3px;
-}
-
-/* =================================
+/* =========================================
    HEADER LOGO
-   ================================= */
+   ========================================= */
 
 .header-logo {
     justify-self: center;
@@ -152,18 +244,36 @@ button {
     font-weight: 750;
 
     letter-spacing: -1.3px;
-
     line-height: 1;
 
     user-select: none;
 }
 
-/* =================================
+/* =========================================
    MAIN CONTENT
-   ================================= */
+   ========================================= */
 
 .page-content {
+    flex: 1;
+
     width: 100%;
+    min-width: 0;
     min-height: 1px;
+
     background: #ffffff;
+}
+
+/* =========================================
+   REDUCED MOTION
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
 }
