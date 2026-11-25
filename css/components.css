@@ -1,0 +1,95 @@
+/* SplitEvents — one shared visual system for all interactive buttons. */
+.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: var(--app-control-height);
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: var(--app-radius-control);
+    font-family: inherit;
+    font-size: var(--app-button-font-size);
+    font-weight: var(--app-button-font-weight);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: var(--app-button-transition);
+}
+
+.ui-button svg {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.ui-button--primary {
+    border-color: transparent;
+    background: var(--app-text);
+    color: var(--app-background);
+}
+
+.ui-button--secondary {
+    border-color: var(--app-border);
+    background: var(--app-secondary);
+    color: var(--app-text);
+}
+
+.ui-button--ghost {
+    border-color: transparent;
+    background: transparent;
+    color: var(--app-text);
+}
+
+.ui-button--icon {
+    flex: 0 0 var(--ui-button-size, var(--app-control-height));
+    width: var(--ui-button-size, var(--app-control-height));
+    height: var(--ui-button-size, var(--app-control-height));
+    min-height: var(--ui-button-size, var(--app-control-height));
+    padding: 0;
+}
+
+.ui-button--round {
+    border-radius: 50%;
+}
+
+.ui-button--nav {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 13px;
+    text-align: left;
+}
+
+.ui-button--media {
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
+    color: #222222;
+}
+
+.ui-button:disabled {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+@media (hover: hover) {
+    .ui-button:not(:disabled):hover {
+        filter: brightness(0.96);
+    }
+}
+
+.ui-button:not(:disabled):active {
+    transform: scale(0.97);
+}
+
+.ui-button--nav:not(:disabled):active {
+    transform: scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ui-button {
+        transition: none;
+    }
+}
