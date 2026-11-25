@@ -51,17 +51,12 @@ export function createEventCard(event) {
     const title = createElement("h2", "event-card-title", event.title);
     title.id = titleId;
 
-    const description = createElement("p", "event-card-description");
+    const description = createElement(
+        "p",
+        "event-card-description",
+        event.description || ""
+    );
     description.id = descriptionId;
-
-    if (event.descriptionLead) {
-        description.append(
-            createElement("strong", "event-card-description-lead", event.descriptionLead),
-            document.createTextNode(event.descriptionText || "")
-        );
-    } else {
-        description.textContent = event.description || "";
-    }
 
     const meta = createElement("div", "event-card-meta");
     const date = createElement("time", "event-card-date", event.dateLabel || "");
