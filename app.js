@@ -7,7 +7,7 @@ import {
     getTelegramTag,
     getTelegramPhotoUrl
 } from "./js/telegram.js?v=20261125-4";
-import { createMenu } from "./js/menu.js?v=20261125-4";
+import { createMenu } from "./js/menu.js?v=20261125-5";
 import { createProfile } from "./js/profile.js?v=20261125-4";
 
 const homePage = document.getElementById("home-page");
@@ -108,11 +108,7 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
         }
     });
 
-    menu.bind({
-        onProfileOrHome: () => {
-            navigateTo(getCurrentPage() === "profile" ? "home" : "profile");
-        }
-    });
+    menu.bind();
 
     window.addEventListener("hashchange", () => {
         if (menu && menu.isOpen()) menu.close(false);

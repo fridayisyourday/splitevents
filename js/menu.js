@@ -9,52 +9,96 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         overlay: $("menu-overlay"),
         backdrop: $("menu-backdrop"),
         panel: $("menu-panel"),
-        closeButton: $("menu-close-button"),
-        profileButton: $("profile-nav-button"),
-        profileLabel: $("profile-nav-label"),
-        profileIcon: document.querySelector(".menu-profile-icon"),
-        homeIcon: document.querySelector(".menu-home-icon"),
-        eventsButton: $("events-nav-button"),
-        serversButton: $("servers-nav-button")
+        closeButton: $("menu-close-button")
     };
 
-    const missing = Object.entries(el)
-        .filter(([, value]) => !value)
+    const navigationItems = [
+        {
+            page: "profile",
+            button: $("profile-nav-button"),
+            label: $("profile-nav-label"),
+            icon: document.querySelector(".menu-profile-icon"),
+            homeIcon: document.querySelector(".menu-home-icon"),
+            defaultLabel: "Профиль"
+        },
+        {
+            page: "home",
+            button: $("events-nav-button"),
+            label: $("events-nav-label"),
+            icon: document.querySelector(".events-icon"),
+            homeIcon: document.querySelector(".events-home-icon"),
+            defaultLabel: "События"
+        },
+        {
+            page: "servers",
+            button: $("servers-nav-button"),
+            label: $("servers-nav-label"),
+            icon: document.querySelector(".servers-icon"),
+            homeIcon: document.querySelector(".servers-home-icon"),
+            defaultLabel: "Сервера"
+        }
+    ];
+
+    const requiredElements = Object.entries(el)
+        .filter(([, element]) => !element)
         .map(([name]) => name);
 
-    if (missing.length) {
-        throw new Error(`Menu elements not found: ${missing.join(", ")}`);
+    navigationItems.forEach((item, index) => {
+        ["button", "label", "icon", "homeIcon"].forEach((key) => {
+            if (!item[key]) {
+                requiredElements.push(`navigationItems[${index}].${key}`);
+            }
+        });
+    });
+
+    if (requiredElements.length) {
+        throw new Error(
+            `Menu elements not found: ${requiredElements.join(", ")}`
+        );
     }
 
     let isOpen = false;
     let closeTimer = null;
 
     function notifyStateChange() {
-        if (typeof onStateChange === "function") onStateChange(isOpen);
+        if (typeof onStateChange === "function") {
+            onStateChange(isOpen);
+        }
     }
 
+    /*
+     * The current page's own menu item becomes "Главная".
+     * Other items keep their normal labels and destinations.
+     */
     function updateForPage(page) {
-        const onProfile = page === "profile";
+        navigationItems.forEach((item) => {
+            const isCurrentPage = item.page === page;
 
-        el.profileLabel.textContent = onProfile ? "Главная" : "Профиль";
-        el.profileIcon.hidden = onProfile;
-        el.homeIcon.hidden = !onProfile;
+            item.label.textContent = isCurrentPage
+                ? "Главная"
+                : item.defaultLabel;
 
-        [el.profileButton, el.eventsButton, el.serversButton].forEach((button) => {
-            button.removeAttribute("aria-current");
+            item.icon.hidden = isCurrentPage;
+            item.homeIcon.hidden = !isCurrentPage;
+
+            if (isCurrentPage) {
+                item.button.setAttribute("aria-current", "page");
+            } else {
+                item.button.removeAttribute("aria-current");
+            }
         });
-
-        if (onProfile) el.profileButton.setAttribute("aria-current", "page");
-        if (page === "home") el.eventsButton.setAttribute("aria-current", "page");
-        if (page === "servers") el.serversButton.setAttribute("aria-current", "page");
     }
 
-    function focusableElements() {
+    function getFocusableElements() {
         return Array.from(
             el.panel.querySelectorAll(
                 'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
             )
-        ).filter((element) => !element.hidden && element.getClientRects().length > 0);
+        ).filter(
+            (element) =>
+                !element.hidden &&
+                element.getClientRects().length > 0
+        );
     }
 
     function open() {
@@ -69,12 +113,14 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         el.overlay.hidden = false;
         el.button.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
+
         el.header.inert = true;
         el.main.inert = true;
         el.header.setAttribute("aria-hidden", "true");
         el.main.setAttribute("aria-hidden", "true");
 
         void el.overlay.offsetWidth;
+
         window.requestAnimationFrame(() => {
             if (!isOpen) return;
             el.overlay.classList.add("is-open");
@@ -91,6 +137,7 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         el.overlay.classList.remove("is-open");
         el.button.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
+
         el.header.inert = false;
         el.main.inert = false;
         el.header.removeAttribute("aria-hidden");
@@ -100,7 +147,10 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
             el.button.focus({ preventScroll: true });
         }
 
-        if (closeTimer !== null) window.clearTimeout(closeTimer);
+        if (closeTimer !== null) {
+            window.clearTimeout(closeTimer);
+        }
+
         closeTimer = window.setTimeout(() => {
             if (!isOpen) el.overlay.hidden = true;
             closeTimer = null;
@@ -120,7 +170,8 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
 
         if (event.key !== "Tab") return;
 
-        const focusable = focusableElements();
+        const focusable = getFocusableElements();
+
         if (!focusable.length) {
             event.preventDefault();
             el.panel.focus();
@@ -133,13 +184,28 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
             last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
+        } else if (
+            !event.shiftKey &&
+            document.activeElement === last
+        ) {
             event.preventDefault();
             first.focus();
         }
     }
 
-    function bind({ onProfileOrHome }) {
+    function navigateFromItem(item) {
+        const currentPage = getCurrentPage();
+
+        // If this item represents the open page, it now means "Главная".
+        const destination = currentPage === item.page
+            ? "home"
+            : item.page;
+
+        close(false);
+        onNavigate(destination);
+    }
+
+    function bind() {
         el.button.addEventListener("click", () => {
             if (isOpen) close(true);
             else open();
@@ -149,19 +215,10 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         el.closeButton.addEventListener("click", () => close(true));
         document.addEventListener("keydown", handleKeydown);
 
-        el.profileButton.addEventListener("click", () => {
-            close(false);
-            if (typeof onProfileOrHome === "function") onProfileOrHome();
-        });
-
-        el.eventsButton.addEventListener("click", () => {
-            close(false);
-            onNavigate("home");
-        });
-
-        el.serversButton.addEventListener("click", () => {
-            close(false);
-            onNavigate("servers");
+        navigationItems.forEach((item) => {
+            item.button.addEventListener("click", () => {
+                navigateFromItem(item);
+            });
         });
     }
 
