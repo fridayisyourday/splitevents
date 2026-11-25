@@ -6,6 +6,34 @@ function createElement(tagName, className, text) {
     return node;
 }
 
+function createSvgElement(tagName, attributes = {}) {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+    Object.entries(attributes).forEach(([name, value]) => {
+        node.setAttribute(name, value);
+    });
+    return node;
+}
+
+function createEyeIcon() {
+    const svg = createSvgElement("svg", {
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": "1.8",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "aria-hidden": "true",
+        focusable: "false"
+    });
+    svg.append(
+        createSvgElement("path", {
+            d: "M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"
+        }),
+        createSvgElement("circle", { cx: "12", cy: "12", r: "2.8" })
+    );
+    return svg;
+}
+
 function createCountdownPart(part, unit) {
     const group = createElement("span", "event-countdown-part");
     const value = createElement("span", "event-countdown-value", "00");
@@ -28,8 +56,6 @@ export function createEventCard(event, { onHide } = {}) {
     const descriptionId = "event-description-" + safeId;
     card.setAttribute("aria-labelledby", titleId);
 
-    // Artwork stays as a background layer. Without an image it uses the
-    // exact same placeholder token as an empty profile banner.
     const artwork = createElement("div", "event-card-artwork");
     artwork.setAttribute("aria-hidden", "true");
 
@@ -85,7 +111,7 @@ export function createEventCard(event, { onHide } = {}) {
     const actions = createElement("div", "event-card-actions");
     const action = createElement(
         "button",
-        "event-card-action",
+        "event-card-action ui-button ui-button--primary",
         event.actionLabel || "Принять участие"
     );
     action.type = "button";
@@ -93,18 +119,14 @@ export function createEventCard(event, { onHide } = {}) {
     action.setAttribute("aria-describedby", descriptionId);
     action.title = "Участие пока не подключено";
 
-    const hideButton = createElement("button", "event-card-hide-action");
+    const hideButton = createElement(
+        "button",
+        "event-card-hide-action ui-button ui-button--icon ui-button--secondary ui-button--round"
+    );
     hideButton.type = "button";
     hideButton.setAttribute("aria-label", "Скрыть событие");
     hideButton.title = "Скрыть событие";
-    hideButton.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-             aria-hidden="true" focusable="false">
-            <path d="M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"></path>
-            <circle cx="12" cy="12" r="2.8"></circle>
-        </svg>
-    `;
+    hideButton.appendChild(createEyeIcon());
     hideButton.addEventListener("click", () => {
         if (typeof onHide === "function") {
             onHide(event.id);
@@ -146,14 +168,10 @@ export function createEventCard(event, { onHide } = {}) {
         countdownValues.minutes.textContent = formatPart(values.minutes);
         countdownValues.seconds.textContent = formatPart(values.seconds);
 
-        const ended = remaining === 0;
-        card.classList.toggle("is-event-ended", ended);
+        card.classList.toggle("is-event-ended", remaining === 0);
     }
 
     updateCountdown();
 
-    return {
-        element: card,
-        updateCountdown
-    };
+    return { element: card, updateCountdown };
 }
