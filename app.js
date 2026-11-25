@@ -7,10 +7,11 @@ import {
     getTelegramTag,
     getTelegramPhotoUrl
 } from "./js/telegram.js?v=20261126-1";
-import { createMenu } from "./js/menu.js?v=20261126-1";
+import { createMenu } from "./js/menu.js?v=20261126-2";
 import { createProfile } from "./js/profile.js?v=20261126-1";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-2";
+import { renderHomePage } from "./js/pages/home.js?v=20261126-1";
 
 const pageElements = {
     home: document.getElementById("home-page"),
@@ -72,6 +73,8 @@ if (missingPages.length || !mainContent) {
             window.location.hash = target;
         }
     }
+
+    renderHomePage(pageElements.home, { onNavigate: navigateTo });
 
     menu = createMenu({
         onNavigate: navigateTo,
