@@ -6,17 +6,29 @@ import {
     getTelegramName,
     getTelegramTag,
     getTelegramPhotoUrl
-} from "./js/telegram.js?v=20261125-4";
-import { createMenu } from "./js/menu.js?v=20261125-5";
-import { createProfile } from "./js/profile.js?v=20261125-4";
+} from "./js/telegram.js?v=20261126-1";
+import { createMenu } from "./js/menu.js?v=20261126-1";
+import { createProfile } from "./js/profile.js?v=20261126-1";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-1";
+import { renderServersPage } from "./js/pages/servers.js?v=20261126-1";
 
-const homePage = document.getElementById("home-page");
-const profilePage = document.getElementById("profile-page");
-const serversPage = document.getElementById("servers-page");
+const pageElements = {
+    home: document.getElementById("home-page"),
+    profile: document.getElementById("profile-page"),
+    events: document.getElementById("events-page"),
+    servers: document.getElementById("servers-page")
+};
 const mainContent = document.getElementById("main-content");
 
-if (!homePage || !profilePage || !serversPage || !mainContent) {
-    console.error("SplitEvents: one or more page containers were not found.");
+const missingPages = Object.entries(pageElements)
+    .filter(([, element]) => !element)
+    .map(([page]) => page);
+
+if (missingPages.length || !mainContent) {
+    console.error(
+        "SplitEvents: required page containers are missing:",
+        missingPages
+    );
 } else {
     let currentPage = null;
     let menu = null;
@@ -28,13 +40,18 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
         getTelegramPhotoUrl
     });
 
+    // Static empty-state views are built by their own page modules.
+    renderEventsPage(pageElements.events);
+    renderServersPage(pageElements.servers);
+
     function getCurrentPage() {
         const route = (window.location.hash || "#/")
             .replace(/^#\/?/, "")
             .split(/[/?]/)[0];
 
-        if (route === "profile" || route === "servers") return route;
-        return "home";
+        return Object.prototype.hasOwnProperty.call(pageElements, route)
+            ? route
+            : "home";
     }
 
     function updateTelegramBackButton() {
@@ -45,9 +62,9 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
     }
 
     function navigateTo(page) {
-        const allowedPages = ["home", "profile", "servers"];
+        const allowedPages = Object.keys(pageElements);
         const safePage = allowedPages.includes(page) ? page : "home";
-        const target = safePage === "home" ? "#/" : `#/${safePage}`;
+        const target = safePage === "home" ? "#/" : "#/" + safePage;
 
         if (window.location.hash === target) {
             renderPage(true);
@@ -57,7 +74,6 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
     }
 
     menu = createMenu({
-        getCurrentPage,
         onNavigate: navigateTo,
         onStateChange: updateTelegramBackButton
     });
@@ -70,9 +86,9 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
             profile.leave();
         }
 
-        homePage.hidden = page !== "home";
-        profilePage.hidden = page !== "profile";
-        serversPage.hidden = page !== "servers";
+        Object.entries(pageElements).forEach(([pageName, element]) => {
+            element.hidden = pageName !== page;
+        });
 
         if (changed && page === "profile") {
             profile.render();
@@ -82,17 +98,19 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
         menu.updateForPage(page);
         updateTelegramBackButton();
 
-        document.title = page === "profile"
-            ? "Профиль — Сплит"
-            : page === "servers"
-                ? "Сервера — Сплит"
-                : "Сплит — SplitEvents";
+        const pageTitles = {
+            home: "Сплит — SplitEvents",
+            profile: "Профиль — Сплит",
+            events: "Текущие события — Сплит",
+            servers: "Сервера — Сплит"
+        };
+        document.title = pageTitles[page];
 
         if (moveFocus) {
             mainContent.focus({ preventScroll: true });
         }
 
-        console.info(`SplitEvents: current page — ${page}`);
+        console.info("SplitEvents: current page — " + page);
     }
 
     initTelegram({
@@ -111,7 +129,9 @@ if (!homePage || !profilePage || !serversPage || !mainContent) {
     menu.bind();
 
     window.addEventListener("hashchange", () => {
-        if (menu && menu.isOpen()) menu.close(false);
+        if (menu && menu.isOpen()) {
+            menu.close(false);
+        }
         renderPage(true);
     });
 

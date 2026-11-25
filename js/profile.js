@@ -5,7 +5,7 @@ import {
     readImage,
     writeImage,
     optimizeImage
-} from "./storage.js?v=20261125-4";
+} from "./storage.js?v=20261126-1";
 
 const $ = (id) => document.getElementById(id);
 
