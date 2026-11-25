@@ -1,24 +1,29 @@
 /* SplitEvents — clean, centered empty states for content pages. */
 .section-page {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     min-height: calc(var(--tg-viewport-stable-height, 100dvh) - 68px);
-    padding-top: clamp(28px, 5vw, 54px);
+    padding-top: clamp(24px, 4vw, 36px);
     padding-right: max(16px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
-    padding-bottom: 44px;
+    padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
     padding-left: max(16px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
 }
 
 .section-page-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     width: min(100%, 920px);
     margin: 0 auto;
     text-align: center;
 }
 
 .section-page-header {
-    margin: 0 0 clamp(22px, 4vh, 32px);
+    margin: 0 0 clamp(22px, 4vw, 32px);
+    text-align: center;
 }
 
 .section-page-title {
@@ -39,7 +44,7 @@
     justify-content: center;
     gap: 7px;
     width: 100%;
-    margin: 0 auto;
+    margin: auto 0;
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -65,10 +70,9 @@
 
 @media (max-width: 480px) {
     .section-page {
-        min-height: calc(var(--tg-viewport-stable-height, 100dvh) - 68px);
-        padding-top: 28px;
+        padding-top: 24px;
         padding-right: max(14px, env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
         padding-left: max(14px, env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
-        padding-bottom: 32px;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     }
 }
