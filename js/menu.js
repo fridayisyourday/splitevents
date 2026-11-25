@@ -40,11 +40,14 @@ export function createMenu({ onNavigate, onStateChange }) {
         }
     }
 
-    // The current page is omitted from the menu; all other items retain
-    // their fixed order and original labels.
+    // Keep every destination visible and mark the current page clearly.
     function updateForPage(currentPage) {
         navigationItems.forEach((item) => {
-            item.button.hidden = item.page === currentPage;
+            if (item.page === currentPage) {
+                item.button.setAttribute("aria-current", "page");
+            } else {
+                item.button.removeAttribute("aria-current");
+            }
         });
     }
 
