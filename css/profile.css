@@ -5,12 +5,16 @@
         var(--app-page-gutter),
         env(safe-area-inset-right, 0px),
         var(--tg-safe-area-inset-right, 0px),
-        var(--tg-content-safe-area-inset-right, 0px)
-    ) calc(30px + env(safe-area-inset-bottom, 0px)) max(
+        var(--app-safe-right, 0px),
+        var(--tg-content-safe-area-inset-right, 0px),
+        var(--app-content-safe-right, 0px)
+    ) calc(max(30px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px)) + max(var(--tg-content-safe-area-inset-bottom, 0px), var(--app-content-safe-bottom, 0px))) max(
         var(--app-page-gutter),
         env(safe-area-inset-left, 0px),
         var(--tg-safe-area-inset-left, 0px),
-        var(--tg-content-safe-area-inset-left, 0px)
+        var(--app-safe-left, 0px),
+        var(--tg-content-safe-area-inset-left, 0px),
+        var(--app-content-safe-left, 0px)
     );
 }
 
