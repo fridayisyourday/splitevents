@@ -1,8 +1,8 @@
 /* Accessible side navigation drawer. */
 const $ = (id) => document.getElementById(id);
 
-export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
-    const el = {
+export function createMenu({ onNavigate, onStateChange }) {
+    const elements = {
         header: document.querySelector(".site-header"),
         main: $("main-content"),
         button: $("menu-button"),
@@ -13,48 +13,22 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
     };
 
     const navigationItems = [
-        {
-            page: "profile",
-            button: $("profile-nav-button"),
-            label: $("profile-nav-label"),
-            icon: document.querySelector(".menu-profile-icon"),
-            homeIcon: document.querySelector(".menu-home-icon"),
-            defaultLabel: "Профиль"
-        },
-        {
-            page: "home",
-            button: $("events-nav-button"),
-            label: $("events-nav-label"),
-            icon: document.querySelector(".events-icon"),
-            homeIcon: document.querySelector(".events-home-icon"),
-            defaultLabel: "События"
-        },
-        {
-            page: "servers",
-            button: $("servers-nav-button"),
-            label: $("servers-nav-label"),
-            icon: document.querySelector(".servers-icon"),
-            homeIcon: document.querySelector(".servers-home-icon"),
-            defaultLabel: "Сервера"
-        }
+        { page: "home", button: $("home-nav-button") },
+        { page: "profile", button: $("profile-nav-button") },
+        { page: "events", button: $("events-nav-button") },
+        { page: "servers", button: $("servers-nav-button") }
     ];
 
-    const requiredElements = Object.entries(el)
+    const missing = Object.entries(elements)
         .filter(([, element]) => !element)
         .map(([name]) => name);
 
-    navigationItems.forEach((item, index) => {
-        ["button", "label", "icon", "homeIcon"].forEach((key) => {
-            if (!item[key]) {
-                requiredElements.push(`navigationItems[${index}].${key}`);
-            }
-        });
+    navigationItems.forEach((item) => {
+        if (!item.button) missing.push(item.page + " navigation button");
     });
 
-    if (requiredElements.length) {
-        throw new Error(
-            `Menu elements not found: ${requiredElements.join(", ")}`
-        );
+    if (missing.length) {
+        throw new Error("Menu elements not found: " + missing.join(", "));
     }
 
     let isOpen = false;
@@ -66,32 +40,17 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         }
     }
 
-    /*
-     * The current page's own menu item becomes "Главная".
-     * Other items keep their normal labels and destinations.
-     */
-    function updateForPage(page) {
+    // The current page is omitted from the menu; all other items retain
+    // their fixed order and original labels.
+    function updateForPage(currentPage) {
         navigationItems.forEach((item) => {
-            const isCurrentPage = item.page === page;
-
-            item.label.textContent = isCurrentPage
-                ? "Главная"
-                : item.defaultLabel;
-
-            item.icon.hidden = isCurrentPage;
-            item.homeIcon.hidden = !isCurrentPage;
-
-            if (isCurrentPage) {
-                item.button.setAttribute("aria-current", "page");
-            } else {
-                item.button.removeAttribute("aria-current");
-            }
+            item.button.hidden = item.page === currentPage;
         });
     }
 
     function getFocusableElements() {
         return Array.from(
-            el.panel.querySelectorAll(
+            elements.panel.querySelectorAll(
                 'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])'
             )
         ).filter(
@@ -110,41 +69,41 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         }
 
         isOpen = true;
-        el.overlay.hidden = false;
-        el.button.setAttribute("aria-expanded", "true");
+        elements.overlay.hidden = false;
+        elements.button.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
 
-        el.header.inert = true;
-        el.main.inert = true;
-        el.header.setAttribute("aria-hidden", "true");
-        el.main.setAttribute("aria-hidden", "true");
+        elements.header.inert = true;
+        elements.main.inert = true;
+        elements.header.setAttribute("aria-hidden", "true");
+        elements.main.setAttribute("aria-hidden", "true");
 
-        void el.overlay.offsetWidth;
+        void elements.overlay.offsetWidth;
 
         window.requestAnimationFrame(() => {
             if (!isOpen) return;
-            el.overlay.classList.add("is-open");
-            el.closeButton.focus();
+            elements.overlay.classList.add("is-open");
+            elements.closeButton.focus();
         });
 
         notifyStateChange();
     }
 
     function close(restoreFocus = false) {
-        if (!isOpen && el.overlay.hidden) return;
+        if (!isOpen && elements.overlay.hidden) return;
 
         isOpen = false;
-        el.overlay.classList.remove("is-open");
-        el.button.setAttribute("aria-expanded", "false");
+        elements.overlay.classList.remove("is-open");
+        elements.button.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
 
-        el.header.inert = false;
-        el.main.inert = false;
-        el.header.removeAttribute("aria-hidden");
-        el.main.removeAttribute("aria-hidden");
+        elements.header.inert = false;
+        elements.main.inert = false;
+        elements.header.removeAttribute("aria-hidden");
+        elements.main.removeAttribute("aria-hidden");
 
         if (restoreFocus) {
-            el.button.focus({ preventScroll: true });
+            elements.button.focus({ preventScroll: true });
         }
 
         if (closeTimer !== null) {
@@ -152,7 +111,7 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         }
 
         closeTimer = window.setTimeout(() => {
-            if (!isOpen) el.overlay.hidden = true;
+            if (!isOpen) elements.overlay.hidden = true;
             closeTimer = null;
         }, 240);
 
@@ -174,7 +133,7 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
 
         if (!focusable.length) {
             event.preventDefault();
-            el.panel.focus();
+            elements.panel.focus();
             return;
         }
 
@@ -184,40 +143,26 @@ export function createMenu({ getCurrentPage, onNavigate, onStateChange }) {
         if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
             last.focus();
-        } else if (
-            !event.shiftKey &&
-            document.activeElement === last
-        ) {
+        } else if (!event.shiftKey && document.activeElement === last) {
             event.preventDefault();
             first.focus();
         }
     }
 
-    function navigateFromItem(item) {
-        const currentPage = getCurrentPage();
-
-        // If this item represents the open page, it now means "Главная".
-        const destination = currentPage === item.page
-            ? "home"
-            : item.page;
-
-        close(false);
-        onNavigate(destination);
-    }
-
     function bind() {
-        el.button.addEventListener("click", () => {
+        elements.button.addEventListener("click", () => {
             if (isOpen) close(true);
             else open();
         });
 
-        el.backdrop.addEventListener("click", () => close(true));
-        el.closeButton.addEventListener("click", () => close(true));
+        elements.backdrop.addEventListener("click", () => close(true));
+        elements.closeButton.addEventListener("click", () => close(true));
         document.addEventListener("keydown", handleKeydown);
 
         navigationItems.forEach((item) => {
             item.button.addEventListener("click", () => {
-                navigateFromItem(item);
+                close(false);
+                onNavigate(item.page);
             });
         });
     }
