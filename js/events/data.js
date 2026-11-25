@@ -6,7 +6,7 @@ export const EVENTS = Object.freeze([
         dateLabel: "15 декабря 2026",
         // The countdown runs through the end of December 15 in the visitor's local time.
         endsAt: "2026-12-15T23:59:59",
-        image: "./assets/events/squash-award-2026.webp",
+        image: "./assets/events/squash-award-2026.svg",
         imageAlt: "Золотая статуэтка на сцене в бордово-золотых тонах",
         category: "Ежегодная премия",
         brand: "ρumρkin ρie",
