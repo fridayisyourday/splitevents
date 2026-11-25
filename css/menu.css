@@ -131,6 +131,10 @@ button.menu-item:active {
     }
 }
 
+.menu-item[aria-current="page"] {
+    background: var(--app-secondary);
+}
+
 .menu-item-icon {
     display: block;
     flex: 0 0 23px;
