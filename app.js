@@ -1,32 +1,82 @@
 
-/* =================================
-   SplitEvents — Application
-   ================================= */
+/* =========================================
+   SplitEvents
+   Application Entry Point
+   ========================================= */
 
 (function () {
-    const tg = window.Telegram?.WebApp;
+    "use strict";
 
-    // Проверяем, открыто ли приложение внутри Telegram
-    if (!tg) {
-        console.info("SplitEvents: opened outside Telegram");
+    // Получаем объект Telegram Mini Apps
+    const telegram = window.Telegram?.WebApp;
+
+    // =====================================
+    // ОКРУЖЕНИЕ
+    // =====================================
+
+    if (!telegram) {
+        console.info(
+            "SplitEvents: приложение открыто вне Telegram"
+        );
+
         return;
     }
 
-    // Сообщаем Telegram, что приложение готово
-    tg.ready();
+    // =====================================
+    // ИНИЦИАЛИЗАЦИЯ TELEGRAM
+    // =====================================
 
-    // Раскрываем приложение на доступную высоту
-    tg.expand();
+    try {
+        // Сообщаем Telegram о готовности приложения
+        if (typeof telegram.ready === "function") {
+            telegram.ready();
+        }
 
-    // Устанавливаем белый фон
-    if (typeof tg.setBackgroundColor === "function") {
-        tg.setBackgroundColor("#ffffff");
+        // Раскрываем Mini App на максимальную высоту
+        if (typeof telegram.expand === "function") {
+            telegram.expand();
+        }
+
+        // Устанавливаем светлую цветовую схему
+        if (typeof telegram.setBackgroundColor === "function") {
+            telegram.setBackgroundColor("#ffffff");
+        }
+
+        if (typeof telegram.setHeaderColor === "function") {
+            telegram.setHeaderColor("#ffffff");
+        }
+
+        console.info(
+            "SplitEvents: Telegram initialized successfully"
+        );
+
+    } catch (error) {
+        console.error(
+            "SplitEvents: Telegram initialization error",
+            error
+        );
     }
 
-    // Устанавливаем белый цвет верхней панели
-    if (typeof tg.setHeaderColor === "function") {
-        tg.setHeaderColor("#ffffff");
+    // =====================================
+    // ПОДГОТОВКА ПРИЛОЖЕНИЯ
+    // =====================================
+
+    function initializeApp() {
+        const app = document.getElementById("app");
+
+        if (!app) {
+            console.error(
+                "SplitEvents: application root not found"
+            );
+
+            return;
+        }
+
+        console.info(
+            "SplitEvents: application initialized"
+        );
     }
 
-    console.info("SplitEvents initialized");
+    initializeApp();
+
 })();
