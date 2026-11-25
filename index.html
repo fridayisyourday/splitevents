@@ -85,7 +85,7 @@
                 aria-label="Открыть профиль"
                 title="Профиль"
             >
-                <!-- Иконка профиля -->
+                <!-- Иконка профиля: видна на главной странице -->
                 <svg
                     class="profile-icon"
                     viewBox="0 0 24 24"
@@ -100,7 +100,7 @@
                     <path d="M5 20C5 16.4 8.1 14 12 14C15.9 14 19 16.4 19 20"/>
                 </svg>
 
-                <!-- Иконка домой -->
+                <!-- Иконка дома: видна на странице профиля -->
                 <svg
                     class="home-icon"
                     viewBox="0 0 24 24"
@@ -142,77 +142,191 @@
                 aria-label="Профиль"
                 hidden
             >
+                <div class="profile-card" id="profile-card">
 
-                <!-- БЛОК ИМЕНИ И TELEGRAM-ТЕГА -->
-                <div class="profile-card">
+                    <!-- БАННЕР И АВАТАРКА -->
+                    <div class="profile-cover" id="profile-cover">
+                        <div
+                            class="profile-banner-placeholder"
+                            id="profile-banner-placeholder"
+                            aria-hidden="true"
+                        ></div>
 
-                    <div class="profile-label">
-                        Ник
-                    </div>
-
-                    <div class="profile-name-row">
-
-                        <input
-                            id="nickname-input"
-                            class="profile-nickname"
-                            type="text"
-                            maxlength="64"
-                            autocomplete="off"
-                            aria-label="Ник"
-                            readonly
+                        <img
+                            id="profile-banner-image"
+                            class="profile-banner-image"
+                            alt=""
+                            hidden
                         >
 
+                        <div
+                            class="profile-media-shade"
+                            aria-hidden="true"
+                        ></div>
+
+                        <!-- Загрузка баннера доступна в режиме редактирования -->
                         <button
-                            id="nickname-edit-button"
-                            class="profile-edit-button"
+                            id="banner-upload-button"
+                            class="profile-media-upload-button banner-upload-button"
                             type="button"
-                            aria-label="Изменить ник"
-                            title="Изменить ник"
+                            aria-label="Загрузить баннер"
+                            title="Загрузить баннер"
                         >
-
-                            <!-- Иконка карандаша -->
                             <svg
-                                class="nickname-edit-icon"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"
-                            >
-                                <path d="M12 20H21"/>
-                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
-                            </svg>
-
-                            <!-- Иконка галочки -->
-                            <svg
-                                class="nickname-save-icon"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
                                 stroke-width="2"
                                 stroke-linecap="round"
-                                stroke-linejoin="round"
                                 aria-hidden="true"
-                                hidden
                             >
-                                <path d="M5 12L10 17L20 7"/>
+                                <path d="M12 5V19"/>
+                                <path d="M5 12H19"/>
                             </svg>
-
                         </button>
 
+                        <!-- КРУГЛАЯ АВАТАРКА -->
+                        <div class="profile-avatar" id="profile-avatar">
+                            <img
+                                id="profile-avatar-image"
+                                class="profile-avatar-image"
+                                alt="Аватар профиля"
+                                hidden
+                            >
+
+                            <!-- Заглушка с иконкой человека -->
+                            <div
+                                id="profile-avatar-placeholder"
+                                class="profile-avatar-placeholder"
+                                aria-hidden="true"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="12" cy="8" r="3.5"/>
+                                    <path d="M5 20C5 16.4 8.1 14 12 14C15.9 14 19 16.4 19 20"/>
+                                </svg>
+                            </div>
+
+                            <div
+                                class="profile-media-shade"
+                                aria-hidden="true"
+                            ></div>
+
+                            <!-- Загрузка аватарки доступна в режиме редактирования -->
+                            <button
+                                id="avatar-upload-button"
+                                class="profile-media-upload-button avatar-upload-button"
+                                type="button"
+                                aria-label="Загрузить аватарку"
+                                title="Загрузить аватарку"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M12 5V19"/>
+                                    <path d="M5 12H19"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Telegram-тег -->
-                    <p
-                        id="telegram-tag"
-                        class="profile-telegram-tag"
-                    >
-                    </p>
+                    <!-- ИМЯ И TELEGRAM-ТЕГ -->
+                    <div class="profile-details">
+                        <div class="profile-name-row">
+                            <input
+                                id="nickname-input"
+                                class="profile-nickname"
+                                type="text"
+                                maxlength="64"
+                                autocomplete="off"
+                                aria-label="Отображаемое имя"
+                                readonly
+                            >
+
+                            <!-- Редактирование всего профиля -->
+                            <button
+                                id="nickname-edit-button"
+                                class="profile-edit-button"
+                                type="button"
+                                aria-label="Изменить профиль"
+                                title="Изменить профиль"
+                            >
+                                <svg
+                                    class="nickname-edit-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M12 20H21"/>
+                                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+                                </svg>
+
+                                <svg
+                                    class="nickname-save-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                    hidden
+                                >
+                                    <path d="M5 12L10 17L20 7"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p
+                            id="telegram-tag"
+                            class="profile-telegram-tag"
+                        ></p>
+
+                        <p
+                            id="profile-media-status"
+                            class="profile-media-status"
+                            role="status"
+                            aria-live="polite"
+                            hidden
+                        ></p>
+                    </div>
 
                 </div>
 
+                <!-- Скрытые поля выбора файлов -->
+                <input
+                    id="avatar-file-input"
+                    class="visually-hidden-input"
+                    type="file"
+                    accept="image/*"
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
+
+                <input
+                    id="banner-file-input"
+                    class="visually-hidden-input"
+                    type="file"
+                    accept="image/*"
+                    tabindex="-1"
+                    aria-hidden="true"
+                >
             </section>
 
         </main>
