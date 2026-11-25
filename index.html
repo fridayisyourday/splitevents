@@ -7,20 +7,78 @@
 
     <meta name="theme-color" content="#ffffff">
 
-    <title>SplitEvents</title>
+    <title>Сплит</title>
 
     <!-- Telegram Mini Apps SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Стили приложения -->
+    <!-- Стили -->
     <link rel="stylesheet" href="./style.css">
 
-    <!-- Логика приложения -->
+    <!-- Логика -->
     <script src="./app.js" defer></script>
 </head>
 <body>
 
-    <main id="app"></main>
+    <div id="app">
+
+        <!-- HEADER -->
+        <header class="site-header">
+
+            <!-- Кнопка меню -->
+            <button
+                class="header-button"
+                type="button"
+                aria-label="Меню"
+                title="Меню"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                >
+                    <path d="M4 7H20"/>
+                    <path d="M4 12H20"/>
+                    <path d="M4 17H20"/>
+                </svg>
+            </button>
+
+            <!-- Название приложения -->
+            <div class="header-logo">
+                сплит
+            </div>
+
+            <!-- Кнопка профиля -->
+            <button
+                class="header-button"
+                type="button"
+                aria-label="Профиль"
+                title="Профиль"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="12" cy="8" r="3.5"/>
+                    <path d="M5 20C5 16.4 8.1 14 12 14C15.9 14 19 16.4 19 20"/>
+                </svg>
+            </button>
+
+        </header>
+
+        <!-- Основная область приложения -->
+        <main class="page-content">
+        </main>
+
+    </div>
 
 </body>
 </html>
