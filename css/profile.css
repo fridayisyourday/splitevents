@@ -9,7 +9,7 @@
 .profile-card {
     position: relative;
     width: 100%;
-    max-width: 720px;
+    max-width: var(--app-profile-width);
     margin: 0 auto;
     overflow: hidden;
     background: var(--app-card-background);
@@ -110,17 +110,6 @@
     position: absolute;
     z-index: 6;
     display: none;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 2px solid rgba(255, 255, 255, 0.95);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.96);
-    color: #222222;
-    cursor: pointer;
-    transition: transform 150ms ease;
 }
 
 .profile-media-upload-button svg {
@@ -192,19 +181,7 @@
 }
 
 .profile-edit-button {
-    display: flex;
-    flex: 0 0 42px;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    border: 0;
-    border-radius: var(--app-radius-control);
-    background: var(--app-secondary);
-    color: var(--app-text);
-    cursor: pointer;
-    transition: background-color 150ms ease, transform 150ms ease;
+    flex: 0 0 var(--app-control-height);
 }
 
 .profile-edit-button svg {
