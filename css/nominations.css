@@ -703,6 +703,7 @@
 /* On phones the voting dialog keeps its footprint while pages change. */
 @media (max-width: 760px), (pointer: coarse) {
     .vote-dialog {
+        box-sizing: border-box;
         height: min(560px, calc(100dvh - 40px));
         min-height: min(560px, calc(100dvh - 40px));
         max-height: none;
