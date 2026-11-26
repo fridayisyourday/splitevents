@@ -87,7 +87,6 @@ if (missingPages.length || !mainContent) {
 
     function renderPage(moveFocus = false) {
         const page = getCurrentPage();
-        const page = getCurrentPage();
         Object.entries(pageElements).forEach(([pageName, element]) => {
             element.hidden = pageName !== page;
         });
