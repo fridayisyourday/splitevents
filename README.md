@@ -25,7 +25,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── components/
 │   │   ├── AppHeader.vue
 │   │   ├── EventsPage.vue
-│   │   ├── EventsPage.vue
 │   │   ├── FriendsPage.vue
 │   │   ├── HomePage.vue
 │   │   ├── NominationsPage.vue
