@@ -221,16 +221,7 @@
     object-fit: cover;
 }
 
-/* Keep the arrows overlaid at the stage bottom with the same 18px gap as the main sections. */
-.vote-carousel-stage > .vote-carousel-controls {
-    position: absolute;
-    top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 5;
-    margin: 0;
-}
+/* Carousel controls are positioned below the current card by nominations-carousel.css. */
 
 @media (max-width: 640px) {
     .vote-nomination-content {

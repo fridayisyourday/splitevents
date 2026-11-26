@@ -431,19 +431,34 @@
     zoom: 0.86;
 }
 
-/* 12px top inset + scaled card + 18px shared section gap + 42px controls. */
+/* Controls sit 18px below the center/current card, not beneath the featured row. */
 .vote-carousel-stage {
-    min-height: 289px;
+    min-height: 340px;
+}
+
+.vote-carousel-stage > .vote-carousel-controls {
+    position: absolute;
+    top: calc(12px + 306px + 18px);
+    right: 0;
+    left: 0;
+    z-index: 5;
+    margin: 0;
 }
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 286px;
+        min-height: 366px;
+    }
+    .vote-carousel-stage > .vote-carousel-controls {
+        top: calc(12px + 292px + 18px);
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 281px;
+        min-height: 356px;
+    }
+    .vote-carousel-stage > .vote-carousel-controls {
+        top: calc(12px + 282px + 18px);
     }
 }
