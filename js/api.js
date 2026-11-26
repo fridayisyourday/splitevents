@@ -66,3 +66,48 @@ export async function updateTelegramDisplayName(initData, displayName) {
         display_name: displayName.trim()
     });
 }
+
+
+export async function uploadProfileImage(initData, mediaType, blob) {
+    if (typeof initData !== "string" || !initData.trim()) {
+        throw new Error("missing_telegram_init_data");
+    }
+    if (mediaType !== "avatar" && mediaType !== "banner") {
+        throw new Error("invalid_media_type");
+    }
+    if (!(blob instanceof Blob) || blob.size <= 0) {
+        throw new Error("invalid_media_payload");
+    }
+
+    const form = new FormData();
+    form.set("init_data", initData);
+    form.set("media_type", mediaType);
+    form.set("file", blob, mediaType + ".jpg");
+
+    const response = await fetch(API_BASE_URL + "/api/profile/media", {
+        method: "POST",
+        body: form,
+        credentials: "omit",
+        cache: "no-store"
+    });
+
+    let payload = null;
+    try {
+        payload = await response.json();
+    } catch {
+        throw new Error("Split API returned an invalid media response.");
+    }
+
+    if (!response.ok) {
+        const reason = payload && (payload.reason || payload.error)
+            ? (payload.reason || payload.error)
+            : "HTTP " + response.status;
+        throw new Error(reason);
+    }
+
+    if (!payload || !payload.user || !payload.user[mediaType + "_url"]) {
+        throw new Error("invalid_media_response");
+    }
+
+    return payload.user;
+}
