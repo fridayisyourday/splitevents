@@ -7,7 +7,7 @@ import {
     getTelegramTag,
     getTelegramPhotoUrl,
     getTelegramInitData
-} from "./js/telegram.js?v=20261126-5";
+} from "./js/telegram.js?v=20261126-6";
 import {
     syncTelegramUser,
     updateTelegramDisplayName
@@ -250,6 +250,12 @@ if (missingPages.length || !mainContent) {
     });
 
     renderPage(false);
-    profile.loadImages();
+    void profile.loadImages().catch((error) => {
+        console.error("SplitEvents: profile images failed to load", error);
+        notifications.warning(
+            "не удалось загрузить изображения профиля",
+            "попробуй перезапустить приложение."
+        );
+    });
 
 }
