@@ -6,7 +6,7 @@
     gap: 8px;
     min-height: var(--app-control-height);
     padding: 0 16px;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     border-radius: var(--app-radius-control);
     font-family: inherit;
     font-size: var(--app-button-font-size);
@@ -60,7 +60,7 @@
     justify-content: flex-start;
     width: 100%;
     min-height: 56px;
-    padding: 0 13px;
+    padding: 0 14px;
     text-align: left;
 }
 

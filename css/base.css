@@ -1,67 +1,6 @@
-/* SplitEvents — design tokens, reset, and accessibility. */
+/* SplitEvents — base reset and accessibility. Shared visual tokens live in design-system.css. */
 :root {
-    color-scheme: light dark;
-
-    /* Theme-aware surfaces and text. */
-    --app-background: var(--tg-theme-bg-color, #ffffff);
-    --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #ffffff));
-    --app-text: var(--tg-theme-text-color, #191919);
-    --app-hint: var(--tg-theme-subtitle-text-color, var(--tg-theme-hint-color, #858585));
-    --app-secondary: var(--tg-theme-secondary-bg-color, #f3f4f6);
-    --app-border: var(--tg-theme-section-separator-color, #e8e8eb);
-    --app-placeholder: var(--tg-theme-secondary-bg-color, #e9ebee);
-    --app-accent: var(--tg-theme-link-color, #3987d6);
-
-    /* Shared layout dimensions. */
-    --app-content-width: 970px;
-    --app-profile-width: 720px;
-    --app-header-height: 68px;
-    --app-control-height: 44px;
-
-    /* Shared typography. */
-    --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    --app-font-size-brand: 25px;
-    --app-font-size-menu-title: 21px;
-    --app-font-size-navigation: 16px;
-    --app-font-size-profile-name: 20px;
-    --app-font-size-body: 14px;
-    --app-font-size-small: 12px;
-    --app-font-size-page-title: clamp(32px, 4.5vw, 42px);
-    --app-font-weight-regular: 400;
-    --app-font-weight-medium: 550;
-    --app-font-weight-semibold: 650;
-    --app-font-weight-bold: 750;
-    --app-line-height-body: 1.5;
-    --app-line-height-heading: 1.08;
-
-    /* Shared spacing and shape. */
-    --app-space-1: 4px;
-    --app-space-2: 8px;
-    --app-space-3: 12px;
-    --app-space-4: 16px;
-    --app-space-5: 20px;
-    --app-space-6: 24px;
-    --app-space-7: 28px;
-    --app-space-8: 32px;
-    --app-page-gutter: 16px;
-    --app-page-top: 28px;
-    --app-section-gap: 28px;
-    --app-radius-small: 8px;
-    --app-radius-control: 12px;
-    --app-radius-card: 20px;
-    --app-radius-pill: 999px;
-    --app-shadow-card: 0 12px 30px rgba(15, 23, 42, 0.06);
-
-    /* Shared button system. */
-    --app-button-font-size: 14px;
-    --app-button-font-weight: 650;
-    --app-button-transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease, filter 150ms ease;
-
-    /* Theme-aware overlays and media controls. */
-    --app-overlay-backdrop: rgba(0, 0, 0, 0.42);
-    --app-media-overlay: rgba(20, 24, 30, 0.34);
-    --app-drawer-shadow: 12px 0 36px rgba(0, 0, 0, 0.16);
-
+    color-scheme: dark;
     font-family: var(--app-font-family);
     color: var(--app-text);
     background: var(--app-background);
@@ -127,15 +66,15 @@ svg {
 
 :focus-visible {
     outline: 2px solid var(--app-accent);
-    outline-offset: 3px;
+    outline-offset: 4px;
 }
 
 .skip-link {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: 2px;
+    height: 2px;
     padding: 0;
-    margin: -1px;
+    margin: 0px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -162,55 +101,14 @@ svg {
 
 .visually-hidden-input {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: 2px;
+    height: 2px;
     padding: 0;
-    margin: -1px;
+    margin: 0px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-}
-
-/* Telegram theme variables take priority; these are browser fallbacks. */
-:root[data-color-scheme="dark"] {
-    --app-background: var(--tg-theme-bg-color, #121418);
-    --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #1b1e23));
-    --app-text: var(--tg-theme-text-color, #f3f4f6);
-    --app-hint: var(--tg-theme-subtitle-text-color, var(--tg-theme-hint-color, #a0a6b0));
-    --app-secondary: var(--tg-theme-secondary-bg-color, #262a31);
-    --app-border: var(--tg-theme-section-separator-color, #363c46);
-    --app-placeholder: var(--tg-theme-secondary-bg-color, #252a32);
-    --app-accent: var(--tg-theme-link-color, #74b2ff);
-    --app-shadow-card: 0 12px 30px rgba(0, 0, 0, 0.24);
-    --app-overlay-backdrop: rgba(0, 0, 0, 0.58);
-    --app-media-overlay: rgba(0, 0, 0, 0.46);
-    --app-drawer-shadow: 12px 0 36px rgba(0, 0, 0, 0.38);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root:not([data-color-scheme]) {
-        --app-background: var(--tg-theme-bg-color, #121418);
-        --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #1b1e23));
-        --app-text: var(--tg-theme-text-color, #f3f4f6);
-        --app-hint: var(--tg-theme-subtitle-text-color, var(--tg-theme-hint-color, #a0a6b0));
-        --app-secondary: var(--tg-theme-secondary-bg-color, #262a31);
-        --app-border: var(--tg-theme-section-separator-color, #363c46);
-        --app-placeholder: var(--tg-theme-secondary-bg-color, #252a32);
-        --app-accent: var(--tg-theme-link-color, #74b2ff);
-        --app-shadow-card: 0 12px 30px rgba(0, 0, 0, 0.24);
-        --app-overlay-backdrop: rgba(0, 0, 0, 0.58);
-        --app-media-overlay: rgba(0, 0, 0, 0.46);
-        --app-drawer-shadow: 12px 0 36px rgba(0, 0, 0, 0.38);
-    }
-}
-
-@media (max-width: 480px) {
-    :root {
-        --app-page-gutter: 14px;
-        --app-page-top: 24px;
-        --app-section-gap: 24px;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {

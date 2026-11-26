@@ -1,0 +1,370 @@
+/* SplitEvents — central monochrome design system.
+   Edit this file to update the shared palette, sizing, shadows, controls and overlays. */
+:root,
+:root[data-color-scheme="dark"],
+:root:not([data-color-scheme]) {
+    color-scheme: dark;
+
+    /* Strict monochrome palette. */
+    --app-black: #000000;
+    --app-white: #FFFFFF;
+    --app-gray: #CCCCCC;
+    --app-background: var(--app-black);
+    --app-card-background: var(--app-black);
+    --app-text: var(--app-white);
+    --app-hint: var(--app-gray);
+    --app-secondary: var(--app-gray);
+    --app-border: transparent;
+    --app-placeholder: var(--app-gray);
+    --app-accent: var(--app-white);
+
+    /* Shared layout dimensions. All fixed pixel dimensions use a 2px step. */
+    --app-content-width: 970px;
+    --app-profile-width: 720px;
+    --app-header-height: 64px;
+    --app-control-height: 48px;
+    --app-page-gutter: 16px;
+    --app-page-top: 24px;
+    --app-section-gap: 24px;
+
+    /* Typography. */
+    --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    --app-font-size-brand: 24px;
+    --app-font-size-menu-title: 22px;
+    --app-font-size-navigation: 16px;
+    --app-font-size-profile-name: 20px;
+    --app-font-size-body: 14px;
+    --app-font-size-small: 12px;
+    --app-font-size-page-title: clamp(32px, 4vw, 40px);
+    --app-font-weight-regular: 400;
+    --app-font-weight-medium: 600;
+    --app-font-weight-semibold: 700;
+    --app-font-weight-bold: 800;
+    --app-line-height-body: 1.5;
+    --app-line-height-heading: 1.08;
+
+    /* Spacing and shape. */
+    --app-space-1: 4px;
+    --app-space-2: 8px;
+    --app-space-3: 12px;
+    --app-space-4: 16px;
+    --app-space-5: 20px;
+    --app-space-6: 24px;
+    --app-space-7: 28px;
+    --app-space-8: 32px;
+    --app-radius-small: 12px;
+    --app-radius-control: 14px;
+    --app-radius-card: 20px;
+    --app-radius-pill: 1000px;
+
+    /* Elevation, controls and shared modal backdrop. */
+    --app-shadow-card: 0 12px 24px rgba(204, 204, 204, 0.12), 0 4px 8px rgba(204, 204, 204, 0.08);
+    --app-shadow-control: 0 4px 12px rgba(204, 204, 204, 0.18);
+    --app-overlay-backdrop: rgba(0, 0, 0, 0.72);
+    --app-overlay-blur: 8px;
+    --app-media-overlay: rgba(0, 0, 0, 0.64);
+    --app-drawer-shadow: 12px 0 32px rgba(204, 204, 204, 0.16);
+
+    /* One button and one icon language across the application. */
+    --app-button-background: var(--app-gray);
+    --app-button-color: var(--app-black);
+    --app-button-font-size: 14px;
+    --app-button-font-weight: 700;
+    --app-button-transition: background-color 160ms ease, color 160ms ease, transform 160ms ease, filter 160ms ease;
+    --app-icon-size: 24px;
+    --app-icon-stroke: 2px;
+}
+
+html,
+body,
+#app,
+.page-content,
+.page-view {
+    background: var(--app-background) !important;
+    color: var(--app-text);
+    color-scheme: dark;
+}
+
+/* No decorative frames: depth comes from solid surfaces and shadows. */
+*,
+*::before,
+*::after {
+    border: 0 !important;
+}
+
+:focus-visible {
+    outline: 2px solid var(--app-gray);
+    outline-offset: 2px;
+}
+
+.site-header {
+    background: var(--app-background) !important;
+    box-shadow: 0 8px 16px rgba(204, 204, 204, 0.08);
+}
+
+.header-logo,
+.section-page-title,
+.menu-panel-title {
+    color: var(--app-white);
+}
+
+.section-page,
+.section-page-content,
+.section-page-body {
+    color: var(--app-white);
+}
+
+.profile-card,
+.profile-details,
+.menu-panel,
+.vote-dialog,
+.vote-dialog--nomination {
+    background: var(--app-card-background) !important;
+    color: var(--app-white);
+    box-shadow: var(--app-shadow-card) !important;
+}
+
+.profile-card,
+.vote-dialog,
+.vote-dialog--nomination {
+    border-radius: var(--app-radius-card);
+}
+
+.menu-panel {
+    border-radius: 0 var(--app-radius-card) var(--app-radius-card) 0;
+}
+
+.profile-avatar-placeholder svg {
+    width: 48px;
+    height: 48px;
+}
+
+.profile-cover,
+.profile-banner-placeholder,
+.profile-avatar,
+.profile-avatar-placeholder {
+    background: var(--app-gray);
+}
+
+.profile-avatar {
+    box-shadow: var(--app-shadow-control);
+}
+
+.profile-nickname,
+.profile-telegram-tag,
+.profile-media-status {
+    color: var(--app-white);
+}
+
+.profile-nickname:not([readonly]) {
+    background: var(--app-gray);
+    color: var(--app-black);
+}
+
+.event-card {
+    border-radius: var(--app-radius-card);
+    background: var(--app-black);
+    box-shadow: var(--app-shadow-card) !important;
+}
+
+.event-card-title,
+.event-card-countdown-value {
+    color: var(--app-white);
+}
+
+.event-card-description,
+.event-card-meta,
+.event-card-date,
+.event-countdown-unit {
+    color: var(--app-gray);
+}
+
+.vote-nomination-card,
+.vote-candidate-card {
+    border-radius: var(--app-radius-card);
+    background: var(--app-gray) !important;
+    color: var(--app-black);
+    box-shadow: var(--app-shadow-card) !important;
+}
+
+.vote-nomination-title,
+.vote-selected-nominee,
+.vote-candidate-name,
+.vote-suggest-text {
+    color: var(--app-black) !important;
+}
+
+.vote-logo-wrap,
+.vote-add-symbol,
+.vote-suggest-symbol {
+    border: 0 !important;
+}
+
+.vote-add-symbol,
+.vote-suggest-symbol {
+    background: var(--app-black);
+    color: var(--app-gray);
+    box-shadow: var(--app-shadow-control);
+}
+
+.vote-dialog-title,
+.vote-dialog-eyebrow,
+.vote-empty-state {
+    color: var(--app-white);
+}
+
+.menu-panel {
+    background: var(--app-black) !important;
+}
+
+.menu-item-badge,
+.coming-soon-badge {
+    background: var(--app-gray);
+    color: var(--app-black);
+    box-shadow: var(--app-shadow-control);
+}
+
+/* All interactive controls share one solid treatment and 48px hit area. */
+.ui-button {
+    box-sizing: border-box;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 0 16px !important;
+    border: 0 !important;
+    border-radius: var(--app-radius-control) !important;
+    background: var(--app-button-background) !important;
+    color: var(--app-button-color) !important;
+    box-shadow: var(--app-shadow-control);
+    font-family: var(--app-font-family);
+    font-size: var(--app-button-font-size) !important;
+    font-weight: var(--app-button-font-weight) !important;
+    line-height: 1.2;
+    transition: var(--app-button-transition);
+}
+
+.ui-button--icon {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 0 !important;
+}
+
+.ui-button--round {
+    border-radius: var(--app-radius-control) !important;
+}
+
+.ui-button--nav {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 48px !important;
+    text-align: left;
+}
+
+.ui-button:disabled {
+    opacity: 0.48;
+}
+
+.ui-button:not(:disabled):active {
+    transform: scale(0.98);
+}
+
+.ui-button:focus-visible {
+    outline: 2px solid var(--app-white);
+    outline-offset: 2px;
+}
+
+input:not([type="file"]),
+textarea,
+select {
+    border: 0 !important;
+    border-radius: var(--app-radius-control);
+    background: var(--app-gray);
+    color: var(--app-black);
+    box-shadow: var(--app-shadow-control);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--app-black);
+    opacity: 0.64;
+}
+
+/* One outline-icon language: 24px canvas, 2px rounded strokes. */
+svg {
+    stroke-width: var(--app-icon-stroke) !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+
+.header-button svg,
+.menu-close-button svg,
+.menu-item-icon,
+.profile-media-upload-button svg,
+.profile-avatar-placeholder svg,
+.profile-edit-button svg,
+.events-visibility-toggle svg,
+.ui-button svg {
+    display: block;
+    width: var(--app-icon-size);
+    height: var(--app-icon-size);
+}
+
+.menu-item-icon {
+    flex: 0 0 var(--app-icon-size);
+}
+
+.menu-navigation {
+    gap: 8px;
+}
+
+/* Every modal uses the same backdrop token. The picker sits above the voting
+   dialog, so it intentionally reuses the first backdrop instead of darkening twice. */
+.menu-backdrop,
+.vote-overlay:not(.vote-picker-overlay) {
+    background: var(--app-overlay-backdrop) !important;
+    -webkit-backdrop-filter: blur(var(--app-overlay-blur));
+    backdrop-filter: blur(var(--app-overlay-blur));
+}
+
+.vote-picker-overlay {
+    background: transparent !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.menu-panel {
+    box-shadow: var(--app-drawer-shadow) !important;
+}
+
+.vote-dialog,
+.vote-dialog--nomination {
+    border-radius: var(--app-radius-card);
+    box-shadow: var(--app-shadow-card) !important;
+}
+
+.profile-media-shade {
+    background: var(--app-media-overlay);
+}
+
+/* Standardized page spacing and responsive card treatment. */
+@media (max-width: 640px) {
+    .profile-card,
+    .event-card,
+    .vote-nomination-card,
+    .vote-candidate-card {
+        box-shadow: var(--app-shadow-card) !important;
+    }
+
+    .site-header {
+        box-shadow: 0 4px 12px rgba(204, 204, 204, 0.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ui-button,
+    .menu-backdrop,
+    .menu-panel {
+        transition: none !important;
+    }
+}

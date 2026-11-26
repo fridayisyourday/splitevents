@@ -25,7 +25,7 @@
     margin: 0 auto;
     overflow: hidden;
     background: var(--app-card-background);
-    border: 1px solid var(--app-border);
+    border: 2px solid var(--app-border);
     border-radius: var(--app-radius-card);
     box-shadow: var(--app-shadow-card);
 }
@@ -203,7 +203,7 @@
 }
 
 .profile-telegram-tag {
-    min-height: 21px;
+    min-height: 22px;
     margin: 2px 0 0;
     color: var(--app-hint);
     font-size: var(--app-font-size-body);

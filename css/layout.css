@@ -38,7 +38,7 @@
         var(--tg-content-safe-area-inset-left, 0px)
     );
     background: var(--tg-theme-header-bg-color, var(--app-background));
-    border-bottom: 1px solid var(--app-border);
+    border-bottom: 2px solid var(--app-border);
 }
 
 .header-button {
@@ -59,7 +59,7 @@
     color: var(--app-text);
     font-size: var(--app-font-size-brand);
     font-weight: var(--app-font-weight-bold);
-    letter-spacing: -1.3px;
+    letter-spacing: -2px;
     line-height: 1;
     user-select: none;
     pointer-events: none;
@@ -69,7 +69,7 @@
     flex: 1;
     width: 100%;
     min-width: 0;
-    min-height: 1px;
+    min-height: 2px;
     padding-bottom: calc(
         max(16px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px))
         + var(--tg-content-safe-area-inset-bottom, var(--app-content-safe-bottom, 0px))
@@ -80,6 +80,6 @@
 .page-view {
     width: 100%;
     min-width: 0;
-    min-height: 1px;
+    min-height: 2px;
 }
 
