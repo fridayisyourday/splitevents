@@ -473,6 +473,8 @@ export function createNominationsWidget(root) {
             } else {
                 activeNomination.suggestionMode = "editing";
                 activeNomination.suggestionDraft = "";
+                activeNomination.selectedId = null;
+                renderNominationCards();
                 renderVoteGrid();
                 const input = nominationGrid.querySelector(".vote-suggest-input");
                 if (input) input.focus({ preventScroll: true });
