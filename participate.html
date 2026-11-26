@@ -10,9 +10,9 @@
     <meta name="theme-color" content="#ffffff">
     <meta
         name="description"
-        content="SplitEvents — страница участия в событии."
+        content="SQUASH! — ежегодная премия Friends Awards. Выбери номинантов года."
     >
-    <title>Участие в событии — Сплит</title>
+    <title>SQUASH! — участие | Сплит</title>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -20,8 +20,9 @@
     <link rel="stylesheet" href="./css/components.css?v=20261126-4">
     <link rel="stylesheet" href="./css/layout.css?v=20261126-3">
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
+    <link rel="stylesheet" href="./css/awards.css?v=20261126-1">
 
-    <script type="module" src="./js/participate.js?v=20261126-1"></script>
+    <script type="module" src="./js/participate.js?v=20261126-2"></script>
 </head>
 <body>
     <div id="app">
@@ -37,23 +38,184 @@
         </header>
 
         <main id="main-content" class="page-content" tabindex="-1">
-            <section class="section-page" aria-labelledby="participation-title">
-                <div class="section-page-content">
-                    <header class="section-page-header">
-                        <h1 id="participation-title" class="section-page-title">
-                            Участие в событии
-                        </h1>
+            <section class="section-page squash-page" aria-labelledby="participation-title">
+                <div class="section-page-content squash-page-content">
+                    <header class="section-page-header squash-page-header">
+                        <p class="squash-eyebrow">FRIENDS AWARDS · 2026</p>
+                        <h1 id="participation-title" class="section-page-title">SQUASH!</h1>
+                        <p id="participation-description" class="squash-lead">
+                            Ежегодная премия ρumρkin ρie. Подведём итоги года и выберем тех,
+                            кто запомнился больше всех.
+                        </p>
+                        <div class="squash-event-meta">
+                            <span id="participation-date" class="squash-date">20.12.2026</span>
+                            <span class="squash-meta-separator" aria-hidden="true"></span>
+                            <span class="squash-meta-label">ПРЕМИЯ ГОДА</span>
+                        </div>
                     </header>
 
-                    <div class="section-page-body section-page-body--center">
-                        <div class="empty-state" role="status" aria-live="polite">
-                            <p id="participation-message" class="empty-state-message">
-                                Страница участия скоро появится
+                    <section
+                        id="awards-section"
+                        class="squash-awards-section"
+                        aria-labelledby="awards-section-title"
+                    >
+                        <header class="squash-awards-header">
+                            <p class="squash-section-eyebrow">ГОЛОСОВАНИЕ</p>
+                            <h2 id="awards-section-title" class="squash-section-title">
+                                Выбери победителей
+                            </h2>
+                            <p class="squash-section-description">
+                                Отметь по одному варианту в каждой номинации. Выбор можно
+                                изменить в любой момент до формирования бюллетеня.
                             </p>
-                            <p id="participation-note" class="empty-state-note">
-                                Здесь будет информация о том, как присоединиться к событию.
+                        </header>
+
+                        <div id="awards-widget" class="awards-widget">
+                            <div
+                                id="awards-nominations-list"
+                                class="awards-nominations-list"
+                                aria-label="Список номинаций"
+                            ></div>
+
+                            <div class="awards-submit-panel">
+                                <div class="awards-progress">
+                                    <div class="awards-progress-copy">
+                                        <span class="awards-progress-label">Твой бюллетень</span>
+                                        <span id="awards-progress-count" class="awards-progress-count">0 из 5</span>
+                                    </div>
+                                    <div
+                                        id="awards-progress-track"
+                                        class="awards-progress-track"
+                                        role="progressbar"
+                                        aria-label="Заполненность бюллетеня"
+                                        aria-valuemin="0"
+                                        aria-valuemax="5"
+                                        aria-valuenow="0"
+                                    >
+                                        <span id="awards-progress-fill" class="awards-progress-fill"></span>
+                                    </div>
+                                </div>
+                                <button
+                                    id="awards-submit-button"
+                                    class="ui-button ui-button--primary awards-submit-button"
+                                    type="button"
+                                    disabled
+                                    aria-disabled="true"
+                                >
+                                    Сформировать бюллетень
+                                </button>
+                            </div>
+
+                            <p
+                                id="awards-submit-notice"
+                                class="awards-submit-notice"
+                                role="status"
+                                aria-live="polite"
+                                hidden
+                            ></p>
+
+                            <p class="awards-data-note">
+                                Сейчас выбор формируется на этом устройстве. Отправка и
+                                сохранение голосов на сервер появятся после подключения
+                                общей системы голосования.
                             </p>
+
+                            <div class="awards-overlay" id="awards-vote-overlay" hidden>
+                                <section
+                                    class="awards-dialog"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="awards-vote-title"
+                                >
+                                    <header class="awards-dialog-header">
+                                        <p class="awards-dialog-eyebrow">НОМИНАЦИЯ</p>
+                                        <h2 id="awards-vote-title" class="awards-dialog-title">
+                                            Выбери номинанта
+                                        </h2>
+                                        <p id="awards-vote-description" class="awards-dialog-description">
+                                            Выбери один вариант
+                                        </p>
+                                    </header>
+                                    <div class="awards-grid-viewport">
+                                        <div id="awards-nomination-grid" class="awards-grid"></div>
+                                    </div>
+                                    <footer class="awards-dialog-footer">
+                                        <button
+                                            id="awards-nomination-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon awards-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие номинанты"
+                                            disabled
+                                        >‹</button>
+                                        <button
+                                            id="awards-vote-close"
+                                            class="ui-button ui-button--secondary awards-close-button"
+                                            type="button"
+                                        >Закрыть</button>
+                                        <button
+                                            id="awards-nomination-next"
+                                            class="ui-button ui-button--secondary ui-button--icon awards-page-button"
+                                            type="button"
+                                            aria-label="Следующие номинанты"
+                                            disabled
+                                        >›</button>
+                                    </footer>
+                                </section>
+                            </div>
+
+                            <div class="awards-overlay awards-picker-overlay" id="awards-picker-overlay" hidden>
+                                <section
+                                    class="awards-dialog"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="awards-picker-title"
+                                >
+                                    <header class="awards-dialog-header">
+                                        <p class="awards-dialog-eyebrow">ОБЩИЙ СПИСОК</p>
+                                        <h2 id="awards-picker-title" class="awards-dialog-title">
+                                            Добавить номинанта
+                                        </h2>
+                                        <p class="awards-dialog-description">
+                                            Здесь участники, которых ещё нет в списке этой номинации
+                                        </p>
+                                    </header>
+                                    <div class="awards-grid-viewport">
+                                        <div id="awards-picker-grid" class="awards-grid"></div>
+                                        <p id="awards-picker-empty" class="awards-empty-state" hidden>
+                                            Все подходящие участники уже добавлены
+                                        </p>
+                                    </div>
+                                    <footer class="awards-dialog-footer">
+                                        <button
+                                            id="awards-picker-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon awards-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие участники"
+                                            disabled
+                                        >‹</button>
+                                        <button
+                                            id="awards-picker-close"
+                                            class="ui-button ui-button--secondary awards-close-button"
+                                            type="button"
+                                        >Назад</button>
+                                        <button
+                                            id="awards-picker-next"
+                                            class="ui-button ui-button--secondary ui-button--icon awards-page-button"
+                                            type="button"
+                                            aria-label="Следующие участники"
+                                            disabled
+                                        >›</button>
+                                    </footer>
+                                </section>
+                            </div>
                         </div>
+                    </section>
+
+                    <div id="participation-error" class="empty-state squash-error" role="status" hidden>
+                        <p class="empty-state-message">Событие не найдено</p>
+                        <p class="empty-state-note">
+                            Вернись к списку событий и открой страницу участия из карточки SQUASH!.
+                        </p>
                     </div>
                 </div>
             </section>
