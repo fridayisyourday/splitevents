@@ -69,8 +69,9 @@ async function verifyTelegramInitData(initData, botToken) {
     return { user: null, reason: "invalid_hash_format" };
   }
 
+  // Bot-token HMAC validation excludes only "hash".
+  // The "signature" field is part of the signed data when Telegram includes it.
   params.delete("hash");
-  params.delete("signature");
 
   // Use a locale-independent lexical sort, as required by Telegram's data-check format.
   const entries = [...params.entries()].sort(([a], [b]) => (
