@@ -39,9 +39,7 @@ onMounted(() => {
         </svg>
         <AppHeader />
 
-        <main id="main-content" class="page-content" tabindex="-1">
-            <div v-html="legacyPages"></div>
-        </main>
+        <main id="main-content" class="page-content" tabindex="-1" v-html="legacyPages"></main>
 
         <div
             id="notification-region"
