@@ -87,7 +87,8 @@ Telegram Mini App для совместных мероприятий, профи
 ├── tests/
 │   ├── navigation.test.js
 │   ├── events.test.js
-│   └── nominations.test.js
+│   ├── nominations.test.js
+│   └── profile-media.test.js
 └── docs/
     ├── architecture.md
     ├── design-review.md
