@@ -1,5 +1,5 @@
 /* Servers page — shared page shell and shared empty state. */
-import { renderEmptyState } from "./empty-state.js?v=20261126-3";
+import { renderEmptyState } from "./empty-state.js?v=20261126-4";
 
 export function renderServersPage(container) {
     renderEmptyState(container, {
