@@ -1,7 +1,7 @@
 /* SQUASH! participation page bootstrap. */
 import { initTelegram } from "./telegram.js?v=20261126-2";
 import { EVENTS } from "./events/data.js?v=20261126-5";
-import { createAwardsWidget } from "./awards-widget.js?v=20261126-1";
+import { createAwardsWidget } from "./awards-widget.js?v=20261126-2";
 
 initTelegram();
 
