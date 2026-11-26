@@ -1,4 +1,4 @@
-/* Friends Awards voting widget for the SQUASH! participation page. */
+/* SplitEvents nomination voting interface. */
 
 const NOMINEES = [
     { id: "fridayisyourday", name: "fridayisyourday", gender: "M", avatar: "" },
@@ -102,7 +102,7 @@ const nomineeById = new Map(NOMINEES.map(function (person) {
     return [person.id, person];
 }));
 
-export function createAwardsWidget(root) {
+export function createNominationsWidget(root) {
     if (!root || root.dataset.initialized === "true") return null;
     root.dataset.initialized = "true";
 
@@ -110,28 +110,28 @@ export function createAwardsWidget(root) {
         return root.querySelector(selector);
     };
 
-    const nominationsList = $("#awards-nominations-list");
-    const submitButton = $("#awards-submit-button");
-    const submitNotice = $("#awards-submit-notice");
-    const progressCount = $("#awards-progress-count");
-    const progressTrack = $("#awards-progress-track");
-    const progressFill = $("#awards-progress-fill");
+    const nominationsList = $("#vote-nominations-list");
+    const submitButton = $("#vote-submit-button");
+    const submitNotice = $("#vote-submit-notice");
+    const progressCount = $("#vote-progress-count");
+    const progressTrack = $("#vote-progress-track");
+    const progressFill = $("#vote-progress-fill");
 
-    const voteOverlay = $("#awards-vote-overlay");
-    const voteTitle = $("#awards-vote-title");
-    const voteDescription = $("#awards-vote-description");
-    const voteCloseButton = $("#awards-vote-close");
-    const nominationGrid = $("#awards-nomination-grid");
-    const nominationPrevButton = $("#awards-nomination-prev");
-    const nominationNextButton = $("#awards-nomination-next");
+    const voteOverlay = $("#vote-vote-overlay");
+    const voteTitle = $("#vote-vote-title");
+    const voteDescription = $("#vote-vote-description");
+    const voteCloseButton = $("#vote-vote-close");
+    const nominationGrid = $("#vote-nomination-grid");
+    const nominationPrevButton = $("#vote-nomination-prev");
+    const nominationNextButton = $("#vote-nomination-next");
 
-    const pickerOverlay = $("#awards-picker-overlay");
-    const pickerTitle = $("#awards-picker-title");
-    const pickerCloseButton = $("#awards-picker-close");
-    const pickerGrid = $("#awards-picker-grid");
-    const pickerEmpty = $("#awards-picker-empty");
-    const pickerPrevButton = $("#awards-picker-prev");
-    const pickerNextButton = $("#awards-picker-next");
+    const pickerOverlay = $("#vote-picker-overlay");
+    const pickerTitle = $("#vote-picker-title");
+    const pickerCloseButton = $("#vote-picker-close");
+    const pickerGrid = $("#vote-picker-grid");
+    const pickerEmpty = $("#vote-picker-empty");
+    const pickerPrevButton = $("#vote-picker-prev");
+    const pickerNextButton = $("#vote-picker-next");
 
     const requiredElements = [
         nominationsList, submitButton, submitNotice, progressCount, progressTrack,
@@ -141,7 +141,7 @@ export function createAwardsWidget(root) {
     ];
 
     if (requiredElements.some(function (element) { return !element; })) {
-        console.error("Friends Awards: required widget elements are missing.");
+        console.error("Nominations: required widget elements are missing.");
         root.dataset.initialized = "false";
         return null;
     }
@@ -163,10 +163,10 @@ export function createAwardsWidget(root) {
     }
 
     function visualElement(person, imageMode) {
-        const className = imageMode ? "awards-image-avatar" : "awards-avatar";
+        const className = imageMode ? "vote-image-avatar" : "vote-avatar";
         const fallbackClass = imageMode
-            ? "awards-image-placeholder"
-            : "awards-avatar-placeholder";
+            ? "vote-image-placeholder"
+            : "vote-avatar-placeholder";
         const url = imageUrl(person.avatar);
 
         if (url) {
@@ -217,7 +217,7 @@ export function createAwardsWidget(root) {
 
     function makeDuoLogoPart(person) {
         const element = visualElement(person, false);
-        element.classList.add("awards-duo-logo-part");
+        element.classList.add("vote-duo-logo-part");
         return element;
     }
 
@@ -226,7 +226,7 @@ export function createAwardsWidget(root) {
             const pair = selectedDuo(nomination);
             if (pair) {
                 const duoLogo = document.createElement("div");
-                duoLogo.className = "awards-duo-logo";
+                duoLogo.className = "vote-duo-logo";
                 duoLogo.appendChild(makeDuoLogoPart(pair.first));
                 duoLogo.appendChild(makeDuoLogoPart(pair.second));
                 wrap.replaceChildren(duoLogo);
@@ -240,13 +240,13 @@ export function createAwardsWidget(root) {
 
         if (person) {
             const visual = visualElement(person, isImageNomination);
-            visual.classList.add("awards-nomination-logo");
+            visual.classList.add("vote-nomination-logo");
             wrap.replaceChildren(visual);
             return;
         }
 
         const placeholder = document.createElement("div");
-        placeholder.className = "awards-logo-placeholder";
+        placeholder.className = "vote-logo-placeholder";
         placeholder.textContent = "★";
         placeholder.setAttribute("aria-hidden", "true");
         wrap.replaceChildren(placeholder);
@@ -358,24 +358,24 @@ export function createAwardsWidget(root) {
 
         groups.forEach(function (group, groupIndex) {
             const row = document.createElement("div");
-            row.className = "awards-nomination-row"
-                + (groupIndex === 0 ? " awards-nomination-row--featured" : "");
+            row.className = "vote-nomination-row"
+                + (groupIndex === 0 ? " vote-nomination-row--featured" : "");
 
             group.forEach(function (nomination) {
                 const card = document.createElement("article");
-                card.className = "awards-nomination-card"
-                    + (groupIndex === 0 ? " awards-nomination-card--featured" : "");
+                card.className = "vote-nomination-card"
+                    + (groupIndex === 0 ? " vote-nomination-card--featured" : "");
                 card.dataset.nominationId = nomination.id;
-                card.setAttribute("aria-labelledby", "awards-title-" + nomination.id);
+                card.setAttribute("aria-labelledby", "vote-title-" + nomination.id);
 
                 const logoWrap = document.createElement("div");
-                logoWrap.className = "awards-logo-wrap";
+                logoWrap.className = "vote-logo-wrap";
                 renderNominationLogo(nomination, logoWrap);
                 card.appendChild(logoWrap);
 
                 const title = document.createElement("h3");
-                title.className = "awards-nomination-title";
-                title.id = "awards-title-" + nomination.id;
+                title.className = "vote-nomination-title";
+                title.id = "vote-title-" + nomination.id;
                 title.textContent = nomination.title;
                 card.appendChild(title);
 
@@ -389,7 +389,7 @@ export function createAwardsWidget(root) {
                         : (nomination.suggestionMode === "voted" ? nomination.suggestedText : ""));
 
                 const selected = document.createElement("p");
-                selected.className = "awards-selected-nominee";
+                selected.className = "vote-selected-nominee";
                 selected.hidden = !selectedLabel;
                 selected.textContent = selectedLabel;
                 card.appendChild(selected);
@@ -398,7 +398,7 @@ export function createAwardsWidget(root) {
                 const button = createActionButton(
                     hasSelection ? "Изменить выбор" : "Выбрать номинанта",
                     hasSelection,
-                    "awards-action-button"
+                    "vote-action-button"
                 );
                 button.addEventListener("click", function () {
                     openVote(nomination);
@@ -416,18 +416,18 @@ export function createAwardsWidget(root) {
 
     function makePersonCard(person, label, onClick, selected, imageMode) {
         const card = document.createElement("article");
-        card.className = "awards-candidate-card";
+        card.className = "vote-candidate-card";
         card.appendChild(visualElement(person, Boolean(imageMode)));
 
         const name = document.createElement("p");
-        name.className = "awards-candidate-name";
+        name.className = "vote-candidate-name";
         name.textContent = person.name;
         card.appendChild(name);
 
         const button = createActionButton(
             label,
             Boolean(selected),
-            "awards-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", onClick);
         card.appendChild(button);
@@ -436,14 +436,14 @@ export function createAwardsWidget(root) {
 
     function makeDuoCard(pair) {
         const card = document.createElement("article");
-        card.className = "awards-candidate-card awards-duo-card";
+        card.className = "vote-candidate-card vote-duo-card";
 
         const avatars = document.createElement("div");
-        avatars.className = "awards-duo-avatars";
+        avatars.className = "vote-duo-avatars";
         avatars.appendChild(visualElement(pair.first, false));
 
         const plus = document.createElement("span");
-        plus.className = "awards-duo-plus";
+        plus.className = "vote-duo-plus";
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         avatars.appendChild(plus);
@@ -451,7 +451,7 @@ export function createAwardsWidget(root) {
         card.appendChild(avatars);
 
         const name = document.createElement("p");
-        name.className = "awards-candidate-name";
+        name.className = "vote-candidate-name";
         name.textContent = pair.first.name + " + " + pair.second.name;
         card.appendChild(name);
 
@@ -459,7 +459,7 @@ export function createAwardsWidget(root) {
         const button = createActionButton(
             selected ? "Отменить голос" : "Проголосовать",
             selected,
-            "awards-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             activeNomination.selectedPairId = selected ? null : pair.id;
@@ -472,21 +472,21 @@ export function createAwardsWidget(root) {
 
     function makeAddCard() {
         const card = document.createElement("article");
-        card.className = "awards-candidate-card awards-add-card";
+        card.className = "vote-candidate-card vote-add-card";
 
         const plus = document.createElement("div");
-        plus.className = "awards-add-symbol";
+        plus.className = "vote-add-symbol";
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         card.appendChild(plus);
 
         const details = document.createElement("div");
-        details.className = "awards-add-details";
+        details.className = "vote-add-details";
         const selectedPerson = activeNomination.selectedFromPoolId
             ? nomineeById.get(activeNomination.selectedFromPoolId)
             : null;
         const selectedName = document.createElement("p");
-        selectedName.className = "awards-candidate-name";
+        selectedName.className = "vote-candidate-name";
         selectedName.textContent = selectedPerson ? selectedPerson.name : "Любой участник из общего списка";
         details.appendChild(selectedName);
         card.appendChild(details);
@@ -494,7 +494,7 @@ export function createAwardsWidget(root) {
         const button = createActionButton(
             selectedPerson ? "Отменить голос" : "Добавить кандидата",
             Boolean(selectedPerson),
-            "awards-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             if (activeNomination.selectedFromPoolId) {
@@ -512,21 +512,21 @@ export function createAwardsWidget(root) {
 
     function makeSuggestOtherCard() {
         const card = document.createElement("article");
-        card.className = "awards-candidate-card awards-suggest-card";
+        card.className = "vote-candidate-card vote-suggest-card";
 
         const plus = document.createElement("div");
-        plus.className = "awards-suggest-symbol";
+        plus.className = "vote-suggest-symbol";
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         card.appendChild(plus);
 
         const details = document.createElement("div");
-        details.className = "awards-suggest-details";
+        details.className = "vote-suggest-details";
         const mode = activeNomination.suggestionMode || "idle";
 
         if (mode === "editing") {
             const input = document.createElement("input");
-            input.className = "awards-suggest-input";
+            input.className = "vote-suggest-input";
             input.type = "text";
             input.maxLength = 80;
             input.autocomplete = "off";
@@ -538,7 +538,7 @@ export function createAwardsWidget(root) {
             const button = createActionButton(
                 "Выбрать этот вариант",
                 false,
-                "awards-vote-button"
+                "vote-button"
             );
             button.disabled = !input.value.trim();
             button.addEventListener("click", function () {
@@ -566,7 +566,7 @@ export function createAwardsWidget(root) {
         }
 
         const display = document.createElement("p");
-        display.className = "awards-suggest-text";
+        display.className = "vote-suggest-text";
         display.textContent = mode === "voted" ? activeNomination.suggestedText : "Предложи свой вариант";
         details.appendChild(display);
         card.appendChild(details);
@@ -574,7 +574,7 @@ export function createAwardsWidget(root) {
         const button = createActionButton(
             mode === "voted" ? "Отменить голос" : "Предложить другое",
             mode === "voted",
-            "awards-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             if (activeNomination.suggestionMode === "voted") {
@@ -587,7 +587,7 @@ export function createAwardsWidget(root) {
                 activeNomination.suggestionMode = "editing";
                 activeNomination.suggestionDraft = "";
                 renderVoteGrid();
-                const input = nominationGrid.querySelector(".awards-suggest-input");
+                const input = nominationGrid.querySelector(".vote-suggest-input");
                 if (input) input.focus();
             }
         });
@@ -622,11 +622,11 @@ export function createAwardsWidget(root) {
     }
 
     function animateGrid(element, direction) {
-        element.classList.remove("awards-slide-from-right", "awards-slide-from-left");
+        element.classList.remove("vote-slide-from-right", "vote-slide-from-left");
         if (!direction) return;
         void element.offsetWidth;
         element.classList.add(
-            direction > 0 ? "awards-slide-from-right" : "awards-slide-from-left"
+            direction > 0 ? "vote-slide-from-right" : "vote-slide-from-left"
         );
     }
 
@@ -747,7 +747,7 @@ export function createAwardsWidget(root) {
     function closeVote() {
         voteOverlay.hidden = true;
         if (activeNomination) {
-            const selector = '[data-nomination-id="' + activeNomination.id + '"] .awards-action-button';
+            const selector = '[data-nomination-id="' + activeNomination.id + '"] .vote-action-button';
             const trigger = root.querySelector(selector);
             if (trigger) trigger.focus();
         }
@@ -765,7 +765,7 @@ export function createAwardsWidget(root) {
     function closePicker() {
         pickerOverlay.hidden = true;
         if (!voteOverlay.hidden) {
-            const addButton = nominationGrid.querySelector(".awards-add-card .awards-vote-button");
+            const addButton = nominationGrid.querySelector(".vote-add-card .vote-button");
             (addButton || voteCloseButton).focus();
         }
     }
@@ -809,13 +809,13 @@ export function createAwardsWidget(root) {
         }
 
         const ballot = buildBallotPayload();
-        window.FRIENDS_AWARDS_LAST_SUBMISSION = ballot;
+        window.SPLITEVENTS_LAST_BALLOT = ballot;
 
-        const rootEvent = new CustomEvent("friends-awards:submit", { detail: ballot });
+        const rootEvent = new CustomEvent("splitevents:nominations-submit", { detail: ballot });
         root.dispatchEvent(rootEvent);
-        window.dispatchEvent(new CustomEvent("friends-awards:submit", { detail: ballot }));
+        window.dispatchEvent(new CustomEvent("splitevents:nominations-submit", { detail: ballot }));
 
-        submitNotice.textContent = "Бюллетень сформирован. Голоса пока не отправлены и не сохранены на сервере.";
+        submitNotice.textContent = "Бюллетень сформирован.";
         submitNotice.hidden = false;
         submitNotice.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
@@ -869,8 +869,8 @@ export function createAwardsWidget(root) {
         else if (!voteOverlay.hidden) closeVote();
     });
 
-    window.FRIENDS_AWARDS_NOMINEES = NOMINEES;
-    window.FRIENDS_AWARDS_NOMINATIONS = buildNominationSnapshot;
+    window.SPLITEVENTS_NOMINEES = NOMINEES;
+    window.SPLITEVENTS_NOMINATIONS = buildNominationSnapshot;
 
     renderNominationCards();
 
