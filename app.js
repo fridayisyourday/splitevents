@@ -7,15 +7,12 @@ import {
     getTelegramTag,
     getTelegramPhotoUrl
 } from "./js/telegram.js?v=20261126-1";
-import { createMenu } from "./js/menu.js?v=20261126-3";
+import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-8";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-9";
 import { EVENTS } from "./js/events/data.js?v=20261126-4";
 import { getHiddenEventIds, hideEvent } from "./js/events/hidden-state.js?v=20261126-2";
-import {
-    getUnreadEventsCount,
-    markEventsAsSeen
-} from "./js/events/read-state.js?v=20261126-2";
+import { getActiveEventsCount } from "./js/events/active-state.js?v=20261126-1";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-3";
 
 const pageElements = {
@@ -47,10 +44,24 @@ if (missingPages.length || !mainContent) {
         getTelegramPhotoUrl
     });
 
+    function updateActiveEventsBadge() {
+        if (!menu) return;
+
+        const activeCount = getActiveEventsCount(
+            EVENTS,
+            getHiddenEventIds(telegramUserId)
+        );
+        menu.updateActiveEventsCount(activeCount);
+    }
+
     // The event list uses a shared card template and per-user hidden state.
     const eventsPage = renderEventsPage(pageElements.events, EVENTS, {
         hiddenEventIds: getHiddenEventIds(telegramUserId),
-        onHideEvent: (eventId) => hideEvent(eventId, telegramUserId)
+        onHideEvent: (eventId) => {
+            const hidden = hideEvent(eventId, telegramUserId);
+            updateActiveEventsBadge();
+            return hidden;
+        }
     });
     renderServersPage(pageElements.servers);
 
@@ -87,7 +98,7 @@ if (missingPages.length || !mainContent) {
         onNavigate: navigateTo,
         onStateChange: updateTelegramBackButton
     });
-    menu.updateUnreadEventsCount(getUnreadEventsCount(EVENTS, telegramUserId));
+    updateActiveEventsBadge();
 
     function renderPage(moveFocus = false) {
         const page = getCurrentPage();
@@ -113,10 +124,10 @@ if (missingPages.length || !mainContent) {
         menu.updateForPage(page);
 
         if (changed && page === "events") {
-            markEventsAsSeen(EVENTS, telegramUserId);
-            menu.updateUnreadEventsCount(getUnreadEventsCount(EVENTS, telegramUserId));
             eventsPage.start();
         }
+
+        updateActiveEventsBadge();
 
         updateTelegramBackButton();
 
@@ -158,8 +169,16 @@ if (missingPages.length || !mainContent) {
     });
 
     window.addEventListener("pageshow", () => {
+        updateActiveEventsBadge();
         renderPage(false);
     });
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) updateActiveEventsBadge();
+    });
+
+    // Keep the navigation badge accurate when an event reaches its end time.
+    window.setInterval(updateActiveEventsBadge, 15000);
 
     renderPage(false);
     profile.loadImages();
