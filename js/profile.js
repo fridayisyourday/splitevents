@@ -199,8 +199,15 @@ export function createProfile({
 
         for (const type of ["avatar", "banner"]) {
             const value = serverProfile[type + "_url"];
-            if (typeof value === "string" && value.startsWith("https://")) {
-                remoteImages[type] = value;
+            if (typeof value !== "string" || !value) continue;
+
+            try {
+                const parsed = new URL(value);
+                if (parsed.protocol === "https:" && parsed.hostname.endsWith(".imagekit.io")) {
+                    remoteImages[type] = value;
+                }
+            } catch {
+                // Ignore invalid or unsupported remote image URLs.
             }
         }
     }
@@ -351,6 +358,10 @@ export function createProfile({
 
             if (typeof saveProfileImage !== "function") {
                 throw new Error("missing_telegram_init_data");
+            }
+
+            if (blob.size > 5 * 1024 * 1024) {
+                throw new Error("image_too_large");
             }
 
             const serverProfile = await saveProfileImage(type, blob);
