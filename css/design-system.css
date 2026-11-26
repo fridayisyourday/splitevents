@@ -364,6 +364,25 @@ textarea::placeholder {
     opacity: 0.64;
 }
 
+/* Lucide inline sprite and shared outline icon treatment. */
+.icon-sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.lucide-icon {
+    display: block;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--app-icon-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 /* One outline-icon language: 24px canvas, 2px rounded strokes. */
 svg {
     stroke-width: var(--app-icon-stroke);
