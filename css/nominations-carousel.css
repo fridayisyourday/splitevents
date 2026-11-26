@@ -426,8 +426,12 @@
 
 
 
-/* The secondary nomination carousel is 86% of the featured-card visual scale. */
+/* Keep every carousel card at one height so the controls stay in one place. */
 .vote-nomination-card.vote-carousel-card {
+    height: 252px;
+    min-height: 252px;
+    max-height: 252px;
+    box-sizing: border-box;
     zoom: 0.86;
 }
 
@@ -450,6 +454,11 @@
     .vote-carousel-stage {
         min-height: 296px;
     }
+    .vote-nomination-card.vote-carousel-card {
+        height: 248px;
+        min-height: 248px;
+        max-height: 248px;
+    }
     .vote-carousel-stage > .vote-carousel-controls {
         top: 243px;
     }
@@ -458,6 +467,11 @@
 @media (max-width: 380px) {
     .vote-carousel-stage {
         min-height: 290px;
+    }
+    .vote-nomination-card.vote-carousel-card {
+        height: 242px;
+        min-height: 242px;
+        max-height: 242px;
     }
     .vote-carousel-stage > .vote-carousel-controls {
         top: 238px;
