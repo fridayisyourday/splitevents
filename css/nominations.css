@@ -1188,3 +1188,55 @@
     justify-self: center;
     width: min(100%, 220px);
 }
+
+
+/* Keep every nominee-picker tile on the same grid and visual scale. */
+.vote-dialog {
+    --vote-picker-visual-size: 94px;
+}
+
+.vote-dialog .vote-grid > .vote-candidate-card {
+    box-sizing: border-box;
+    height: 224px;
+    min-height: 224px;
+}
+
+.vote-dialog .vote-candidate-card > .vote-avatar,
+.vote-dialog .vote-candidate-card > .vote-avatar-placeholder,
+.vote-dialog .vote-candidate-card > .vote-image-avatar,
+.vote-dialog .vote-candidate-card > .vote-image-placeholder,
+.vote-dialog .vote-candidate-card > .vote-add-symbol,
+.vote-dialog .vote-candidate-card > .vote-suggest-symbol {
+    box-sizing: border-box;
+    width: min(100%, var(--vote-picker-visual-size));
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.vote-dialog .vote-candidate-card > .vote-candidate-name,
+.vote-dialog .vote-candidate-card > .vote-add-details,
+.vote-dialog .vote-candidate-card > .vote-suggest-details {
+    box-sizing: border-box;
+    min-height: 42px;
+    flex: 1 1 auto;
+}
+
+.vote-dialog .vote-add-details > .vote-candidate-name,
+.vote-dialog .vote-suggest-details > .vote-suggest-text,
+.vote-dialog .vote-suggest-details > .vote-suggest-input {
+    min-height: 42px;
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-dialog {
+        --vote-picker-visual-size: 76px;
+    }
+
+    .vote-dialog .vote-grid > .vote-candidate-card {
+        height: 206px;
+        min-height: 206px;
+    }
+}
