@@ -1,4 +1,5 @@
 /* Shared, safe profile-presentation helpers. */
+import { createIcon } from "../dom.js?v=20261126-2";
 export function getSafeProfileImageUrl(value) {
     if (typeof value !== "string" || !value) return "";
 
