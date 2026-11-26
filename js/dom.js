@@ -1,4 +1,11 @@
-/* Shared safe DOM and SVG construction helpers. */
+/* Shared safe DOM and Lucide SVG icon construction helpers. */
+const ICON_NAMES = new Set([
+    "menu", "x", "house", "user-round", "ticket", "gamepad-2",
+    "users-round", "calendar-clock", "plus", "loader-circle",
+    "pencil", "check", "eye", "eye-off", "info", "circle-x",
+    "chevron-left", "chevron-right"
+]);
+
 export function createElement(tagName, className = "", text) {
     const node = document.createElement(tagName);
     if (className) node.className = className;
@@ -14,19 +21,31 @@ function createSvgElement(tagName, attributes = {}) {
     return node;
 }
 
-export function createEyeIcon(isHidden) {
-    const svg = createSvgElement("svg", {
-        viewBox: "0 0 24 24", fill: "none", stroke: "currentColor",
-        "stroke-width": "1.8", "stroke-linecap": "round",
-        "stroke-linejoin": "round", "aria-hidden": "true", focusable: "false"
-    });
-    svg.appendChild(createSvgElement("path", {
-        d: "M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"
-    }));
-    if (isHidden) {
-        svg.appendChild(createSvgElement("path", { d: "M4 4L20 20" }));
-    } else {
-        svg.appendChild(createSvgElement("circle", { cx: "12", cy: "12", r: "2.8" }));
+export function createIcon(name, className = "") {
+    if (!ICON_NAMES.has(name)) {
+        throw new RangeError("Unknown Lucide icon: " + name);
     }
+
+    const classes = ["lucide-icon", className].filter(Boolean).join(" ");
+    const svg = createSvgElement("svg", {
+        class: classes,
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": "2",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "aria-hidden": "true",
+        focusable: "false"
+    });
+
+    svg.appendChild(createSvgElement("use", {
+        href: "#icon-" + name
+    }));
+
     return svg;
+}
+
+export function createEyeIcon(isHidden) {
+    return createIcon(isHidden ? "eye-off" : "eye");
 }
