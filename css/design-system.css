@@ -1,4 +1,4 @@
-/* Loaded after component styles so shared tokens and component rules need no !important overrides. */
+/* Loaded last so shared rules win naturally in the CSS cascade. */
 /* SplitEvents — central monochrome design system.
    Edit this file to update the shared palette, sizing, shadows, controls and overlays. */
 :root {
