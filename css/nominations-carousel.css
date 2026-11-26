@@ -431,28 +431,19 @@
     zoom: 0.86;
 }
 
-/* The stage now contains both the full card and its overlaid navigation row. */
+/* 12px top inset + scaled card + 18px shared section gap + 42px controls. */
 .vote-carousel-stage {
-    min-height: 275px;
-}
-
-.vote-carousel-controls {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 5;
-    margin: 0;
+    min-height: 289px;
 }
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 273px;
+        min-height: 285px;
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 268px;
+        min-height: 280px;
     }
 }
