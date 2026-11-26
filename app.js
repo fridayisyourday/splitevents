@@ -2,11 +2,9 @@
 import {
     initTelegram,
     setTelegramBackButtonVisible,
-    getTelegramUserId,
-    getTelegramInitData
+    getTelegramUserId
 } from "./js/telegram.js?v=20261126-6";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
-import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-3";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-18";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
@@ -55,12 +53,6 @@ if (missingPages.length || !mainContent) {
     createNominationsWidget(document.getElementById("vote-widget"));
 
     const telegramUserId = getTelegramUserId();
-    const telegramInitData = getTelegramInitData();
-
-    const userProfilePage = createUserProfilePage(pageElements.users, {
-        initData: telegramInitData
-    });
-
     function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
         if (activeEventsBadgeTimeout !== null) {
             window.clearTimeout(activeEventsBadgeTimeout);
@@ -169,10 +161,6 @@ if (missingPages.length || !mainContent) {
             eventsPage.stop();
         }
 
-        if (changed && currentPage === "users" && page !== "users") {
-            userProfilePage.stop();
-        }
-
         Object.entries(pageElements).forEach(([pageName, element]) => {
             element.hidden = pageName !== page;
         });
@@ -184,10 +172,6 @@ if (missingPages.length || !mainContent) {
 
         if (changed && page === "events") {
             eventsPage.start();
-        }
-
-        if (changed && page === "users") {
-            userProfilePage.load(publicUserId);
         }
 
         currentRouteKey = routeKey;
