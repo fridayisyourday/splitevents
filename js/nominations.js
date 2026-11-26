@@ -393,8 +393,9 @@ export function createNominationsWidget(root) {
                     return item.id === nomination.id;
                 });
                 if (nextIndex >= 0 && nextIndex !== carouselIndex) {
+                    const direction = nextIndex === (carouselIndex + 1) % items.length ? 1 : -1;
                     carouselIndex = nextIndex;
-                    renderNominationCards();
+                    renderNominationCards(direction);
                 }
             }
             openVote(nomination);
@@ -409,8 +410,9 @@ export function createNominationsWidget(root) {
                     return item.id === nomination.id;
                 });
                 if (nextIndex >= 0) {
+                    const direction = nextIndex === (carouselIndex + 1) % items.length ? 1 : -1;
                     carouselIndex = nextIndex;
-                    renderNominationCards();
+                    renderNominationCards(direction);
                 }
             });
         }
@@ -418,7 +420,7 @@ export function createNominationsWidget(root) {
         return card;
     }
 
-    function renderNominationCards() {
+    function renderNominationCards(direction) {
         const featuredRow = document.createElement("div");
         featuredRow.className = "vote-nomination-row vote-nomination-row--featured";
         NOMINATIONS.slice(0, 2).forEach(function (nomination) {
@@ -431,6 +433,8 @@ export function createNominationsWidget(root) {
 
         const stage = document.createElement("div");
         stage.className = "vote-carousel-stage";
+        if (direction > 0) stage.classList.add("vote-carousel-stage--forward");
+        if (direction < 0) stage.classList.add("vote-carousel-stage--backward");
         stage.setAttribute("aria-live", "polite");
         const items = NOMINATIONS.slice(2);
         const total = items.length;
@@ -451,7 +455,7 @@ export function createNominationsWidget(root) {
         previous.setAttribute("aria-label", "Предыдущая номинация");
         previous.addEventListener("click", function () {
             carouselIndex = (carouselIndex - 1 + total) % total;
-            renderNominationCards();
+            renderNominationCards(-1);
         });
 
         const next = createActionButton("›", false, "vote-page-button");
@@ -459,7 +463,7 @@ export function createNominationsWidget(root) {
         next.setAttribute("aria-label", "Следующая номинация");
         next.addEventListener("click", function () {
             carouselIndex = (carouselIndex + 1) % total;
-            renderNominationCards();
+            renderNominationCards(1);
         });
 
         controls.append(previous, next);
