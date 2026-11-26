@@ -47,7 +47,7 @@ function formatPart(value) {
     return String(value).padStart(2, "0");
 }
 
-export function createEventCard(event, { onHide } = {}) {
+export function createEventCard(event, { onHide, showHideAction = true } = {}) {
     const card = createElement("article", "event-card");
     card.dataset.eventId = event.id;
 
@@ -133,7 +133,10 @@ export function createEventCard(event, { onHide } = {}) {
         }
     });
 
-    actions.append(action, hideButton);
+    actions.append(action);
+    if (showHideAction) {
+        actions.appendChild(hideButton);
+    }
     content.append(title, description, meta, actions);
     card.append(artwork, wash, content);
 
