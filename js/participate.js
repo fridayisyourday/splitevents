@@ -1,23 +1,35 @@
-/* Temporary participation page. The full flow will be built in a later step. */
+/* SQUASH! participation page bootstrap. */
 import { initTelegram } from "./telegram.js?v=20261126-2";
 import { EVENTS } from "./events/data.js?v=20261126-5";
+import { createAwardsWidget } from "./awards-widget.js?v=20261126-1";
 
 initTelegram();
 
 const params = new URLSearchParams(window.location.search);
 const eventId = params.get("event");
-const event = EVENTS.find((item) => item.id === eventId) || null;
+const event = EVENTS.find(function (item) {
+    return item.id === eventId;
+}) || null;
 
 const title = document.getElementById("participation-title");
-const message = document.getElementById("participation-message");
-const note = document.getElementById("participation-note");
+const description = document.getElementById("participation-description");
+const date = document.getElementById("participation-date");
+const awardsSection = document.getElementById("awards-section");
+const awardsRoot = document.getElementById("awards-widget");
+const errorState = document.getElementById("participation-error");
 
-if (event) {
-    title.textContent = "Участие: " + event.title;
-    message.textContent = "Страница участия готовится";
-    note.textContent = "Скоро здесь появится информация о том, как присоединиться к событию «" + event.title + "».";
-    document.title = event.title + " — участие | Сплит";
+if (event && event.id === "squash-award-2026") {
+    title.textContent = event.title;
+    description.textContent = event.description;
+    date.textContent = event.dateLabel || "";
+    document.title = event.title + " — Friends Awards 2026 | Сплит";
+
+    createAwardsWidget(awardsRoot);
 } else {
-    message.textContent = "Страница участия скоро появится";
-    note.textContent = "Выберите событие на основной странице SplitEvents.";
+    awardsSection.hidden = true;
+    errorState.hidden = false;
+    title.textContent = "Участие в событии";
+    description.textContent = "";
+    date.hidden = true;
+    document.title = "Событие не найдено | Сплит";
 }
