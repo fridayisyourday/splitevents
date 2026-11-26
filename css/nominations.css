@@ -1167,7 +1167,8 @@
     overscroll-behavior: contain;
 }
 .vote-dialog--nomination .vote-grid {
-    align-content: start;
+    min-height: 100%;
+    align-content: center;
 }
 
 /* Use circular plus tiles for the nomination types that support adding people. */
@@ -1187,6 +1188,16 @@
     grid-column: 1 / -1;
     justify-self: center;
     width: min(100%, 220px);
+    max-width: 220px;
+    margin-inline: auto;
+}
+
+.vote-dialog--nomination .vote-grid > .vote-add-card:only-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 220px);
+    max-width: 220px;
+    margin-inline: auto;
 }
 
 
