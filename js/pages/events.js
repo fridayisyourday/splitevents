@@ -1,10 +1,10 @@
 /* Events page — supports showing and hiding the user's hidden events. */
 import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
-import { createEventCard } from "./event-card.js?v=20261126-11";
+import { createEventCard } from "./event-card.js?v=20261126-12";
 import {
     createPageShell,
     createEmptyStateElement
-} from "./page-shell.js?v=20261126-1";
+} from "./page-shell.js?v=20261126-2";
 
 function createEmptyEventsState() {
     return createEmptyStateElement({
