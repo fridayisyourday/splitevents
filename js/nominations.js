@@ -458,7 +458,7 @@ export function createNominationsWidget(root) {
         next.classList.add("ui-button--icon");
         next.setAttribute("aria-label", "Следующая номинация");
         next.addEventListener("click", function () {
-            carouselIndex = (carouselIndex + total - 1) % total;
+            carouselIndex = (carouselIndex + 1) % total;
             renderNominationCards();
         });
 
