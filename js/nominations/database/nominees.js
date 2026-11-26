@@ -23,7 +23,7 @@ const NOMINEE_RECORDS = [
 ];
 
 const GENDER_ORDER = Object.freeze({ F: 0, M: 1, I: 2 });
-const nameCollator = new Intl.Collator("ru", {
+const nameCollator = new Intl.Collator("en", {
     sensitivity: "base",
     numeric: true
 });
