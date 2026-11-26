@@ -13,7 +13,8 @@ import {
     updateTelegramDisplayName
 } from "./js/api.js?v=20261126-3";
 import { createMenu } from "./js/menu.js?v=20261126-4";
-import { createProfile } from "./js/profile.js?v=20261126-5";
+import { createNotifications } from "./js/notifications.js?v=20261126-1";
+import { createProfile } from "./js/profile.js?v=20261126-6";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
@@ -43,6 +44,7 @@ if (missingPages.length || !mainContent) {
         missingPages
     );
 } else {
+    const notifications = createNotifications(document.getElementById("notification-region"));
     let currentPage = null;
     let menu = null;
     let activeEventsBadgeTimeout = null;
@@ -58,6 +60,7 @@ if (missingPages.length || !mainContent) {
         getTelegramName,
         getTelegramTag,
         getTelegramPhotoUrl,
+        notifications,
         saveDisplayName: telegramInitData
             ? (displayName) => profileSyncPromise.then(
                 () => updateTelegramDisplayName(telegramInitData, displayName)
@@ -193,7 +196,6 @@ if (missingPages.length || !mainContent) {
             mainContent.focus({ preventScroll: true });
         }
 
-        console.info("SplitEvents: current page — " + page);
     }
 
     initTelegram({
@@ -221,7 +223,6 @@ if (missingPages.length || !mainContent) {
         )
             .then((serverProfile) => {
                 profile.applyServerProfile(serverProfile);
-                console.info("SplitEvents: Telegram account and profile synced with API");
                 return serverProfile;
             })
             .catch((error) => {
@@ -251,5 +252,4 @@ if (missingPages.length || !mainContent) {
     renderPage(false);
     profile.loadImages();
 
-    console.info("SplitEvents: application ready");
 }
