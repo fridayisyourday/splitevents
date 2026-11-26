@@ -9,7 +9,7 @@ import {
 } from "./js/telegram.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-1";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-12";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-13";
 import { EVENTS } from "./js/events/data.js?v=20261126-5";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
 import { getActiveEventsCount } from "./js/events/active-state.js?v=20261126-1";
@@ -63,6 +63,11 @@ if (missingPages.length || !mainContent) {
                 : unhideEvent(eventId, telegramUserId);
             updateActiveEventsBadge();
             return changed;
+        },
+        onParticipateEvent: (event) => {
+            const destination = new URL("./participate.html", window.location.href);
+            destination.searchParams.set("event", event.id);
+            window.open(destination.href, "_blank", "noopener,noreferrer");
         }
     });
     renderServersPage(pageElements.servers);
