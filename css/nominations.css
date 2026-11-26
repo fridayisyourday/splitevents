@@ -1144,3 +1144,39 @@
         font-size: 12px;
     }
 }
+
+
+/* Fixed-size nominee selection dialog: content changes scroll inside the frame. */
+.vote-dialog--nomination {
+    box-sizing: border-box;
+    height: min(540px, calc(100dvh - 40px));
+    min-height: min(540px, calc(100dvh - 40px));
+    max-height: min(540px, calc(100dvh - 40px));
+    flex: 0 0 auto;
+    overflow: hidden;
+}
+.vote-dialog--nomination .vote-dialog-header,
+.vote-dialog--nomination .vote-dialog-footer {
+    flex: 0 0 auto;
+}
+.vote-dialog--nomination .vote-grid-viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.vote-dialog--nomination .vote-grid {
+    align-content: start;
+}
+
+/* Use circular plus tiles for the nomination types that support adding people. */
+.vote-add-symbol--round {
+    border-radius: 50%;
+}
+
+/* Person avatars inside the nominee picker stay circular, including NEXTGEN. */
+.vote-dialog--nomination .vote-avatar,
+.vote-dialog--nomination .vote-avatar-placeholder {
+    border-radius: 50%;
+}
