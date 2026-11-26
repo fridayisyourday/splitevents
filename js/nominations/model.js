@@ -39,6 +39,7 @@ export function createNominationModel({ nomineeById, compareNames }) {
             : [];
 
         if (nomination.type === "image") {
+            if (nomination.suggestionMode === "editing") return false;
             if (nomination.suggestionMode === "voted") {
                 return typeof nomination.suggestedText === "string"
                     && Boolean(nomination.suggestedText.trim());
