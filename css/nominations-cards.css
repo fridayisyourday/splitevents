@@ -221,14 +221,14 @@
     object-fit: cover;
 }
 
-/* Keep the arrows overlaid at the stage bottom with the same 18px gap as the main sections. */
-.vote-carousel-stage > .vote-carousel-controls {
-    position: absolute;
+/* The controls follow the active center card in its vertical group. */
+.vote-carousel-current-group > .vote-carousel-controls {
+    position: relative;
     top: auto;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 5;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: auto;
     margin: 0;
 }
 
