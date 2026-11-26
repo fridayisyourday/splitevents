@@ -63,7 +63,7 @@ function createProfileCard(user) {
     const banner = createElement("img", "profile-banner-image");
     banner.alt = "";
     banner.hidden = true;
-    cover.append(bannerPlaceholder, banner, avatar);
+    cover.append(bannerPlaceholder, banner);
     createImage(banner, user.banner_url, bannerPlaceholder);
 
     const avatar = createElement("div", "profile-avatar");
@@ -77,6 +77,7 @@ function createProfileCard(user) {
     avatarImage.hidden = true;
     avatar.append(avatarImage, avatarPlaceholder);
     createImage(avatarImage, user.avatar_url, avatarPlaceholder);
+    cover.appendChild(avatar);
 
     const details = createElement("div", "profile-details");
     const nameRow = createElement("div", "profile-name-row");
