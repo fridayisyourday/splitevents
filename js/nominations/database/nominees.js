@@ -1,25 +1,26 @@
 /* Canonical list of people who can appear in nomination choices. */
+import { getNomineeAvatarUrl } from "../../media.js?v=20261126-1";
 const NOMINEE_RECORDS = [
-    { id: "fridayisyourday", name: "fridayisyourday", gender: "M", avatar: "" },
-    { id: "burgomister", name: "Burgomister", gender: "M", avatar: "" },
-    { id: "holydark", name: "HolyDark", gender: "F", avatar: "" },
-    { id: "cyathere", name: "cyathere", gender: "F", avatar: "" },
-    { id: "vale", name: "Vale", gender: "F", avatar: "" },
-    { id: "theriazon", name: "theriazon", gender: "M", avatar: "" },
-    { id: "otorgy", name: "Otorgy", gender: "M", avatar: "" },
-    { id: "skatpoint", name: "skatpoint", gender: "M", avatar: "" },
-    { id: "fork", name: "fork", gender: "F", avatar: "" },
-    { id: "dlv1190", name: "DLV1190", gender: "M", avatar: "" },
-    { id: "isada", name: "Isada", gender: "M", avatar: "" },
-    { id: "yaarbuzik", name: "yaarbuzik", gender: "M", avatar: "" },
-    { id: "tr1ckl", name: "tr1ckl", gender: "M", avatar: "" },
-    { id: "don-burger", name: "Дон Бургер", gender: "I", avatar: "" },
-    { id: "backrooms", name: "BACKROOMS", gender: "I", avatar: "" },
-    { id: "burgomister-42", name: "Burgomister 42", gender: "I", avatar: "" },
-    { id: "fridayisyourday-42", name: "fridayisyourday 42", gender: "I", avatar: "" },
-    { id: "shalker", name: "Шалкер", gender: "I", avatar: "" },
-    { id: "misterion", name: "Мистерион", gender: "I", avatar: "" },
-    { id: "windigo", name: "Виндиго", gender: "I", avatar: "" }
+    { id: "fridayisyourday", name: "fridayisyourday", gender: "M", avatar: getNomineeAvatarUrl("fridayisyourday") },
+    { id: "burgomister", name: "Burgomister", gender: "M", avatar: getNomineeAvatarUrl("burgomister") },
+    { id: "holydark", name: "HolyDark", gender: "F", avatar: getNomineeAvatarUrl("holydark") },
+    { id: "cyathere", name: "cyathere", gender: "F", avatar: getNomineeAvatarUrl("cyathere") },
+    { id: "vale", name: "Vale", gender: "F", avatar: getNomineeAvatarUrl("vale") },
+    { id: "theriazon", name: "theriazon", gender: "M", avatar: getNomineeAvatarUrl("theriazon") },
+    { id: "otorgy", name: "Otorgy", gender: "M", avatar: getNomineeAvatarUrl("otorgy") },
+    { id: "skatpoint", name: "skatpoint", gender: "M", avatar: getNomineeAvatarUrl("skatpoint") },
+    { id: "fork", name: "fork", gender: "F", avatar: getNomineeAvatarUrl("fork") },
+    { id: "dlv1190", name: "DLV1190", gender: "M", avatar: getNomineeAvatarUrl("dlv1190") },
+    { id: "isada", name: "Isada", gender: "M", avatar: getNomineeAvatarUrl("isada") },
+    { id: "yaarbuzik", name: "yaarbuzik", gender: "M", avatar: getNomineeAvatarUrl("yaarbuzik") },
+    { id: "tr1ckl", name: "tr1ckl", gender: "M", avatar: getNomineeAvatarUrl("tr1ckl") },
+    { id: "don-burger", name: "Дон Бургер", gender: "I", avatar: getNomineeAvatarUrl("don-burger") },
+    { id: "backrooms", name: "BACKROOMS", gender: "I", avatar: getNomineeAvatarUrl("backrooms") },
+    { id: "burgomister-42", name: "Burgomister 42", gender: "I", avatar: getNomineeAvatarUrl("burgomister-42") },
+    { id: "fridayisyourday-42", name: "fridayisyourday 42", gender: "I", avatar: getNomineeAvatarUrl("fridayisyourday-42") },
+    { id: "shalker", name: "Шалкер", gender: "I", avatar: getNomineeAvatarUrl("shalker") },
+    { id: "misterion", name: "Мистерион", gender: "I", avatar: getNomineeAvatarUrl("misterion") },
+    { id: "windigo", name: "Виндиго", gender: "I", avatar: getNomineeAvatarUrl("windigo") }
 ];
 
 const GENDER_ORDER = Object.freeze({ F: 0, M: 1, I: 2 });
