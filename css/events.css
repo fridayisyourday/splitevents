@@ -336,7 +336,3 @@
 }
 
 
-/* The SQUASH! event keeps its short edition label uppercase in the description. */
-.event-card[data-event-id="squash-award-2026"] .event-card-description {
-    text-transform: uppercase;
-}
