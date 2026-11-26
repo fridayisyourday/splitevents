@@ -21,6 +21,7 @@ function getPageSize() {
         ? MOBILE_PAGE_SIZE
         : DESKTOP_PAGE_SIZE;
 }
+
 export function createNominationsWidget(root) {
     if (!root || root.dataset.initialized === "true") return null;
     root.dataset.initialized = "true";
