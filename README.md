@@ -29,6 +29,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   ├── HomePage.vue
 │   │   ├── NominationCard.vue
 │   │   ├── NominationsPage.vue
+│   │   ├── NotificationRegion.vue
 │   │   ├── NomineeVisual.vue
 │   │   ├── ProfilePage.vue
 │   │   ├── ServersPage.vue
@@ -58,8 +59,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   └── nominations-cards.css
 ├── js/
 │   ├── api.js
-│   ├── dom.js
-│   ├── notifications.js
 │   ├── telegram.js
 │   ├── storage.js
 │   ├── nominations/
@@ -98,7 +97,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Каждый раздел управляет своим состоянием и жизненным циклом через Vue.
 
-**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
+**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `src/components/NotificationRegion.vue`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
@@ -128,4 +127,4 @@ Telegram Mini App для совместных мероприятий, профи
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
 4. Перед публикацией выполните `npm run check` и `npm run build`.
 
-GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Все страницы монтируются из Vue-компонентов внутри `src/App.vue`; центрального DOM-контроллера `app.js` и переходных HTML-фрагментов больше нет.
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Все страницы, маршруты и уведомления управляются Vue-компонентами; старые DOM-контроллеры страниц и переходные HTML-фрагменты удалены.
