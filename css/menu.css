@@ -101,12 +101,16 @@ button.menu-item {
 
 @media (hover: hover) {
     button.menu-item:not(:disabled):hover {
-        background: var(--app-secondary);
+        background: transparent;
+        opacity: 0.72;
     }
 }
 
 .menu-item[aria-current="page"] {
-    background: var(--app-secondary);
+    background: transparent;
+    font-weight: var(--app-font-weight-bold);
+    text-decoration: underline;
+    text-underline-offset: 6px;
 }
 
 .menu-item-badge {
@@ -128,11 +132,7 @@ button.menu-item {
 }
 
 .menu-item-icon {
-    display: block;
-    flex: 0 0 24px;
-    width: 24px;
-    height: 24px;
-    color: var(--app-text);
+    display: none;
 }
 
 .menu-item-label {
