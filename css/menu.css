@@ -109,8 +109,7 @@ button.menu-item {
 .menu-item[aria-current="page"] {
     background: transparent;
     font-weight: var(--app-font-weight-bold);
-    text-decoration: underline;
-    text-underline-offset: 6px;
+    text-decoration: none;
 }
 
 .menu-item-badge {
@@ -145,7 +144,6 @@ button.menu-item {
 
 .menu-item-coming-soon {
     cursor: default;
-    opacity: 0.88;
 }
 
 .menu-item-coming-soon:disabled {
