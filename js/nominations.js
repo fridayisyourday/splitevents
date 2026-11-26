@@ -3,7 +3,7 @@ import {
     NOMINEES,
     nomineeById,
     compareNames
-} from "./nominations/database/nominees.js?v=20261126-1";
+} from "./nominations/database/nominees.js?v=20261126-2";
 import { createNominationState } from "./nominations/state.js?v=20261126-1";
 import { createNominationModel } from "./nominations/model.js?v=20261126-2";
 
@@ -68,15 +68,6 @@ export function createNominationsWidget(root) {
     let carouselIndex = 0;
     let currentPageSize = getPageSize();
 
-    function imageUrl(value) {
-        if (!value) return "";
-        const match = value.match(/\/file\/d\/([\w-]+)/)
-            || value.match(/[?&]id=([\w-]+)/);
-        return match
-            ? "https://drive.google.com/uc?export=view&id=" + match[1]
-            : value;
-    }
-
     function initials(name) {
         return String(name || "").slice(0, 2).toLocaleUpperCase("en");
     }
@@ -86,7 +77,7 @@ export function createNominationsWidget(root) {
         const fallbackClass = imageMode
             ? "vote-image-placeholder"
             : "vote-avatar-placeholder";
-        const url = imageUrl(person.avatar);
+        const url = person.avatar;
 
         if (url) {
             const image = document.createElement("img");
