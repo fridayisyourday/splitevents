@@ -6,7 +6,7 @@ export function createElement(tagName, className = "", text) {
     return node;
 }
 
-export function createSvgElement(tagName, attributes = {}) {
+function createSvgElement(tagName, attributes = {}) {
     const node = document.createElementNS("http://www.w3.org/2000/svg", tagName);
     Object.entries(attributes).forEach(function ([name, value]) {
         node.setAttribute(name, value);
