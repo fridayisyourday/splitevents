@@ -11,9 +11,9 @@ import {
 import {
     syncTelegramUser,
     updateTelegramDisplayName
-} from "./js/api.js?v=20261126-2";
+} from "./js/api.js?v=20261126-3";
 import { createMenu } from "./js/menu.js?v=20261126-4";
-import { createProfile } from "./js/profile.js?v=20261126-3";
+import { createProfile } from "./js/profile.js?v=20261126-4";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";

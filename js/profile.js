@@ -181,10 +181,21 @@ export function createProfile({
                     );
                 } catch (error) {
                     console.warn("SplitEvents: display name sync failed", error);
+                    const reason = error && error.message ? error.message : "";
+                    const knownReasons = {
+                        invalid_telegram_init_data: "telegram не подтвердил данные входа. закрой и снова открой мини-приложение.",
+                        missing_telegram_init_data: "telegram не передал данные входа. закрой и снова открой мини-приложение.",
+                        database_unavailable: "общая база временно недоступна.",
+                        telegram_auth_not_configured: "серверная авторизация не настроена.",
+                        display_name_too_long: "имя слишком длинное. используй не более 64 символов."
+                    };
+                    const detail = knownReasons[reason] ||
+                        (reason ? "причина: " + reason : "проверь подключение и попробуй ещё раз.");
+
                     showStatus(
                         stored
-                            ? "Имя сохранено только на этом устройстве. Не удалось синхронизировать его с общей базой."
-                            : "Не удалось сохранить имя. Проверь подключение и попробуй ещё раз."
+                            ? "имя сохранено только на этом устройстве. не удалось синхронизировать его с общей базой — " + detail
+                            : "не удалось сохранить имя — " + detail
                     );
                 } finally {
                     el.editButton.disabled = false;

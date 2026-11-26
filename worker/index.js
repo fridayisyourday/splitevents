@@ -1,20 +1,21 @@
 const ALLOWED_ORIGIN = "https://fridayisyourday.github.io";
 
-function corsHeaders(origin) {
+function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN,
+    // Identity is protected by Telegram's signed initData, not by CORS.
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Telegram-Init-Data",
-    "Vary": "Origin"
+    "Access-Control-Max-Age": "86400"
   };
 }
 
-function json(data, status = 200, origin = "") {
+function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      ...corsHeaders(origin)
+      ...corsHeaders()
     }
   });
 }
@@ -33,9 +34,10 @@ async function verifyTelegramInitData(initData, botToken) {
     .join("\n");
 
   const encoder = new TextEncoder();
+  // Telegram specifies HMAC(key = "WebAppData", message = botToken).
   const secretKey = await crypto.subtle.importKey(
     "raw",
-    encoder.encode(botToken),
+    encoder.encode("WebAppData"),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"]
@@ -43,7 +45,7 @@ async function verifyTelegramInitData(initData, botToken) {
   const secret = await crypto.subtle.sign(
     "HMAC",
     secretKey,
-    encoder.encode("WebAppData")
+    encoder.encode(botToken)
   );
   const hmacKey = await crypto.subtle.importKey(
     "raw",
@@ -84,12 +86,10 @@ async function verifyTelegramInitData(initData, botToken) {
 
 export default {
   async fetch(request, env) {
-    const origin = request.headers.get("Origin") || "";
-
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
-        headers: corsHeaders(origin)
+        headers: corsHeaders()
       });
     }
 
@@ -102,49 +102,63 @@ export default {
           ok: result?.ok === 1,
           service: "split-api",
           database: "connected"
-        }, 200, origin);
+        });
       } catch {
-        return json({ ok: false, error: "database_unavailable" }, 503, origin);
+        return json({ ok: false, error: "database_unavailable" }, 503);
       }
     }
 
     if (request.method === "POST" && url.pathname === "/api/me") {
       if (!env.BOT_TOKEN) {
-        return json({ error: "telegram_auth_not_configured" }, 503, origin);
+        return json({ error: "telegram_auth_not_configured" }, 503);
       }
 
-      const initData = request.headers.get("X-Telegram-Init-Data") || "";
+      const contentType = request.headers.get("Content-Type") || "";
+      let initData = request.headers.get("X-Telegram-Init-Data") || "";
+      let body = null;
+
+      if (contentType.includes("application/x-www-form-urlencoded")) {
+        const form = new URLSearchParams(await request.text());
+        initData = initData || form.get("init_data") || "";
+        if (form.has("display_name")) {
+          body = { display_name: form.get("display_name") };
+        }
+      } else if (contentType.includes("application/json")) {
+        try {
+          body = await request.json();
+        } catch {
+          return json({ error: "invalid_json" }, 400);
+        }
+        initData = initData || (body && typeof body.init_data === "string"
+          ? body.init_data
+          : "");
+      }
+
       if (!initData) {
-        return json({ error: "missing_telegram_init_data" }, 401, origin);
+        return json({ error: "missing_telegram_init_data" }, 401);
       }
 
       const user = await verifyTelegramInitData(initData, env.BOT_TOKEN);
       if (!user) {
-        return json({ error: "invalid_telegram_init_data" }, 401, origin);
+        return json({ error: "invalid_telegram_init_data" }, 401);
       }
 
-      let body = null;
-      if ((request.headers.get("Content-Type") || "").includes("application/json")) {
-        try {
-          body = await request.json();
-        } catch {
-          return json({ error: "invalid_json" }, 400, origin);
-        }
-
-        if (!body || typeof body !== "object" || Array.isArray(body)) {
-          return json({ error: "invalid_profile_payload" }, 400, origin);
-        }
+      if (body !== null && (
+        typeof body !== "object" ||
+        Array.isArray(body)
+      )) {
+        return json({ error: "invalid_profile_payload" }, 400);
       }
 
       const hasDisplayName = body !== null &&
         Object.prototype.hasOwnProperty.call(body, "display_name");
 
       if (hasDisplayName && typeof body.display_name !== "string") {
-        return json({ error: "invalid_display_name" }, 400, origin);
+        return json({ error: "invalid_display_name" }, 400);
       }
 
       if (hasDisplayName && body.display_name.length > 64) {
-        return json({ error: "display_name_too_long" }, 400, origin);
+        return json({ error: "display_name_too_long" }, 400);
       }
 
       const telegramId = String(user.id);
@@ -177,9 +191,9 @@ export default {
         "FROM users WHERE telegram_id=?"
       ).bind(telegramId).first();
 
-      return json({ user: profile }, 200, origin);
+      return json({ user: profile });
     }
 
-    return json({ error: "not_found" }, 404, origin);
+    return json({ error: "not_found" }, 404);
   }
 };
