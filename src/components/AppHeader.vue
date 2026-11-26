@@ -4,10 +4,10 @@ import { getCurrentPage, getPageHash } from "../../js/navigation.js?v=20261127-1
 
 const navigationItems = [
     { page: "home", id: "home-nav-button", label: "Главная", icon: "house" },
-    { page: "profile", id: "profile-nav-button", label: "Профиль", icon: "user-round" },
     { page: "events", id: "events-nav-button", label: "События", icon: "ticket" },
     { page: "servers", id: "servers-nav-button", label: "Сервера", icon: "server" },
-    { page: "friends", id: "friends-nav-button", label: "Друзья", icon: "users-round" }
+    { page: "friends", id: "friends-nav-button", label: "Друзья", icon: "users-round" },
+    { page: "profile", id: "profile-nav-button", label: "Профиль", icon: "user-round" }
 ];
 
 const activePage = ref("home");

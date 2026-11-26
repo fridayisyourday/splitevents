@@ -1,5 +1,5 @@
 /* Build independent mutable vote state from immutable database definitions. */
-import { NOMINATION_DEFINITIONS } from "./database/definitions.js?v=20261126-1";
+import { NOMINATION_DEFINITIONS } from "./database/definitions.js?v=20261127-2";
 
 export function createNominationState() {
     return NOMINATION_DEFINITIONS.map((definition) => {
