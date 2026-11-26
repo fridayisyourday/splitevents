@@ -66,6 +66,7 @@ export function createNominationsWidget(root) {
     let activeNomination = null;
     let pickerPage = 0;
     let carouselIndex = 0;
+    let currentPageSize = getPageSize();
 
     function imageUrl(value) {
         if (!value) return "";
@@ -461,7 +462,7 @@ export function createNominationsWidget(root) {
                 activeNomination.suggestionDraft = "";
                 renderVoteGrid();
                 const input = nominationGrid.querySelector(".vote-suggest-input");
-                if (input) input.focus();
+                if (input) input.focus({ preventScroll: true });
             }
         });
         card.appendChild(button);
@@ -676,6 +677,10 @@ export function createNominationsWidget(root) {
     });
 
     window.addEventListener("resize", function () {
+        const nextPageSize = getPageSize();
+        if (nextPageSize === currentPageSize) return;
+
+        currentPageSize = nextPageSize;
         if (activeNomination && !voteOverlay.hidden) {
             renderVoteGrid(0);
         }
