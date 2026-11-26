@@ -36,7 +36,7 @@ const initials = computed(() => (
     String(props.person?.name || "").slice(0, 2).toLocaleUpperCase("en")
 ));
 
-watch(imageSource, () => {
+watch([imageSource, () => props.person?.id], () => {
     imageFailed.value = false;
 });
 

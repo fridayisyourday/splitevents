@@ -233,20 +233,23 @@ function closeVote() {
     pickerOpen.value = false;
     activeNomination.value = null;
 
+    const previousTrigger = voteTrigger;
+    const previousNominationId = voteTriggerNominationId;
+    voteTrigger = null;
+    voteTriggerNominationId = "";
+
     nextTick(() => {
-        if (voteTrigger?.isConnected) {
-            voteTrigger.focus({ preventScroll: true });
+        if (previousTrigger?.isConnected) {
+            previousTrigger.focus({ preventScroll: true });
             return;
         }
 
-        if (voteTriggerNominationId && rootElement.value) {
+        if (previousNominationId && rootElement.value) {
             const trigger = rootElement.value.querySelector(
-                '[data-nomination-id="' + voteTriggerNominationId + '"] .vote-action-button'
+                '[data-nomination-id="' + previousNominationId + '"] .vote-action-button'
             );
             trigger?.focus({ preventScroll: true });
         }
-        voteTrigger = null;
-        voteTriggerNominationId = "";
     });
 }
 
