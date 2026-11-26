@@ -1,0 +1,3 @@
+<template>
+    <section id="home-page" class="page-view" aria-label="Главная страница"></section>
+</template>

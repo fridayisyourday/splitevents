@@ -1,20 +1,161 @@
 <script setup>
-import { onMounted } from "vue";
+import { onBeforeUnmount, onMounted } from "vue";
 import AppHeader from "./components/AppHeader.vue";
-import ProfilePage from "./components/ProfilePage.vue";
-import FriendsPage from "./components/FriendsPage.vue";
-import UserProfilePage from "./components/UserProfilePage.vue";
 import EventsPage from "./components/EventsPage.vue";
-import legacyPagesBeforeFriends from "./legacy-pages-before-friends.html?raw";
-import legacyPagesBeforeProfile from "./legacy-pages-before-profile.html?raw";
-import legacyPagesAfterProfile from "./legacy-pages-after-profile.html?raw";
+import FriendsPage from "./components/FriendsPage.vue";
+import HomePage from "./components/HomePage.vue";
+import NominationsPage from "./components/NominationsPage.vue";
+import ProfilePage from "./components/ProfilePage.vue";
+import ServersPage from "./components/ServersPage.vue";
+import UserProfilePage from "./components/UserProfilePage.vue";
+import { createNotifications } from "../js/notifications.js?v=20261126-2";
+import {
+    initTelegram,
+    setTelegramBackButtonVisible
+} from "../js/telegram.js?v=20261126-6";
+
+const pageElements = {
+    home: "home-page",
+    profile: "profile-page",
+    friends: "friends-page",
+    users: "user-profile-page",
+    events: "events-page",
+    servers: "servers-page",
+    nominations: "nominations-page"
+};
+
+const pageTitles = {
+    home: "Сплит — SplitEvents",
+    profile: "Профиль — Сплит",
+    friends: "Друзья — Сплит",
+    users: "Профиль — Сплит",
+    events: "Текущие события — Сплит",
+    servers: "Сервера — Сплит",
+    nominations: "НОМИНАЦИИ 2026 — Сплит"
+};
+
+let menuOpen = false;
+let notifications = null;
+
+function getCurrentPage() {
+    const hash = window.location.hash || "#/";
+    const withoutHash = hash.startsWith("#") ? hash.slice(1) : hash;
+    const page = withoutHash.split("?")[0].split("/").filter(Boolean)[0] || "home";
+    return Object.prototype.hasOwnProperty.call(pageElements, page) ? page : "home";
+}
+
+function updateTelegramBackButton() {
+    setTelegramBackButtonVisible(Boolean(menuOpen || getCurrentPage() !== "home"));
+}
+
+function navigateTo(page) {
+    const safePage = Object.prototype.hasOwnProperty.call(pageElements, page)
+        ? page
+        : "home";
+    const target = safePage === "home" ? "#/" : "#/" + safePage;
+
+    if (window.location.hash === target) {
+        renderPage(true);
+    } else {
+        window.location.hash = target;
+    }
+}
+
+function renderPage(moveFocus = false) {
+    const page = getCurrentPage();
+
+    Object.entries(pageElements).forEach(([name, id]) => {
+        const element = document.getElementById(id);
+        if (element) element.hidden = name !== page;
+    });
+
+    window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
+        detail: { page }
+    }));
+
+    updateTelegramBackButton();
+    document.title = pageTitles[page];
+
+    if (moveFocus) {
+        document.getElementById("main-content")?.focus({ preventScroll: true });
+    }
+}
+
+function handleMenuState(event) {
+    menuOpen = Boolean(event.detail?.open);
+    updateTelegramBackButton();
+}
+
+function handleNotification(event) {
+    const notification = event.detail || {};
+    if (!notifications) return;
+
+    if (notification.type === "error") {
+        notifications.error(notification.message, notification.detail);
+    } else if (notification.type === "warning") {
+        notifications.warning(notification.message, notification.detail);
+    }
+}
+
+function handleHashChange() {
+    if (menuOpen) {
+        window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+            detail: { action: "close", restoreFocus: false }
+        }));
+    }
+    renderPage(true);
+}
+
+function handleBack() {
+    if (menuOpen) {
+        window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+            detail: { action: "close", restoreFocus: true }
+        }));
+        return;
+    }
+
+    const page = getCurrentPage();
+    if (page === "users") {
+        navigateTo("friends");
+    } else if (page === "nominations") {
+        navigateTo("events");
+    } else if (page !== "home") {
+        navigateTo("home");
+    }
+}
+
+function handleRerender() {
+    renderPage(true);
+}
+
+function handlePageShow() {
+    renderPage(false);
+}
 
 onMounted(() => {
-    // Remaining legacy controllers initialize servers and nominations.
-    // The shell, navigation, profiles, friends and events are Vue components.
-    import("../app.js").catch((error) => {
-        console.error("SplitEvents: legacy page controllers failed to start", error);
-    });
+    notifications = createNotifications(document.getElementById("notification-region"));
+    window.addEventListener("splitevents:notification", handleNotification);
+    window.addEventListener("splitevents:menu-state", handleMenuState);
+    window.addEventListener("splitevents:rerender", handleRerender);
+    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("pageshow", handlePageShow);
+
+    initTelegram({ onBack: handleBack });
+
+    window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+        detail: { action: "sync-state" }
+    }));
+
+    renderPage(false);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("splitevents:notification", handleNotification);
+    window.removeEventListener("splitevents:menu-state", handleMenuState);
+    window.removeEventListener("splitevents:rerender", handleRerender);
+    window.removeEventListener("hashchange", handleHashChange);
+    window.removeEventListener("pageshow", handlePageShow);
+    notifications?.clear();
 });
 </script>
 
@@ -46,25 +187,15 @@ onMounted(() => {
         <AppHeader />
 
         <main id="main-content" class="page-content" tabindex="-1">
-            <div class="legacy-page-fragment" v-html="legacyPagesBeforeProfile"></div>
+            <HomePage />
             <ProfilePage />
-            <div class="legacy-page-fragment" v-html="legacyPagesBeforeFriends"></div>
+            <EventsPage />
+            <ServersPage />
             <FriendsPage />
             <UserProfilePage />
-            <EventsPage />
-            <div class="legacy-page-fragment" v-html="legacyPagesAfterProfile"></div>
+            <NominationsPage />
         </main>
 
-        <div
-            id="notification-region"
-            class="notification-region"
-            aria-label="уведомления"
-        ></div>
+        <div id="notification-region" class="notification-region" aria-label="уведомления"></div>
     </div>
 </template>
-
-<style>
-.legacy-page-fragment {
-    display: contents;
-}
-</style>
