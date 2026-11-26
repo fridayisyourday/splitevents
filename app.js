@@ -9,7 +9,7 @@ import {
 } from "./js/telegram.js?v=20261126-4";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-2";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-16";
+import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
 import {
@@ -17,7 +17,7 @@ import {
     getNextActiveEventExpiry
 } from "./js/events/active-state.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-4";
-import { createNominationsWidget } from "./js/nominations.js?v=20261126-14";
+import { createNominationsWidget } from "./js/nominations.js?v=20261126-15";
 
 const pageElements = {
     home: document.getElementById("home-page"),
