@@ -1,3 +1,4 @@
+/* Loaded after component styles so shared tokens and component rules need no !important overrides. */
 /* SplitEvents — central monochrome design system.
    Edit this file to update the shared palette, sizing, shadows, controls and overlays. */
 :root {
@@ -111,7 +112,7 @@ body,
 #app,
 .page-content,
 .page-view {
-    background: var(--app-background) !important;
+    background: var(--app-background);
     color: var(--app-text);
 }
 
@@ -124,7 +125,7 @@ body,
 }
 
 .site-header {
-    background: var(--app-background) !important;
+    background: var(--app-background);
     box-shadow: var(--app-shadow-header);
 }
 
@@ -145,9 +146,9 @@ body,
 .menu-panel,
 .vote-dialog,
 .vote-dialog--nomination {
-    background: var(--app-card-background) !important;
+    background: var(--app-card-background);
     color: var(--app-text);
-    box-shadow: var(--app-shadow-card) !important;
+    box-shadow: var(--app-shadow-card);
 }
 
 .profile-card,
@@ -158,6 +159,7 @@ body,
 
 .menu-panel {
     border-radius: 0 var(--app-radius-card) var(--app-radius-card) 0;
+    box-shadow: var(--app-drawer-shadow);
 }
 
 .profile-avatar-placeholder svg {
@@ -191,7 +193,7 @@ body,
 .event-card {
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
-    box-shadow: var(--app-shadow-card) !important;
+    box-shadow: var(--app-shadow-card);
 }
 
 .event-card-title,
@@ -208,32 +210,32 @@ body,
 
 .vote-nomination-card {
     border-radius: var(--app-radius-card);
-    background: var(--app-card-background) !important;
+    background: var(--app-card-background);
     color: var(--app-text);
-    box-shadow: var(--app-shadow-card) !important;
+    box-shadow: var(--app-shadow-card);
 }
 
 .vote-candidate-card {
     border-radius: var(--app-radius-card);
-    background: var(--app-card-background) !important;
+    background: var(--app-card-background);
     color: var(--app-text);
-    box-shadow: var(--app-shadow-card) !important;
+    box-shadow: var(--app-shadow-card);
 }
 
 .vote-nomination-title,
 .vote-selected-nominee {
-    color: var(--app-text) !important;
+    color: var(--app-text);
 }
 
 .vote-candidate-name,
 .vote-suggest-text {
-    color: var(--app-text) !important;
+    color: var(--app-text);
 }
 
 .vote-logo-wrap,
 .vote-add-symbol,
 .vote-suggest-symbol {
-    border: 0 !important;
+    border: 0;
 }
 
 .vote-add-symbol,
@@ -250,12 +252,7 @@ body,
     color: var(--app-text);
 }
 
-.menu-panel {
-    background: var(--app-card-background) !important;
-}
-
-.menu-item-badge,
-.coming-soon-badge {
+.menu-item-badge {
     display: inline-flex;
     min-width: 24px;
     min-height: 24px;
@@ -276,7 +273,7 @@ body,
 }
 
 /* The "soon" marker uses the same white accent treatment as an active-page badge. */
-.coming-soon-badge {
+.menu-item-badge--accent {
     background: var(--app-badge-active-background);
     color: var(--app-badge-active-color);
     box-shadow: none;
@@ -285,37 +282,37 @@ body,
 /* All interactive controls share one solid treatment and 48px hit area. */
 .ui-button {
     box-sizing: border-box;
-    height: 48px !important;
-    min-height: 48px !important;
-    padding: 0 16px !important;
-    border: 0 !important;
-    border-radius: var(--app-radius-control) !important;
-    background: var(--app-button-background) !important;
-    color: var(--app-button-color) !important;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: var(--app-radius-control);
+    background: var(--app-button-background);
+    color: var(--app-button-color);
     box-shadow: var(--app-shadow-control);
     font-family: var(--app-font-family);
-    font-size: var(--app-button-font-size) !important;
-    font-weight: var(--app-button-font-weight) !important;
+    font-size: var(--app-button-font-size);
+    font-weight: var(--app-button-font-weight);
     line-height: 1.2;
     transition: var(--app-button-transition);
 }
 
 .ui-button--icon {
-    flex: 0 0 48px !important;
-    width: 48px !important;
-    height: 48px !important;
-    min-height: 48px !important;
-    padding: 0 !important;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 0;
 }
 
 .ui-button--round {
-    border-radius: var(--app-radius-control) !important;
+    border-radius: var(--app-radius-control);
 }
 
 .ui-button--nav {
     justify-content: flex-start;
     width: 100%;
-    min-height: 48px !important;
+    min-height: 48px;
     text-align: left;
 }
 
@@ -328,15 +325,15 @@ body,
 
 /* Keep the Human Glaze status pill fully legible; only its label is dimmed. */
 .menu-item-coming-soon:disabled {
-    opacity: 1 !important;
-    cursor: default !important;
+    opacity: 1;
+    cursor: default;
 }
 
 .menu-item-coming-soon:disabled .menu-item-label {
     opacity: var(--app-disabled-opacity);
 }
 
-.menu-item-coming-soon:disabled .coming-soon-badge {
+.menu-item-coming-soon:disabled .menu-item-badge--accent {
     opacity: 1;
 }
 
@@ -352,7 +349,7 @@ body,
 input:not([type="file"]),
 textarea,
 select {
-    border: 0 !important;
+    border: 0;
     border-radius: var(--app-radius-control);
     background: var(--app-secondary);
     color: var(--app-on-secondary);
@@ -367,9 +364,9 @@ textarea::placeholder {
 
 /* One outline-icon language: 24px canvas, 2px rounded strokes. */
 svg {
-    stroke-width: var(--app-icon-stroke) !important;
-    stroke-linecap: round !important;
-    stroke-linejoin: round !important;
+    stroke-width: var(--app-icon-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .header-button svg,
@@ -386,7 +383,7 @@ svg {
 }
 
 .menu-item-icon {
-    display: none !important;
+    display: none;
 }
 
 .menu-navigation {
@@ -396,49 +393,49 @@ svg {
 /* The top-level menu controls are icon-only; navigation entries are text-only. */
 .header-button,
 .menu-close-button {
-    background: transparent !important;
-    color: var(--app-text) !important;
-    box-shadow: none !important;
+    background: transparent;
+    color: var(--app-text);
+    box-shadow: none;
 }
 
 .menu-navigation .ui-button--nav {
     justify-content: flex-start;
-    min-height: 48px !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: var(--app-text) !important;
-    box-shadow: none !important;
+    min-height: 48px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--app-text);
+    box-shadow: none;
 }
 
 .menu-navigation .menu-item[aria-current="page"] {
-    min-height: 48px !important;
-    padding: 0 14px !important;
-    border-radius: var(--app-radius-control) !important;
-    background: var(--app-nav-active-background) !important;
-    color: var(--app-nav-active-color) !important;
-    box-shadow: var(--app-shadow-control) !important;
+    min-height: 48px;
+    padding: 0 14px;
+    border-radius: var(--app-radius-control);
+    background: var(--app-nav-active-background);
+    color: var(--app-nav-active-color);
+    box-shadow: var(--app-shadow-control);
     font-weight: var(--app-font-weight-bold);
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 .menu-navigation .menu-item[aria-current="page"] .menu-item-label {
-    color: var(--app-nav-active-color) !important;
+    color: var(--app-nav-active-color);
 }
 
 .menu-navigation .menu-item[aria-current="page"] .menu-item-badge {
-    background: var(--app-badge-active-background) !important;
-    color: var(--app-badge-active-color) !important;
-    box-shadow: none !important;
+    background: var(--app-badge-active-background);
+    color: var(--app-badge-active-color);
+    box-shadow: none;
 }
 
 .menu-navigation .menu-item:not(:disabled):hover {
-    background: transparent !important;
+    background: transparent;
     opacity: 0.72;
 }
 
 .menu-navigation .menu-item[aria-current="page"]:hover {
-    background: var(--app-nav-active-background) !important;
+    background: var(--app-nav-active-background);
     opacity: 1;
 }
 
@@ -446,25 +443,21 @@ svg {
    dialog, so it intentionally reuses the first backdrop instead of darkening twice. */
 .menu-backdrop,
 .vote-overlay:not(.vote-picker-overlay) {
-    background: var(--app-overlay-backdrop) !important;
+    background: var(--app-overlay-backdrop);
     -webkit-backdrop-filter: blur(var(--app-overlay-blur));
     backdrop-filter: blur(var(--app-overlay-blur));
 }
 
 .vote-picker-overlay {
-    background: transparent !important;
+    background: transparent;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-}
-
-.menu-panel {
-    box-shadow: var(--app-drawer-shadow) !important;
 }
 
 .vote-dialog,
 .vote-dialog--nomination {
     border-radius: var(--app-radius-card);
-    box-shadow: var(--app-shadow-card) !important;
+    box-shadow: var(--app-shadow-card);
 }
 
 .profile-media-shade {
@@ -477,7 +470,7 @@ svg {
     .event-card,
     .vote-nomination-card,
     .vote-candidate-card {
-        box-shadow: var(--app-shadow-card) !important;
+        box-shadow: var(--app-shadow-card);
     }
 
     .site-header {
@@ -489,6 +482,6 @@ svg {
     .ui-button,
     .menu-backdrop,
     .menu-panel {
-        transition: none !important;
+        transition: none;
     }
 }
