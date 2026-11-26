@@ -57,7 +57,7 @@ function formatPart(value) {
     return String(value).padStart(2, "0");
 }
 
-export function createEventCard(event, { onToggleHidden, isHidden = false } = {}) {
+export function createEventCard(event, { onToggleHidden, onParticipate, isHidden = false } = {}) {
     const card = createElement("article", "event-card");
     card.dataset.eventId = event.id;
 
@@ -125,9 +125,13 @@ export function createEventCard(event, { onToggleHidden, isHidden = false } = {}
         event.actionLabel || "Принять участие"
     );
     action.type = "button";
-    action.disabled = true;
     action.setAttribute("aria-describedby", descriptionId);
-    action.title = "Участие пока не подключено";
+    action.title = "Открыть страницу участия";
+    action.addEventListener("click", () => {
+        if (typeof onParticipate === "function") {
+            onParticipate(event);
+        }
+    });
 
     const visibilityButton = createElement(
         "button",
