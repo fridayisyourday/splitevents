@@ -154,6 +154,198 @@ async function verifyTelegramInitData(initData, botToken) {
   }
 }
 
+
+function isSupportedImageFile(file, bytes) {
+  if (!file || file.size <= 0 || file.size > 5 * 1024 * 1024) return false;
+
+  const matches = {
+    "image/jpeg": bytes.length >= 3 &&
+      bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff,
+    "image/png": bytes.length >= 8 &&
+      bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e &&
+      bytes[3] === 0x47 && bytes[4] === 0x0d && bytes[5] === 0x0a &&
+      bytes[6] === 0x1a && bytes[7] === 0x0a,
+    "image/webp": bytes.length >= 12 &&
+      String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+      String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
+  };
+
+  return matches[file.type] === true;
+}
+
+function imageKitAuthorization(privateKey) {
+  return "Basic " + btoa(String(privateKey).trim() + ":");
+}
+
+async function deleteImageKitFile(privateKey, fileId) {
+  if (!fileId) return true;
+
+  const response = await fetch(
+    "https://api.imagekit.io/v1/files/" + encodeURIComponent(fileId),
+    {
+      method: "DELETE",
+      headers: {
+        "Authorization": imageKitAuthorization(privateKey)
+      }
+    }
+  );
+
+  return response.ok || response.status === 404;
+}
+
+async function uploadProfileMedia(request, env, origin) {
+  if (!env.BOT_TOKEN) {
+    return json({ error: "telegram_auth_not_configured" }, 503, origin);
+  }
+  if (!env.IMAGEKIT_PRIVATE_KEY) {
+    return json({ error: "media_storage_not_configured" }, 503, origin);
+  }
+
+  let form;
+  try {
+    form = await request.formData();
+  } catch {
+    return json({ error: "invalid_media_payload" }, 400, origin);
+  }
+
+  const initData = form.get("init_data");
+  const mediaType = form.get("media_type");
+  const file = form.get("file");
+
+  if (mediaType !== "avatar" && mediaType !== "banner") {
+    return json({ error: "invalid_media_type" }, 400, origin);
+  }
+  if (!file || typeof file.arrayBuffer !== "function" || typeof file.size !== "number") {
+    return json({ error: "missing_image_file" }, 400, origin);
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    return json({ error: "image_too_large" }, 413, origin);
+  }
+
+  const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+  if (!isSupportedImageFile(file, bytes)) {
+    return json({ error: "unsupported_image_format" }, 415, origin);
+  }
+
+  const verification = await verifyTelegramInitData(
+    typeof initData === "string" ? initData : "",
+    String(env.BOT_TOKEN).trim()
+  );
+  if (!verification.user) {
+    return json({
+      error: "invalid_telegram_init_data",
+      reason: verification.reason || "verification_failed"
+    }, 401, origin);
+  }
+
+  const telegramId = String(verification.user.id);
+  const urlColumn = mediaType === "avatar" ? "avatar_url" : "banner_url";
+  const fileIdColumn = mediaType === "avatar" ? "avatar_file_id" : "banner_file_id";
+
+  try {
+    await env.DB.prepare(
+      "INSERT INTO users (telegram_id, username, first_name, last_name, updated_at) " +
+      "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+      "ON CONFLICT(telegram_id) DO UPDATE SET " +
+      "username=excluded.username, first_name=excluded.first_name, " +
+      "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
+    ).bind(
+      telegramId,
+      verification.user.username || null,
+      verification.user.first_name || "",
+      verification.user.last_name || ""
+    ).run();
+  } catch (error) {
+    console.error("Split API: profile media user upsert failed", error?.name || "Error");
+    return json({ error: "database_unavailable" }, 503, origin);
+  }
+
+  let previous;
+  try {
+    previous = await env.DB.prepare(
+      "SELECT " + fileIdColumn + " AS file_id FROM users WHERE telegram_id=?"
+    ).bind(telegramId).first();
+  } catch (error) {
+    console.error("Split API: profile media lookup failed", error?.name || "Error");
+    return json({ error: "database_unavailable" }, 503, origin);
+  }
+
+  const extension = file.type === "image/png" ? "png"
+    : file.type === "image/webp" ? "webp" : "jpg";
+  const fileName = mediaType + "-" + crypto.randomUUID() + "." + extension;
+  const uploadForm = new FormData();
+  uploadForm.set("file", file, fileName);
+  uploadForm.set("fileName", fileName);
+  uploadForm.set("folder", "/splitevents/users/" + telegramId + "/profile");
+  uploadForm.set("useUniqueFileName", "false");
+  uploadForm.set("overwriteFile", "false");
+  uploadForm.set("isPrivateFile", "false");
+  uploadForm.set("tags", "splitevents,profile," + mediaType);
+  uploadForm.set("responseFields", "fileId,url,filePath,name");
+
+  let uploaded;
+  try {
+    const uploadResponse = await fetch(
+      "https://upload.imagekit.io/api/v1/files/upload",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": imageKitAuthorization(env.IMAGEKIT_PRIVATE_KEY)
+        },
+        body: uploadForm
+      }
+    );
+
+    const payload = await uploadResponse.json().catch(() => null);
+    if (!uploadResponse.ok || !payload?.fileId || !payload?.url) {
+      console.error(
+        "Split API: ImageKit upload failed",
+        uploadResponse.status,
+        uploadResponse.headers.get("x-ik-requestId") || "no_request_id"
+      );
+      return json({ error: "media_storage_unavailable" }, 502, origin);
+    }
+    uploaded = payload;
+  } catch (error) {
+    console.error("Split API: ImageKit request failed", error?.name || "Error");
+    return json({ error: "media_storage_unavailable" }, 502, origin);
+  }
+
+  try {
+    await env.DB.prepare(
+      "UPDATE users SET " + urlColumn + "=?, " + fileIdColumn +
+      "=?, updated_at=CURRENT_TIMESTAMP WHERE telegram_id=?"
+    ).bind(uploaded.url, uploaded.fileId, telegramId).run();
+
+    const user = await env.DB.prepare(
+      "SELECT telegram_id, username, first_name, last_name, display_name, " +
+      "bio, avatar_url, banner_url, is_public, created_at " +
+      "FROM users WHERE telegram_id=?"
+    ).bind(telegramId).first();
+
+    if (previous?.file_id && previous.file_id !== uploaded.fileId) {
+      try {
+        const deleted = await deleteImageKitFile(env.IMAGEKIT_PRIVATE_KEY, previous.file_id);
+        if (!deleted) {
+          console.warn("Split API: previous ImageKit asset could not be deleted");
+        }
+      } catch {
+        console.warn("Split API: previous ImageKit asset cleanup failed");
+      }
+    }
+
+    return json({ user }, 200, origin);
+  } catch (error) {
+    console.error("Split API: profile media database update failed", error?.name || "Error");
+    try {
+      await deleteImageKitFile(env.IMAGEKIT_PRIVATE_KEY, uploaded.fileId);
+    } catch {
+      console.warn("Split API: orphan ImageKit asset cleanup failed");
+    }
+    return json({ error: "database_unavailable" }, 503, origin);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const requestOrigin = request.headers.get("Origin") || "";
@@ -177,6 +369,15 @@ export default {
         }, 200, requestOrigin);
       } catch {
         return json({ ok: false, error: "database_unavailable" }, 503, requestOrigin);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/profile/media") {
+      try {
+        return await uploadProfileMedia(request, env, requestOrigin);
+      } catch (error) {
+        console.error("Split API: profile media request failed", error?.name || "Error");
+        return json({ error: "media_storage_unavailable" }, 502, requestOrigin);
       }
     }
 
