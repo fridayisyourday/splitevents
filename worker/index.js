@@ -281,7 +281,7 @@ async function uploadProfileMedia(request, env, origin) {
   const uploadForm = new FormData();
   uploadForm.set("file", file, fileName);
   uploadForm.set("fileName", fileName);
-  uploadForm.set("folder", "/splitevents/users/" + telegramId + "/profile");
+  uploadForm.set("folder", "/splitevents/profile");
   uploadForm.set("useUniqueFileName", "false");
   uploadForm.set("overwriteFile", "false");
 
