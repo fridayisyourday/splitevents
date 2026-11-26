@@ -76,6 +76,24 @@ export function initTelegram({ onBack } = {}) {
     backButtonHandler = typeof onBack === "function" ? onBack : null;
 
     if (!webApp) {
+        const mediaQuery = window.matchMedia
+            ? window.matchMedia("(prefers-color-scheme: dark)")
+            : null;
+
+        function applySystemTheme() {
+            const isDark = Boolean(mediaQuery && mediaQuery.matches);
+            document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+
+            const themeMeta = document.querySelector('meta[name="theme-color"]');
+            if (themeMeta) themeMeta.content = isDark ? "#121418" : "#ffffff";
+        }
+
+        applySystemTheme();
+
+        if (mediaQuery && typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", applySystemTheme);
+        }
+
         console.info("SplitEvents: opened in a regular browser");
         return;
     }
