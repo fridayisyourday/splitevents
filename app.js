@@ -12,8 +12,8 @@ import {
     syncTelegramUser,
     updateTelegramDisplayName,
     uploadProfileImage
-} from "./js/api.js?v=20261126-4";
-import { createMenu } from "./js/menu.js?v=20261126-4";
+} from "./js/api.js?v=20261126-5";
+import { createMenu } from "./js/menu.js?v=20261126-5";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
 import { createProfile } from "./js/profile.js?v=20261126-8";
 import { createFriendsPage } from "./js/pages/friends.js?v=20261126-1";
