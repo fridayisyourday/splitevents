@@ -99,7 +99,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **События.** Список событий — `js/events/data.js`; шаблон карточки — `js/pages/event-card.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
-**Профиль, друзья и API.** Интерфейс собственного профиля — `js/profile.js`; каталог друзей — `js/pages/friends.js`; чужой профиль — `js/pages/user-profile.js`; общие элементы отображения профиля — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
+**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `js/pages/friends.js`; чужой профиль — `js/pages/user-profile.js`; общие элементы отображения профиля — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
@@ -129,4 +129,4 @@ Telegram Mini App для совместных мероприятий, профи
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
 4. Перед публикацией выполните `npm run check` и `npm run build`.
 
-GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages.html`. Шапка, боковая навигация и управление ими уже реализованы компонентом `src/components/AppHeader.vue`.
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages-before-profile.html` и `src/legacy-pages-after-profile.html`. Шапка и боковая навигация реализованы в `src/components/AppHeader.vue`, собственный профиль — в `src/components/ProfilePage.vue`.
