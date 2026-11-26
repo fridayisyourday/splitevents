@@ -150,21 +150,7 @@ button.menu-item {
     cursor: default;
 }
 
-.coming-soon-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    min-width: 58px;
-    min-height: 28px;
-    padding: 4px 10px;
-    border-radius: 1000px;
-    background: var(--app-secondary);
-    color: var(--app-hint);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-}
+/* Human Glaze uses the shared rounded menu-badge component. */
 
 body.menu-open {
     overflow: hidden;
