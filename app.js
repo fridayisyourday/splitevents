@@ -147,7 +147,7 @@ if (missingPages.length || !mainContent) {
     }
 
     function getPublicUserId() {
-        const match = (window.location.hash || "").match(/^#\\/users\\/([0-9a-f]{32})(?:[/?]|$)/i);
+        const match = (window.location.hash || "").match(/^#\/users\/([0-9a-f]{32})(?:[/?]|$)/i);
         return match ? match[1] : "";
     }
 
