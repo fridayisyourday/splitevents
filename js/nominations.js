@@ -347,7 +347,7 @@ export function createNominationsWidget(root) {
 
         const plus = document.createElement("div");
         plus.className = "vote-add-symbol";
-        if (["pumpkin-king", "pumpkin-queen", "nextgen"].includes(activeNomination.id)) {
+        if (["pumpkin-king", "pumpkin-queen"].includes(activeNomination.id)) {
             plus.classList.add("vote-add-symbol--round");
         }
         plus.textContent = "+";
@@ -486,7 +486,7 @@ export function createNominationsWidget(root) {
             return people.concat([{ type: "suggest-other" }]);
         }
         if (activeNomination.type === "fixed") {
-            return people.concat([{ type: "add-card" }]);
+            return people;
         }
         return people.concat([{ type: "add-card" }]);
     }
