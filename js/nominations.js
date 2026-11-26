@@ -98,6 +98,9 @@ export function createNominationsWidget(root) {
             image.addEventListener("error", function () {
                 const fallback = document.createElement("div");
                 fallback.className = fallbackClass;
+                if (image.classList.contains("vote-nomination-logo")) {
+                    fallback.classList.add("vote-nomination-logo");
+                }
                 fallback.textContent = initials(person.name);
                 image.replaceWith(fallback);
             }, { once: true });
