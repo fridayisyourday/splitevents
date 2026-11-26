@@ -8,6 +8,7 @@ import {
 } from "./storage.js?v=20261126-1";
 
 const $ = (id) => document.getElementById(id);
+const MEDIA_UPLOAD_ERROR_DURATION = 1000;
 
 const DISPLAY_NAME_ERRORS = Object.freeze({
     invalid_telegram_init_data: "telegram не смог подтвердить данные входа. закрой и снова открой мини-приложение.",
@@ -366,7 +367,7 @@ export function createProfile({
 
         item.uploadStateTimer = window.setTimeout(() => {
             setUploadButtonState(type, "idle");
-        }, 1000);
+        }, MEDIA_UPLOAD_ERROR_DURATION);
     }
 
     async function handleImage(input, type) {

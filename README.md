@@ -7,9 +7,10 @@ Telegram Mini App для совместных мероприятий, профи
 - Публикация: GitHub Pages из корня ветки `main`.
 - Точка входа: `index.html` → `app.js`.
 - Сборки и сторонних npm-зависимостей нет: браузер загружает ES-модули и CSS напрямую. Node.js используется только для проверки синтаксиса.
-- Маршруты: `#/`, `#/profile`, `#/events`, `#/servers`, `#/nominations?event=...`.
+- Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
-- Изображения профиля хранятся в ImageKit Media Library; приватный ImageKit API key хранится только в секрете Worker. D1 хранит URL и file ID текущих изображений.
+- Изображения профиля хранятся в ImageKit Media Library; приватный ImageKit API key хранится только в секрете Worker. D1 хранит URL и file ID текущих изображений, а также случайный стабильный публичный ID для перехода к профилю.
+- Каталог друзей загружается из D1 через авторизованный Worker; текущий пользователь исключается из списка. Публичные ссылки используют случайные идентификаторы, а не Telegram ID.
 - Голосование пока работает только в памяти текущего запуска. Каталог номинантов и событий хранится в исходниках; локальный кэш изображений профиля — в IndexedDB, скрытые события — в localStorage.
 
 ## Структура
@@ -34,6 +35,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── pages.css
 │   ├── menu.css
 │   ├── profile.css
+│   ├── friends.css
 │   ├── events.css
 │   ├── nominations.css
 │   ├── nominations-carousel.css
@@ -61,6 +63,9 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   ├── hidden-state.js
 │   │   └── active-state.js
 │   └── pages/
+│       ├── friends.js
+│       ├── user-profile.js
+│       ├── profile-presentation.js
 │       ├── page-shell.js
 │       ├── empty-state.js
 │       ├── event-card.js
@@ -69,7 +74,8 @@ Telegram Mini App для совместных мероприятий, профи
 ├── worker/
 │   ├── index.js
 │   └── migrations/
-│       └── 0002_profile_media_file_ids.sql
+│       ├── 0002_profile_media_file_ids.sql
+│       └── 0003_public_user_ids.sql
 ├── package.json
 ├── scripts/
 │   └── check-js.mjs
@@ -85,7 +91,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **События.** Список событий — `js/events/data.js`; шаблон карточки — `js/pages/event-card.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
-**Профиль и API.** Интерфейс — `js/profile.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1 и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
+**Профиль, друзья и API.** Интерфейс собственного профиля — `js/profile.js`; каталог друзей — `js/pages/friends.js`; чужой профиль — `js/pages/user-profile.js`; общие элементы отображения профиля — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 

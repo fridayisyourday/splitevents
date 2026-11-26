@@ -111,3 +111,65 @@ export async function uploadProfileImage(initData, mediaType, blob) {
 
     return payload.user;
 }
+
+
+async function requestDirectoryData(path, initData, fields = {}) {
+    if (typeof initData !== "string" || !initData.trim()) {
+        throw new Error("missing_telegram_init_data");
+    }
+
+    const form = new URLSearchParams();
+    form.set("init_data", initData);
+
+    Object.entries(fields).forEach(([key, value]) => {
+        form.set(key, String(value));
+    });
+
+    const response = await fetch(API_BASE_URL + path, {
+        method: "POST",
+        body: form,
+        credentials: "omit",
+        cache: "no-store"
+    });
+
+    let payload = null;
+    try {
+        payload = await response.json();
+    } catch {
+        throw new Error("invalid_server_response");
+    }
+
+    if (!response.ok) {
+        const reason = payload && (payload.reason || payload.error)
+            ? (payload.reason || payload.error)
+            : "HTTP " + response.status;
+        throw new Error(reason);
+    }
+
+    return payload;
+}
+
+export async function fetchFriends(initData) {
+    const payload = await requestDirectoryData("/api/friends", initData);
+    if (!payload || !Array.isArray(payload.users)) {
+        throw new Error("invalid_friends_response");
+    }
+
+    return payload.users;
+}
+
+export async function fetchPublicProfile(initData, publicId) {
+    if (typeof publicId !== "string" || !/^[0-9a-f]{32}$/i.test(publicId)) {
+        throw new Error("invalid_public_id");
+    }
+
+    const payload = await requestDirectoryData("/api/user", initData, {
+        public_id: publicId
+    });
+
+    if (!payload || !payload.user || payload.user.public_id !== publicId) {
+        throw new Error("invalid_public_profile_response");
+    }
+
+    return payload.user;
+}

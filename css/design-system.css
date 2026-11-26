@@ -82,6 +82,13 @@
     --app-button-font-size: 14px;
     --app-button-font-weight: 700;
     --app-button-transition: background-color 160ms ease, color 160ms ease, transform 160ms ease, filter 160ms ease;
+
+    /* Shared feedback timing for uploads and other asynchronous controls. */
+    --app-status-icon-transition: opacity 180ms ease, transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    --app-status-spinner-duration: 800ms;
+    --app-status-shake-duration: 360ms;
+    --app-status-error-duration: 1000ms;
+
     --app-icon-size: 24px;
     --app-icon-stroke: 2px;
 }

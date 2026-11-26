@@ -20,6 +20,7 @@ function json(data, status = 200, origin = "") {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
       ...corsHeaders(origin)
     }
   });
@@ -154,6 +155,54 @@ async function verifyTelegramInitData(initData, botToken) {
   }
 }
 
+async function authenticateUserForm(request, env) {
+  if (!env.BOT_TOKEN) {
+    return { error: "telegram_auth_not_configured", status: 503 };
+  }
+
+  const contentType = request.headers.get("Content-Type") || "";
+  if (!contentType.includes("application/x-www-form-urlencoded")) {
+    return { error: "invalid_request", status: 400 };
+  }
+
+  const contentLength = Number(request.headers.get("Content-Length") || 0);
+  if (Number.isFinite(contentLength) && contentLength > 32 * 1024) {
+    return { error: "request_too_large", status: 413 };
+  }
+
+  let form;
+  try {
+    form = new URLSearchParams(await request.text());
+  } catch {
+    return { error: "invalid_request", status: 400 };
+  }
+
+  const initData = form.get("init_data") || "";
+  if (!initData) {
+    return { error: "missing_telegram_init_data", status: 401 };
+  }
+
+  const verification = await verifyTelegramInitData(
+    initData,
+    String(env.BOT_TOKEN).trim()
+  );
+  if (!verification.user) {
+    return {
+      error: "invalid_telegram_init_data",
+      reason: verification.reason || "verification_failed",
+      status: 401
+    };
+  }
+
+  return { form, user: verification.user };
+}
+
+function publicProfileName(row) {
+  return row.display_name ||
+    [row.first_name, row.last_name].filter(Boolean).join(" ").trim() ||
+    "пользователь";
+}
+
 
 function isSupportedImageFile(file, bytes) {
   if (!file || file.size <= 0 || file.size > 5 * 1024 * 1024) return false;
@@ -249,13 +298,14 @@ async function uploadProfileMedia(request, env, origin) {
 
   try {
     await env.DB.prepare(
-      "INSERT INTO users (telegram_id, username, first_name, last_name, updated_at) " +
-      "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+      "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
+      "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
       "ON CONFLICT(telegram_id) DO UPDATE SET " +
       "username=excluded.username, first_name=excluded.first_name, " +
       "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
     ).bind(
       telegramId,
+      crypto.randomUUID().replaceAll("-", ""),
       verification.user.username || null,
       verification.user.first_name || "",
       verification.user.last_name || ""
@@ -374,6 +424,76 @@ export default {
       }
     }
 
+
+    if (request.method === "POST" && url.pathname === "/api/friends") {
+      try {
+        const auth = await authenticateUserForm(request, env);
+        if (!auth.user) {
+          return json({
+            error: auth.error,
+            ...(auth.reason ? { reason: auth.reason } : {})
+          }, auth.status, requestOrigin);
+        }
+
+        const result = await env.DB.prepare(
+          "SELECT public_id, display_name, first_name, last_name, username, avatar_url " +
+          "FROM users WHERE telegram_id != ? AND public_id IS NOT NULL"
+        ).bind(String(auth.user.id)).all();
+
+        const users = (result.results || []).map((row) => ({
+          public_id: row.public_id,
+          display_name: publicProfileName(row),
+          username: row.username || "",
+          avatar_url: row.avatar_url || ""
+        }));
+
+        return json({ users }, 200, requestOrigin);
+      } catch (error) {
+        console.error("Split API: friends directory failed", error?.name || "Error");
+        return json({ error: "database_unavailable" }, 503, requestOrigin);
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/user") {
+      try {
+        const auth = await authenticateUserForm(request, env);
+        if (!auth.user) {
+          return json({
+            error: auth.error,
+            ...(auth.reason ? { reason: auth.reason } : {})
+          }, auth.status, requestOrigin);
+        }
+
+        const publicId = auth.form.get("public_id") || "";
+        if (!/^[0-9a-f]{32}$/i.test(publicId)) {
+          return json({ error: "invalid_public_id" }, 400, requestOrigin);
+        }
+
+        const user = await env.DB.prepare(
+          "SELECT public_id, display_name, first_name, last_name, username, " +
+          "avatar_url, banner_url " +
+          "FROM users WHERE public_id = ? AND telegram_id != ?"
+        ).bind(publicId, String(auth.user.id)).first();
+
+        if (!user) {
+          return json({ error: "user_not_found" }, 404, requestOrigin);
+        }
+
+        return json({
+          user: {
+            public_id: user.public_id,
+            display_name: publicProfileName(user),
+            username: user.username || "",
+            avatar_url: user.avatar_url || "",
+            banner_url: user.banner_url || ""
+          }
+        }, 200, requestOrigin);
+      } catch (error) {
+        console.error("Split API: public profile lookup failed", error?.name || "Error");
+        return json({ error: "database_unavailable" }, 503, requestOrigin);
+      }
+    }
+
     if (request.method === "POST" && url.pathname === "/api/profile/media") {
       try {
         return await uploadProfileMedia(request, env, requestOrigin);
@@ -446,13 +566,14 @@ export default {
       // A client can only update its own optional display_name.
       try {
         await env.DB.prepare(
-          "INSERT INTO users (telegram_id, username, first_name, last_name, updated_at) " +
-          "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+          "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
           "ON CONFLICT(telegram_id) DO UPDATE SET " +
           "username=excluded.username, first_name=excluded.first_name, " +
           "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
         ).bind(
           telegramId,
+          crypto.randomUUID().replaceAll("-", ""),
           user.username || null,
           user.first_name || "",
           user.last_name || ""
