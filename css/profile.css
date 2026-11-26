@@ -25,7 +25,7 @@
     margin: 0 auto;
     overflow: hidden;
     background: var(--app-card-background);
-    border: 2px solid var(--app-border);
+    border: var(--app-card-outline);
     border-radius: var(--app-radius-card);
     box-shadow: var(--app-shadow-card);
 }
