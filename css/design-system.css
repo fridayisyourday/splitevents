@@ -273,6 +273,13 @@ body,
     white-space: nowrap;
 }
 
+/* The "soon" marker uses the same white accent treatment as an active-page badge. */
+.coming-soon-badge {
+    background: var(--app-badge-active-background);
+    color: var(--app-badge-active-color);
+    box-shadow: none;
+}
+
 /* All interactive controls share one solid treatment and 48px hit area. */
 .ui-button {
     box-sizing: border-box;
@@ -426,6 +433,11 @@ svg {
 .menu-navigation .menu-item:not(:disabled):hover {
     background: transparent !important;
     opacity: 0.72;
+}
+
+.menu-navigation .menu-item[aria-current="page"]:hover {
+    background: var(--app-nav-active-background) !important;
+    opacity: 1;
 }
 
 /* Every modal uses the same backdrop token. The picker sits above the voting
