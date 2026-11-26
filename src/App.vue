@@ -2,12 +2,14 @@
 import { onMounted } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import ProfilePage from "./components/ProfilePage.vue";
+import FriendsPage from "./components/FriendsPage.vue";
+import legacyPagesBeforeFriends from "./legacy-pages-before-friends.html?raw";
 import legacyPagesBeforeProfile from "./legacy-pages-before-profile.html?raw";
 import legacyPagesAfterProfile from "./legacy-pages-after-profile.html?raw";
 
 onMounted(() => {
-    // Legacy page controllers still initialize friends, events and nominations.
-    // The shell, navigation and own profile are now Vue components.
+    // Remaining legacy controllers initialize public profiles, events and nominations.
+    // The shell, navigation, own profile and friends directory are Vue components.
     import("../app.js").catch((error) => {
         console.error("SplitEvents: legacy page controllers failed to start", error);
     });
@@ -44,6 +46,8 @@ onMounted(() => {
         <main id="main-content" class="page-content" tabindex="-1">
             <div class="legacy-page-fragment" v-html="legacyPagesBeforeProfile"></div>
             <ProfilePage />
+            <div class="legacy-page-fragment" v-html="legacyPagesBeforeFriends"></div>
+            <FriendsPage />
             <div class="legacy-page-fragment" v-html="legacyPagesAfterProfile"></div>
         </main>
 
