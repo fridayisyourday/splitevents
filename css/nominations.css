@@ -1182,6 +1182,7 @@
 .vote-dialog--nomination .vote-grid,
 .vote-picker-overlay .vote-grid {
     min-height: 100%;
+    align-content: center;
     align-content: safe center;
 }
 
