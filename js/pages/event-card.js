@@ -1,6 +1,5 @@
-import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
-
 /* Shared horizontal event-card template. New events provide data, not markup. */
+import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
 function createCountdownPart(part, unit) {
     const group = createElement("span", "event-countdown-part");
     const value = createElement("span", "event-countdown-value", "00");
