@@ -3,18 +3,9 @@ import {
     initTelegram,
     setTelegramBackButtonVisible,
     getTelegramUserId,
-    getTelegramName,
-    getTelegramTag,
-    getTelegramPhotoUrl,
     getTelegramInitData
 } from "./js/telegram.js?v=20261126-6";
-import {
-    syncTelegramUser,
-    updateTelegramDisplayName,
-    uploadProfileImage
-} from "./js/api.js?v=20261126-5";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
-import { createProfile } from "./js/profile.js?v=20261126-10";
 import { createFriendsPage } from "./js/pages/friends.js?v=20261126-4";
 import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-3";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-18";
@@ -49,6 +40,14 @@ if (missingPages.length || !mainContent) {
     );
 } else {
     const notifications = createNotifications(document.getElementById("notification-region"));
+    window.addEventListener("splitevents:notification", (event) => {
+        const notification = event.detail || {};
+        if (notification.type === "error") {
+            notifications.error(notification.message, notification.detail);
+        } else if (notification.type === "warning") {
+            notifications.warning(notification.message, notification.detail);
+        }
+    });
     let currentPage = null;
     let currentRouteKey = "";
     let menuOpen = false;
@@ -58,23 +57,6 @@ if (missingPages.length || !mainContent) {
 
     const telegramUserId = getTelegramUserId();
     const telegramInitData = getTelegramInitData();
-    let profileSyncPromise = Promise.resolve(null);
-
-    const profile = createProfile({
-        userId: telegramUserId,
-        getTelegramName,
-        getTelegramTag,
-        getTelegramPhotoUrl,
-        notifications,
-        saveDisplayName: telegramInitData
-            ? (displayName) => profileSyncPromise.then(
-                () => updateTelegramDisplayName(telegramInitData, displayName)
-            )
-            : null,
-        saveProfileImage: telegramInitData
-            ? (mediaType, blob) => uploadProfileImage(telegramInitData, mediaType, blob)
-            : null
-    });
 
     const friendsPage = createFriendsPage(pageElements.friends, {
         initData: telegramInitData,
@@ -190,10 +172,6 @@ if (missingPages.length || !mainContent) {
         const routeKey = page === "users" ? "users:" + publicUserId : page;
         const changed = routeKey !== currentRouteKey;
 
-        if (changed && currentPage === "profile" && page !== "profile") {
-            profile.leave();
-        }
-
         if (changed && currentPage === "events" && page !== "events") {
             eventsPage.stop();
         }
@@ -209,10 +187,6 @@ if (missingPages.length || !mainContent) {
         Object.entries(pageElements).forEach(([pageName, element]) => {
             element.hidden = pageName !== page;
         });
-
-        if (changed && page === "profile") {
-            profile.render();
-        }
 
         currentPage = page;
         window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
@@ -272,23 +246,6 @@ if (missingPages.length || !mainContent) {
         }
     });
 
-    // Telegram's initData is sent to the API for server-side signature
-    // verification. The raw value is never stored in browser storage or logged.
-    if (telegramInitData) {
-        profileSyncPromise = syncTelegramUser(
-            telegramInitData,
-            profile.getSavedNickname()
-        )
-            .then((serverProfile) => {
-                profile.applyServerProfile(serverProfile);
-                return serverProfile;
-            })
-            .catch((error) => {
-                console.warn("SplitEvents: Telegram account sync failed", error);
-                return null;
-            });
-    }
-
     window.addEventListener("hashchange", () => {
         if (menuOpen) {
             window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
@@ -308,12 +265,5 @@ if (missingPages.length || !mainContent) {
     });
 
     renderPage(false);
-    void profileSyncPromise.then((serverProfile) => profile.loadImages(serverProfile)).catch((error) => {
-        console.error("SplitEvents: profile images failed to load", error);
-        notifications.warning(
-            "не удалось загрузить изображения профиля",
-            "попробуй перезапустить приложение."
-        );
-    });
 
 }
