@@ -216,13 +216,6 @@
     overflow-wrap: anywhere;
 }
 
-.profile-media-status {
-    margin: 10px 0 0;
-    color: var(--app-hint);
-    font-size: var(--app-font-size-small);
-    line-height: 1.4;
-}
-
 @media (max-width: 480px) {
     .profile-cover {
         height: 170px;
