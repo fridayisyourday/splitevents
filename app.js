@@ -2,8 +2,7 @@
 import {
     initTelegram,
     setTelegramBackButtonVisible,
-    getTelegramUserId,
-    getTelegramInitData
+    getTelegramUserId
 } from "./js/telegram.js?v=20261126-6";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-18";
@@ -54,8 +53,6 @@ if (missingPages.length || !mainContent) {
     createNominationsWidget(document.getElementById("vote-widget"));
 
     const telegramUserId = getTelegramUserId();
-    const telegramInitData = getTelegramInitData();
-
     function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
         if (activeEventsBadgeTimeout !== null) {
             window.clearTimeout(activeEventsBadgeTimeout);
