@@ -143,6 +143,12 @@ export function setTelegramBackButtonVisible(visible) {
     }
 }
 
+export function getTelegramInitData() {
+    return webApp && typeof webApp.initData === "string"
+        ? webApp.initData
+        : "";
+}
+
 export function getTelegramUserId() {
     return user && user.id !== undefined ? String(user.id) : "guest";
 }
