@@ -1,0 +1,174 @@
+/* Let the nominee picker size itself to its two candidate cards, not the screen. */
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-dialog {
+        box-sizing: border-box;
+        width: min(100%, 560px);
+        height: auto;
+        min-height: 0;
+        max-height: min(78dvh, 460px);
+        overflow-y: auto;
+        gap: 12px;
+    }
+    .vote-grid-viewport {
+        flex: 0 0 auto;
+        min-height: 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .vote-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: start;
+        gap: 10px;
+    }
+    .vote-candidate-card {
+        box-sizing: border-box;
+        min-height: 0;
+        height: auto;
+        gap: 8px;
+        padding: 10px;
+    }
+    .vote-avatar,
+    .vote-avatar-placeholder,
+    .vote-image-avatar,
+    .vote-image-placeholder {
+        width: min(100%, 76px);
+        margin: 0 auto;
+    }
+    .vote-candidate-name {
+        min-height: 34px;
+        font-size: 14px;
+    }
+    .vote-candidate-card .vote-button {
+        min-height: 36px;
+        margin-top: 0;
+        font-size: 12px;
+    }
+}
+
+
+/* Both nominee dialogs use the same fixed frame and scroll their contents internally. */
+.vote-dialog--nomination,
+.vote-picker-overlay .vote-dialog {
+    box-sizing: border-box;
+    width: min(760px, 100%);
+    height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
+    min-height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
+    max-height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
+    flex: 0 0 auto;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.vote-dialog--nomination .vote-dialog-header,
+.vote-dialog--nomination .vote-dialog-footer,
+.vote-picker-overlay .vote-dialog-header,
+.vote-picker-overlay .vote-dialog-footer {
+    flex: 0 0 auto;
+}
+
+.vote-dialog--nomination .vote-grid-viewport,
+.vote-picker-overlay .vote-grid-viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.vote-dialog--nomination .vote-grid,
+.vote-picker-overlay .vote-grid {
+    min-height: 100%;
+    align-content: center;
+    align-content: safe center;
+}
+
+/* Use circular plus tiles for the nomination types that support adding people. */
+.vote-add-symbol--round {
+    border-radius: 50%;
+}
+
+/* Person avatars inside the nominee picker stay circular, including NEXTGEN. */
+.vote-dialog--nomination .vote-avatar,
+.vote-dialog--nomination .vote-avatar-placeholder {
+    border-radius: 50%;
+}
+
+
+/* A single card occupies one normal grid column instead of stretching across the row. */
+.vote-dialog--nomination .vote-grid > .vote-candidate-card:only-child,
+.vote-picker-overlay .vote-grid > .vote-candidate-card:only-child {
+    grid-column: 2;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+
+/* Keep every nominee-picker tile on the same grid and visual scale. */
+.vote-dialog {
+    --vote-picker-visual-size: 94px;
+}
+
+.vote-dialog .vote-grid > .vote-candidate-card {
+    box-sizing: border-box;
+    width: 100%;
+    height: 224px;
+    min-height: 224px;
+}
+
+.vote-dialog .vote-candidate-card > .vote-avatar,
+.vote-dialog .vote-candidate-card > .vote-avatar-placeholder,
+.vote-dialog .vote-candidate-card > .vote-image-avatar,
+.vote-dialog .vote-candidate-card > .vote-image-placeholder,
+.vote-dialog .vote-candidate-card > .vote-add-symbol,
+.vote-dialog .vote-candidate-card > .vote-suggest-symbol {
+    box-sizing: border-box;
+    width: min(100%, var(--vote-picker-visual-size));
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0 auto;
+}
+
+.vote-dialog .vote-candidate-card > .vote-candidate-name,
+.vote-dialog .vote-candidate-card > .vote-add-details,
+.vote-dialog .vote-candidate-card > .vote-suggest-details {
+    box-sizing: border-box;
+    min-height: 42px;
+    flex: 1 1 auto;
+}
+
+.vote-dialog .vote-add-details > .vote-candidate-name,
+.vote-dialog .vote-suggest-details > .vote-suggest-text,
+.vote-dialog .vote-suggest-details > .vote-suggest-input {
+    min-height: 42px;
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-dialog {
+        --vote-picker-visual-size: 76px;
+    }
+
+    .vote-dialog .vote-grid > .vote-candidate-card {
+        width: 100%;
+        height: 206px;
+        min-height: 206px;
+    }
+
+    .vote-dialog--nomination,
+    .vote-picker-overlay .vote-dialog {
+        width: min(560px, 100%);
+        gap: 12px;
+    }
+
+    .vote-dialog--nomination .vote-grid > .vote-candidate-card:only-child,
+    .vote-picker-overlay .vote-grid > .vote-candidate-card:only-child {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc((100% - 10px) / 2);
+        max-width: none;
+        margin: 0;
+    }
+}
