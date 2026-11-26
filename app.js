@@ -5,8 +5,10 @@ import {
     getTelegramUserId,
     getTelegramName,
     getTelegramTag,
-    getTelegramPhotoUrl
-} from "./js/telegram.js?v=20261126-4";
+    getTelegramPhotoUrl,
+    getTelegramInitData
+} from "./js/telegram.js?v=20261126-5";
+import { syncTelegramUser } from "./js/api.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-2";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
@@ -198,6 +200,19 @@ if (missingPages.length || !mainContent) {
             }
         }
     });
+
+    // Telegram's initData is sent to the API for server-side signature
+    // verification. The raw value is never stored in browser storage or logged.
+    const telegramInitData = getTelegramInitData();
+    if (telegramInitData) {
+        syncTelegramUser(telegramInitData)
+            .then(() => {
+                console.info("SplitEvents: Telegram account synced with API");
+            })
+            .catch((error) => {
+                console.warn("SplitEvents: Telegram account sync failed", error);
+            });
+    }
 
     menu.bind();
 
