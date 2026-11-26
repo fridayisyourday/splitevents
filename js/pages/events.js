@@ -1,5 +1,5 @@
 /* Events page — supports showing and hiding the user's hidden events. */
-import { createEventCard } from "./event-card.js?v=20261126-8";
+import { createEventCard } from "./event-card.js?v=20261126-9";
 import {
     createPageShell,
     createEmptyStateElement
