@@ -1278,17 +1278,9 @@
 }
 
 
-/* Nomination cards: 75% artwork, 25% solid information panel. */
-.vote-nomination-card,
-.vote-nomination-card--featured,
-.vote-nomination-card.vote-carousel-card {
+/* Nomination cards: keep the established card sizes, with full-bleed artwork. */
+.vote-nomination-card {
     position: relative;
-    display: flex;
-    box-sizing: border-box;
-    height: 400px;
-    min-height: 400px;
-    flex-direction: column;
-    align-items: stretch;
     justify-content: flex-end;
     gap: 0;
     padding: 0;
@@ -1300,42 +1292,36 @@
 }
 
 .vote-nomination-row--featured > .vote-nomination-card--featured {
-    height: 400px;
-    min-height: 400px;
     padding: 0;
     border: 0;
 }
 
-.vote-carousel-stage {
-    min-height: 420px;
+.vote-nomination-card.vote-carousel-card {
+    gap: 0;
+    padding: 0;
+    border: 0;
 }
 
-.vote-nomination-card .vote-logo-wrap,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap {
+.vote-nomination-card .vote-logo-wrap {
     position: absolute;
     z-index: 0;
-    inset: 0 0 25% 0;
+    inset: 0;
     display: flex;
     width: 100%;
-    height: 75%;
+    height: 100%;
     min-width: 0;
-    min-height: 75%;
-    flex: 0 0 75%;
+    min-height: 100%;
+    flex: 1 1 100%;
     align-items: stretch;
     justify-content: stretch;
     margin: 0;
     overflow: hidden;
-    aspect-ratio: auto;
 }
 
 .vote-nomination-card .vote-logo-wrap > img.vote-nomination-logo,
 .vote-nomination-card .vote-logo-wrap > .vote-nomination-logo,
 .vote-nomination-card .vote-logo-wrap > .vote-logo-placeholder,
-.vote-nomination-card .vote-logo-wrap > .vote-duo-logo,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > img.vote-nomination-logo,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-nomination-logo,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-logo-placeholder,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-duo-logo {
+.vote-nomination-card .vote-logo-wrap > .vote-duo-logo {
     display: flex;
     box-sizing: border-box;
     width: 100%;
@@ -1385,17 +1371,19 @@
     object-fit: cover;
 }
 
+/* Fade ends exactly at 75%; the bottom quarter stays completely solid. */
 .vote-nomination-wash {
     position: absolute;
     z-index: 1;
-    inset: 0 0 25% 0;
+    inset: 0;
     pointer-events: none;
     background: linear-gradient(
         180deg,
-        transparent 72%,
-        color-mix(in srgb, var(--app-card-background) 0%, transparent) 76%,
-        color-mix(in srgb, var(--app-card-background) 24%, transparent) 84%,
-        color-mix(in srgb, var(--app-card-background) 70%, transparent) 94%,
+        transparent 46%,
+        color-mix(in srgb, var(--app-card-background) 0%, transparent) 52%,
+        color-mix(in srgb, var(--app-card-background) 24%, transparent) 60%,
+        color-mix(in srgb, var(--app-card-background) 62%, transparent) 68%,
+        var(--app-card-background) 75%,
         var(--app-card-background) 100%
     );
 }
@@ -1404,20 +1392,13 @@
     position: relative;
     z-index: 2;
     display: flex;
-    box-sizing: border-box;
     width: 100%;
-    height: 25%;
     min-width: 0;
-    min-height: 25%;
-    flex: 0 0 25%;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
+    gap: 8px;
     margin-top: auto;
-    padding: 4px 12px 8px;
-    overflow: hidden;
-    background: var(--app-card-background);
+    padding: 132px 18px 18px;
     color: var(--app-text);
     text-align: center;
 }
@@ -1428,60 +1409,61 @@
 }
 
 .vote-nomination-content .vote-nomination-title {
-    display: block;
     width: 100%;
-    min-height: 0;
     margin: 0;
-    overflow: hidden;
-    font-size: clamp(14px, 1.8vw, 18px);
-    line-height: 1.12;
-    overflow-wrap: normal;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
 }
 
 .vote-nomination-content .vote-selected-nominee {
     width: 100%;
-    min-height: 0;
     margin: 0;
-    overflow: hidden;
-    font-size: 12px;
-    line-height: 1.2;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .vote-nomination-content .vote-action-button {
     width: 100%;
     flex: 0 0 auto;
-    margin-top: 0;
+    margin-top: 4px;
+}
+
+.vote-nomination-card--featured .vote-nomination-content {
+    padding: 154px 20px 20px;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content {
-    gap: 3px;
-    padding: 4px 10px 8px;
+    gap: 6px;
+    padding: 88px 12px 12px;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
-    font-size: 14px;
-    line-height: 1.1;
+    min-height: 2.4em;
+    font-size: 16px;
+    line-height: 1.2;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-selected-nominee {
-    font-size: 11px;
+    font-size: 12px;
+}
+
+.vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-action-button {
+    min-height: 36px;
+    margin-top: 2px;
+    padding-inline: 8px;
+    font-size: 12px;
 }
 
 @supports not (background: color-mix(in srgb, black, white)) {
     .vote-nomination-wash {
         background: linear-gradient(
             180deg,
-            transparent 72%,
+            transparent 46%,
+            var(--app-card-background) 75%,
             var(--app-card-background) 100%
         );
     }
 }
 
-/* Candidate picker cards stay on the dialog surface; add tiles use theme-aware contrast. */
+/* Candidate tiles keep their grid, with a little more breathing room. */
 .vote-dialog .vote-candidate-card {
     background: var(--app-card-background);
     color: var(--app-text);
@@ -1499,12 +1481,22 @@
     text-shadow: none;
 }
 
+.vote-dialog .vote-grid > .vote-candidate-card:not(:only-child) {
+    width: calc(100% - 12px);
+    justify-self: center;
+}
+
 @media (max-width: 640px) {
-    .vote-nomination-content .vote-nomination-title {
-        font-size: clamp(13px, 3.8vw, 16px);
+    .vote-nomination-content {
+        gap: 6px;
+        padding: 110px 10px 10px;
     }
 
-    .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
-        font-size: 13px;
+    .vote-nomination-card--featured .vote-nomination-content {
+        padding: 118px 10px 10px;
+    }
+
+    .vote-nomination-card.vote-carousel-card .vote-nomination-content {
+        padding: 78px 10px 10px;
     }
 }
