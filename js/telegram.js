@@ -17,30 +17,26 @@ function validColor(value, fallback) {
 }
 
 function applyTheme() {
-    if (!webApp) return;
+    const background = "#000000";
 
-    const theme = webApp.themeParams || {};
-    const colorScheme = webApp.colorScheme === "dark" ? "dark" : "light";
-    const fallbackBackground = colorScheme === "dark" ? "#121418" : "#ffffff";
-    const background = validColor(theme.bg_color, fallbackBackground);
-    const header = validColor(theme.header_bg_color, background);
+    document.documentElement.style.colorScheme = "dark";
+    document.documentElement.dataset.colorScheme = "dark";
 
-    document.documentElement.style.colorScheme = colorScheme;
-    document.documentElement.dataset.colorScheme = colorScheme;
-
-    try {
-        if (typeof webApp.setBackgroundColor === "function") {
-            webApp.setBackgroundColor(background);
+    if (webApp) {
+        try {
+            if (typeof webApp.setBackgroundColor === "function") {
+                webApp.setBackgroundColor(background);
+            }
+            if (typeof webApp.setHeaderColor === "function") {
+                webApp.setHeaderColor(background);
+            }
+        } catch (error) {
+            console.warn("SplitEvents: could not update Telegram theme", error);
         }
-        if (typeof webApp.setHeaderColor === "function") {
-            webApp.setHeaderColor(header);
-        }
-    } catch (error) {
-        console.warn("SplitEvents: could not update Telegram theme", error);
     }
 
     const themeMeta = document.querySelector('meta[name="theme-color"]');
-    if (themeMeta) themeMeta.content = header;
+    if (themeMeta) themeMeta.content = background;
 }
 
 function updateViewport() {
@@ -77,26 +73,8 @@ export function initTelegram({ onBack } = {}) {
     backButtonHandler = typeof onBack === "function" ? onBack : null;
 
     if (!webApp) {
-        const mediaQuery = window.matchMedia
-            ? window.matchMedia("(prefers-color-scheme: dark)")
-            : null;
-
-        function applySystemTheme() {
-            const isDark = Boolean(mediaQuery && mediaQuery.matches);
-            document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-            document.documentElement.dataset.colorScheme = isDark ? "dark" : "light";
-
-            const themeMeta = document.querySelector('meta[name="theme-color"]');
-            if (themeMeta) themeMeta.content = isDark ? "#121418" : "#ffffff";
-        }
-
-        applySystemTheme();
-
-        if (mediaQuery && typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", applySystemTheme);
-        }
-
-        console.info("SplitEvents: opened in a regular browser");
+        applyTheme();
+        console.info("SplitEvents: opened in a regular browser with the dark theme");
         return;
     }
 
