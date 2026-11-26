@@ -480,6 +480,22 @@ body {
     text-transform: lowercase;
 }
 
+/* Native buttons reset text-transform in browser stylesheets; explicitly inherit
+   the site-wide casing rule so every static and dynamically-created button follows it. */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+option {
+    text-transform: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+    text-transform: lowercase;
+}
+
 /* Titles and headings are always uppercase, regardless of source-data casing. */
 h1,
 h2,
@@ -515,25 +531,7 @@ h6,
     box-shadow: none;
 }
 
-/* Navigation actions are labels, not headings: always lowercase. */
-.menu-navigation .menu-item,
-.menu-navigation .menu-item * {
-    text-transform: lowercase;
-}
-
-/* The small label above the nominee picker is ordinary interface copy. */
-.vote-dialog--nomination .vote-dialog-eyebrow {
-    text-transform: lowercase;
-}
-
-/* Event descriptions are always lowercase, including the SQUASH edition label. */
-.event-card-description {
-    text-transform: lowercase;
-}
-
-
-/* The add-nominee dialog title and eyebrow are intentionally lowercase. */
-.vote-picker-overlay .vote-dialog-title,
-.vote-picker-overlay .vote-dialog-eyebrow {
+/* Dialog eyebrow labels are ordinary interface copy, not headings. */
+.vote-dialog-eyebrow {
     text-transform: lowercase;
 }
