@@ -17,7 +17,7 @@ export function createProfile({
 }) {
     const el = {
         card: $("profile-card"),
-        name: $("nickname-input"),
+        nameDisplay: $("nickname-display"),
         editButton: $("nickname-edit-button"),
         editIcon: document.querySelector(".nickname-edit-icon"),
         saveIcon: document.querySelector(".nickname-save-icon"),
@@ -43,6 +43,7 @@ export function createProfile({
 
     let nickname = readNickname(userId);
     let editing = false;
+    let nameInput = null;
 
     const imageKeyPrefix = `user-${userId}-`;
     const images = {
@@ -70,9 +71,43 @@ export function createProfile({
         el.status.hidden = !message;
     }
 
+    function createNicknameInput() {
+        const input = document.createElement("input");
+        input.id = "nickname-input";
+        input.className = "profile-nickname profile-nickname--editing";
+        input.type = "text";
+        input.maxLength = 64;
+        input.autocomplete = "nickname";
+        input.setAttribute("aria-label", "Отображаемое имя");
+        input.value = currentNickname();
+        input.addEventListener("keydown", (event) => {
+            if (!editing) return;
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                finishEditing(true);
+            } else if (event.key === "Escape") {
+                event.preventDefault();
+                finishEditing(false);
+            }
+        });
+        return input;
+    }
+
     function setEditing(enabled) {
         editing = Boolean(enabled);
-        el.name.readOnly = !editing;
+
+        if (editing && !nameInput) {
+            nameInput = createNicknameInput();
+            el.nameDisplay.replaceWith(nameInput);
+        } else if (!editing && nameInput) {
+            el.nameDisplay.textContent = currentNickname();
+            nameInput.replaceWith(el.nameDisplay);
+            nameInput = null;
+        } else if (!editing) {
+            el.nameDisplay.textContent = currentNickname();
+        }
+
         el.editIcon.hidden = editing;
         el.saveIcon.hidden = !editing;
         el.card.classList.toggle("is-media-editing", editing);
@@ -94,17 +129,15 @@ export function createProfile({
 
     function startEditing() {
         showStatus("");
-        el.name.value = currentNickname();
         setEditing(true);
-        // Не открываем мобильную клавиатуру автоматически:
-        // иначе она может перекрыть кнопки загрузки изображений.
+        // Поле появляется по нажатию на карандаш; клавиатура не открывается
+        // автоматически, чтобы не перекрыть кнопки загрузки изображений.
     }
 
     function finishEditing(save) {
         if (save) {
-            nickname = el.name.value.trim();
+            nickname = nameInput ? nameInput.value.trim() : currentNickname();
             const stored = writeNickname(userId, nickname);
-            el.name.value = currentNickname();
             setEditing(false);
 
             if (!stored) {
@@ -113,7 +146,6 @@ export function createProfile({
                 );
             }
         } else {
-            el.name.value = currentNickname();
             setEditing(false);
             showStatus("");
         }
@@ -245,25 +277,13 @@ export function createProfile({
         else startEditing();
     });
 
-    el.name.addEventListener("keydown", (event) => {
-        if (!editing) return;
-
-        if (event.key === "Enter") {
-            event.preventDefault();
-            finishEditing(true);
-        } else if (event.key === "Escape") {
-            event.preventDefault();
-            finishEditing(false);
-        }
-    });
-
     el.avatarButton.addEventListener("click", () => openPicker(el.avatarInput));
     el.bannerButton.addEventListener("click", () => openPicker(el.bannerInput));
     el.avatarInput.addEventListener("change", () => handleImage(el.avatarInput, "avatar"));
     el.bannerInput.addEventListener("change", () => handleImage(el.bannerInput, "banner"));
 
     function render() {
-        el.name.value = currentNickname();
+        el.nameDisplay.textContent = currentNickname();
         el.tag.textContent = getTelegramTag();
         setEditing(false);
         showStatus("");

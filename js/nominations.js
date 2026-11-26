@@ -98,6 +98,12 @@ export function createNominationsWidget(root) {
             image.addEventListener("error", function () {
                 const fallback = document.createElement("div");
                 fallback.className = fallbackClass;
+                if (image.classList.contains("vote-nomination-logo")) {
+                    fallback.classList.add("vote-nomination-logo");
+                }
+                if (image.classList.contains("vote-duo-logo-part")) {
+                    fallback.classList.add("vote-duo-logo-part");
+                }
                 fallback.textContent = initials(person.name);
                 image.replaceWith(fallback);
             }, { once: true });
@@ -142,7 +148,7 @@ export function createNominationsWidget(root) {
 
         const placeholder = document.createElement("div");
         placeholder.className = "vote-logo-placeholder";
-        placeholder.textContent = "★";
+        placeholder.textContent = "+";
         placeholder.setAttribute("aria-hidden", "true");
         wrap.replaceChildren(placeholder);
     }
@@ -171,13 +177,20 @@ export function createNominationsWidget(root) {
         const logoWrap = document.createElement("div");
         logoWrap.className = "vote-logo-wrap";
         renderNominationLogo(nomination, logoWrap);
-        card.appendChild(logoWrap);
+
+        const wash = document.createElement("div");
+        wash.className = "vote-nomination-wash";
+        wash.setAttribute("aria-hidden", "true");
+
+        const content = document.createElement("div");
+        content.className = "vote-nomination-content";
+        card.append(logoWrap, wash, content);
 
         const title = document.createElement("h3");
         title.className = "vote-nomination-title";
         title.id = "vote-title-" + nomination.id;
         title.textContent = nomination.title;
-        card.appendChild(title);
+        content.appendChild(title);
 
         const pair = selectedDuo(nomination);
         const personId = nomination.selectedId || nomination.selectedFromPoolId;
@@ -192,7 +205,7 @@ export function createNominationsWidget(root) {
         selected.className = "vote-selected-nominee";
         selected.hidden = !selectedLabel;
         selected.textContent = selectedLabel;
-        card.appendChild(selected);
+        content.appendChild(selected);
 
         const hasSelection = Boolean(pair || person || nomination.suggestionMode === "voted");
         const button = createActionButton(
@@ -214,7 +227,7 @@ export function createNominationsWidget(root) {
             }
             openVote(nomination);
         });
-        card.appendChild(button);
+        content.appendChild(button);
 
         if (carouselPosition && carouselPosition !== "current") {
             card.addEventListener("click", function (event) {
