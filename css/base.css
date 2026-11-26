@@ -1,6 +1,5 @@
 /* SplitEvents — base reset and accessibility. Shared visual tokens live in design-system.css. */
 :root {
-    color-scheme: dark;
     font-family: var(--app-font-family);
     color: var(--app-text);
     background: var(--app-background);
