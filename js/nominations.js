@@ -5,6 +5,7 @@ import {
     compareNames,
     createNominationState
 } from "./nominations/data.js?v=20261126-1";
+import { createNominationModel } from "./nominations/model.js?v=20261126-1";
 
 const DESKTOP_PAGE_SIZE = 3;
 const MOBILE_PAGE_SIZE = 2;
@@ -25,6 +26,8 @@ export function createNominationsWidget(root) {
     root.dataset.initialized = "true";
 
     const NOMINATIONS = createNominationState();
+    const nominationModel = createNominationModel({ nomineeById, compareNames });
+    const { getDuoPairs, selectedDuo } = nominationModel;
 
     const $ = function (selector) {
         return root.querySelector(selector);
@@ -105,30 +108,6 @@ export function createNominationsWidget(root) {
         return placeholder;
     }
 
-    function getDuoPairs(nomination) {
-        return (nomination.duoPairs || []).map(function (pair) {
-            return {
-                id: pair.id,
-                first: nomineeById.get(pair.firstId),
-                second: nomineeById.get(pair.secondId)
-            };
-        }).filter(function (pair) {
-            return pair.first && pair.second;
-        }).sort(function (first, second) {
-            return compareNames(first.first, second.first)
-                || compareNames(first.second, second.second);
-        });
-    }
-
-    function selectedDuo(nomination) {
-        if (!nomination || nomination.type !== "duo" || !nomination.selectedPairId) {
-            return null;
-        }
-        return getDuoPairs(nomination).find(function (pair) {
-            return pair.id === nomination.selectedPairId;
-        }) || null;
-    }
-
     function makeDuoLogoPart(person) {
         const element = visualElement(person, false);
         element.classList.add("vote-duo-logo-part");
@@ -164,80 +143,6 @@ export function createNominationsWidget(root) {
         placeholder.textContent = "★";
         placeholder.setAttribute("aria-hidden", "true");
         wrap.replaceChildren(placeholder);
-    }
-
-    function nominationHasVote(nomination) {
-        if (nomination.type === "duo") {
-            return Boolean(nomination.selectedPairId)
-                && getDuoPairs(nomination).some(function (pair) {
-                    return pair.id === nomination.selectedPairId;
-                });
-        }
-
-        if (nomination.type === "image") {
-            if (nomination.suggestionMode === "voted") {
-                return Boolean((nomination.suggestedText || "").trim());
-            }
-            return Boolean(nomination.selectedId)
-                && nomination.nomineeIds.includes(nomination.selectedId);
-        }
-
-        return Boolean(
-            (nomination.selectedId && nomineeById.has(nomination.selectedId))
-            || (nomination.selectedFromPoolId && nomineeById.has(nomination.selectedFromPoolId))
-        );
-    }
-
-    function isBallotComplete() {
-        return NOMINATIONS.length > 0 && NOMINATIONS.every(nominationHasVote);
-    }
-
-    function buildBallotPayload() {
-        return {
-            createdAt: new Date().toISOString(),
-            nominations: NOMINATIONS.map(function (nomination) {
-                if (nomination.type === "duo") {
-                    const pair = getDuoPairs(nomination).find(function (item) {
-                        return item.id === nomination.selectedPairId;
-                    });
-                    return {
-                        id: nomination.id,
-                        title: nomination.title,
-                        type: "duo",
-                        selection: pair ? {
-                            pairId: pair.id,
-                            nominees: [pair.first.name, pair.second.name]
-                        } : null
-                    };
-                }
-
-                if (nomination.type === "image" && nomination.suggestionMode === "voted") {
-                    return {
-                        id: nomination.id,
-                        title: nomination.title,
-                        type: "image",
-                        selection: {
-                            kind: "suggestion",
-                            value: nomination.suggestedText.trim()
-                        }
-                    };
-                }
-
-                const personId = nomination.selectedId || nomination.selectedFromPoolId;
-                const person = personId ? nomineeById.get(personId) : null;
-                return {
-                    id: nomination.id,
-                    title: nomination.title,
-                    type: nomination.type || "individual",
-                    selection: person ? {
-                        kind: "nominee",
-                        nomineeId: person.id,
-                        nomineeName: person.name,
-                        addedFromCommonPool: Boolean(nomination.selectedFromPoolId)
-                    } : null
-                };
-            })
-        };
     }
 
     function createActionButton(label, selected, extraClass) {
@@ -734,38 +639,6 @@ export function createNominationsWidget(root) {
         }
     }
 
-    function buildNominationSnapshot() {
-        return NOMINATIONS.map(function (nomination) {
-            const pair = selectedDuo(nomination);
-            const selectedId = nomination.selectedId || nomination.selectedFromPoolId;
-            return {
-                id: nomination.id,
-                title: nomination.title,
-                type: nomination.type || "individual",
-                eligibleNominees: nomination.type === "duo" ? [] : [
-                    ...nomination.nomineeIds.map(function (id) {
-                        return nomineeById.get(id);
-                    }).filter(Boolean),
-                    ...(nomination.selectedFromPoolId
-                        ? [nomineeById.get(nomination.selectedFromPoolId)].filter(Boolean)
-                        : [])
-                ],
-                eligiblePairs: nomination.type === "duo"
-                    ? getDuoPairs(nomination).map(function (item) {
-                        return { id: item.id, first: item.first, second: item.second };
-                    })
-                    : [],
-                selectedNominee: selectedId ? nomineeById.get(selectedId) || null : null,
-                selectedSuggestion: nomination.suggestionMode === "voted"
-                    ? nomination.suggestedText
-                    : null,
-                selectedPair: pair
-                    ? { id: pair.id, first: pair.first, second: pair.second }
-                    : null
-            };
-        });
-    }
-
     voteCloseButton.addEventListener("click", closeVote);
     pickerCloseButton.addEventListener("click", closePicker);
 
@@ -825,12 +698,12 @@ export function createNominationsWidget(root) {
     });
 
     window.SPLITEVENTS_NOMINEES = NOMINEES;
-    window.SPLITEVENTS_NOMINATIONS = buildNominationSnapshot;
+    window.SPLITEVENTS_NOMINATIONS = () => nominationModel.buildNominationSnapshot(NOMINATIONS);
 
     renderNominationCards();
 
     return {
-        getBallot: buildBallotPayload,
-        isComplete: isBallotComplete
+        getBallot: () => nominationModel.buildBallotPayload(NOMINATIONS),
+        isComplete: () => nominationModel.isBallotComplete(NOMINATIONS)
     };
 }
