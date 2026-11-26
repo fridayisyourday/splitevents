@@ -1175,8 +1175,7 @@
     border-radius: 50%;
 }
 
-/* NEXTGEN nominee cards use the same round avatars as other people lists. */
-.vote-nomination-card[data-nomination-id="nextgen"] ~ * {}
+/* Person avatars inside the nominee picker stay circular, including NEXTGEN. */
 .vote-dialog--nomination .vote-avatar,
 .vote-dialog--nomination .vote-avatar-placeholder {
     border-radius: 50%;
