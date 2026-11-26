@@ -369,8 +369,12 @@
     border-radius: 16px;
     background: var(--app-card-background);
     color: var(--app-hint);
-    font-size: 32px;
-    font-weight: var(--app-font-weight-regular);
+}
+
+.vote-add-symbol > .lucide-icon,
+.vote-suggest-symbol > .lucide-icon {
+    width: 36px;
+    height: 36px;
 }
 
 .vote-add-details,
@@ -437,8 +441,11 @@
 
 .vote-page-button {
     --ui-button-size: 42px;
-    font-size: 24px;
-    line-height: 1;
+}
+
+.vote-page-button > .lucide-icon {
+    width: 22px;
+    height: 22px;
 }
 
 .vote-close-button {
