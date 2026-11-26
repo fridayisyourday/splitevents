@@ -8,6 +8,7 @@ const initData = getTelegramInitData();
 const status = ref("idle");
 const users = ref([]);
 const failedAvatarIds = reactive(new Set());
+const loadedAvatarIds = reactive(new Set());
 let requestRevision = 0;
 
 const collator = new Intl.Collator("ru", {
@@ -46,7 +47,12 @@ function getUsername(user) {
     return username ? "@" + username : "тег не указан";
 }
 
+function markAvatarLoaded(publicId) {
+    loadedAvatarIds.add(publicId);
+}
+
 function markAvatarFailed(publicId) {
+    loadedAvatarIds.delete(publicId);
     failedAvatarIds.add(publicId);
 }
 
@@ -60,6 +66,7 @@ async function loadFriends() {
 
     const currentRevision = ++requestRevision;
     failedAvatarIds.clear();
+    loadedAvatarIds.clear();
 
     if (!initData) {
         users.value = [];
@@ -171,7 +178,7 @@ onBeforeUnmount(() => {
                             <span class="friend-card-avatar">
                                 <span
                                     class="friend-card-avatar-placeholder"
-                                    :hidden="Boolean(getAvatarUrl(user))"
+                                    :hidden="loadedAvatarIds.has(user.public_id)"
                                     aria-hidden="true"
                                 >
                                     <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-user-round"></use></svg>
@@ -180,9 +187,11 @@ onBeforeUnmount(() => {
                                     v-if="getAvatarUrl(user)"
                                     class="friend-card-avatar-image"
                                     :src="getAvatarUrl(user)"
+                                    :hidden="!loadedAvatarIds.has(user.public_id)"
                                     alt=""
                                     loading="lazy"
                                     decoding="async"
+                                    @load="markAvatarLoaded(user.public_id)"
                                     @error="markAvatarFailed(user.public_id)"
                                 >
                             </span>
