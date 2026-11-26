@@ -41,69 +41,6 @@
     object-position: center;
 }
 
-/* Theme-colored information panel fades in from the artwork at the 50% mark. */
-.event-card-wash {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--app-card-background) 0%, transparent) 0%,
-        color-mix(in srgb, var(--app-card-background) 0%, transparent) 32%,
-        color-mix(in srgb, var(--app-card-background) 8%, transparent) 36%,
-        color-mix(in srgb, var(--app-card-background) 22%, transparent) 40%,
-        color-mix(in srgb, var(--app-card-background) 50%, transparent) 44%,
-        color-mix(in srgb, var(--app-card-background) 82%, transparent) 48%,
-        var(--app-card-background) 50%,
-        var(--app-card-background) 100%
-    );
-}
-
-
-@supports not (background: color-mix(in srgb, black, white)) {
-    .event-card-wash {
-        background: linear-gradient(
-            90deg,
-            transparent 0%,
-            transparent 32%,
-            var(--app-card-background) 50%,
-            var(--app-card-background) 100%
-        );
-    }
-
-    .event-card-wash::before {
-        background: transparent;
-    }
-}
-
-.event-card-wash::before {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 35%;
-    width: 18%;
-    content: "";
-    background: color-mix(in srgb, var(--app-card-background) 14%, transparent);
-    -webkit-backdrop-filter: blur(1.9cqw);
-    backdrop-filter: blur(1.9cqw);
-    -webkit-mask-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        #000000 28%,
-        #000000 76%,
-        transparent 100%
-    );
-    mask-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        #000000 28%,
-        #000000 76%,
-        transparent 100%
-    );
-}
-
 /* The information panel is exactly half the card. */
 .event-card-content {
     position: relative;
@@ -356,10 +293,7 @@
     object-position: center;
 }
 
-/* The right half is a solid theme-aware information panel, not an overlay. */
-.event-card-wash {
-    display: none;
-}
+/* The shared artwork-fade utility blends the image into the information panel. */
 
 .event-card-content {
     box-sizing: border-box;

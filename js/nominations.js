@@ -139,7 +139,6 @@ export function createNominationsWidget(root) {
 
         const placeholder = document.createElement("div");
         placeholder.className = "vote-logo-placeholder";
-        placeholder.textContent = "+";
         placeholder.setAttribute("aria-hidden", "true");
         wrap.replaceChildren(placeholder);
     }
@@ -170,7 +169,7 @@ export function createNominationsWidget(root) {
         renderNominationLogo(nomination, logoWrap);
 
         const wash = document.createElement("div");
-        wash.className = "vote-nomination-wash";
+        wash.className = "vote-nomination-wash artwork-fade artwork-fade--bottom";
         wash.setAttribute("aria-hidden", "true");
 
         const content = document.createElement("div");

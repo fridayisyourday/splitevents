@@ -539,3 +539,97 @@ h6,
 .vote-dialog-eyebrow {
     text-transform: lowercase;
 }
+
+
+/* Shared artwork transition standard.
+   Bottom fades are used by nomination cards; right fades blend event artwork
+   into the solid information panel. Modal/backdrop blur remains independent. */
+:root {
+    --app-artwork-transition-blur: 12px;
+    --app-artwork-fade-soft-strength: 24%;
+    --app-artwork-fade-strong-strength: 62%;
+}
+
+.artwork-fade {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.artwork-fade--bottom {
+    inset: 0 0 25% 0;
+    background: linear-gradient(
+        180deg,
+        transparent 46%,
+        color-mix(in srgb, var(--app-card-background) 0%, transparent) 52%,
+        color-mix(in srgb, var(--app-card-background) var(--app-artwork-fade-soft-strength), transparent) 60%,
+        color-mix(in srgb, var(--app-card-background) var(--app-artwork-fade-strong-strength), transparent) 68%,
+        var(--app-card-background) 75%,
+        var(--app-card-background) 100%
+    );
+}
+
+.artwork-fade--right {
+    inset: 0 auto 0 0;
+    width: 50%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 64%,
+        color-mix(in srgb, var(--app-card-background) 0%, transparent) 66%,
+        color-mix(in srgb, var(--app-card-background) var(--app-artwork-fade-soft-strength), transparent) 76%,
+        color-mix(in srgb, var(--app-card-background) var(--app-artwork-fade-strong-strength), transparent) 88%,
+        var(--app-card-background) 100%
+    );
+}
+
+.artwork-fade--right::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 34%;
+    content: "";
+    background: color-mix(in srgb, var(--app-card-background) 12%, transparent);
+    -webkit-backdrop-filter: blur(var(--app-artwork-transition-blur));
+    backdrop-filter: blur(var(--app-artwork-transition-blur));
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000000 26%,
+        #000000 78%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000000 26%,
+        #000000 78%,
+        transparent 100%
+    );
+}
+
+@supports not (background: color-mix(in srgb, black, white)) {
+    .artwork-fade--bottom {
+        background: linear-gradient(
+            180deg,
+            transparent 46%,
+            var(--app-card-background) 75%,
+            var(--app-card-background) 100%
+        );
+    }
+
+    .artwork-fade--right {
+        background: linear-gradient(
+            90deg,
+            transparent 64%,
+            var(--app-card-background) 100%
+        );
+    }
+
+    .artwork-fade--right::before {
+        display: none;
+    }
+}

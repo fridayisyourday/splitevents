@@ -39,7 +39,7 @@ export function createEventCard(event, { onToggleHidden, onParticipate, isHidden
     }, { once: true });
     artwork.appendChild(image);
 
-    const wash = createElement("div", "event-card-wash");
+    const wash = createElement("div", "event-card-wash artwork-fade artwork-fade--right");
     wash.setAttribute("aria-hidden", "true");
 
     const content = createElement("div", "event-card-content");

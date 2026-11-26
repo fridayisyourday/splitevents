@@ -91,23 +91,6 @@
     object-fit: cover;
 }
 
-/* Fade ends exactly at 75%; the bottom quarter stays completely solid. */
-.vote-nomination-wash {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-        180deg,
-        transparent 46%,
-        color-mix(in srgb, var(--app-card-background) 0%, transparent) 52%,
-        color-mix(in srgb, var(--app-card-background) 24%, transparent) 60%,
-        color-mix(in srgb, var(--app-card-background) 62%, transparent) 68%,
-        var(--app-card-background) 75%,
-        var(--app-card-background) 100%
-    );
-}
-
 .vote-nomination-content {
     position: relative;
     z-index: 2;
@@ -170,17 +153,6 @@
     margin-top: 2px;
     padding-inline: 8px;
     font-size: 12px;
-}
-
-@supports not (background: color-mix(in srgb, black, white)) {
-    .vote-nomination-wash {
-        background: linear-gradient(
-            180deg,
-            transparent 46%,
-            var(--app-card-background) 75%,
-            var(--app-card-background) 100%
-        );
-    }
 }
 
 /* Artwork frame: image container covers the full card width and exactly its top 75%. */
@@ -247,11 +219,6 @@
     border: 0;
     border-radius: 0;
     object-fit: cover;
-}
-
-/* The fade occupies only the image frame; the lower quarter remains untouched. */
-.vote-nomination-wash {
-    inset: 0 0 25% 0;
 }
 
 /* Raise the carousel arrows slightly without changing their hit area or layout. */
