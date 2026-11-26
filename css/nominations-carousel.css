@@ -431,14 +431,15 @@
     zoom: 0.86;
 }
 
-/* Controls sit 18px below the center/current card, not beneath the featured row. */
+/* Controls sit 18px below the rendered center card. JS measures the
+   actual card box, including responsive sizing and the 0.86 visual scale. */
 .vote-carousel-stage {
-    min-height: 340px;
+    min-height: 300px;
 }
 
 .vote-carousel-stage > .vote-carousel-controls {
     position: absolute;
-    top: calc(12px + 306px + 18px);
+    top: 247px;
     right: 0;
     left: 0;
     z-index: 5;
@@ -447,18 +448,18 @@
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 366px;
+        min-height: 296px;
     }
     .vote-carousel-stage > .vote-carousel-controls {
-        top: calc(12px + 292px + 18px);
+        top: 243px;
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 356px;
+        min-height: 290px;
     }
     .vote-carousel-stage > .vote-carousel-controls {
-        top: calc(12px + 282px + 18px);
+        top: 238px;
     }
 }
