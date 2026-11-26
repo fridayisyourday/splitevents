@@ -22,7 +22,9 @@ Telegram Mini App для совместных мероприятий, профи
 ├── src/
 │   ├── main.js
 │   ├── App.vue
-│   └── legacy-shell.html
+│   ├── components/
+│   │   └── AppHeader.vue
+│   └── legacy-pages.html
 ├── vite.config.js
 ├── app.js
 ├── README.md
@@ -127,4 +129,4 @@ Telegram Mini App для совместных мероприятий, профи
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
 4. Перед публикацией выполните `npm run check` и `npm run build`.
 
-GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Временная совместимость со старым интерфейсом находится в `src/legacy-shell.html`; новые разделы следует разрабатывать как Vue-компоненты.
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages.html`. Шапка, боковая навигация и управление ими уже реализованы компонентом `src/components/AppHeader.vue`.

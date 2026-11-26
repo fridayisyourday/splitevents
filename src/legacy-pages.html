@@ -1,0 +1,251 @@
+<section
+                id="home-page"
+                class="page-view"
+                aria-label="Главная страница"
+            ></section>
+
+            <section
+                id="events-page"
+                class="page-view"
+                aria-label="Текущие события"
+                hidden
+            ></section>
+
+            <section
+                id="profile-page"
+                class="page-view"
+                aria-label="Профиль"
+                hidden
+            >
+                <article class="profile-card" id="profile-card">
+                    <div class="profile-cover" id="profile-cover">
+                        <div
+                            class="profile-banner-placeholder"
+                            id="profile-banner-placeholder"
+                            aria-hidden="true"
+                        ></div>
+
+                        <img
+                            id="profile-banner-image"
+                            class="profile-banner-image"
+                            alt=""
+                            hidden
+                        >
+
+                        <div class="profile-media-shade" aria-hidden="true"></div>
+
+                        <button
+                            id="banner-upload-button"
+                            class="profile-media-upload-button banner-upload-button ui-button ui-button--icon ui-button--round ui-button--media"
+                            type="button"
+                            aria-label="Загрузить баннер"
+                            title="Загрузить баннер"
+                            tabindex="-1"
+                        >
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg>
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg>
+                        </button>
+
+                        <div class="profile-avatar" id="profile-avatar">
+                            <img
+                                id="profile-avatar-image"
+                                class="profile-avatar-image"
+                                alt="Фотография профиля"
+                                referrerpolicy="no-referrer"
+                                hidden
+                            >
+
+                            <div
+                                id="profile-avatar-placeholder"
+                                class="profile-avatar-placeholder"
+                                aria-hidden="true"
+                            >
+                                <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-user-round"></use></svg>
+                            </div>
+
+                            <div class="profile-media-shade" aria-hidden="true"></div>
+
+                            <button
+                                id="avatar-upload-button"
+                                class="profile-media-upload-button avatar-upload-button ui-button ui-button--icon ui-button--round ui-button--media"
+                                type="button"
+                                aria-label="Загрузить аватарку"
+                                title="Загрузить аватарку"
+                                tabindex="-1"
+                            >
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg>
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
+                            <svg class="lucide-icon profile-media-icon profile-media-icon--error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg>
+                        </button>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="profile-name-row">
+                            <span
+                                id="nickname-display"
+                                class="profile-nickname"
+                            ></span>
+
+                            <button
+                                id="nickname-edit-button"
+                                class="profile-edit-button ui-button ui-button--icon ui-button--secondary"
+                                type="button"
+                                aria-label="Изменить профиль"
+                                title="Изменить профиль"
+                            >
+                                <svg class="lucide-icon nickname-action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-pencil"></use></svg>
+                            </button>
+                        </div>
+
+                        <p id="telegram-tag" class="profile-telegram-tag"></p>
+                    </div>
+                </article>
+
+                <input
+                    id="avatar-file-input"
+                    class="visually-hidden-input"
+                    type="file"
+                    accept="image/*"
+                    aria-label="Выбрать фотографию профиля"
+                    tabindex="-1"
+                >
+
+                <input
+                    id="banner-file-input"
+                    class="visually-hidden-input"
+                    type="file"
+                    accept="image/*"
+                    aria-label="Выбрать изображение баннера"
+                    tabindex="-1"
+                >
+            </section>
+
+            <!-- ВРЕМЕННАЯ СТРАНИЦА РАЗДЕЛА СЕРВЕРОВ -->
+            <section
+                id="servers-page"
+                class="page-view"
+                aria-label="Сервера"
+                hidden
+            ></section>
+
+            <section
+                id="friends-page"
+                class="page-view"
+                aria-label="Друзья"
+                hidden
+            ></section>
+
+            <section
+                id="user-profile-page"
+                class="page-view"
+                aria-label="Профиль пользователя"
+                hidden
+            ></section>
+
+            <section
+                id="nominations-page"
+                class="page-view"
+                aria-label="Номинации 2026"
+                hidden
+            >
+                <div class="section-page nominations-page">
+                    <div class="section-page-content nominations-page-content">
+                        <header class="nominations-page-header">
+                            <h1 class="section-page-title">НОМИНАЦИИ 2026</h1>
+                        </header>
+
+                        <div id="vote-widget" class="vote-widget">
+                            <div
+                                id="vote-nominations-list"
+                                class="vote-nominations-list"
+                                aria-label="Список номинаций"
+                            ></div>
+
+                            <div class="vote-overlay" id="vote-vote-overlay" hidden>
+                                <section
+                                    class="vote-dialog vote-dialog--nomination"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="vote-vote-title"
+                                >
+                                    <header class="vote-dialog-header">
+                                        <p class="vote-dialog-eyebrow">НОМИНАЦИЯ</p>
+                                        <h2 id="vote-vote-title" class="vote-dialog-title">
+                                            Выбери номинанта
+                                        </h2>
+                                    </header>
+                                    <div class="vote-grid-viewport">
+                                        <div id="vote-nomination-grid" class="vote-grid"></div>
+                                    </div>
+                                    <footer class="vote-dialog-footer">
+                                        <button
+                                            id="vote-nomination-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие номинанты"
+                                            disabled
+                                        ><svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-left"></use></svg></button>
+                                        <button
+                                            id="vote-vote-close"
+                                            class="ui-button ui-button--secondary vote-close-button"
+                                            type="button"
+                                        >Закрыть</button>
+                                        <button
+                                            id="vote-nomination-next"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Следующие номинанты"
+                                            disabled
+                                        ><svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-right"></use></svg></button>
+                                    </footer>
+                                </section>
+                            </div>
+
+                            <div class="vote-overlay vote-picker-overlay" id="vote-picker-overlay" hidden>
+                                <section
+                                    class="vote-dialog"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="vote-picker-title"
+                                >
+                                    <header class="vote-dialog-header">
+                                        <p class="vote-dialog-eyebrow">ДОБАВИТЬ НОМИНАНТА</p>
+                                        <h2 id="vote-picker-title" class="vote-dialog-title">
+                                            Добавить номинанта
+                                        </h2>
+                                    </header>
+                                    <div class="vote-grid-viewport">
+                                        <div id="vote-picker-grid" class="vote-grid"></div>
+                                        <p id="vote-picker-empty" class="vote-empty-state" hidden>
+                                            Все подходящие участники уже добавлены
+                                        </p>
+                                    </div>
+                                    <footer class="vote-dialog-footer">
+                                        <button
+                                            id="vote-picker-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие участники"
+                                            disabled
+                                        ><svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-left"></use></svg></button>
+                                        <button
+                                            id="vote-picker-close"
+                                            class="ui-button ui-button--secondary vote-close-button"
+                                            type="button"
+                                        >Назад</button>
+                                        <button
+                                            id="vote-picker-next"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Следующие участники"
+                                            disabled
+                                        ><svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-right"></use></svg></button>
+                                    </footer>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

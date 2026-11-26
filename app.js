@@ -13,7 +13,6 @@ import {
     updateTelegramDisplayName,
     uploadProfileImage
 } from "./js/api.js?v=20261126-5";
-import { createMenu } from "./js/menu.js?v=20261126-5";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
 import { createProfile } from "./js/profile.js?v=20261126-10";
 import { createFriendsPage } from "./js/pages/friends.js?v=20261126-4";
@@ -52,7 +51,7 @@ if (missingPages.length || !mainContent) {
     const notifications = createNotifications(document.getElementById("notification-region"));
     let currentPage = null;
     let currentRouteKey = "";
-    let menu = null;
+    let menuOpen = false;
     let activeEventsBadgeTimeout = null;
 
     createNominationsWidget(document.getElementById("vote-widget"));
@@ -107,11 +106,11 @@ if (missingPages.length || !mainContent) {
     }
 
     function updateActiveEventsBadge() {
-        if (!menu) return;
-
         const hiddenEventIds = getHiddenEventIds(telegramUserId);
         const activeCount = getActiveEventsCount(EVENTS, hiddenEventIds);
-        menu.updateActiveEventsCount(activeCount);
+        window.dispatchEvent(new CustomEvent("splitevents:menu-badge", {
+            detail: { count: activeCount }
+        }));
         scheduleActiveEventsBadgeUpdate(hiddenEventIds);
     }
 
@@ -153,7 +152,7 @@ if (missingPages.length || !mainContent) {
 
     function updateTelegramBackButton() {
         const shouldShow = Boolean(
-            (menu && menu.isOpen()) || getCurrentPage() !== "home"
+            menuOpen || getCurrentPage() !== "home"
         );
         setTelegramBackButtonVisible(shouldShow);
     }
@@ -170,10 +169,13 @@ if (missingPages.length || !mainContent) {
         }
     }
 
-    menu = createMenu({
-        onNavigate: navigateTo,
-        onStateChange: updateTelegramBackButton
+    window.addEventListener("splitevents:menu-state", (event) => {
+        menuOpen = Boolean(event.detail?.open);
+        updateTelegramBackButton();
     });
+
+    window.addEventListener("splitevents:rerender", () => renderPage(true));
+
     updateActiveEventsBadge();
 
     function renderPage(moveFocus = false) {
@@ -207,7 +209,9 @@ if (missingPages.length || !mainContent) {
         }
 
         currentPage = page;
-        menu.updateForPage(page);
+        window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
+            detail: { page }
+        }));
 
         if (changed && page === "events") {
             eventsPage.start();
@@ -244,8 +248,10 @@ if (missingPages.length || !mainContent) {
 
     initTelegram({
         onBack: () => {
-            if (menu && menu.isOpen()) {
-                menu.close(true);
+            if (menuOpen) {
+                window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+                    detail: { action: "close", restoreFocus: true }
+                }));
                 return;
             }
 
@@ -277,11 +283,11 @@ if (missingPages.length || !mainContent) {
             });
     }
 
-    menu.bind();
-
     window.addEventListener("hashchange", () => {
-        if (menu && menu.isOpen()) {
-            menu.close(false);
+        if (menuOpen) {
+            window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+                detail: { action: "close", restoreFocus: false }
+            }));
         }
         renderPage(true);
     });
