@@ -1,5 +1,6 @@
 /* Shared horizontal event-card template. New events provide data, not markup. */
 import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
+import { getEventCoverUrl } from "../media.js?v=20261126-1";
 
 function createCountdownPart(part, unit) {
     const group = createElement("span", "event-countdown-part");
@@ -26,16 +27,17 @@ export function createEventCard(event, { onToggleHidden, onParticipate, isHidden
     const artwork = createElement("div", "event-card-artwork");
     artwork.setAttribute("aria-hidden", "true");
 
-    if (event.image) {
-        const image = createElement("img", "event-card-image");
-        image.src = event.image;
-        image.alt = "";
-        image.width = 1200;
-        image.height = 480;
-        image.loading = "lazy";
-        image.decoding = "async";
-        artwork.appendChild(image);
-    }
+    const image = createElement("img", "event-card-image");
+    image.src = event.image || getEventCoverUrl(event.id);
+    image.alt = "";
+    image.width = 1940;
+    image.height = 500;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener("error", () => {
+        image.remove();
+    }, { once: true });
+    artwork.appendChild(image);
 
     const wash = createElement("div", "event-card-wash");
     wash.setAttribute("aria-hidden", "true");
