@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Все страницы, шапка, навигация и маршрутизация реализованы Vue-компонентами. Внутренняя логика голосования пока использует отдельный DOM-контроллер внутри Vue-страницы.
+- Frontend: Vue 3 + Vite. Все страницы, шапка, навигация, карточки номинаций, карусель и окна выбора реализованы Vue-компонентами. Правила голосования и расчёт бюллетеня находятся в отдельных JS-модулях.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -27,7 +27,9 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   ├── EventsPage.vue
 │   │   ├── FriendsPage.vue
 │   │   ├── HomePage.vue
+│   │   ├── NominationCard.vue
 │   │   ├── NominationsPage.vue
+│   │   ├── NomineeVisual.vue
 │   │   ├── ProfilePage.vue
 │   │   ├── ServersPage.vue
 │   │   └── UserProfilePage.vue
@@ -60,7 +62,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── notifications.js
 │   ├── telegram.js
 │   ├── storage.js
-│   ├── nominations.js
 │   ├── nominations/
 │   │   ├── database/
 │   │   │   ├── nominees.js
@@ -91,11 +92,11 @@ Telegram Mini App для совместных мероприятий, профи
 
 ## Где что менять
 
-**Номинанты и номинации.** Каталог людей находится в `js/nominations/database/nominees.js`. Правила номинаций и списки допустимых участников — в `js/nominations/database/definitions.js`. Проверка ID и ссылок находится рядом в `validate.js`. Начальное изменяемое состояние создаёт `state.js`, расчёты и сборку локального бюллетеня выполняет `model.js`. DOM, окна выбора и карусель находятся в `js/nominations.js`.
+**Номинанты и номинации.** Каталог людей находится в `js/nominations/database/nominees.js`. Правила номинаций и списки допустимых участников — в `js/nominations/database/definitions.js`. Проверка ID и ссылок находится рядом в `validate.js`. Начальное изменяемое состояние создаёт `state.js`, чистые расчёты и сборку локального бюллетеня выполняет `model.js`. Интерфейс, карусель и окна выбора находятся в `src/components/NominationsPage.vue`, повторно используемая карточка — в `NominationCard.vue`, отображение аватаров и изображений — в `NomineeVisual.vue`.
 
 **События.** Страница и карточки — `src/components/EventsPage.vue`; каталог событий — `js/events/data.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
-**Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Голосование инициализируется из `NominationsPage.vue`; его внутренняя DOM-логика пока находится в `js/nominations.js`.
+**Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Каждый раздел управляет своим состоянием и жизненным циклом через Vue.
 
 **Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
