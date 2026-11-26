@@ -20,8 +20,12 @@ function applyTheme() {
     if (!webApp) return;
 
     const theme = webApp.themeParams || {};
-    const background = validColor(theme.bg_color, "#ffffff");
+    const colorScheme = webApp.colorScheme === "dark" ? "dark" : "light";
+    const fallbackBackground = colorScheme === "dark" ? "#121418" : "#ffffff";
+    const background = validColor(theme.bg_color, fallbackBackground);
     const header = validColor(theme.header_bg_color, background);
+
+    document.documentElement.style.colorScheme = colorScheme;
 
     try {
         if (typeof webApp.setBackgroundColor === "function") {
