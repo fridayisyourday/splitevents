@@ -118,8 +118,9 @@ button.menu-item {
     height: 23px;
     padding: 0 6px;
     border-radius: var(--app-radius-pill);
-    background: #d94c58;
-    color: #ffffff;
+    border: 1px solid var(--app-border);
+    background: var(--app-secondary);
+    color: var(--app-hint);
     font-size: 11px;
     font-weight: 800;
     font-variant-numeric: tabular-nums;

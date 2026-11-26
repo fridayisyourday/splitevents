@@ -312,3 +312,24 @@
         --ui-button-size: 32px;
     }
 }
+
+
+/* Visibility control for previously hidden events. */
+.events-page .section-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--app-space-4);
+}
+
+.events-visibility-toggle {
+    align-self: flex-end;
+    min-height: 40px;
+    padding: 0 13px;
+    font-size: 13px;
+}
+
+.events-visibility-toggle svg {
+    width: 18px;
+    height: 18px;
+}
