@@ -141,8 +141,10 @@ export function createNominationsWidget(root) {
     const pickerNextButton = $("#vote-picker-next");
 
     const requiredElements = [
-        nominationPrevButton, nominationNextButton, pickerOverlay, pickerTitle,
-        pickerCloseButton, pickerGrid, pickerEmpty, pickerPrevButton, pickerNextButton
+        nominationsList, voteOverlay, voteTitle, voteDescription, voteCloseButton,
+        nominationGrid, nominationPrevButton, nominationNextButton,
+        pickerOverlay, pickerTitle, pickerCloseButton, pickerGrid, pickerEmpty,
+        pickerPrevButton, pickerNextButton
     ];
 
     if (requiredElements.some(function (element) { return !element; })) {
