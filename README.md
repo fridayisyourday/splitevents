@@ -9,6 +9,8 @@ Telegram Mini App для организации совместных мероп�
 ├── index.html
 ├── app.js
 ├── README.md
+├── docs/
+│   └── design-review.md
 ├── css/
 │   ├── base.css
 │   ├── design-system.css
