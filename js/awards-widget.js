@@ -342,8 +342,7 @@ export function createAwardsWidget(root) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "ui-button "
-            + (selected ? "ui-button--secondary" : "ui-button--primary")
-            + " awards-vote-button";
+            + (selected ? "ui-button--secondary" : "ui-button--primary");
         if (extraClass) button.classList.add(extraClass);
         button.textContent = label;
         if (selected) button.setAttribute("aria-pressed", "true");
