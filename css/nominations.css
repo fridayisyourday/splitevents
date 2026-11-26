@@ -542,7 +542,10 @@
 
 @media (prefers-reduced-motion: reduce) {
     .vote-dialog,
-    .vote-grid,
+    .vote-grid {
+        animation: none;
+        transition: none;
+    }
 }
 
 
@@ -554,11 +557,17 @@
 }
 
 .vote-logo-wrap .vote-nomination-logo {
-    width: min(100%, 104px);
+    width: min(100%, 120px);
+    height: min(100%, 120px);
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .vote-nomination-card--featured .vote-logo-wrap .vote-nomination-logo {
-    width: min(100%, 126px);
+    width: min(100%, 148px);
+    height: min(100%, 148px);
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .vote-duo-logo .vote-avatar,
@@ -590,4 +599,29 @@
     max-height: 148px;
     flex: 0 1 auto;
     object-fit: cover;
+}
+
+
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-nomination-card--featured .vote-logo-wrap {
+        height: 122px;
+        flex-basis: 122px;
+    }
+
+    .vote-nomination-card--featured .vote-logo-wrap .vote-nomination-logo {
+        width: min(100%, 122px);
+        height: min(100%, 122px);
+    }
+}
+
+@media (max-width: 380px) {
+    .vote-nomination-card--featured .vote-logo-wrap {
+        height: 108px;
+        flex-basis: 108px;
+    }
+
+    .vote-nomination-card--featured .vote-logo-wrap .vote-nomination-logo {
+        width: min(100%, 108px);
+        height: min(100%, 108px);
+    }
 }
