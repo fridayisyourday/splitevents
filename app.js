@@ -10,11 +10,12 @@ import {
 } from "./js/telegram.js?v=20261126-6";
 import {
     syncTelegramUser,
-    updateTelegramDisplayName
-} from "./js/api.js?v=20261126-3";
+    updateTelegramDisplayName,
+    uploadProfileImage
+} from "./js/api.js?v=20261126-4";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
-import { createProfile } from "./js/profile.js?v=20261126-6";
+import { createProfile } from "./js/profile.js?v=20261126-7";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
@@ -65,6 +66,9 @@ if (missingPages.length || !mainContent) {
             ? (displayName) => profileSyncPromise.then(
                 () => updateTelegramDisplayName(telegramInitData, displayName)
             )
+            : null,
+        saveProfileImage: telegramInitData
+            ? (mediaType, blob) => uploadProfileImage(telegramInitData, mediaType, blob)
             : null
     });
 
@@ -249,7 +253,7 @@ if (missingPages.length || !mainContent) {
     });
 
     renderPage(false);
-    void profile.loadImages().catch((error) => {
+    void profileSyncPromise.then((serverProfile) => profile.loadImages(serverProfile)).catch((error) => {
         console.error("SplitEvents: profile images failed to load", error);
         notifications.warning(
             "не удалось загрузить изображения профиля",

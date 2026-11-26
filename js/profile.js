@@ -25,7 +25,15 @@ const DISPLAY_NAME_ERRORS = Object.freeze({
     telegram_auth_not_configured: "серверная авторизация временно недоступна. попробуй позже.",
     display_name_too_long: "имя должно содержать не более 64 символов.",
     invalid_display_name: "не удалось сохранить это имя. проверь текст и попробуй ещё раз.",
-    invalid_profile_payload: "сервер получил некорректные данные профиля. попробуй ещё раз."
+    invalid_profile_payload: "сервер получил некорректные данные профиля. попробуй ещё раз.",
+    media_storage_not_configured: "хранилище изображений ещё не подключено. попробуй позже.",
+    media_storage_unavailable: "не удалось загрузить изображение на сервер. попробуй ещё раз.",
+    invalid_media_type: "не удалось определить тип изображения.",
+    invalid_media_payload: "не удалось прочитать выбранное изображение.",
+    missing_image_file: "изображение не было передано на сервер.",
+    image_too_large: "изображение слишком большое. попробуй выбрать файл поменьше.",
+    unsupported_image_format: "поддерживаются изображения jpeg, png и webp.",
+    invalid_media_response: "сервер сохранил изображение, но не вернул ссылку. попробуй обновить профиль."
 });
 
 function getDisplayNameError(error) {
@@ -43,6 +51,7 @@ export function createProfile({
     getTelegramTag,
     getTelegramPhotoUrl,
     saveDisplayName,
+    saveProfileImage,
     notifications
 }) {
     const el = {
@@ -92,6 +101,7 @@ export function createProfile({
         avatar: createImageState(el.avatar, el.avatarPlaceholder, imageKeyPrefix + "avatar"),
         banner: createImageState(el.banner, el.bannerPlaceholder, imageKeyPrefix + "banner")
     };
+    const remoteImages = { avatar: "", banner: "" };
 
     function createImageState(element, placeholder, key) {
         return {
@@ -180,15 +190,26 @@ export function createProfile({
     }
 
     function applyServerProfile(serverProfile) {
-        if (
-            !serverProfile ||
-            !Object.prototype.hasOwnProperty.call(serverProfile, "display_name")
-        ) {
-            return;
+        if (!serverProfile || typeof serverProfile !== "object") return;
+
+        if (Object.prototype.hasOwnProperty.call(serverProfile, "display_name")) {
+            pendingServerProfile = serverProfile;
+            if (!editing) applyPendingServerProfile();
         }
 
-        pendingServerProfile = serverProfile;
-        if (!editing) applyPendingServerProfile();
+        for (const type of ["avatar", "banner"]) {
+            const value = serverProfile[type + "_url"];
+            if (typeof value !== "string" || !value) continue;
+
+            try {
+                const parsed = new URL(value);
+                if (parsed.protocol === "https:" && parsed.hostname.endsWith(".imagekit.io")) {
+                    remoteImages[type] = value;
+                }
+            } catch {
+                // Ignore invalid or unsupported remote image URLs.
+            }
+        }
     }
 
     async function finishEditing(save) {
@@ -280,8 +301,10 @@ export function createProfile({
         if (isObjectUrl) item.objectUrl = source;
     }
 
-    async function loadImages() {
-        setImage("avatar", getTelegramPhotoUrl(), false);
+    async function loadImages(serverProfile = null) {
+        if (serverProfile) applyServerProfile(serverProfile);
+
+        setImage("avatar", remoteImages.avatar || getTelegramPhotoUrl(), false);
 
         const avatarRevision = images.avatar.revision;
         const bannerRevision = images.banner.revision;
@@ -297,11 +320,13 @@ export function createProfile({
             })
         ]);
 
-        if (savedAvatar && avatarRevision === images.avatar.revision) {
+        if (!remoteImages.avatar && savedAvatar && avatarRevision === images.avatar.revision) {
             setImage("avatar", URL.createObjectURL(savedAvatar), true);
         }
 
-        if (savedBanner && bannerRevision === images.banner.revision) {
+        if (remoteImages.banner) {
+            setImage("banner", remoteImages.banner, false);
+        } else if (savedBanner && bannerRevision === images.banner.revision) {
             setImage("banner", URL.createObjectURL(savedBanner), true);
         }
     }
@@ -331,29 +356,49 @@ export function createProfile({
 
             if (revision !== item.revision) return;
 
-            let storedLocally = true;
-            try {
-                await writeImage(item.key, blob);
-            } catch (error) {
-                storedLocally = false;
-                console.warn("SplitEvents: image storage unavailable", error);
+            if (typeof saveProfileImage !== "function") {
+                throw new Error("missing_telegram_init_data");
+            }
+
+            if (blob.size > 5 * 1024 * 1024) {
+                throw new Error("image_too_large");
+            }
+
+            const serverProfile = await saveProfileImage(type, blob);
+            const remoteUrl = serverProfile && serverProfile[type + "_url"];
+            if (typeof remoteUrl !== "string" || !remoteUrl.startsWith("https://")) {
+                throw new Error("invalid_media_response");
             }
 
             if (revision !== item.revision) return;
 
-            setImage(type, URL.createObjectURL(blob), true);
+            remoteImages[type] = remoteUrl;
+            setImage(type, remoteUrl, false);
 
-            if (!storedLocally) {
+            try {
+                await writeImage(item.key, blob);
+            } catch (error) {
+                console.warn("SplitEvents: local image cache unavailable", error);
                 notifyWarning(
-                    "изображение установлено, но не сохранено",
-                    "браузер не смог записать его в память устройства. после закрытия приложения изображение может исчезнуть."
+                    "изображение сохранено на сервере",
+                    "но не удалось сохранить его в локальный кэш устройства."
                 );
             }
         } catch (error) {
             console.error("SplitEvents: " + type + " upload failed", error);
+            const reason = error && typeof error.message === "string"
+                ? error.message
+                : "";
+            const messages = {
+                media_storage_not_configured: "хранилище изображений ещё не подключено.",
+                media_storage_unavailable: "не удалось загрузить изображение на сервер. проверь подключение и попробуй ещё раз.",
+                image_too_large: "изображение слишком большое. выбери файл поменьше.",
+                unsupported_image_format: "поддерживаются изображения jpeg, png и webp.",
+                missing_telegram_init_data: "открой мини-приложение через telegram и попробуй ещё раз."
+            };
             notifyError(
-                "не удалось обработать изображение",
-                "попробуй выбрать другое изображение в формате jpeg, png или webp."
+                "не удалось сохранить изображение",
+                messages[reason] || "попробуй выбрать другое изображение в формате jpeg, png или webp."
             );
         } finally {
             input.disabled = false;
