@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="./css/components.css?v=20261126-6">
     <link rel="stylesheet" href="./css/layout.css?v=20261126-4">
     <link rel="stylesheet" href="./css/menu.css?v=20261126-11">
-    <link rel="stylesheet" href="./css/profile.css?v=20261126-7">
+    <link rel="stylesheet" href="./css/profile.css?v=20261126-8">
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
     <link rel="stylesheet" href="./css/events.css?v=20261126-17">
     <link rel="stylesheet" href="./css/nominations.css?v=20261126-18">
@@ -53,7 +53,7 @@
     <link rel="stylesheet" href="./css/notifications.css?v=20261126-1">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-42"></script>
+    <script type="module" src="./app.js?v=20261126-43"></script>
 </head>
 
 <body>
@@ -238,6 +238,7 @@
                             tabindex="-1"
                         >
                             <svg
+                                class="profile-media-icon profile-media-icon--plus"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
@@ -248,7 +249,28 @@
                                 <path d="M12 5V19"></path>
                                 <path d="M5 12H19"></path>
                             </svg>
-                        </button>
+                            <svg
+                                class="profile-media-icon profile-media-icon--spinner"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="8" stroke-dasharray="34 16"></circle>
+                            </svg>
+                            <svg
+                                class="profile-media-icon profile-media-icon--error"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M6 6L18 18"></path>
+                                <path d="M18 6L6 18"></path>
+                            </svg>\n                        </button>
 
                         <div class="profile-avatar" id="profile-avatar">
                             <img
@@ -288,18 +310,40 @@
                                 title="Загрузить аватарку"
                                 tabindex="-1"
                             >
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M12 5V19"></path>
-                                    <path d="M5 12H19"></path>
-                                </svg>
-                            </button>
+                            <svg
+                                class="profile-media-icon profile-media-icon--plus"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M12 5V19"></path>
+                                <path d="M5 12H19"></path>
+                            </svg>
+                            <svg
+                                class="profile-media-icon profile-media-icon--spinner"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="8" stroke-dasharray="34 16"></circle>
+                            </svg>
+                            <svg
+                                class="profile-media-icon profile-media-icon--error"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M6 6L18 18"></path>
+                                <path d="M18 6L6 18"></path>
+                            </svg>\n                        </button>
                         </div>
                     </div>
 
