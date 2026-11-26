@@ -284,7 +284,8 @@ export function createNominationsWidget(root) {
         });
 
         controls.append(previous, next);
-        carousel.append(stage, controls);
+        stage.appendChild(controls);
+        carousel.appendChild(stage);
         nominationsList.replaceChildren(featuredRow, carousel);
     }
 
