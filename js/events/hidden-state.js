@@ -24,3 +24,18 @@ export function hideEvent(eventId, userId) {
     writeEventIdSet(STORAGE_PREFIX, userId, hiddenIds);
     return true;
 }
+
+export function unhideEvent(eventId, userId) {
+    if (typeof eventId !== "string" || !eventId.trim()) {
+        return false;
+    }
+
+    const hiddenIds = readEventIdSet(STORAGE_PREFIX, userId);
+    if (!hiddenIds.has(eventId)) {
+        return false;
+    }
+
+    hiddenIds.delete(eventId);
+    writeEventIdSet(STORAGE_PREFIX, userId, hiddenIds);
+    return true;
+}
