@@ -15,7 +15,7 @@ import {
 } from "./js/api.js?v=20261126-5";
 import { createMenu } from "./js/menu.js?v=20261126-5";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
-import { createProfile } from "./js/profile.js?v=20261126-8";
+import { createProfile } from "./js/profile.js?v=20261126-9";
 import { createFriendsPage } from "./js/pages/friends.js?v=20261126-1";
 import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-1";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
