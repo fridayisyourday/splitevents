@@ -10,11 +10,22 @@ const user = webApp && webApp.initDataUnsafe
 let backButtonHandler = null;
 let backButtonBound = false;
 
-function applyTheme() {
-    const background = "#000000";
+function getPreferredColorScheme() {
+    if (webApp && (webApp.colorScheme === "dark" || webApp.colorScheme === "light")) {
+        return webApp.colorScheme;
+    }
 
-    document.documentElement.style.colorScheme = "dark";
-    document.documentElement.dataset.colorScheme = "dark";
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+}
+
+function applyTheme() {
+    const colorScheme = getPreferredColorScheme();
+    const background = colorScheme === "dark" ? "#000000" : "#FFFFFF";
+
+    document.documentElement.style.colorScheme = colorScheme;
+    document.documentElement.dataset.colorScheme = colorScheme;
 
     if (webApp) {
         try {
@@ -68,7 +79,18 @@ export function initTelegram({ onBack } = {}) {
 
     if (!webApp) {
         applyTheme();
-        console.info("SplitEvents: opened in a regular browser with the dark theme");
+
+        const mediaQuery = window.matchMedia
+            ? window.matchMedia("(prefers-color-scheme: dark)")
+            : null;
+
+        if (mediaQuery && typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", applyTheme);
+        } else if (mediaQuery && typeof mediaQuery.addListener === "function") {
+            mediaQuery.addListener(applyTheme);
+        }
+
+        console.info("SplitEvents: opened in a regular browser");
         return;
     }
 

@@ -6,8 +6,8 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
-    <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#FFFFFF">
     <meta
         name="description"
         content="SplitEvents — приложение для организации совместных мероприятий."
@@ -23,6 +23,19 @@
 
     <!-- Telegram SDK подключается до модулей приложения. -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        (function () {
+            const telegramScheme = window.Telegram && window.Telegram.WebApp
+                ? window.Telegram.WebApp.colorScheme
+                : null;
+            const systemDark = window.matchMedia
+                && window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const scheme = telegramScheme === "dark" || telegramScheme === "light"
+                ? telegramScheme
+                : (systemDark ? "dark" : "light");
+            document.documentElement.dataset.colorScheme = scheme;
+        })();
+    </script>
 
     <!-- Общие стили приложения. -->
     <link rel="stylesheet" href="./css/base.css?v=20261126-9">
@@ -33,10 +46,10 @@
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
     <link rel="stylesheet" href="./css/events.css?v=20261126-13">
     <link rel="stylesheet" href="./css/nominations.css?v=20261126-13">
-    <link rel="stylesheet" href="./css/design-system.css?v=20261126-1">
+    <link rel="stylesheet" href="./css/design-system.css?v=20261126-2">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-26"></script>
+    <script type="module" src="./app.js?v=20261126-27"></script>
 </head>
 
 <body>

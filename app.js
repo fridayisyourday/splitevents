@@ -6,7 +6,7 @@ import {
     getTelegramName,
     getTelegramTag,
     getTelegramPhotoUrl
-} from "./js/telegram.js?v=20261126-3";
+} from "./js/telegram.js?v=20261126-4";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-1";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-15";
