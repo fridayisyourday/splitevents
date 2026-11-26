@@ -16,6 +16,7 @@ export function createMenu({ onNavigate, onStateChange }) {
     const navigationItems = [
         { page: "home", button: $("home-nav-button") },
         { page: "profile", button: $("profile-nav-button") },
+        { page: "friends", button: $("friends-nav-button") },
         { page: "events", button: $("events-nav-button") },
         { page: "servers", button: $("servers-nav-button") }
     ];
@@ -43,8 +44,9 @@ export function createMenu({ onNavigate, onStateChange }) {
 
     // Keep every destination visible and mark the current page clearly.
     function updateForPage(currentPage) {
+        const activePage = currentPage === "users" ? "friends" : currentPage;
         navigationItems.forEach((item) => {
-            if (item.page === currentPage) {
+            if (item.page === activePage) {
                 item.button.setAttribute("aria-current", "page");
             } else {
                 item.button.removeAttribute("aria-current");
