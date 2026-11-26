@@ -1,5 +1,5 @@
 /* Events page — supports showing and hiding the user's hidden events. */
-import { createEventCard } from "./event-card.js?v=20261126-6";
+import { createEventCard } from "./event-card.js?v=20261126-7";
 import {
     createPageShell,
     createEmptyStateElement
@@ -137,6 +137,7 @@ export function renderEventsPage(container, events = [], options = {}) {
             .filter((event) => showingHidden || !hiddenIds.has(event.id))
             .forEach((event) => {
                 const card = createEventCard(event, {
+                    showHideAction: !hiddenIds.has(event.id),
                     onHide: (eventId) => {
                         const wasAlreadyHidden = hiddenIds.has(eventId);
                         const result = wasAlreadyHidden
