@@ -1,3 +1,13 @@
+<script setup>
+import { onMounted } from "vue";
+import { createNominationsWidget } from "../../js/nominations.js?v=20261126-19";
+
+onMounted(() => {
+    createNominationsWidget(document.getElementById("vote-widget"));
+});
+</script>
+
+<template>
             <section
                 id="nominations-page"
                 class="page-view"
@@ -103,3 +113,4 @@
                     </div>
                 </div>
             </section>
+</template>

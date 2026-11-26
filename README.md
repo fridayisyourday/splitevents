@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Шапка, навигация, собственный и публичный профили, каталог друзей и события реализованы Vue-компонентами; голосование и страница серверов пока используют переходные DOM-модули.
+- Frontend: Vue 3 + Vite. Все страницы, шапка, навигация и маршрутизация реализованы Vue-компонентами. Внутренняя логика голосования пока использует отдельный DOM-контроллер внутри Vue-страницы.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -26,13 +26,12 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   ├── AppHeader.vue
 │   │   ├── EventsPage.vue
 │   │   ├── FriendsPage.vue
+│   │   ├── HomePage.vue
+│   │   ├── NominationsPage.vue
 │   │   ├── ProfilePage.vue
+│   │   ├── ServersPage.vue
 │   │   └── UserProfilePage.vue
-│   ├── legacy-pages-before-profile.html
-│   ├── legacy-pages-before-friends.html
-│   └── legacy-pages-after-profile.html
 ├── vite.config.js
-├── app.js
 ├── README.md
 ├── assets/
 │   ├── events/
@@ -76,9 +75,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   └── active-state.js
 │   └── pages/
 │       ├── profile-presentation.js
-│       ├── page-shell.js
-│       ├── empty-state.js
-│       └── servers.js
 ├── worker/
 │   ├── index.js
 │   └── migrations/
@@ -99,6 +95,8 @@ Telegram Mini App для совместных мероприятий, профи
 
 **События.** Страница и карточки — `src/components/EventsPage.vue`; каталог событий — `js/events/data.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
+**Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Голосование инициализируется из `NominationsPage.vue`; его внутренняя DOM-логика пока находится в `js/nominations.js`.
+
 **Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
@@ -115,7 +113,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 ## Правила изменения ресурсов
 
-После правки CSS увеличивайте версию соответствующего файла в `index.html`. После правки JavaScript увеличивайте версию импорта этого модуля и версию `app.js` в `index.html`, если менялся список его импортов. Это сбрасывает старый кеш Telegram WebView.
+После правки CSS увеличивайте версию соответствующего файла в `index.html`. После правки JavaScript увеличивайте версию импорта старого модуля, если он ещё подключается напрямую. Это сбрасывает старый кеш Telegram WebView.
 
 Перед публикацией запускаются `npm run check` и `npm run build`. Первая команда проверяет синтаксис JavaScript-модулей, вторая проверяет Vue-компоненты и собирает статический сайт в `dist/`. GitHub Actions выполняет обе проверки для pull request и публикует `dist/` в GitHub Pages после изменений в `main`.
 
@@ -129,4 +127,4 @@ Telegram Mini App для совместных мероприятий, профи
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
 4. Перед публикацией выполните `npm run check` и `npm run build`.
 
-GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages-before-profile.html`, `src/legacy-pages-before-friends.html` и `src/legacy-pages-after-profile.html`. Шапка и боковая навигация реализованы в `src/components/AppHeader.vue`, каталог друзей — в `src/components/FriendsPage.vue`, собственный профиль — в `src/components/ProfilePage.vue`, публичный профиль — в `src/components/UserProfilePage.vue`.
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Все страницы монтируются из Vue-компонентов внутри `src/App.vue`; центрального DOM-контроллера `app.js` и переходных HTML-фрагментов больше нет.
