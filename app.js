@@ -6,7 +6,6 @@ import {
     getTelegramInitData
 } from "./js/telegram.js?v=20261126-6";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
-import { createFriendsPage } from "./js/pages/friends.js?v=20261126-4";
 import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-3";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-18";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
@@ -58,12 +57,6 @@ if (missingPages.length || !mainContent) {
     const telegramUserId = getTelegramUserId();
     const telegramInitData = getTelegramInitData();
 
-    const friendsPage = createFriendsPage(pageElements.friends, {
-        initData: telegramInitData,
-        onOpenUser: (publicId) => {
-            window.location.hash = "#/users/" + encodeURIComponent(publicId);
-        }
-    });
     const userProfilePage = createUserProfilePage(pageElements.users, {
         initData: telegramInitData
     });
@@ -176,10 +169,6 @@ if (missingPages.length || !mainContent) {
             eventsPage.stop();
         }
 
-        if (changed && currentPage === "friends" && page !== "friends") {
-            friendsPage.stop();
-        }
-
         if (changed && currentPage === "users" && page !== "users") {
             userProfilePage.stop();
         }
@@ -195,10 +184,6 @@ if (missingPages.length || !mainContent) {
 
         if (changed && page === "events") {
             eventsPage.start();
-        }
-
-        if (changed && page === "friends") {
-            friendsPage.start();
         }
 
         if (changed && page === "users") {

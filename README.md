@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Шапка, навигация и собственный профиль уже реализованы Vue-компонентами; страницы друзей, чужого профиля, событий и голосования пока используют переходные DOM-модули.
+- Frontend: Vue 3 + Vite. Шапка, навигация, собственный профиль и каталог друзей реализованы Vue-компонентами; чужой профиль, события и голосование пока используют переходные DOM-модули.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -24,8 +24,10 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── App.vue
 │   ├── components/
 │   │   ├── AppHeader.vue
+│   │   ├── FriendsPage.vue
 │   │   └── ProfilePage.vue
 │   ├── legacy-pages-before-profile.html
+│   ├── legacy-pages-before-friends.html
 │   └── legacy-pages-after-profile.html
 ├── vite.config.js
 ├── app.js
@@ -71,7 +73,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   │   ├── hidden-state.js
 │   │   └── active-state.js
 │   └── pages/
-│       ├── friends.js
 │       ├── user-profile.js
 │       ├── profile-presentation.js
 │       ├── page-shell.js
@@ -99,7 +100,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **События.** Список событий — `js/events/data.js`; шаблон карточки — `js/pages/event-card.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
-**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `js/pages/friends.js`; чужой профиль — `js/pages/user-profile.js`; общие элементы отображения профиля — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
+**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `js/pages/user-profile.js`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
@@ -129,4 +130,4 @@ Telegram Mini App для совместных мероприятий, профи
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
 4. Перед публикацией выполните `npm run check` и `npm run build`.
 
-GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages-before-profile.html` и `src/legacy-pages-after-profile.html`. Шапка и боковая навигация реализованы в `src/components/AppHeader.vue`, собственный профиль — в `src/components/ProfilePage.vue`.
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Переходная разметка ещё не перенесённых страниц находится в `src/legacy-pages-before-profile.html`, `src/legacy-pages-before-friends.html` и `src/legacy-pages-after-profile.html`. Шапка и боковая навигация реализованы в `src/components/AppHeader.vue`, каталог друзей — в `src/components/FriendsPage.vue`, собственный профиль — в `src/components/ProfilePage.vue`.
