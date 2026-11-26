@@ -530,3 +530,10 @@ h6,
 .event-card-description {
     text-transform: lowercase;
 }
+
+
+/* The add-nominee dialog title and eyebrow are intentionally lowercase. */
+.vote-picker-overlay .vote-dialog-title,
+.vote-picker-overlay .vote-dialog-eyebrow {
+    text-transform: lowercase;
+}

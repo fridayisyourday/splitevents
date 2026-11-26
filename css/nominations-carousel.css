@@ -424,3 +424,9 @@
     }
 }
 
+
+
+/* The secondary nomination carousel is 86% of the featured-card visual scale. */
+.vote-nomination-card.vote-carousel-card {
+    zoom: 0.86;
+}
