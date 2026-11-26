@@ -10,14 +10,14 @@ import {
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-2";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-15";
-import { EVENTS } from "./js/events/data.js?v=20261126-7";
+import { EVENTS } from "./js/events/data.js?v=20261126-8";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
 import {
     getActiveEventsCount,
     getNextActiveEventExpiry
 } from "./js/events/active-state.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-4";
-import { createNominationsWidget } from "./js/nominations.js?v=20261126-12";
+import { createNominationsWidget } from "./js/nominations.js?v=20261126-13";
 
 const pageElements = {
     home: document.getElementById("home-page"),
