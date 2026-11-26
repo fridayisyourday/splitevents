@@ -189,6 +189,10 @@
 
 .vote-picker-overlay {
     z-index: 1201;
+    /* Keep the existing voting backdrop; do not darken it a second time. */
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
 }
 
 .vote-dialog {
