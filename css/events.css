@@ -315,11 +315,6 @@
     margin-top: var(--app-space-6);
 }
 
-.events-visibility-toggle {
-    min-height: var(--app-control-height);
-    padding: 0 var(--app-space-4);
-}
-
 .events-visibility-toggle svg {
     width: 18px;
     height: 18px;
