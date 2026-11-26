@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import ProfilePage from "./components/ProfilePage.vue";
 import FriendsPage from "./components/FriendsPage.vue";
+import UserProfilePage from "./components/UserProfilePage.vue";
 import legacyPagesBeforeFriends from "./legacy-pages-before-friends.html?raw";
 import legacyPagesBeforeProfile from "./legacy-pages-before-profile.html?raw";
 import legacyPagesAfterProfile from "./legacy-pages-after-profile.html?raw";
@@ -48,6 +49,7 @@ onMounted(() => {
             <ProfilePage />
             <div class="legacy-page-fragment" v-html="legacyPagesBeforeFriends"></div>
             <FriendsPage />
+            <UserProfilePage />
             <div class="legacy-page-fragment" v-html="legacyPagesAfterProfile"></div>
         </main>
 
