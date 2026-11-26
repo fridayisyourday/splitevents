@@ -187,6 +187,7 @@ function handleMenuCommand(event) {
     const command = event.detail || {};
     if (command.action === "open") openMenu();
     if (command.action === "close") closeMenu(Boolean(command.restoreFocus));
+    if (command.action === "sync-state") notifyMenuState();
 }
 
 function handleMenuBadge(event) {
