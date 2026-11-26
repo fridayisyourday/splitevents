@@ -187,7 +187,7 @@ export function createProfile({
         }
 
         pendingServerProfile = serverProfile;
-        if (!editing && !savingName) applyPendingServerProfile();
+        if (!editing) applyPendingServerProfile();
     }
 
     async function finishEditing(save) {
