@@ -194,6 +194,11 @@ async function deleteImageKitFile(privateKey, fileId) {
 }
 
 async function uploadProfileMedia(request, env, origin) {
+  const contentLength = Number(request.headers.get("Content-Length") || 0);
+  if (Number.isFinite(contentLength) && contentLength > 6 * 1024 * 1024) {
+    return json({ error: "image_too_large" }, 413, origin);
+  }
+
   if (!env.BOT_TOKEN) {
     return json({ error: "telegram_auth_not_configured" }, 503, origin);
   }
@@ -279,9 +284,6 @@ async function uploadProfileMedia(request, env, origin) {
   uploadForm.set("folder", "/splitevents/users/" + telegramId + "/profile");
   uploadForm.set("useUniqueFileName", "false");
   uploadForm.set("overwriteFile", "false");
-  uploadForm.set("isPrivateFile", "false");
-  uploadForm.set("tags", "splitevents,profile," + mediaType);
-  uploadForm.set("responseFields", "fileId,url,filePath,name");
 
   let uploaded;
   try {
