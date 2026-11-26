@@ -103,6 +103,10 @@
     padding: 2cqw 2.5cqw;
     color: #171717;
     text-align: center;
+
+    /* Keep the shared primary button legible on the card's white panel. */
+    --app-text: #171717;
+    --app-background: #ffffff;
 }
 
 .event-card-title {
@@ -191,8 +195,6 @@
     width: auto;
     max-width: 23.7cqw;
     min-width: 0;
-    --ui-button-background: var(--app-button-on-light-background);
-    --ui-button-color: var(--app-button-on-light-color);
 }
 
 .event-card-visibility-action {
