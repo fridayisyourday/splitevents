@@ -90,7 +90,7 @@
 
     --app-shadow-card: 0 12px 24px rgba(238, 238, 238, 0.12), 0 4px 8px rgba(238, 238, 238, 0.08);
     --app-shadow-control: 0 4px 12px rgba(238, 238, 238, 0.18);
-    --app-shadow-header: 0 8px 16px rgba(204, 204, 204, 0.08);
+    --app-shadow-header: 0 8px 16px rgba(238, 238, 238, 0.08);
     --app-overlay-backdrop: rgba(0, 0, 0, 0.72);
     --app-media-overlay: rgba(0, 0, 0, 0.64);
     --app-drawer-shadow: 12px 0 32px rgba(238, 238, 238, 0.16);
