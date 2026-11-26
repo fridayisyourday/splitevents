@@ -14,7 +14,7 @@ function createSvgElement(tagName, attributes = {}) {
     return node;
 }
 
-function createEyeIcon() {
+function createEyeIcon(isHidden) {
     const svg = createSvgElement("svg", {
         viewBox: "0 0 24 24",
         fill: "none",
@@ -25,12 +25,22 @@ function createEyeIcon() {
         "aria-hidden": "true",
         focusable: "false"
     });
-    svg.append(
-        createSvgElement("path", {
-            d: "M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"
-        }),
-        createSvgElement("circle", { cx: "12", cy: "12", r: "2.8" })
-    );
+    svg.appendChild(createSvgElement("path", {
+        d: "M2.5 12s3.4-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.4 6.5-9.5 6.5S2.5 12 2.5 12Z"
+    }));
+
+    if (isHidden) {
+        svg.appendChild(createSvgElement("path", {
+            d: "M4 4L20 20"
+        }));
+    } else {
+        svg.appendChild(createSvgElement("circle", {
+            cx: "12",
+            cy: "12",
+            r: "2.8"
+        }));
+    }
+
     return svg;
 }
 
@@ -47,7 +57,7 @@ function formatPart(value) {
     return String(value).padStart(2, "0");
 }
 
-export function createEventCard(event, { onHide, showHideAction = true } = {}) {
+export function createEventCard(event, { onToggleHidden, isHidden = false } = {}) {
     const card = createElement("article", "event-card");
     card.dataset.eventId = event.id;
 
@@ -111,7 +121,7 @@ export function createEventCard(event, { onHide, showHideAction = true } = {}) {
     const actions = createElement("div", "event-card-actions");
     const action = createElement(
         "button",
-        "event-card-action ui-button ui-button--primary",
+        "event-card-action ui-button ui-button--primary ui-button--compact",
         event.actionLabel || "Принять участие"
     );
     action.type = "button";
@@ -119,24 +129,27 @@ export function createEventCard(event, { onHide, showHideAction = true } = {}) {
     action.setAttribute("aria-describedby", descriptionId);
     action.title = "Участие пока не подключено";
 
-    const hideButton = createElement(
+    const visibilityButton = createElement(
         "button",
-        "event-card-hide-action ui-button ui-button--icon ui-button--secondary ui-button--round"
+        "event-card-visibility-action ui-button ui-button--icon ui-button--secondary ui-button--round"
     );
-    hideButton.type = "button";
-    hideButton.setAttribute("aria-label", "Скрыть событие");
-    hideButton.title = "Скрыть событие";
-    hideButton.appendChild(createEyeIcon());
-    hideButton.addEventListener("click", () => {
-        if (typeof onHide === "function") {
-            onHide(event.id);
+    visibilityButton.type = "button";
+
+    function updateVisibilityButton() {
+        const label = isHidden ? "Вернуть событие" : "Скрыть событие";
+        visibilityButton.setAttribute("aria-label", label);
+        visibilityButton.title = label;
+        visibilityButton.replaceChildren(createEyeIcon(isHidden));
+    }
+
+    updateVisibilityButton();
+    visibilityButton.addEventListener("click", () => {
+        if (typeof onToggleHidden === "function") {
+            onToggleHidden(event.id, !isHidden);
         }
     });
 
-    actions.append(action);
-    if (showHideAction) {
-        actions.appendChild(hideButton);
-    }
+    actions.append(action, visibilityButton);
     content.append(title, description, meta, actions);
     card.append(artwork, wash, content);
 
