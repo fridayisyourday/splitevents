@@ -51,8 +51,13 @@ export function validateNominationDatabase(nominees, nominations) {
         }
 
         if (type === "duo") {
+            const pairs = nomination.duoPairs;
+            if (!Array.isArray(pairs) || pairs.length === 0) {
+                errors.push(nomination.id + ": не заданы допустимые пары");
+                return;
+            }
             const pairIds = new Set();
-            (nomination.duoPairs || []).forEach((pair) => {
+            pairs.forEach((pair) => {
                 if (!pair || typeof pair.id !== "string" || !pair.id.trim()) {
                     errors.push(nomination.id + ": у пары отсутствует id");
                     return;
