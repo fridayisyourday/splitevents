@@ -67,7 +67,6 @@ export function createNominationsWidget(root) {
     let pickerPage = 0;
     let carouselIndex = 0;
     let currentPageSize = getPageSize();
-    let carouselPositionObserver = null;
 
     function initials(name) {
         return String(name || "").slice(0, 2).toLocaleUpperCase("en");
@@ -289,31 +288,7 @@ export function createNominationsWidget(root) {
         carousel.appendChild(stage);
         nominationsList.replaceChildren(featuredRow, carousel);
 
-        const currentCard = stage.querySelector(".vote-carousel-card--current");
-        const positionControls = function () {
-            const stageRect = stage.getBoundingClientRect();
-            const cardRect = currentCard.getBoundingClientRect();
-            if (!stageRect.width || !cardRect.width || !cardRect.height) return;
-
-            const controlsTop = cardRect.bottom - stageRect.top + 18;
-            controls.style.top = controlsTop + "px";
-
-            const controlsHeight = controls.getBoundingClientRect().height;
-            stage.style.minHeight = Math.max(
-                300,
-                controlsTop + controlsHeight + 12
-            ) + "px";
-        };
-
-        if (carouselPositionObserver) carouselPositionObserver.disconnect();
-        if (typeof ResizeObserver === "function") {
-            carouselPositionObserver = new ResizeObserver(positionControls);
-            carouselPositionObserver.observe(stage);
-            carouselPositionObserver.observe(currentCard);
-        }
-
-        window.requestAnimationFrame(positionControls);
-        currentCard.addEventListener("animationend", positionControls);
+        // Carousel controls keep their fixed responsive CSS position during every slide.
     }
 
     function makePersonCard(person, label, onClick, selected, imageMode) {
