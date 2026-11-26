@@ -20,8 +20,8 @@
 
     /* Shared interaction states. */
     --app-disabled-opacity: 0.48;
-    --app-nav-active-background: var(--app-black);
-    --app-nav-active-color: var(--app-white);
+    --app-nav-active-background: var(--app-secondary);
+    --app-nav-active-color: var(--app-on-secondary);
     --app-badge-background: var(--app-secondary);
     --app-badge-color: var(--app-on-secondary);
     --app-badge-active-background: var(--app-white);
@@ -214,8 +214,8 @@ body,
 
 .vote-candidate-card {
     border-radius: var(--app-radius-card);
-    background: var(--app-secondary) !important;
-    color: var(--app-on-secondary);
+    background: var(--app-card-background) !important;
+    color: var(--app-text);
     box-shadow: var(--app-shadow-card) !important;
 }
 
@@ -226,7 +226,7 @@ body,
 
 .vote-candidate-name,
 .vote-suggest-text {
-    color: var(--app-on-secondary) !important;
+    color: var(--app-text) !important;
 }
 
 .vote-logo-wrap,
@@ -237,9 +237,10 @@ body,
 
 .vote-add-symbol,
 .vote-suggest-symbol {
-    background: var(--app-black);
-    color: var(--app-gray);
+    background: var(--app-secondary);
+    color: var(--app-white);
     box-shadow: var(--app-shadow-control);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
 }
 
 .vote-dialog-title,
