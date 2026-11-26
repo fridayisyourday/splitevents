@@ -54,6 +54,9 @@
 
     /* Shared button system. */
     --app-button-font-size: 14px;
+    --app-button-font-size-compact: 12px;
+    --app-button-height-compact: 40px;
+    --app-button-padding-compact: 0 12px;
     --app-button-font-weight: 650;
     --app-button-transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease, filter 150ms ease;
 
