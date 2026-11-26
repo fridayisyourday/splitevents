@@ -195,7 +195,6 @@ if (missingPages.length || !mainContent) {
         if (moveFocus) {
             mainContent.focus({ preventScroll: true });
         }
-
     }
 
     initTelegram({
