@@ -126,7 +126,7 @@ export function createEventCard(event, { onToggleHidden, onParticipate, isHidden
     );
     action.type = "button";
     action.setAttribute("aria-describedby", descriptionId);
-    action.title = "Открыть страницу участия";
+    action.title = "Открыть голосование";
     action.addEventListener("click", () => {
         if (typeof onParticipate === "function") {
             onParticipate(event);
