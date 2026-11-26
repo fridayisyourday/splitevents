@@ -14,12 +14,14 @@ import { EVENTS } from "./js/events/data.js?v=20261126-5";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
 import { getActiveEventsCount } from "./js/events/active-state.js?v=20261126-1";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-3";
+import { createNominationsWidget } from "./js/nominations.js?v=20261126-1";
 
 const pageElements = {
     home: document.getElementById("home-page"),
     profile: document.getElementById("profile-page"),
     events: document.getElementById("events-page"),
-    servers: document.getElementById("servers-page")
+    servers: document.getElementById("servers-page"),
+    nominations: document.getElementById("nominations-page")
 };
 const mainContent = document.getElementById("main-content");
 
@@ -35,6 +37,8 @@ if (missingPages.length || !mainContent) {
 } else {
     let currentPage = null;
     let menu = null;
+
+    createNominationsWidget(document.getElementById("vote-widget"));
 
     const telegramUserId = getTelegramUserId();
     const profile = createProfile({
@@ -65,9 +69,12 @@ if (missingPages.length || !mainContent) {
             return changed;
         },
         onParticipateEvent: (event) => {
-            const destination = new URL("./participate.html", window.location.href);
-            destination.searchParams.set("event", event.id);
-            window.open(destination.href, "_blank", "noopener,noreferrer");
+            const destination = "#/nominations?event=" + encodeURIComponent(event.id);
+            if (window.location.hash === destination) {
+                renderPage(true);
+            } else {
+                window.location.hash = destination;
+            }
         }
     });
     renderServersPage(pageElements.servers);
@@ -142,7 +149,8 @@ if (missingPages.length || !mainContent) {
             home: "Сплит — SplitEvents",
             profile: "Профиль — Сплит",
             events: "Текущие события — Сплит",
-            servers: "Сервера — Сплит"
+            servers: "Сервера — Сплит",
+            nominations: "НОМИНАЦИИ 2026 — Сплит"
         };
         document.title = pageTitles[page];
 
@@ -160,7 +168,10 @@ if (missingPages.length || !mainContent) {
                 return;
             }
 
-            if (getCurrentPage() !== "home") {
+            const page = getCurrentPage();
+            if (page === "nominations") {
+                navigateTo("events");
+            } else if (page !== "home") {
                 navigateTo("home");
             }
         }
