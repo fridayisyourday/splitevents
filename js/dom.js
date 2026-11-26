@@ -2,7 +2,7 @@
 const ICON_NAMES = new Set([
     "menu", "x", "house", "user-round", "ticket", "gamepad-2",
     "users-round", "calendar-clock", "plus", "loader-circle",
-    "pencil", "check", "eye", "eye-off", "info", "circle-x",
+    "pencil", "check", "eye", "eye-off", "info",
     "chevron-left", "chevron-right"
 ]);
 
