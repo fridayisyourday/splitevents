@@ -124,6 +124,21 @@ body,
     box-shadow: var(--app-shadow-card) !important;
 }
 
+.profile-card,
+.vote-dialog,
+.vote-dialog--nomination {
+    border-radius: var(--app-radius-card);
+}
+
+.menu-panel {
+    border-radius: 0 var(--app-radius-card) var(--app-radius-card) 0;
+}
+
+.profile-avatar-placeholder svg {
+    width: 48px;
+    height: 48px;
+}
+
 .profile-cover,
 .profile-banner-placeholder,
 .profile-avatar,
@@ -147,6 +162,7 @@ body,
 }
 
 .event-card {
+    border-radius: var(--app-radius-card);
     background: var(--app-black);
     box-shadow: var(--app-shadow-card) !important;
 }
@@ -165,6 +181,7 @@ body,
 
 .vote-nomination-card,
 .vote-candidate-card {
+    border-radius: var(--app-radius-card);
     background: var(--app-gray) !important;
     color: var(--app-black);
     box-shadow: var(--app-shadow-card) !important;
