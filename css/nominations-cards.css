@@ -221,10 +221,15 @@
     object-fit: cover;
 }
 
-/* Raise the carousel arrows slightly without changing their hit area or layout. */
-.vote-carousel-controls {
-    position: relative;
-    top: -4px;
+/* Keep the arrows overlaid at the stage bottom with the same 18px gap as the main sections. */
+.vote-carousel-stage > .vote-carousel-controls {
+    position: absolute;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    margin: 0;
 }
 
 @media (max-width: 640px) {
