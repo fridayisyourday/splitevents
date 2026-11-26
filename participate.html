@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff">
+    <meta
+        name="description"
+        content="SplitEvents — страница участия в событии."
+    >
+    <title>Участие в событии — Сплит</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <link rel="stylesheet" href="./css/base.css?v=20261126-7">
+    <link rel="stylesheet" href="./css/components.css?v=20261126-4">
+    <link rel="stylesheet" href="./css/layout.css?v=20261126-3">
+    <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
+
+    <script type="module" src="./js/participate.js?v=20261126-1"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="site-header">
+            <a
+                class="header-button ui-button ui-button--secondary"
+                href="./index.html#/events"
+                aria-label="Вернуться к событиям"
+            >
+                Назад
+            </a>
+            <div class="header-logo" aria-label="Сплит">сплит</div>
+        </header>
+
+        <main id="main-content" class="page-content" tabindex="-1">
+            <section class="section-page" aria-labelledby="participation-title">
+                <div class="section-page-content">
+                    <header class="section-page-header">
+                        <h1 id="participation-title" class="section-page-title">
+                            Участие в событии
+                        </h1>
+                    </header>
+
+                    <div class="section-page-body section-page-body--center">
+                        <div class="empty-state" role="status" aria-live="polite">
+                            <p id="participation-message" class="empty-state-message">
+                                Страница участия скоро появится
+                            </p>
+                            <p id="participation-note" class="empty-state-note">
+                                Здесь будет информация о том, как присоединиться к событию.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

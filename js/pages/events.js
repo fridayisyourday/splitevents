@@ -1,5 +1,5 @@
 /* Events page — supports showing and hiding the user's hidden events. */
-import { createEventCard } from "./event-card.js?v=20261126-9";
+import { createEventCard } from "./event-card.js?v=20261126-11";
 import {
     createPageShell,
     createEmptyStateElement
@@ -140,6 +140,7 @@ export function renderEventsPage(container, events = [], options = {}) {
                 const isHidden = hiddenIds.has(event.id);
                 const card = createEventCard(event, {
                     isHidden,
+                    onParticipate: options.onParticipateEvent,
                     onToggleHidden: (eventId, shouldHide) => {
                         const result = typeof options.onToggleHidden === "function"
                             ? options.onToggleHidden(eventId, shouldHide)

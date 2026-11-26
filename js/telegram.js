@@ -20,8 +20,13 @@ function applyTheme() {
     if (!webApp) return;
 
     const theme = webApp.themeParams || {};
-    const background = validColor(theme.bg_color, "#ffffff");
+    const colorScheme = webApp.colorScheme === "dark" ? "dark" : "light";
+    const fallbackBackground = colorScheme === "dark" ? "#121418" : "#ffffff";
+    const background = validColor(theme.bg_color, fallbackBackground);
     const header = validColor(theme.header_bg_color, background);
+
+    document.documentElement.style.colorScheme = colorScheme;
+    document.documentElement.dataset.colorScheme = colorScheme;
 
     try {
         if (typeof webApp.setBackgroundColor === "function") {
@@ -72,6 +77,25 @@ export function initTelegram({ onBack } = {}) {
     backButtonHandler = typeof onBack === "function" ? onBack : null;
 
     if (!webApp) {
+        const mediaQuery = window.matchMedia
+            ? window.matchMedia("(prefers-color-scheme: dark)")
+            : null;
+
+        function applySystemTheme() {
+            const isDark = Boolean(mediaQuery && mediaQuery.matches);
+            document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+            document.documentElement.dataset.colorScheme = isDark ? "dark" : "light";
+
+            const themeMeta = document.querySelector('meta[name="theme-color"]');
+            if (themeMeta) themeMeta.content = isDark ? "#121418" : "#ffffff";
+        }
+
+        applySystemTheme();
+
+        if (mediaQuery && typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", applySystemTheme);
+        }
+
         console.info("SplitEvents: opened in a regular browser");
         return;
     }

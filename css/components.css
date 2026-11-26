@@ -65,9 +65,9 @@
 }
 
 .ui-button--media {
-    border: 2px solid rgba(255, 255, 255, 0.95);
-    background: rgba(255, 255, 255, 0.96);
-    color: #222222;
+    border: 2px solid var(--app-card-background);
+    background: var(--app-card-background);
+    color: var(--app-text);
 }
 
 .ui-button:disabled {
