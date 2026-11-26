@@ -1,5 +1,5 @@
-import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
 /* Events page — supports showing and hiding the user's hidden events. */
+import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
 import { createEventCard } from "./event-card.js?v=20261126-11";
 import {
     createPageShell,
