@@ -373,7 +373,8 @@ export function createNominationsWidget(root) {
             ? nomineeById.get(activeNomination.selectedFromPoolId)
             : null;
         const selectedName = document.createElement("p");
-        selectedName.className = selectedPerson ? "vote-candidate-name" : "vote-candidate-label";
+        selectedName.className = "vote-candidate-name"
+            + (selectedPerson ? "" : " vote-candidate-name--label");
         selectedName.textContent = selectedPerson ? selectedPerson.name : "Добавить номинанта";
         details.appendChild(selectedName);
         card.appendChild(details);
@@ -453,7 +454,9 @@ export function createNominationsWidget(root) {
         }
 
         const display = document.createElement("p");
-        display.className = mode === "voted" ? "vote-candidate-name" : "vote-suggest-text";
+        display.className = mode === "voted"
+            ? "vote-suggest-text vote-candidate-name"
+            : "vote-suggest-text";
         display.textContent = mode === "voted" ? activeNomination.suggestedText : "Предложить вариант";
         details.appendChild(display);
         card.appendChild(details);
