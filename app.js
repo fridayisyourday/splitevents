@@ -17,7 +17,7 @@ import {
     getNextActiveEventExpiry
 } from "./js/events/active-state.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-4";
-import { createNominationsWidget } from "./js/nominations.js?v=20261126-10";
+import { createNominationsWidget } from "./js/nominations.js?v=20261126-11";
 
 const pageElements = {
     home: document.getElementById("home-page"),
