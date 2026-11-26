@@ -191,7 +191,7 @@
 
 .event-countdown-unit {
     color: var(--app-hint);
-    font-size: clamp(10px, 0.95cqw, 10px);
+    font-size: clamp(10px, 0.95cqw, 12px);
     font-weight: 450;
 }
 
