@@ -533,6 +533,9 @@ export function createNominationsWidget(root) {
 
         const plus = document.createElement("div");
         plus.className = "vote-add-symbol";
+        if (["pumpkin-king", "pumpkin-queen", "nextgen"].includes(activeNomination.id)) {
+            plus.classList.add("vote-add-symbol--round");
+        }
         plus.textContent = "+";
         plus.setAttribute("aria-hidden", "true");
         card.appendChild(plus);
@@ -624,7 +627,7 @@ export function createNominationsWidget(root) {
 
         const display = document.createElement("p");
         display.className = "vote-suggest-text";
-        display.textContent = mode === "voted" ? activeNomination.suggestedText : "Предложи свой вариант";
+        display.textContent = mode === "voted" ? activeNomination.suggestedText : "Предложить вариант";
         details.appendChild(display);
         card.appendChild(details);
 
@@ -668,7 +671,9 @@ export function createNominationsWidget(root) {
         if (activeNomination.type === "image") {
             return people.concat([{ type: "suggest-other" }]);
         }
-        if (activeNomination.type === "fixed") return people;
+        if (activeNomination.type === "fixed") {
+            return people.concat([{ type: "add-card" }]);
+        }
         return people.concat([{ type: "add-card" }]);
     }
 
@@ -715,7 +720,7 @@ export function createNominationsWidget(root) {
             }
 
             const isSelected = activeNomination.selectedId === entry.id;
-            const imageMode = activeNomination.type === "image" || activeNomination.type === "fixed";
+            const imageMode = activeNomination.type === "image";
             fragment.appendChild(makePersonCard(
                 entry,
                 isSelected ? "Отменить голос" : "Проголосовать",
@@ -748,7 +753,7 @@ export function createNominationsWidget(root) {
     function availablePeople() {
         const presetIds = new Set(activeNomination.nomineeIds || []);
         return NOMINEES.filter(function (person) {
-            return person.gender === activeNomination.gender
+            return (!activeNomination.gender || person.gender === activeNomination.gender)
                 && !presetIds.has(person.id)
                 && person.id !== activeNomination.selectedFromPoolId;
         });
