@@ -25,6 +25,8 @@ export function createNominationModel({ nomineeById, compareNames }) {
     }
 
     function nominationHasVote(nomination) {
+        if (!nomination) return false;
+
         if (nomination.type === "duo") {
             return Boolean(nomination.selectedPairId)
                 && getDuoPairs(nomination).some(function (pair) {
@@ -32,22 +34,34 @@ export function createNominationModel({ nomineeById, compareNames }) {
                 });
         }
 
+        const eligibleIds = Array.isArray(nomination.nomineeIds)
+            ? nomination.nomineeIds
+            : [];
+
         if (nomination.type === "image") {
             if (nomination.suggestionMode === "voted") {
-                return Boolean((nomination.suggestedText || "").trim());
+                return typeof nomination.suggestedText === "string"
+                    && Boolean(nomination.suggestedText.trim());
             }
             return Boolean(nomination.selectedId)
-                && nomination.nomineeIds.includes(nomination.selectedId);
+                && eligibleIds.includes(nomination.selectedId)
+                && nomineeById.has(nomination.selectedId);
         }
 
-        return Boolean(
-            (nomination.selectedId && nomineeById.has(nomination.selectedId))
-            || (nomination.selectedFromPoolId && nomineeById.has(nomination.selectedFromPoolId))
-        );
+        if (nomination.selectedFromPoolId) {
+            return nomination.type === "individual"
+                && nomineeById.has(nomination.selectedFromPoolId);
+        }
+
+        return Boolean(nomination.selectedId)
+            && eligibleIds.includes(nomination.selectedId)
+            && nomineeById.has(nomination.selectedId);
     }
 
     function isBallotComplete(nominations) {
-        return nominations.length > 0 && nominations.every(nominationHasVote);
+        return Array.isArray(nominations)
+            && nominations.length > 0
+            && nominations.every(nominationHasVote);
     }
 
     function buildBallotPayload(nominations) {
@@ -55,9 +69,7 @@ export function createNominationModel({ nomineeById, compareNames }) {
             createdAt: new Date().toISOString(),
             nominations: nominations.map(function (nomination) {
                 if (nomination.type === "duo") {
-                    const pair = getDuoPairs(nomination).find(function (item) {
-                        return item.id === nomination.selectedPairId;
-                    });
+                    const pair = selectedDuo(nomination);
                     return {
                         id: nomination.id,
                         title: nomination.title,
@@ -70,19 +82,25 @@ export function createNominationModel({ nomineeById, compareNames }) {
                 }
 
                 if (nomination.type === "image" && nomination.suggestionMode === "voted") {
+                    const value = typeof nomination.suggestedText === "string"
+                        ? nomination.suggestedText.trim()
+                        : "";
                     return {
                         id: nomination.id,
                         title: nomination.title,
                         type: "image",
-                        selection: {
+                        selection: value ? {
                             kind: "suggestion",
-                            value: nomination.suggestedText.trim()
-                        }
+                            value
+                        } : null
                     };
                 }
 
-                const personId = nomination.selectedId || nomination.selectedFromPoolId;
-                const person = personId ? nomineeById.get(personId) : null;
+                const personId = nomination.selectedFromPoolId || nomination.selectedId;
+                const person = nominationHasVote(nomination) && personId
+                    ? nomineeById.get(personId)
+                    : null;
+
                 return {
                     id: nomination.id,
                     title: nomination.title,
@@ -101,13 +119,17 @@ export function createNominationModel({ nomineeById, compareNames }) {
     function buildNominationSnapshot(nominations) {
         return nominations.map(function (nomination) {
             const pair = selectedDuo(nomination);
-            const selectedId = nomination.selectedId || nomination.selectedFromPoolId;
+            const selectedId = nomination.selectedFromPoolId || nomination.selectedId;
+            const eligibleIds = Array.isArray(nomination.nomineeIds)
+                ? nomination.nomineeIds
+                : [];
+
             return {
                 id: nomination.id,
                 title: nomination.title,
                 type: nomination.type || "individual",
                 eligibleNominees: nomination.type === "duo" ? [] : [
-                    ...nomination.nomineeIds.map(function (id) {
+                    ...eligibleIds.map(function (id) {
                         return nomineeById.get(id);
                     }).filter(Boolean),
                     ...(nomination.selectedFromPoolId
@@ -133,6 +155,7 @@ export function createNominationModel({ nomineeById, compareNames }) {
     return {
         getDuoPairs,
         selectedDuo,
+        nominationHasVote,
         isBallotComplete,
         buildBallotPayload,
         buildNominationSnapshot
