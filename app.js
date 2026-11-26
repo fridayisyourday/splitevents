@@ -7,6 +7,7 @@ import {
     getTelegramTag,
     getTelegramPhotoUrl
 } from "./js/telegram.js?v=20261126-4";
+import { syncTelegramUser } from "./js/api.js?v=20261126-1";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createProfile } from "./js/profile.js?v=20261126-2";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
@@ -198,6 +199,10 @@ if (missingPages.length || !mainContent) {
             }
         }
     });
+
+    // Synchronize the signed Telegram identity in the shared database.
+    // This runs in the background and never blocks the app interface.
+    void syncTelegramUser();
 
     menu.bind();
 
