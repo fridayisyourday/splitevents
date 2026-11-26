@@ -24,7 +24,8 @@ const DISPLAY_NAME_ERRORS = Object.freeze({
     database_unavailable: "общая база данных временно недоступна. попробуй позже.",
     telegram_auth_not_configured: "серверная авторизация временно недоступна. попробуй позже.",
     display_name_too_long: "имя должно содержать не более 64 символов.",
-    invalid_display_name: "не удалось сохранить это имя. проверь текст и попробуй ещё раз."
+    invalid_display_name: "не удалось сохранить это имя. проверь текст и попробуй ещё раз.",
+    invalid_profile_payload: "сервер получил некорректные данные профиля. попробуй ещё раз."
 });
 
 function getDisplayNameError(error) {
