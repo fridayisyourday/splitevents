@@ -13,6 +13,17 @@ test("the published nominee catalogue and rules are valid", () => {
     assert.equal(new Set(NOMINEES.map((person) => person.id)).size, NOMINEES.length);
 });
 
+test("featured SQUASH nominations use their updated titles", () => {
+    assert.equal(
+        NOMINATION_DEFINITIONS.find((item) => item.id === "pumpkin-king")?.title,
+        "PUMPKING"
+    );
+    assert.equal(
+        NOMINATION_DEFINITIONS.find((item) => item.id === "pumpkin-queen")?.title,
+        "PUMPQUEEN"
+    );
+});
+
 test("nomination state is independent between widget instances", () => {
     const first = createNominationState();
     const second = createNominationState();

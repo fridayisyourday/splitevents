@@ -5,14 +5,14 @@ import { validateNominationDatabase } from "./validate.js?v=20261126-1";
 const NOMINATION_RECORDS = [
     {
         id: "pumpkin-king",
-        title: "PUMPKIN KING",
+        title: "PUMPKING",
         type: "individual",
         gender: "M",
         nomineeIds: ["burgomister", "dlv1190", "fridayisyourday", "otorgy"]
     },
     {
         id: "pumpkin-queen",
-        title: "PUMPKIN QUEEN",
+        title: "PUMPQUEEN",
         type: "individual",
         gender: "F",
         nomineeIds: ["vale", "holydark", "cyathere"]
