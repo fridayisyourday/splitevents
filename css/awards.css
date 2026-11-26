@@ -485,10 +485,10 @@
 
 .awards-vote-button {
     width: 100%;
-    min-height: 38px;
+    min-height: var(--app-control-height);
     margin-top: auto;
     padding-inline: 8px;
-    font-size: 12px;
+    font-size: var(--app-button-font-size);
 }
 
 .awards-duo-avatars {
