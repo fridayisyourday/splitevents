@@ -208,6 +208,17 @@ function publicProfileName(row) {
   return displayName || telegramName || "пользователь";
 }
 
+function getVerifiedTelegramPhotoUrl(user) {
+  if (!user || typeof user.photo_url !== "string") return null;
+
+  try {
+    const photoUrl = new URL(user.photo_url);
+    return photoUrl.protocol === "https:" ? photoUrl.href : null;
+  } catch {
+    return null;
+  }
+}
+
 
 function isSupportedImageFile(file, bytes) {
   if (!file || file.size <= 0 || file.size > 5 * 1024 * 1024) return false;
@@ -303,10 +314,13 @@ async function uploadProfileMedia(request, env, origin) {
 
   try {
     await env.DB.prepare(
-      "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
-      "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+      "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, avatar_url, updated_at) " +
+      "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
       "ON CONFLICT(telegram_id) DO UPDATE SET " +
       "public_id=COALESCE(users.public_id, excluded.public_id), " +
+      "avatar_url=CASE WHEN users.avatar_file_id IS NULL AND " +
+      "(users.avatar_url IS NULL OR users.avatar_url = '' OR users.avatar_url NOT LIKE 'https://%.imagekit.io/%') " +
+      "AND excluded.avatar_url IS NOT NULL THEN excluded.avatar_url ELSE users.avatar_url END, " +
       "username=excluded.username, first_name=excluded.first_name, " +
       "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
     ).bind(
@@ -314,7 +328,8 @@ async function uploadProfileMedia(request, env, origin) {
       crypto.randomUUID().replaceAll("-", ""),
       verification.user.username || null,
       verification.user.first_name || "",
-      verification.user.last_name || ""
+      verification.user.last_name || "",
+      getVerifiedTelegramPhotoUrl(verification.user)
     ).run();
   } catch (error) {
     console.error("Split API: profile media user upsert failed", error?.name || "Error");
@@ -572,10 +587,13 @@ export default {
       // A client can only update its own optional display_name.
       try {
         await env.DB.prepare(
-          "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
-          "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+          "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, avatar_url, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
           "ON CONFLICT(telegram_id) DO UPDATE SET " +
           "public_id=COALESCE(users.public_id, excluded.public_id), " +
+          "avatar_url=CASE WHEN users.avatar_file_id IS NULL AND " +
+          "(users.avatar_url IS NULL OR users.avatar_url = '' OR users.avatar_url NOT LIKE 'https://%.imagekit.io/%') " +
+          "AND excluded.avatar_url IS NOT NULL THEN excluded.avatar_url ELSE users.avatar_url END, " +
           "username=excluded.username, first_name=excluded.first_name, " +
           "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
         ).bind(
@@ -583,7 +601,8 @@ export default {
           crypto.randomUUID().replaceAll("-", ""),
           user.username || null,
           user.first_name || "",
-          user.last_name || ""
+          user.last_name || "",
+          getVerifiedTelegramPhotoUrl(user)
         ).run();
 
         if (hasDisplayName) {
