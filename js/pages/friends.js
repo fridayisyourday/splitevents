@@ -117,8 +117,8 @@ export function createFriendsPage(container, { initData, onOpenUser }) {
         if (!users.length) {
             shell.body.classList.add("section-page-body--center");
             shell.body.appendChild(createEmptyStateElement({
-                message: "пока здесь никого нет",
-                note: "другие участники появятся здесь после регистрации"
+                message: "пока никого нет",
+                note: "оставайтесь с нами!"
             }));
             container.replaceChildren(shell.page);
             return;
@@ -135,8 +135,8 @@ export function createFriendsPage(container, { initData, onOpenUser }) {
         if (!list.childElementCount) {
             shell.body.classList.add("section-page-body--center");
             shell.body.appendChild(createEmptyStateElement({
-                message: "пока здесь никого нет",
-                note: "другие участники появятся здесь после регистрации"
+                message: "пока никого нет",
+                note: "оставайтесь с нами!"
             }));
         } else {
             shell.body.appendChild(list);
