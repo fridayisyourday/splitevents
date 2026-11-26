@@ -1,5 +1,6 @@
 /* Shared page structure for all top-level content sections. */
 import { createElement } from "../dom.js?v=20261126-1";
+
 export function createPageShell({ title, pageClass = "", contentClass = "" }) {
     const page = createElement(
         "div",
