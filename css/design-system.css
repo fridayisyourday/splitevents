@@ -6,12 +6,14 @@
     /* Monochrome palette: white canvas, black typography, gray surfaces. */
     --app-black: #000000;
     --app-white: #FFFFFF;
-    --app-gray: #CCCCCC;
+    --app-gray: #EEEEEE;
+    --app-gray-dark: #242424;
     --app-background: var(--app-white);
     --app-card-background: var(--app-white);
     --app-text: var(--app-black);
     --app-hint: rgba(0, 0, 0, 0.64);
     --app-secondary: var(--app-gray);
+    --app-on-secondary: var(--app-black);
     --app-border: transparent;
     --app-placeholder: var(--app-gray);
     --app-accent: var(--app-black);
@@ -65,7 +67,7 @@
     --app-drawer-shadow: 12px 0 32px rgba(0, 0, 0, 0.16);
 
     /* One button and one icon language across the application. */
-    --app-button-background: var(--app-gray);
+    --app-button-background: var(--app-white);
     --app-button-color: var(--app-black);
     --app-button-font-size: 14px;
     --app-button-font-weight: 700;
@@ -80,17 +82,18 @@
     --app-background: var(--app-black);
     --app-card-background: var(--app-black);
     --app-text: var(--app-white);
-    --app-hint: var(--app-gray);
-    --app-secondary: var(--app-gray);
-    --app-placeholder: var(--app-gray);
+    --app-hint: rgba(238, 238, 238, 0.72);
+    --app-secondary: var(--app-gray-dark);
+    --app-on-secondary: var(--app-white);
+    --app-placeholder: var(--app-gray-dark);
     --app-accent: var(--app-white);
 
-    --app-shadow-card: 0 12px 24px rgba(204, 204, 204, 0.12), 0 4px 8px rgba(204, 204, 204, 0.08);
-    --app-shadow-control: 0 4px 12px rgba(204, 204, 204, 0.18);
+    --app-shadow-card: 0 12px 24px rgba(238, 238, 238, 0.12), 0 4px 8px rgba(238, 238, 238, 0.08);
+    --app-shadow-control: 0 4px 12px rgba(238, 238, 238, 0.18);
     --app-shadow-header: 0 8px 16px rgba(204, 204, 204, 0.08);
     --app-overlay-backdrop: rgba(0, 0, 0, 0.72);
     --app-media-overlay: rgba(0, 0, 0, 0.64);
-    --app-drawer-shadow: 12px 0 32px rgba(204, 204, 204, 0.16);
+    --app-drawer-shadow: 12px 0 32px rgba(238, 238, 238, 0.16);
 }
 html,
 body,
@@ -159,7 +162,7 @@ body,
 .profile-banner-placeholder,
 .profile-avatar,
 .profile-avatar-placeholder {
-    background: var(--app-gray);
+    background: var(--app-secondary);
 }
 
 .profile-avatar {
@@ -173,8 +176,8 @@ body,
 }
 
 .profile-nickname:not([readonly]) {
-    background: var(--app-gray);
-    color: var(--app-black);
+    background: var(--app-secondary);
+    color: var(--app-on-secondary);
 }
 
 .event-card {
@@ -192,22 +195,31 @@ body,
 .event-card-meta,
 .event-card-date,
 .event-countdown-unit {
-    color: var(--app-gray);
+    color: var(--app-hint);
 }
 
-.vote-nomination-card,
+.vote-nomination-card {
+    border-radius: var(--app-radius-card);
+    background: var(--app-card-background) !important;
+    color: var(--app-text);
+    box-shadow: var(--app-shadow-card) !important;
+}
+
 .vote-candidate-card {
     border-radius: var(--app-radius-card);
-    background: var(--app-gray) !important;
-    color: var(--app-black);
+    background: var(--app-secondary) !important;
+    color: var(--app-on-secondary);
     box-shadow: var(--app-shadow-card) !important;
 }
 
 .vote-nomination-title,
-.vote-selected-nominee,
+.vote-selected-nominee {
+    color: var(--app-text) !important;
+}
+
 .vote-candidate-name,
 .vote-suggest-text {
-    color: var(--app-black) !important;
+    color: var(--app-on-secondary) !important;
 }
 
 .vote-logo-wrap,
@@ -235,8 +247,8 @@ body,
 
 .menu-item-badge,
 .coming-soon-badge {
-    background: var(--app-gray);
-    color: var(--app-black);
+    background: var(--app-secondary);
+    color: var(--app-on-secondary);
     box-shadow: var(--app-shadow-control);
 }
 
@@ -295,14 +307,14 @@ textarea,
 select {
     border: 0 !important;
     border-radius: var(--app-radius-control);
-    background: var(--app-gray);
-    color: var(--app-black);
+    background: var(--app-secondary);
+    color: var(--app-on-secondary);
     box-shadow: var(--app-shadow-control);
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: var(--app-black);
+    color: var(--app-on-secondary);
     opacity: 0.64;
 }
 
@@ -327,11 +339,39 @@ svg {
 }
 
 .menu-item-icon {
-    flex: 0 0 var(--app-icon-size);
+    display: none !important;
 }
 
 .menu-navigation {
     gap: 8px;
+}
+
+/* The top-level menu controls are icon-only; navigation entries are text-only. */
+.header-button,
+.menu-close-button {
+    background: transparent !important;
+    color: var(--app-text) !important;
+    box-shadow: none !important;
+}
+
+.menu-navigation .ui-button--nav {
+    justify-content: flex-start;
+    min-height: 48px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: var(--app-text) !important;
+    box-shadow: none !important;
+}
+
+.menu-navigation .menu-item[aria-current="page"] {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+.menu-navigation .menu-item:not(:disabled):hover {
+    background: transparent !important;
+    opacity: 0.72;
 }
 
 /* Every modal uses the same backdrop token. The picker sits above the voting
