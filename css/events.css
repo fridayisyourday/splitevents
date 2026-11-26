@@ -19,7 +19,7 @@
     overflow: hidden;
     isolation: isolate;
     container-type: inline-size;
-    border: 0;
+    border: var(--app-card-outline);
     border-radius: var(--app-radius-card);
     background: var(--app-placeholder);
     box-shadow: var(--app-shadow-card);
