@@ -438,12 +438,12 @@
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 285px;
+        min-height: 286px;
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 280px;
+        min-height: 281px;
     }
 }
