@@ -6,20 +6,20 @@
     padding: 0;
     overflow: hidden;
     isolation: isolate;
-    border: 0;
+    border: var(--app-card-outline);
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
 }
 
 .vote-nomination-row--featured > .vote-nomination-card--featured {
     padding: 0;
-    border: 0;
+    border: var(--app-card-outline);
 }
 
 .vote-nomination-card.vote-carousel-card {
     gap: 0;
     padding: 0;
-    border: 0;
+    border: var(--app-card-outline);
 }
 
 .vote-nomination-card .vote-logo-wrap {
