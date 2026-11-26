@@ -84,7 +84,20 @@ const NOMINATIONS = [
     }
 ];
 
-const PAGE_SIZE = 3;
+const DESKTOP_PAGE_SIZE = 3;
+const MOBILE_PAGE_SIZE = 2;
+
+function getPageSize() {
+    if (typeof window.matchMedia === "function") {
+        return window.matchMedia("(max-width: 760px), (pointer: coarse)").matches
+            ? MOBILE_PAGE_SIZE
+            : DESKTOP_PAGE_SIZE;
+    }
+
+    return Number(window.innerWidth) <= 760
+        ? MOBILE_PAGE_SIZE
+        : DESKTOP_PAGE_SIZE;
+}
 const compareNames = function (first, second) {
     return first.name.localeCompare(second.name, "en", {
         sensitivity: "base",
@@ -111,12 +124,6 @@ export function createNominationsWidget(root) {
     };
 
     const nominationsList = $("#vote-nominations-list");
-    const submitButton = $("#vote-submit-button");
-    const submitNotice = $("#vote-submit-notice");
-    const progressCount = $("#vote-progress-count");
-    const progressTrack = $("#vote-progress-track");
-    const progressFill = $("#vote-progress-fill");
-
     const voteOverlay = $("#vote-vote-overlay");
     const voteTitle = $("#vote-vote-title");
     const voteDescription = $("#vote-vote-description");
@@ -134,10 +141,10 @@ export function createNominationsWidget(root) {
     const pickerNextButton = $("#vote-picker-next");
 
     const requiredElements = [
-        nominationsList, submitButton, submitNotice, progressCount, progressTrack,
-        progressFill, voteOverlay, voteTitle, voteCloseButton, nominationGrid,
-        nominationPrevButton, nominationNextButton, pickerOverlay, pickerTitle,
-        pickerCloseButton, pickerGrid, pickerEmpty, pickerPrevButton, pickerNextButton
+        nominationsList, voteOverlay, voteTitle, voteDescription, voteCloseButton,
+        nominationGrid, nominationPrevButton, nominationNextButton,
+        pickerOverlay, pickerTitle, pickerCloseButton, pickerGrid, pickerEmpty,
+        pickerPrevButton, pickerNextButton
     ];
 
     if (requiredElements.some(function (element) { return !element; })) {
@@ -326,18 +333,6 @@ export function createNominationsWidget(root) {
         };
     }
 
-    function updateSubmitButton() {
-        const selectedCount = NOMINATIONS.filter(nominationHasVote).length;
-        const ready = isBallotComplete();
-
-        submitButton.disabled = !ready;
-        submitButton.setAttribute("aria-disabled", String(!ready));
-        progressCount.textContent = selectedCount + " из " + NOMINATIONS.length;
-        progressTrack.setAttribute("aria-valuemax", String(NOMINATIONS.length));
-        progressTrack.setAttribute("aria-valuenow", String(selectedCount));
-        progressFill.style.width = (selectedCount / NOMINATIONS.length * 100) + "%";
-    }
-
     function createActionButton(label, selected, extraClass) {
         const button = document.createElement("button");
         button.type = "button";
@@ -411,7 +406,6 @@ export function createNominationsWidget(root) {
         });
 
         nominationsList.replaceChildren(fragment);
-        updateSubmitButton();
     }
 
     function makePersonCard(person, label, onClick, selected, imageMode) {
@@ -616,7 +610,8 @@ export function createNominationsWidget(root) {
     }
 
     function updatePager(previousButton, nextButton, page, count) {
-        const pages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+        const pageSize = getPageSize();
+        const pages = Math.max(1, Math.ceil(count / pageSize));
         previousButton.disabled = count === 0 || page <= 0;
         nextButton.disabled = count === 0 || page >= pages - 1;
     }
@@ -635,11 +630,12 @@ export function createNominationsWidget(root) {
 
         const fragment = document.createDocumentFragment();
         const entries = getVoteEntries();
-        const lastPage = Math.max(0, Math.ceil(entries.length / PAGE_SIZE) - 1);
+        const pageSize = getPageSize();
+        const lastPage = Math.max(0, Math.ceil(entries.length / pageSize) - 1);
         activeNomination.page = Math.min(Math.max(activeNomination.page, 0), lastPage);
-        const start = activeNomination.page * PAGE_SIZE;
+        const start = activeNomination.page * pageSize;
 
-        entries.slice(start, start + PAGE_SIZE).forEach(function (entry) {
+        entries.slice(start, start + pageSize).forEach(function (entry) {
             if (activeNomination.type === "duo") {
                 fragment.appendChild(makeDuoCard(entry));
                 return;
@@ -701,11 +697,12 @@ export function createNominationsWidget(root) {
         pickerEmpty.hidden = available.length > 0;
         pickerGrid.hidden = available.length === 0;
 
-        const lastPage = Math.max(0, Math.ceil(available.length / PAGE_SIZE) - 1);
+        const pageSize = getPageSize();
+        const lastPage = Math.max(0, Math.ceil(available.length / pageSize) - 1);
         pickerPage = Math.min(Math.max(pickerPage, 0), lastPage);
-        const start = pickerPage * PAGE_SIZE;
+        const start = pickerPage * pageSize;
 
-        available.slice(start, start + PAGE_SIZE).forEach(function (person) {
+        available.slice(start, start + pageSize).forEach(function (person) {
             fragment.appendChild(makePersonCard(
                 person,
                 "Добавить",
@@ -802,24 +799,6 @@ export function createNominationsWidget(root) {
         });
     }
 
-    submitButton.addEventListener("click", function () {
-        if (!isBallotComplete()) {
-            updateSubmitButton();
-            return;
-        }
-
-        const ballot = buildBallotPayload();
-        window.SPLITEVENTS_LAST_BALLOT = ballot;
-
-        const rootEvent = new CustomEvent("splitevents:nominations-submit", { detail: ballot });
-        root.dispatchEvent(rootEvent);
-        window.dispatchEvent(new CustomEvent("splitevents:nominations-submit", { detail: ballot }));
-
-        submitNotice.textContent = "Бюллетень сформирован.";
-        submitNotice.hidden = false;
-        submitNotice.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    });
-
     voteCloseButton.addEventListener("click", closeVote);
     pickerCloseButton.addEventListener("click", closePicker);
 
@@ -833,7 +812,7 @@ export function createNominationsWidget(root) {
     nominationNextButton.addEventListener("click", function () {
         if (!activeNomination) return;
         const count = getVoteEntries().length;
-        const lastPage = Math.ceil(count / PAGE_SIZE) - 1;
+        const lastPage = Math.ceil(count / getPageSize()) - 1;
         if (activeNomination.page < lastPage) {
             activeNomination.page++;
             renderVoteGrid(1);
@@ -848,10 +827,19 @@ export function createNominationsWidget(root) {
     });
 
     pickerNextButton.addEventListener("click", function () {
-        const lastPage = Math.ceil(availablePeople().length / PAGE_SIZE) - 1;
+        const lastPage = Math.ceil(availablePeople().length / getPageSize()) - 1;
         if (pickerPage < lastPage) {
             pickerPage++;
             renderPickerGrid(1);
+        }
+    });
+
+    window.addEventListener("resize", function () {
+        if (activeNomination && !voteOverlay.hidden) {
+            renderVoteGrid(0);
+        }
+        if (!pickerOverlay.hidden) {
+            renderPickerGrid(0);
         }
     });
 
