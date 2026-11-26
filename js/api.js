@@ -6,23 +6,20 @@ async function requestMyProfile(initData, body = null) {
         throw new Error("Telegram initData is unavailable.");
     }
 
-    const headers = {
-        "X-Telegram-Init-Data": initData
-    };
+    // URL-encoded POST is CORS-safelisted, avoiding a custom-header preflight.
+    const form = new URLSearchParams();
+    form.set("init_data", initData);
 
-    const options = {
-        method: "POST",
-        headers,
-        credentials: "omit",
-        cache: "no-store"
-    };
-
-    if (body !== null) {
-        headers["Content-Type"] = "application/json";
-        options.body = JSON.stringify(body);
+    if (body !== null && Object.prototype.hasOwnProperty.call(body, "display_name")) {
+        form.set("display_name", body.display_name);
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/me`, options);
+    const response = await fetch(API_BASE_URL + "/api/me", {
+        method: "POST",
+        body: form,
+        credentials: "omit",
+        cache: "no-store"
+    });
 
     let payload = null;
     try {
@@ -32,10 +29,8 @@ async function requestMyProfile(initData, body = null) {
     }
 
     if (!response.ok) {
-        const reason = payload && payload.error
-            ? payload.error
-            : `HTTP ${response.status}`;
-        throw new Error(`Split API request failed: ${reason}`);
+        const reason = payload && payload.error ? payload.error : "HTTP " + response.status;
+        throw new Error(reason);
     }
 
     if (!payload || !payload.user || !payload.user.telegram_id) {
@@ -48,8 +43,7 @@ async function requestMyProfile(initData, body = null) {
 export async function syncTelegramUser(initData, localDisplayName = "") {
     let user = await requestMyProfile(initData);
 
-    // Migrate a nickname saved by an older version of the app only when the
-    // shared profile has no display name yet. Existing server data wins.
+    // Migrate a nickname saved by an older version only when the server has none.
     if (
         (user.display_name === null || user.display_name === undefined) &&
         typeof localDisplayName === "string" &&
