@@ -1001,3 +1001,146 @@
         animation: none;
     }
 }
+
+
+/* Phone layout: keep the two headline nominations side by side. */
+.vote-nomination-row--featured {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 12px;
+}
+.vote-nomination-row--featured > .vote-nomination-card--featured {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    flex: none;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 12px 10px 10px;
+}
+.vote-nomination-card--featured .vote-logo-wrap {
+    display: flex;
+    width: min(100%, 132px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.vote-nomination-card--featured .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-logo-placeholder,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-duo-logo {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 0 0 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    overflow: hidden;
+}
+.vote-nomination-card--featured .vote-nomination-title {
+    display: flex;
+    width: 100%;
+    min-height: 2.4em;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: clamp(14px, 3.8vw, 18px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+.vote-nomination-card--featured .vote-selected-nominee {
+    min-height: 1.35em;
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.25;
+}
+.vote-nomination-card--featured .vote-action-button {
+    min-height: 38px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+    padding: 7px 6px;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+/* Give the carousel enough vertical room for the full DUO card and controls. */
+.vote-carousel-stage {
+    min-height: 320px;
+}
+.vote-nomination-card.vote-carousel-card {
+    min-height: 252px;
+}
+@media (max-width: 640px) {
+    .vote-carousel-stage {
+        min-height: 310px;
+    }
+    .vote-nomination-card.vote-carousel-card {
+        min-height: 248px;
+    }
+}
+@media (max-width: 380px) {
+    .vote-carousel-stage {
+        min-height: 304px;
+    }
+    .vote-nomination-card.vote-carousel-card {
+        min-height: 242px;
+    }
+}
+
+/* Let the nominee picker size itself to its two candidate cards, not the screen. */
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-dialog {
+        box-sizing: border-box;
+        width: min(100%, 560px);
+        height: auto;
+        min-height: 0;
+        max-height: min(78dvh, 460px);
+        overflow-y: auto;
+        gap: 12px;
+    }
+    .vote-grid-viewport {
+        flex: 0 0 auto;
+        min-height: 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .vote-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: start;
+        gap: 10px;
+    }
+    .vote-candidate-card {
+        box-sizing: border-box;
+        min-height: 0;
+        height: auto;
+        gap: 7px;
+        padding: 9px;
+    }
+    .vote-avatar,
+    .vote-avatar-placeholder,
+    .vote-image-avatar,
+    .vote-image-placeholder {
+        width: min(100%, 76px);
+        margin: 0 auto;
+    }
+    .vote-candidate-name {
+        min-height: 34px;
+        font-size: 13px;
+    }
+    .vote-candidate-card .vote-button {
+        min-height: 36px;
+        margin-top: 0;
+        font-size: 12px;
+    }
+}
