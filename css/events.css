@@ -336,3 +336,49 @@
 }
 
 
+
+/* Event artwork and information occupy two separate, equal-width halves. */
+.event-card {
+    background: var(--app-card-background);
+}
+
+.event-card-artwork {
+    inset: 0 auto 0 0;
+    width: 50%;
+    height: 100%;
+}
+
+.event-card-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* The right half is a solid theme-aware information panel, not an overlay. */
+.event-card-wash {
+    display: none;
+}
+
+.event-card-content {
+    box-sizing: border-box;
+    flex: 0 0 50%;
+    width: 50%;
+    height: 100%;
+    margin-left: auto;
+    background: var(--app-card-background);
+}
+
+@media (max-width: 640px) {
+    .event-card-artwork {
+        width: 50%;
+        height: 100%;
+    }
+
+    .event-card-content {
+        flex-basis: 50%;
+        width: 50%;
+        height: 100%;
+    }
+}
