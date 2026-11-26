@@ -121,7 +121,7 @@ export function createEventCard(event, { onToggleHidden, isHidden = false } = {}
     const actions = createElement("div", "event-card-actions");
     const action = createElement(
         "button",
-        "event-card-action ui-button ui-button--primary ui-button--compact",
+        "event-card-action ui-button ui-button--primary",
         event.actionLabel || "Принять участие"
     );
     action.type = "button";

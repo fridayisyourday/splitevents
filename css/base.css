@@ -54,12 +54,7 @@
 
     /* Shared button system. */
     --app-button-font-size: 14px;
-    --app-button-font-size-compact: 11px;
-    --app-button-height-compact: 40px;
-    --app-button-padding-compact: 0 8px;
     --app-button-font-weight: 650;
-    --app-button-on-light-background: #191919;
-    --app-button-on-light-color: #ffffff;
     --app-button-transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease, filter 150ms ease;
 
     font-family: var(--app-font-family);
