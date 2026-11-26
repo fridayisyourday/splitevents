@@ -269,8 +269,9 @@ body,
 
 /* The "soon" marker uses the same white accent treatment as an active-page badge. */
 .menu-item-badge--accent {
-    background: var(--app-badge-active-background);
-    color: var(--app-badge-active-color);
+    background: var(--app-secondary);
+    color: var(--app-on-secondary);
+    border: 1px solid var(--app-secondary);
     box-shadow: none;
 }
 
@@ -471,4 +472,36 @@ svg {
     .menu-panel {
         transition: none;
     }
+}
+
+
+/* Typography standard: ordinary interface copy is lowercase by default. */
+body {
+    text-transform: lowercase;
+}
+
+/* Titles and headings are always uppercase, regardless of source-data casing. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.header-logo,
+.section-page-title,
+.menu-panel-title,
+.event-card-title,
+.vote-dialog-title,
+.vote-dialog-eyebrow,
+.vote-nomination-title {
+    text-transform: uppercase;
+}
+
+/* Personal identifiers and nominee names preserve their original spelling. */
+.profile-nickname,
+.profile-nickname--editing,
+.profile-telegram-tag,
+.vote-candidate-name,
+.vote-selected-nominee {
+    text-transform: none;
 }
