@@ -10,12 +10,6 @@ const user = webApp && webApp.initDataUnsafe
 let backButtonHandler = null;
 let backButtonBound = false;
 
-function validColor(value, fallback) {
-    return typeof value === "string" && /^#[\da-f]{6}$/i.test(value)
-        ? value
-        : fallback;
-}
-
 function applyTheme() {
     const background = "#000000";
 
