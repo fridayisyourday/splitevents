@@ -20,8 +20,8 @@
 
     /* Shared typography. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    --app-font-size-brand: 25px;
-    --app-font-size-menu-title: 21px;
+    --app-font-size-brand: 26px;
+    --app-font-size-menu-title: 22px;
     --app-font-size-navigation: 16px;
     --app-font-size-profile-name: 20px;
     --app-font-size-body: 14px;
@@ -49,7 +49,7 @@
     --app-radius-small: 8px;
     --app-radius-control: 12px;
     --app-radius-card: 20px;
-    --app-radius-pill: 999px;
+    --app-radius-pill: 1000px;
     --app-shadow-card: 0 12px 30px rgba(15, 23, 42, 0.06);
 
     /* Shared button system. */
@@ -127,15 +127,15 @@ svg {
 
 :focus-visible {
     outline: 2px solid var(--app-accent);
-    outline-offset: 3px;
+    outline-offset: 4px;
 }
 
 .skip-link {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: 2px;
+    height: 2px;
     padding: 0;
-    margin: -1px;
+    margin: 0px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -162,10 +162,10 @@ svg {
 
 .visually-hidden-input {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    width: 2px;
+    height: 2px;
     padding: 0;
-    margin: -1px;
+    margin: 0px;
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
