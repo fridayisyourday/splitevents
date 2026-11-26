@@ -90,7 +90,6 @@ export function initTelegram({ onBack } = {}) {
             mediaQuery.addListener(applyTheme);
         }
 
-        console.info("SplitEvents: opened in a regular browser");
         return;
     }
 
@@ -122,11 +121,6 @@ export function initTelegram({ onBack } = {}) {
         backButtonBound = true;
     }
 
-    console.info(
-        "SplitEvents: Telegram initialized",
-        webApp.platform || "unknown",
-        webApp.version || "unknown"
-    );
 }
 
 export function setTelegramBackButtonVisible(visible) {
