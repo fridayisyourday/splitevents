@@ -42,17 +42,18 @@
     <link rel="stylesheet" href="./css/components.css?v=20261126-6">
     <link rel="stylesheet" href="./css/layout.css?v=20261126-4">
     <link rel="stylesheet" href="./css/menu.css?v=20261126-11">
-    <link rel="stylesheet" href="./css/profile.css?v=20261126-6">
+    <link rel="stylesheet" href="./css/profile.css?v=20261126-7">
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
     <link rel="stylesheet" href="./css/events.css?v=20261126-17">
     <link rel="stylesheet" href="./css/nominations.css?v=20261126-18">
     <link rel="stylesheet" href="./css/nominations-carousel.css?v=20261126-9">
     <link rel="stylesheet" href="./css/nominations-picker.css?v=20261126-1">
     <link rel="stylesheet" href="./css/nominations-cards.css?v=20261126-4">
-    <link rel="stylesheet" href="./css/design-system.css?v=20261126-14">
+    <link rel="stylesheet" href="./css/design-system.css?v=20261126-15">
+    <link rel="stylesheet" href="./css/notifications.css?v=20261126-1">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-40"></script>
+    <script type="module" src="./app.js?v=20261126-41"></script>
 </head>
 
 <body>
@@ -347,13 +348,6 @@
                         </div>
 
                         <p id="telegram-tag" class="profile-telegram-tag"></p>
-                        <p
-                            id="profile-media-status"
-                            class="profile-media-status"
-                            role="status"
-                            aria-live="polite"
-                            hidden
-                        ></p>
                     </div>
                 </article>
 
@@ -490,6 +484,11 @@
                 </div>
             </section>
         </main>
+        <div
+            id="notification-region"
+            class="notification-region"
+            aria-label="уведомления"
+        ></div>
     </div>
 
     <noscript>
