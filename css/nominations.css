@@ -1278,37 +1278,64 @@
 }
 
 
-/* Full-bleed nomination artwork with a soft fade into the theme surface. */
-.vote-nomination-card {
+/* Nomination cards: 75% artwork, 25% solid information panel. */
+.vote-nomination-card,
+.vote-nomination-card--featured,
+.vote-nomination-card.vote-carousel-card {
     position: relative;
-    isolation: isolate;
+    display: flex;
+    box-sizing: border-box;
+    height: 400px;
+    min-height: 400px;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-end;
     gap: 0;
     padding: 0;
     overflow: hidden;
+    isolation: isolate;
+    border: 0;
+    border-radius: var(--app-radius-card);
     background: var(--app-card-background);
 }
 
-.vote-nomination-card .vote-logo-wrap {
+.vote-nomination-row--featured > .vote-nomination-card--featured {
+    height: 400px;
+    min-height: 400px;
+    padding: 0;
+    border: 0;
+}
+
+.vote-carousel-stage {
+    min-height: 420px;
+}
+
+.vote-nomination-card .vote-logo-wrap,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap {
     position: absolute;
     z-index: 0;
-    inset: 0;
+    inset: 0 0 25% 0;
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 75%;
     min-width: 0;
-    min-height: 100%;
-    flex: 1 1 100%;
+    min-height: 75%;
+    flex: 0 0 75%;
     align-items: stretch;
     justify-content: stretch;
     margin: 0;
     overflow: hidden;
+    aspect-ratio: auto;
 }
 
 .vote-nomination-card .vote-logo-wrap > img.vote-nomination-logo,
 .vote-nomination-card .vote-logo-wrap > .vote-nomination-logo,
 .vote-nomination-card .vote-logo-wrap > .vote-logo-placeholder,
-.vote-nomination-card .vote-logo-wrap > .vote-duo-logo {
+.vote-nomination-card .vote-logo-wrap > .vote-duo-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-logo-placeholder,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-duo-logo {
     display: flex;
     box-sizing: border-box;
     width: 100%;
@@ -1319,6 +1346,9 @@
     min-height: 100%;
     flex: 1 1 100%;
     aspect-ratio: auto;
+    margin: 0;
+    align-self: stretch;
+    overflow: hidden;
     border: 0;
     border-radius: 0;
     object-fit: cover;
@@ -1328,11 +1358,10 @@
     align-items: center;
     justify-content: center;
     background: var(--app-secondary);
-    color: var(--app-white);
+    color: var(--app-on-secondary);
     font-size: clamp(56px, 12vw, 84px);
     font-weight: 400;
     line-height: 1;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
 }
 
 .vote-nomination-card .vote-duo-logo {
@@ -1359,15 +1388,14 @@
 .vote-nomination-wash {
     position: absolute;
     z-index: 1;
-    inset: 0;
+    inset: 0 0 25% 0;
     pointer-events: none;
     background: linear-gradient(
         180deg,
-        transparent 34%,
-        color-mix(in srgb, var(--app-card-background) 0%, transparent) 42%,
-        color-mix(in srgb, var(--app-card-background) 28%, transparent) 56%,
-        color-mix(in srgb, var(--app-card-background) 76%, transparent) 72%,
-        var(--app-card-background) 88%,
+        transparent 72%,
+        color-mix(in srgb, var(--app-card-background) 0%, transparent) 76%,
+        color-mix(in srgb, var(--app-card-background) 24%, transparent) 84%,
+        color-mix(in srgb, var(--app-card-background) 70%, transparent) 94%,
         var(--app-card-background) 100%
     );
 }
@@ -1376,78 +1404,84 @@
     position: relative;
     z-index: 2;
     display: flex;
+    box-sizing: border-box;
     width: 100%;
+    height: 25%;
     min-width: 0;
+    min-height: 25%;
+    flex: 0 0 25%;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px;
     margin-top: auto;
-    padding: 132px 18px 18px;
+    padding: 4px 12px 8px;
+    overflow: hidden;
+    background: var(--app-card-background);
     color: var(--app-text);
     text-align: center;
 }
 
 .vote-nomination-content .vote-nomination-title,
 .vote-nomination-content .vote-selected-nominee {
-    color: var(--app-text) !important;
+    color: var(--app-text);
 }
 
 .vote-nomination-content .vote-nomination-title {
+    display: block;
     width: 100%;
+    min-height: 0;
     margin: 0;
-    overflow-wrap: anywhere;
-    text-wrap: balance;
+    overflow: hidden;
+    font-size: clamp(14px, 1.8vw, 18px);
+    line-height: 1.12;
+    overflow-wrap: normal;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .vote-nomination-content .vote-selected-nominee {
     width: 100%;
+    min-height: 0;
     margin: 0;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .vote-nomination-content .vote-action-button {
     width: 100%;
     flex: 0 0 auto;
-    margin-top: 4px;
-}
-
-.vote-nomination-card--featured .vote-nomination-content {
-    padding: 154px 20px 20px;
+    margin-top: 0;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content {
-    gap: 6px;
-    padding: 88px 12px 12px;
+    gap: 3px;
+    padding: 4px 10px 8px;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
-    min-height: 2.4em;
-    font-size: 16px;
-    line-height: 1.2;
+    font-size: 14px;
+    line-height: 1.1;
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-selected-nominee {
-    font-size: 12px;
-}
-
-.vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-action-button {
-    min-height: 36px;
-    margin-top: 2px;
-    padding-inline: 8px;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 @supports not (background: color-mix(in srgb, black, white)) {
     .vote-nomination-wash {
         background: linear-gradient(
             180deg,
-            transparent 36%,
-            var(--app-card-background) 88%,
+            transparent 72%,
             var(--app-card-background) 100%
         );
     }
 }
 
-/* Candidate choices stay on the same solid surface as their dialog. */
+/* Candidate picker cards stay on the dialog surface; add tiles use theme-aware contrast. */
 .vote-dialog .vote-candidate-card {
     background: var(--app-card-background);
     color: var(--app-text);
@@ -1461,67 +1495,16 @@
 .vote-dialog .vote-add-symbol,
 .vote-dialog .vote-suggest-symbol {
     background: var(--app-secondary);
-    color: var(--app-white);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
+    color: var(--app-on-secondary);
+    text-shadow: none;
 }
 
 @media (max-width: 640px) {
-    .vote-nomination-content {
-        gap: 6px;
-        padding: 110px 10px 10px;
+    .vote-nomination-content .vote-nomination-title {
+        font-size: clamp(13px, 3.8vw, 16px);
     }
 
-    .vote-nomination-card--featured .vote-nomination-content {
-        padding: 118px 10px 10px;
+    .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
+        font-size: 13px;
     }
-
-    .vote-nomination-card.vote-carousel-card .vote-nomination-content {
-        padding: 78px 10px 10px;
-    }
-}
-
-
-/* Restore full-bleed artwork in the compact carousel cards as well. */
-.vote-nomination-card.vote-nomination-card--featured,
-.vote-nomination-card.vote-carousel-card {
-    gap: 0;
-    padding: 0;
-}
-
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    min-width: 100%;
-    min-height: 100%;
-    flex: 1 1 100%;
-    margin: 0;
-    aspect-ratio: auto;
-}
-
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > img.vote-nomination-logo,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-nomination-logo,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-logo-placeholder,
-.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-duo-logo {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
-    min-width: 100%;
-    min-height: 100%;
-    flex: 1 1 100%;
-    margin: 0;
-    aspect-ratio: auto;
-    align-self: stretch;
-    border: 0;
-    border-radius: 0;
-    object-fit: cover;
-}
-
-.vote-nomination-card .vote-logo-wrap > img.vote-nomination-logo,
-.vote-nomination-card .vote-logo-wrap > .vote-nomination-logo,
-.vote-nomination-card .vote-logo-wrap > .vote-logo-placeholder {
-    margin: 0;
-    align-self: stretch;
 }
