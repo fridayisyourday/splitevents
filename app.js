@@ -16,8 +16,8 @@ import {
 import { createMenu } from "./js/menu.js?v=20261126-5";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
 import { createProfile } from "./js/profile.js?v=20261126-9";
-import { createFriendsPage } from "./js/pages/friends.js?v=20261126-1";
-import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-1";
+import { createFriendsPage } from "./js/pages/friends.js?v=20261126-2";
+import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-2";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
