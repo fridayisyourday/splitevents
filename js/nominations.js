@@ -126,7 +126,6 @@ export function createNominationsWidget(root) {
     const nominationsList = $("#vote-nominations-list");
     const voteOverlay = $("#vote-vote-overlay");
     const voteTitle = $("#vote-vote-title");
-    const voteDescription = $("#vote-vote-description");
     const voteCloseButton = $("#vote-vote-close");
     const nominationGrid = $("#vote-nomination-grid");
     const nominationPrevButton = $("#vote-nomination-prev");
@@ -141,7 +140,7 @@ export function createNominationsWidget(root) {
     const pickerNextButton = $("#vote-picker-next");
 
     const requiredElements = [
-        nominationsList, voteOverlay, voteTitle, voteDescription, voteCloseButton,
+        nominationsList, voteOverlay, voteTitle, voteCloseButton,
         nominationGrid, nominationPrevButton, nominationNextButton,
         pickerOverlay, pickerTitle, pickerCloseButton, pickerGrid, pickerEmpty,
         pickerPrevButton, pickerNextButton
@@ -155,6 +154,7 @@ export function createNominationsWidget(root) {
 
     let activeNomination = null;
     let pickerPage = 0;
+    let carouselIndex = 0;
 
     function imageUrl(value) {
         if (!value) return "";
@@ -243,7 +243,7 @@ export function createNominationsWidget(root) {
 
         const personId = nomination.selectedId || nomination.selectedFromPoolId;
         const person = personId ? nomineeById.get(personId) : null;
-        const isImageNomination = nomination.type === "image";
+        const isImageNomination = nomination.type === "image" || nomination.type === "fixed";
 
         if (person) {
             const visual = visualElement(person, isImageNomination);
@@ -344,68 +344,127 @@ export function createNominationsWidget(root) {
         return button;
     }
 
-    function renderNominationCards() {
-        const fragment = document.createDocumentFragment();
-        const groups = [
-            NOMINATIONS.slice(0, 2),
-            NOMINATIONS.slice(2)
-        ];
+    function createNominationCard(nomination, featured, carouselPosition) {
+        const card = document.createElement("article");
+        card.className = "vote-nomination-card"
+            + (featured ? " vote-nomination-card--featured" : "");
+        if (carouselPosition) {
+            card.classList.add("vote-carousel-card", "vote-carousel-card--" + carouselPosition);
+        }
+        card.dataset.nominationId = nomination.id;
+        card.setAttribute("aria-labelledby", "vote-title-" + nomination.id);
 
-        groups.forEach(function (group, groupIndex) {
-            const row = document.createElement("div");
-            row.className = "vote-nomination-row"
-                + (groupIndex === 0 ? " vote-nomination-row--featured" : "");
+        const logoWrap = document.createElement("div");
+        logoWrap.className = "vote-logo-wrap";
+        renderNominationLogo(nomination, logoWrap);
+        card.appendChild(logoWrap);
 
-            group.forEach(function (nomination) {
-                const card = document.createElement("article");
-                card.className = "vote-nomination-card"
-                    + (groupIndex === 0 ? " vote-nomination-card--featured" : "");
-                card.dataset.nominationId = nomination.id;
-                card.setAttribute("aria-labelledby", "vote-title-" + nomination.id);
+        const title = document.createElement("h3");
+        title.className = "vote-nomination-title";
+        title.id = "vote-title-" + nomination.id;
+        title.textContent = nomination.title;
+        card.appendChild(title);
 
-                const logoWrap = document.createElement("div");
-                logoWrap.className = "vote-logo-wrap";
-                renderNominationLogo(nomination, logoWrap);
-                card.appendChild(logoWrap);
+        const pair = selectedDuo(nomination);
+        const personId = nomination.selectedId || nomination.selectedFromPoolId;
+        const person = personId ? nomineeById.get(personId) : null;
+        const selectedLabel = pair
+            ? pair.first.name + " + " + pair.second.name
+            : (person
+                ? person.name
+                : (nomination.suggestionMode === "voted" ? nomination.suggestedText : ""));
 
-                const title = document.createElement("h3");
-                title.className = "vote-nomination-title";
-                title.id = "vote-title-" + nomination.id;
-                title.textContent = nomination.title;
-                card.appendChild(title);
+        const selected = document.createElement("p");
+        selected.className = "vote-selected-nominee";
+        selected.hidden = !selectedLabel;
+        selected.textContent = selectedLabel;
+        card.appendChild(selected);
 
-                const pair = selectedDuo(nomination);
-                const personId = nomination.selectedId || nomination.selectedFromPoolId;
-                const person = personId ? nomineeById.get(personId) : null;
-                const selectedLabel = pair
-                    ? pair.first.name + " + " + pair.second.name
-                    : (person
-                        ? person.name
-                        : (nomination.suggestionMode === "voted" ? nomination.suggestedText : ""));
-
-                const selected = document.createElement("p");
-                selected.className = "vote-selected-nominee";
-                selected.hidden = !selectedLabel;
-                selected.textContent = selectedLabel;
-                card.appendChild(selected);
-
-                const hasSelection = Boolean(pair || person || nomination.suggestionMode === "voted");
-                const button = createActionButton(
-                    hasSelection ? "Изменить выбор" : "Выбрать номинанта",
-                    hasSelection,
-                    "vote-action-button"
-                );
-                button.addEventListener("click", function () {
-                    openVote(nomination);
+        const hasSelection = Boolean(pair || person || nomination.suggestionMode === "voted");
+        const button = createActionButton(
+            hasSelection ? "Изменить выбор" : "Выбрать номинанта",
+            hasSelection,
+            "vote-action-button"
+        );
+        button.addEventListener("click", function () {
+            if (carouselPosition) {
+                const items = NOMINATIONS.slice(2);
+                const nextIndex = items.findIndex(function (item) {
+                    return item.id === nomination.id;
                 });
-                card.appendChild(button);
-                row.appendChild(card);
-            });
+                if (nextIndex >= 0 && nextIndex !== carouselIndex) {
+                    carouselIndex = nextIndex;
+                    renderNominationCards();
+                }
+            }
+            openVote(nomination);
+        });
+        card.appendChild(button);
 
-            if (group.length) fragment.appendChild(row);
+        if (carouselPosition && carouselPosition !== "current") {
+            card.addEventListener("click", function (event) {
+                if (event.target.closest("button")) return;
+                const items = NOMINATIONS.slice(2);
+                const nextIndex = items.findIndex(function (item) {
+                    return item.id === nomination.id;
+                });
+                if (nextIndex >= 0) {
+                    carouselIndex = nextIndex;
+                    renderNominationCards();
+                }
+            });
+        }
+
+        return card;
+    }
+
+    function renderNominationCards() {
+        const featuredRow = document.createElement("div");
+        featuredRow.className = "vote-nomination-row vote-nomination-row--featured";
+        NOMINATIONS.slice(0, 2).forEach(function (nomination) {
+            featuredRow.appendChild(createNominationCard(nomination, true, null));
         });
 
-        nominationsList.replaceChildren(fragment);
+        const carousel = document.createElement("section");
+        carousel.className = "vote-nomination-carousel";
+        carousel.setAttribute("aria-label", "Остальные номинации");
+
+        const stage = document.createElement("div");
+        stage.className = "vote-carousel-stage";
+        stage.setAttribute("aria-live", "polite");
+        const items = NOMINATIONS.slice(2);
+        const total = items.length;
+
+        [-1, 0, 1].forEach(function (offset) {
+            const index = (carouselIndex + offset + total) % total;
+            const position = offset === 0
+                ? "current"
+                : (offset < 0 ? "previous" : "next");
+            stage.appendChild(createNominationCard(items[index], false, position));
+        });
+
+        const controls = document.createElement("div");
+        controls.className = "vote-carousel-controls";
+
+        const previous = createActionButton("‹", false, "vote-page-button");
+        previous.classList.add("ui-button--icon");
+        previous.setAttribute("aria-label", "Предыдущая номинация");
+        previous.addEventListener("click", function () {
+            carouselIndex = (carouselIndex - 1 + total) % total;
+            renderNominationCards();
+        });
+
+        const next = createActionButton("›", false, "vote-page-button");
+        next.classList.add("ui-button--icon");
+        next.setAttribute("aria-label", "Следующая номинация");
+        next.addEventListener("click", function () {
+            carouselIndex = (carouselIndex + 1) % total;
+            renderNominationCards();
+        });
+
+        controls.append(previous, next);
+        carousel.append(stage, controls);
+        nominationsList.replaceChildren(featuredRow, carousel);
     }
 
     function makePersonCard(person, label, onClick, selected, imageMode) {
@@ -481,12 +540,12 @@ export function createNominationsWidget(root) {
             : null;
         const selectedName = document.createElement("p");
         selectedName.className = "vote-candidate-name";
-        selectedName.textContent = selectedPerson ? selectedPerson.name : "Любой участник из общего списка";
+        selectedName.textContent = selectedPerson ? selectedPerson.name : "Добавить номинанта";
         details.appendChild(selectedName);
         card.appendChild(details);
 
         const button = createActionButton(
-            selectedPerson ? "Отменить голос" : "Добавить кандидата",
+            selectedPerson ? "Отменить голос" : "Добавить",
             Boolean(selectedPerson),
             "vote-button"
         );
@@ -652,7 +711,7 @@ export function createNominationsWidget(root) {
             }
 
             const isSelected = activeNomination.selectedId === entry.id;
-            const imageMode = activeNomination.type === "image";
+            const imageMode = activeNomination.type === "image" || activeNomination.type === "fixed";
             fragment.appendChild(makePersonCard(
                 entry,
                 isSelected ? "Отменить голос" : "Проголосовать",
@@ -726,14 +785,6 @@ export function createNominationsWidget(root) {
     function openVote(nomination) {
         activeNomination = nomination;
         voteTitle.textContent = nomination.title;
-
-        if (nomination.type === "duo") {
-            voteDescription.textContent = "Выбери одну пару года.";
-        } else if (nomination.type === "image") {
-            voteDescription.textContent = "Выбери изображение или предложи свой вариант.";
-        } else {
-            voteDescription.textContent = "Выбери одного номинанта. Свой выбор можно изменить позже.";
-        }
 
         renderVoteGrid(0);
         voteOverlay.hidden = false;
