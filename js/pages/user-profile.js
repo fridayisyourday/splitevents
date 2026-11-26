@@ -1,7 +1,7 @@
 /* Read-only view of another registered user's profile. */
 import { fetchPublicProfile } from "../api.js?v=20261126-5";
 import { createElement } from "../dom.js?v=20261126-1";
-import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-1";
+import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-2";
 import { createEmptyStateElement } from "./page-shell.js?v=20261126-2";
 
 function createImage(element, source, placeholder) {
