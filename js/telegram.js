@@ -26,6 +26,7 @@ function applyTheme() {
     const header = validColor(theme.header_bg_color, background);
 
     document.documentElement.style.colorScheme = colorScheme;
+    document.documentElement.dataset.colorScheme = colorScheme;
 
     try {
         if (typeof webApp.setBackgroundColor === "function") {
@@ -83,6 +84,7 @@ export function initTelegram({ onBack } = {}) {
         function applySystemTheme() {
             const isDark = Boolean(mediaQuery && mediaQuery.matches);
             document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+            document.documentElement.dataset.colorScheme = isDark ? "dark" : "light";
 
             const themeMeta = document.querySelector('meta[name="theme-color"]');
             if (themeMeta) themeMeta.content = isDark ? "#121418" : "#ffffff";
