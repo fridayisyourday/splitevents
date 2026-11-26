@@ -736,3 +736,268 @@
 @media (prefers-reduced-motion: reduce) {
     .vote-nomination-card.vote-carousel-card { transition: none; }
 }
+
+
+/* Primary nominations have clear visual priority and a dedicated image frame. */
+.vote-nomination-row--featured {
+    align-items: stretch;
+    gap: 18px;
+}
+.vote-nomination-row--featured > .vote-nomination-card--featured {
+    box-sizing: border-box;
+    flex: 0 1 330px;
+    min-height: 390px;
+    gap: 12px;
+    padding: 22px;
+}
+.vote-nomination-card--featured .vote-logo-wrap {
+    width: min(100%, 184px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    margin: 0 auto 2px;
+    overflow: hidden;
+}
+.vote-nomination-card--featured .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-logo-placeholder,
+.vote-nomination-card--featured .vote-logo-wrap > .vote-duo-logo {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    flex: 0 0 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    overflow: hidden;
+}
+.vote-nomination-card--featured .vote-nomination-title {
+    min-height: 2.5em;
+    margin: 0;
+    font-size: clamp(19px, 2.2vw, 23px);
+    line-height: 1.2;
+}
+.vote-nomination-card--featured .vote-selected-nominee {
+    flex: 0 0 auto;
+    min-height: 1.35em;
+}
+.vote-nomination-card--featured .vote-action-button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    margin-top: auto;
+}
+
+/* Secondary nominations are intentionally smaller and visually quieter. */
+.vote-carousel-stage {
+    min-height: 266px;
+}
+.vote-nomination-card.vote-carousel-card {
+    box-sizing: border-box;
+    width: min(56%, 210px);
+    min-height: 238px;
+    padding: 12px;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap {
+    width: min(100%, 92px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    margin: 0 auto;
+}
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-logo-placeholder,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-duo-logo {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    flex: 0 0 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+.vote-nomination-card.vote-carousel-card .vote-nomination-title {
+    min-height: 2.4em;
+    font-size: 15px;
+    line-height: 1.2;
+}
+.vote-nomination-card.vote-carousel-card .vote-selected-nominee {
+    font-size: 11px;
+}
+.vote-nomination-card.vote-carousel-card .vote-action-button {
+    min-height: 36px;
+    padding-inline: 8px;
+    font-size: 12px;
+}
+.vote-nomination-card.vote-carousel-card--previous {
+    width: min(48%, 178px);
+    transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
+}
+.vote-nomination-card.vote-carousel-card--next {
+    width: min(48%, 178px);
+    transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
+}
+
+/* A real sliding transition is applied when the carousel is re-rendered. */
+.vote-carousel-stage--forward .vote-carousel-card--current {
+    animation: vote-carousel-enter-right 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+.vote-carousel-stage--forward .vote-carousel-card--previous {
+    animation: vote-carousel-settle-left 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+.vote-carousel-stage--forward .vote-carousel-card--next {
+    animation: vote-carousel-appear-right 440ms ease both;
+}
+.vote-carousel-stage--backward .vote-carousel-card--current {
+    animation: vote-carousel-enter-left 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+.vote-carousel-stage--backward .vote-carousel-card--next {
+    animation: vote-carousel-settle-right 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
+}
+.vote-carousel-stage--backward .vote-carousel-card--previous {
+    animation: vote-carousel-appear-left 440ms ease both;
+}
+
+@keyframes vote-carousel-enter-right {
+    from {
+        opacity: 0.4;
+        filter: brightness(0.7);
+        transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+    to { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+}
+@keyframes vote-carousel-settle-left {
+    from { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    to {
+        opacity: 0.48;
+        filter: brightness(0.72);
+        transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+}
+@keyframes vote-carousel-appear-right {
+    from {
+        opacity: 0;
+        filter: brightness(0.6);
+        transform: translateX(calc(-50% + clamp(160px, 48vw, 270px))) scale(0.62);
+    }
+    to {
+        opacity: 0.48;
+        filter: brightness(0.72);
+        transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+}
+@keyframes vote-carousel-enter-left {
+    from {
+        opacity: 0.4;
+        filter: brightness(0.7);
+        transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+    to { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+}
+@keyframes vote-carousel-settle-right {
+    from { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    to {
+        opacity: 0.48;
+        filter: brightness(0.72);
+        transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+}
+@keyframes vote-carousel-appear-left {
+    from {
+        opacity: 0;
+        filter: brightness(0.6);
+        transform: translateX(calc(-50% - clamp(160px, 48vw, 270px))) scale(0.62);
+    }
+    to {
+        opacity: 0.48;
+        filter: brightness(0.72);
+        transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
+    }
+}
+
+@media (max-width: 640px) {
+    .vote-nomination-row--featured > .vote-nomination-card--featured {
+        flex-basis: calc((100% - 14px) / 2);
+        min-height: 342px;
+        padding: 12px;
+        gap: 9px;
+    }
+    .vote-nomination-card--featured .vote-logo-wrap {
+        width: min(100%, 164px);
+    }
+    .vote-nomination-card--featured .vote-nomination-title {
+        font-size: clamp(15px, 4vw, 18px);
+    }
+    .vote-carousel-stage {
+        min-height: 258px;
+    }
+    .vote-nomination-card.vote-carousel-card {
+        width: min(56%, 194px);
+        min-height: 232px;
+        padding: 10px;
+        gap: 7px;
+    }
+    .vote-nomination-card.vote-carousel-card--previous {
+        width: min(48%, 164px);
+        transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
+    }
+    .vote-nomination-card.vote-carousel-card--next {
+        width: min(48%, 164px);
+        transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
+    }
+    @keyframes vote-carousel-enter-right {
+        from { opacity:.4; filter:brightness(.7); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
+        to { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
+    }
+    @keyframes vote-carousel-settle-left {
+        from { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
+        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
+    }
+    @keyframes vote-carousel-appear-right {
+        from { opacity:0; transform:translateX(calc(-50% + clamp(150px, 44vw, 240px))) scale(.6); }
+        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
+    }
+    @keyframes vote-carousel-enter-left {
+        from { opacity:.4; filter:brightness(.7); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
+        to { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
+    }
+    @keyframes vote-carousel-settle-right {
+        from { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
+        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
+    }
+    @keyframes vote-carousel-appear-left {
+        from { opacity:0; transform:translateX(calc(-50% - clamp(150px, 44vw, 240px))) scale(.6); }
+        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
+    }
+}
+@media (max-width: 380px) {
+    .vote-nomination-row--featured > .vote-nomination-card--featured {
+        min-height: 324px;
+        gap: 8px;
+        padding: 10px;
+    }
+    .vote-nomination-card--featured .vote-logo-wrap {
+        width: min(100%, 148px);
+    }
+    .vote-carousel-stage { min-height: 246px; }
+    .vote-nomination-card.vote-carousel-card {
+        width: min(60%, 178px);
+        min-height: 222px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .vote-carousel-stage--forward .vote-carousel-card--current,
+    .vote-carousel-stage--forward .vote-carousel-card--previous,
+    .vote-carousel-stage--forward .vote-carousel-card--next,
+    .vote-carousel-stage--backward .vote-carousel-card--current,
+    .vote-carousel-stage--backward .vote-carousel-card--previous,
+    .vote-carousel-stage--backward .vote-carousel-card--next {
+        animation: none;
+    }
+}
