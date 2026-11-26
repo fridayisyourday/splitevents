@@ -418,7 +418,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <section id="profile-page" class="page-view" aria-label="Профиль" hidden>
+    <section id="profile-page" class="page-view" aria-label="Профиль">
         <article
             id="profile-card"
             class="profile-card"

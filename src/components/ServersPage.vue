@@ -1,5 +1,5 @@
 <template>
-    <section id="servers-page" class="page-view" aria-label="Сервера" hidden>
+    <section id="servers-page" class="page-view" aria-label="Сервера">
         <div class="section-page servers-page">
             <div class="section-page-content servers-page-content">
                 <header class="section-page-header">
