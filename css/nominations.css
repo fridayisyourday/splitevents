@@ -1146,12 +1146,12 @@
 }
 
 
-/* Fixed-size nominee selection dialog: content changes scroll inside the frame. */
+/* Compact fixed-size nominee dialog. Content scrolls without changing its frame. */
 .vote-dialog--nomination {
     box-sizing: border-box;
-    height: min(540px, calc(100dvh - 40px));
-    min-height: min(540px, calc(100dvh - 40px));
-    max-height: min(540px, calc(100dvh - 40px));
+    height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
+    min-height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
+    max-height: min(420px, calc(var(--tg-viewport-stable-height, 100dvh) - 32px));
     flex: 0 0 auto;
     overflow: hidden;
 }
@@ -1179,4 +1179,12 @@
 .vote-dialog--nomination .vote-avatar,
 .vote-dialog--nomination .vote-avatar-placeholder {
     border-radius: 50%;
+}
+
+
+/* Center a lone candidate (for example the final NEXTGEN add tile). */
+.vote-dialog--nomination .vote-grid > .vote-candidate-card:only-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 220px);
 }

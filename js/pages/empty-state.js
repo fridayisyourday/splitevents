@@ -2,7 +2,7 @@
 import {
     createPageShell,
     createEmptyStateElement
-} from "./page-shell.js?v=20261126-1";
+} from "./page-shell.js?v=20261126-2";
 
 export function renderEmptyState(container, options) {
     const shell = createPageShell({
