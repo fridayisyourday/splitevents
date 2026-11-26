@@ -182,7 +182,8 @@ body,
     color: var(--app-text);
 }
 
-.profile-nickname:not([readonly]) {
+/* Only the temporary edit field receives the gray input surface. */
+.profile-nickname--editing {
     background: var(--app-secondary);
     color: var(--app-on-secondary);
 }
@@ -238,9 +239,9 @@ body,
 .vote-add-symbol,
 .vote-suggest-symbol {
     background: var(--app-secondary);
-    color: var(--app-white);
+    color: var(--app-on-secondary);
     box-shadow: var(--app-shadow-control);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.42);
+    text-shadow: none;
 }
 
 .vote-dialog-title,
