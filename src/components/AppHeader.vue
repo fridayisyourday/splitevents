@@ -14,6 +14,7 @@ const activePage = ref("home");
 const activeEventsCount = ref(0);
 const isOpen = ref(false);
 const isVisible = ref(false);
+const isPanelOpen = ref(false);
 
 const headerElement = ref(null);
 const menuButtonElement = ref(null);
@@ -21,6 +22,8 @@ const closeButtonElement = ref(null);
 const panelElement = ref(null);
 
 let closeTimer = null;
+let openFrame = null;
+let isUnmounted = false;
 
 const eventsBadgeText = computed(() => (
     activeEventsCount.value > 99 ? "99+" : String(activeEventsCount.value)
@@ -75,23 +78,44 @@ function openMenu() {
         closeTimer = null;
     }
 
+    if (openFrame !== null) {
+        window.cancelAnimationFrame(openFrame);
+        openFrame = null;
+    }
+
+    // Make the drawer visible in its closed position first. The next frame
+    // then applies the open class, allowing the CSS transform to animate.
     isVisible.value = true;
     isOpen.value = true;
+    isPanelOpen.value = false;
     document.body.classList.add("menu-open");
     setBackgroundInteractionDisabled(true);
 
     nextTick(() => {
-        if (!isOpen.value) return;
-        closeButtonElement.value?.focus();
+        if (!isOpen.value || isUnmounted) return;
+
+        openFrame = window.requestAnimationFrame(() => {
+            openFrame = null;
+            if (!isOpen.value || !isVisible.value || isUnmounted) return;
+
+            isPanelOpen.value = true;
+            closeButtonElement.value?.focus();
+        });
     });
 
     notifyMenuState();
 }
 
 function closeMenu(restoreFocus = false) {
-    if (!isOpen.value && !isVisible.value) return;
+    if (!isOpen.value && !isVisible.value && openFrame === null) return;
+
+    if (openFrame !== null) {
+        window.cancelAnimationFrame(openFrame);
+        openFrame = null;
+    }
 
     isOpen.value = false;
+    isPanelOpen.value = false;
     document.body.classList.remove("menu-open");
     setBackgroundInteractionDisabled(false);
 
@@ -212,7 +236,9 @@ onBeforeUnmount(() => {
     window.removeEventListener("splitevents:menu-page", handleMenuPage);
     document.removeEventListener("keydown", handleKeydown);
 
+    isUnmounted = true;
     if (closeTimer !== null) window.clearTimeout(closeTimer);
+    if (openFrame !== null) window.cancelAnimationFrame(openFrame);
     document.body.classList.remove("menu-open");
     setBackgroundInteractionDisabled(false);
 });
@@ -244,7 +270,7 @@ onBeforeUnmount(() => {
     <div
         id="menu-overlay"
         class="menu-overlay"
-        :class="{ 'is-open': isOpen }"
+        :class="{ 'is-open': isPanelOpen }"
         :hidden="!isVisible"
     >
         <button

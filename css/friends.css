@@ -84,6 +84,12 @@
 .friend-card-avatar-image {
     object-fit: cover;
     object-position: center;
+    opacity: 0;
+    transition: opacity 140ms ease;
+}
+
+.friend-card-avatar-image.is-loaded {
+    opacity: 1;
 }
 
 .friend-card-copy {
@@ -188,5 +194,9 @@
 
     .friends-loading-spinner {
         animation-duration: 1600ms;
+    }
+
+    .friend-card-avatar-image {
+        transition: none;
     }
 }
