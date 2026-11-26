@@ -45,6 +45,7 @@
 .app-notification__symbol > .lucide-icon {
     width: 18px;
     height: 18px;
+}
 
 .app-notification--error .app-notification__symbol {
     background: var(--app-text);
@@ -96,6 +97,7 @@
 .app-notification__close > .lucide-icon {
     width: 18px;
     height: 18px;
+}
 
 .app-notification__close:focus-visible {
     outline: 2px solid var(--app-accent);
