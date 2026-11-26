@@ -18,6 +18,15 @@
     --app-placeholder: var(--app-gray);
     --app-accent: var(--app-black);
 
+    /* Shared interaction states. */
+    --app-disabled-opacity: 0.48;
+    --app-nav-active-background: var(--app-black);
+    --app-nav-active-color: var(--app-white);
+    --app-badge-background: var(--app-secondary);
+    --app-badge-color: var(--app-on-secondary);
+    --app-badge-active-background: var(--app-white);
+    --app-badge-active-color: var(--app-black);
+
     /* Shared layout dimensions. All fixed pixel dimensions use a 2px step. */
     --app-content-width: 970px;
     --app-profile-width: 720px;
@@ -87,6 +96,8 @@
     --app-on-secondary: var(--app-white);
     --app-placeholder: var(--app-gray-dark);
     --app-accent: var(--app-white);
+    --app-nav-active-background: var(--app-gray-dark);
+    --app-nav-active-color: var(--app-white);
 
     --app-shadow-card: 0 12px 24px rgba(238, 238, 238, 0.12), 0 4px 8px rgba(238, 238, 238, 0.08);
     --app-shadow-control: 0 4px 12px rgba(238, 238, 238, 0.18);
@@ -104,12 +115,8 @@ body,
     color: var(--app-text);
 }
 
-/* No decorative frames: depth comes from solid surfaces and shadows. */
-*,
-*::before,
-*::after {
-    border: 0 !important;
-}
+/* Component borders are defined locally; avoid a global reset that suppresses
+   focus indicators, avatar rings and other meaningful boundaries. */
 
 :focus-visible {
     outline: 2px solid var(--app-accent);
@@ -247,9 +254,30 @@ body,
 
 .menu-item-badge,
 .coming-soon-badge {
-    background: var(--app-secondary);
-    color: var(--app-on-secondary);
+    display: inline-flex;
+    min-width: 24px;
+    min-height: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--app-radius-pill);
+    background: var(--app-badge-background);
+    color: var(--app-badge-color);
     box-shadow: var(--app-shadow-control);
+    font-size: var(--app-font-size-small);
+    font-weight: var(--app-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* The "soon" marker uses the same white accent treatment as an active-page badge. */
+.coming-soon-badge {
+    background: var(--app-badge-active-background);
+    color: var(--app-badge-active-color);
+    box-shadow: none;
 }
 
 /* All interactive controls share one solid treatment and 48px hit area. */
@@ -289,8 +317,25 @@ body,
     text-align: left;
 }
 
-.ui-button:disabled {
-    opacity: 0.48;
+/* One disabled-state opacity for buttons, form controls and ARIA-disabled items. */
+:disabled,
+[aria-disabled="true"] {
+    opacity: var(--app-disabled-opacity);
+    cursor: not-allowed;
+}
+
+/* Keep the Human Glaze status pill fully legible; only its label is dimmed. */
+.menu-item-coming-soon:disabled {
+    opacity: 1 !important;
+    cursor: default !important;
+}
+
+.menu-item-coming-soon:disabled .menu-item-label {
+    opacity: var(--app-disabled-opacity);
+}
+
+.menu-item-coming-soon:disabled .coming-soon-badge {
+    opacity: 1;
 }
 
 .ui-button:not(:disabled):active {
@@ -365,13 +410,34 @@ svg {
 }
 
 .menu-navigation .menu-item[aria-current="page"] {
-    text-decoration: underline;
-    text-underline-offset: 6px;
+    min-height: 48px !important;
+    padding: 0 14px !important;
+    border-radius: var(--app-radius-control) !important;
+    background: var(--app-nav-active-background) !important;
+    color: var(--app-nav-active-color) !important;
+    box-shadow: var(--app-shadow-control) !important;
+    font-weight: var(--app-font-weight-bold);
+    text-decoration: none !important;
+}
+
+.menu-navigation .menu-item[aria-current="page"] .menu-item-label {
+    color: var(--app-nav-active-color) !important;
+}
+
+.menu-navigation .menu-item[aria-current="page"] .menu-item-badge {
+    background: var(--app-badge-active-background) !important;
+    color: var(--app-badge-active-color) !important;
+    box-shadow: none !important;
 }
 
 .menu-navigation .menu-item:not(:disabled):hover {
     background: transparent !important;
     opacity: 0.72;
+}
+
+.menu-navigation .menu-item[aria-current="page"]:hover {
+    background: var(--app-nav-active-background) !important;
+    opacity: 1;
 }
 
 /* Every modal uses the same backdrop token. The picker sits above the voting

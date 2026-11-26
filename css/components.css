@@ -70,11 +70,6 @@
     color: var(--app-text);
 }
 
-.ui-button:disabled {
-    opacity: 0.58;
-    cursor: not-allowed;
-}
-
 @media (hover: hover) {
     .ui-button:not(:disabled):hover {
         filter: brightness(0.96);
