@@ -1,6 +1,25 @@
 /* Split API client. */
 const API_BASE_URL = "https://split-api.fridayisyourday.workers.dev";
 
+/* Parse API responses consistently and preserve server-provided error codes. */
+async function readJsonResponse(response, invalidResponseMessage) {
+    let payload;
+    try {
+        payload = await response.json();
+    } catch {
+        throw new Error(invalidResponseMessage);
+    }
+
+    if (!response.ok) {
+        const reason = payload && (payload.reason || payload.error)
+            ? (payload.reason || payload.error)
+            : "HTTP " + response.status;
+        throw new Error(reason);
+    }
+
+    return payload;
+}
+
 async function requestMyProfile(initData, body = null) {
     if (typeof initData !== "string" || !initData.trim()) {
         throw new Error("Telegram initData is unavailable.");
@@ -21,19 +40,10 @@ async function requestMyProfile(initData, body = null) {
         cache: "no-store"
     });
 
-    let payload = null;
-    try {
-        payload = await response.json();
-    } catch (error) {
-        throw new Error("Split API returned an invalid response.");
-    }
-
-    if (!response.ok) {
-        const reason = payload && (payload.reason || payload.error)
-            ? (payload.reason || payload.error)
-            : "HTTP " + response.status;
-        throw new Error(reason);
-    }
+    const payload = await readJsonResponse(
+        response,
+        "Split API returned an invalid response."
+    );
 
     if (!payload || !payload.user || !payload.user.telegram_id) {
         throw new Error("Split API did not return a verified user.");
@@ -91,19 +101,10 @@ export async function uploadProfileImage(initData, mediaType, blob) {
         cache: "no-store"
     });
 
-    let payload = null;
-    try {
-        payload = await response.json();
-    } catch {
-        throw new Error("Split API returned an invalid media response.");
-    }
-
-    if (!response.ok) {
-        const reason = payload && (payload.reason || payload.error)
-            ? (payload.reason || payload.error)
-            : "HTTP " + response.status;
-        throw new Error(reason);
-    }
+    const payload = await readJsonResponse(
+        response,
+        "Split API returned an invalid media response."
+    );
 
     if (!payload || !payload.user || !payload.user[mediaType + "_url"]) {
         throw new Error("invalid_media_response");
@@ -132,21 +133,7 @@ async function requestDirectoryData(path, initData, fields = {}) {
         cache: "no-store"
     });
 
-    let payload = null;
-    try {
-        payload = await response.json();
-    } catch {
-        throw new Error("invalid_server_response");
-    }
-
-    if (!response.ok) {
-        const reason = payload && (payload.reason || payload.error)
-            ? (payload.reason || payload.error)
-            : "HTTP " + response.status;
-        throw new Error(reason);
-    }
-
-    return payload;
+    return readJsonResponse(response, "invalid_server_response");
 }
 
 export async function fetchFriends(initData) {

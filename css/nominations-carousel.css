@@ -1,43 +1,58 @@
-/* The three remaining nominations form a circular, layered carousel. */
-.vote-nomination-carousel { width: 100%; min-width: 0; }
+/* Secondary nominations use one fixed card footprint across the carousel. */
+.vote-nomination-carousel {
+    width: 100%;
+    min-width: 0;
+}
+
 .vote-carousel-stage {
     position: relative;
     width: 100%;
-    min-height: 340px;
+    min-height: 306px;
     overflow: hidden;
     isolation: isolate;
 }
+
 .vote-nomination-card.vote-carousel-card {
     position: absolute;
     top: 18px;
     left: 50%;
     display: flex;
-    width: min(70%, 260px);
-    min-height: 306px;
+    width: min(56%, 210px);
+    height: 252px;
+    min-height: 252px;
+    max-height: 252px;
     box-sizing: border-box;
+    flex: 0 0 auto;
+    gap: 8px;
+    padding: 12px;
     transform-origin: center center;
     transition: transform 220ms ease, opacity 220ms ease, filter 220ms ease;
+    zoom: 0.86;
 }
+
 .vote-nomination-card.vote-carousel-card--current {
     z-index: 3;
     opacity: 1;
     filter: none;
     transform: translateX(-50%) scale(1);
 }
+
 .vote-nomination-card.vote-carousel-card--previous {
     z-index: 1;
-    width: min(62%, 230px);
+    width: min(48%, 178px);
     opacity: 0.48;
     filter: brightness(0.72);
-    transform: translateX(calc(-50% - clamp(104px, 31vw, 180px))) scale(0.78);
+    transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
 }
+
 .vote-nomination-card.vote-carousel-card--next {
     z-index: 1;
-    width: min(62%, 230px);
+    width: min(48%, 178px);
     opacity: 0.48;
     filter: brightness(0.72);
-    transform: translateX(calc(-50% + clamp(104px, 31vw, 180px))) scale(0.78);
+    transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
 }
+
 .vote-carousel-controls {
     display: flex;
     align-items: center;
@@ -45,147 +60,135 @@
     gap: 18px;
     margin-top: 6px;
 }
-.vote-carousel-controls .vote-page-button { flex: 0 0 42px; }
 
-/* On phones the voting dialog keeps its footprint while pages change. */
-@media (max-width: 760px), (pointer: coarse) {
-    .vote-dialog {
-        box-sizing: border-box;
-        height: min(560px, calc(100dvh - 40px));
-        min-height: min(560px, calc(100dvh - 40px));
-        max-height: none;
-        overflow: hidden;
-    }
-    .vote-grid-viewport {
-        flex: 1 1 0;
-        min-height: 0;
-        overflow-y: auto;
-    }
-    .vote-grid { align-content: start; }
-    .vote-candidate-card { box-sizing: border-box; min-height: 206px; }
-    .vote-nomination-card.vote-carousel-card {
-        width: min(70%, 250px);
-        min-height: 292px;
-    }
-    .vote-nomination-card.vote-carousel-card--previous,
-    .vote-nomination-card.vote-carousel-card--next {
-        width: min(62%, 220px);
-    }
-    .vote-carousel-stage { min-height: 324px; }
-}
-@media (max-width: 380px) {
-    .vote-nomination-card.vote-carousel-card {
-        width: min(74%, 238px);
-        min-height: 282px;
-    }
-    .vote-carousel-stage { min-height: 314px; }
-}
-@media (prefers-reduced-motion: reduce) {
-    .vote-nomination-card.vote-carousel-card { transition: none; }
+.vote-carousel-controls .vote-page-button {
+    flex: 0 0 42px;
 }
 
+.vote-carousel-stage > .vote-carousel-controls {
+    position: absolute;
+    top: 253px;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    margin: 0;
+}
 
-/* Primary nominations have clear visual priority and a dedicated image frame. */
+/* The two main nominations stay side by side. */
 .vote-nomination-row--featured {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
-    gap: 18px;
+    gap: 12px;
 }
+
 .vote-nomination-row--featured > .vote-nomination-card--featured {
     box-sizing: border-box;
-    flex: 0 1 330px;
-    min-height: 390px;
-    gap: 12px;
-    padding: 22px;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    flex: none;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 12px 10px 10px;
 }
+
 .vote-nomination-card--featured .vote-logo-wrap {
-    width: min(100%, 184px);
+    display: flex;
+    width: min(100%, 132px);
     height: auto;
     aspect-ratio: 1 / 1;
     flex: 0 0 auto;
-    margin: 0 auto 2px;
+    margin: 0 auto;
     overflow: hidden;
 }
+
 .vote-nomination-card--featured .vote-logo-wrap > img.vote-nomination-logo,
 .vote-nomination-card--featured .vote-logo-wrap > .vote-nomination-logo,
 .vote-nomination-card--featured .vote-logo-wrap > .vote-logo-placeholder,
 .vote-nomination-card--featured .vote-logo-wrap > .vote-duo-logo {
-    display: flex;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     max-width: 100%;
     max-height: 100%;
+    min-width: 0;
+    min-height: 0;
     flex: 0 0 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     overflow: hidden;
 }
+
 .vote-nomination-card--featured .vote-nomination-title {
-    min-height: 2.5em;
+    display: flex;
+    width: 100%;
+    min-height: 2.4em;
+    align-items: center;
+    justify-content: center;
     margin: 0;
-    font-size: clamp(20px, 2.2vw, 24px);
+    font-size: clamp(14px, 3.8vw, 18px);
     line-height: 1.2;
-}
-.vote-nomination-card--featured .vote-selected-nominee {
-    flex: 0 0 auto;
-    min-height: 1.35em;
-}
-.vote-nomination-card--featured .vote-action-button {
-    flex: 0 0 auto;
-    min-height: 44px;
-    margin-top: auto;
+    overflow-wrap: anywhere;
 }
 
-/* Secondary nominations are intentionally smaller and visually quieter. */
-.vote-carousel-stage {
-    min-height: 266px;
-}
-.vote-nomination-card.vote-carousel-card {
-    box-sizing: border-box;
-    width: min(56%, 210px);
-    min-height: 238px;
-    padding: 12px;
-    gap: 8px;
+.vote-nomination-card--featured .vote-selected-nominee {
+    min-height: 1.35em;
     flex: 0 0 auto;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.25;
 }
+
+.vote-nomination-card--featured .vote-action-button {
+    min-height: 38px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+    padding: 8px 6px;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+/* Secondary cards are smaller than the two featured nominations. */
 .vote-nomination-card.vote-carousel-card .vote-nomination-title {
     min-height: 2.4em;
     font-size: 16px;
     line-height: 1.2;
 }
+
 .vote-nomination-card.vote-carousel-card .vote-selected-nominee {
     font-size: 12px;
 }
+
 .vote-nomination-card.vote-carousel-card .vote-action-button {
     min-height: 36px;
     padding-inline: 8px;
     font-size: 12px;
 }
-.vote-nomination-card.vote-carousel-card--previous {
-    width: min(48%, 178px);
-    transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
-}
-.vote-nomination-card.vote-carousel-card--next {
-    width: min(48%, 178px);
-    transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
-}
 
-/* A real sliding transition is applied when the carousel is re-rendered. */
+/* Sliding transitions are applied when the carousel changes its active card. */
 .vote-carousel-stage--forward .vote-carousel-card--current {
     animation: vote-carousel-enter-right 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
 }
+
 .vote-carousel-stage--forward .vote-carousel-card--previous {
     animation: vote-carousel-settle-left 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
 }
+
 .vote-carousel-stage--forward .vote-carousel-card--next {
     animation: vote-carousel-appear-right 440ms ease both;
 }
+
 .vote-carousel-stage--backward .vote-carousel-card--current {
     animation: vote-carousel-enter-left 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
 }
+
 .vote-carousel-stage--backward .vote-carousel-card--next {
     animation: vote-carousel-settle-right 440ms cubic-bezier(0.22, 0.75, 0.25, 1) both;
 }
+
 .vote-carousel-stage--backward .vote-carousel-card--previous {
     animation: vote-carousel-appear-left 440ms ease both;
 }
@@ -196,16 +199,26 @@
         filter: brightness(0.7);
         transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
     }
-    to { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    to {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+    }
 }
+
 @keyframes vote-carousel-settle-left {
-    from { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    from {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+    }
     to {
         opacity: 0.48;
         filter: brightness(0.72);
         transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
     }
 }
+
 @keyframes vote-carousel-appear-right {
     from {
         opacity: 0;
@@ -218,22 +231,33 @@
         transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
     }
 }
+
 @keyframes vote-carousel-enter-left {
     from {
         opacity: 0.4;
         filter: brightness(0.7);
         transform: translateX(calc(-50% - clamp(82px, 25vw, 142px))) scale(0.76);
     }
-    to { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    to {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+    }
 }
+
 @keyframes vote-carousel-settle-right {
-    from { opacity: 1; filter: none; transform: translateX(-50%) scale(1); }
+    from {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+    }
     to {
         opacity: 0.48;
         filter: brightness(0.72);
         transform: translateX(calc(-50% + clamp(82px, 25vw, 142px))) scale(0.76);
     }
 }
+
 @keyframes vote-carousel-appear-left {
     from {
         opacity: 0;
@@ -247,220 +271,134 @@
     }
 }
 
-@media (max-width: 640px) {
-    .vote-nomination-row--featured > .vote-nomination-card--featured {
-        flex-basis: calc((100% - 14px) / 2);
-        min-height: 342px;
-        padding: 12px;
-        gap: 10px;
+/* Compact viewports keep the voting dialog usable without shifting cards. */
+@media (max-width: 760px), (pointer: coarse) {
+    .vote-dialog {
+        box-sizing: border-box;
+        height: min(560px, calc(100dvh - 40px));
+        min-height: min(560px, calc(100dvh - 40px));
+        max-height: none;
+        overflow: hidden;
     }
-    .vote-nomination-card--featured .vote-logo-wrap {
-        width: min(100%, 164px);
-    }
-    .vote-nomination-card--featured .vote-nomination-title {
-        font-size: clamp(16px, 4vw, 18px);
-    }
-    .vote-carousel-stage {
-        min-height: 258px;
-    }
-    .vote-nomination-card.vote-carousel-card {
-        width: min(56%, 194px);
-        min-height: 232px;
-        padding: 10px;
-        gap: 8px;
-    }
-    .vote-nomination-card.vote-carousel-card--previous {
-        width: min(48%, 164px);
-        transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
-    }
-    .vote-nomination-card.vote-carousel-card--next {
-        width: min(48%, 164px);
-        transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
-    }
-    @keyframes vote-carousel-enter-right {
-        from { opacity:.4; filter:brightness(.7); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
-        to { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
-    }
-    @keyframes vote-carousel-settle-left {
-        from { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
-        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
-    }
-    @keyframes vote-carousel-appear-right {
-        from { opacity:0; transform:translateX(calc(-50% + clamp(150px, 44vw, 240px))) scale(.6); }
-        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
-    }
-    @keyframes vote-carousel-enter-left {
-        from { opacity:.4; filter:brightness(.7); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
-        to { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
-    }
-    @keyframes vote-carousel-settle-right {
-        from { opacity:1; filter:none; transform:translateX(-50%) scale(1); }
-        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(.74); }
-    }
-    @keyframes vote-carousel-appear-left {
-        from { opacity:0; transform:translateX(calc(-50% - clamp(150px, 44vw, 240px))) scale(.6); }
-        to { opacity:.48; filter:brightness(.72); transform:translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(.74); }
-    }
-}
-@media (max-width: 380px) {
-    .vote-nomination-row--featured > .vote-nomination-card--featured {
-        min-height: 324px;
-        gap: 8px;
-        padding: 10px;
-    }
-    .vote-nomination-card--featured .vote-logo-wrap {
-        width: min(100%, 148px);
-    }
-    .vote-carousel-stage { min-height: 246px; }
-    .vote-nomination-card.vote-carousel-card {
-        width: min(60%, 178px);
-        min-height: 222px;
-    }
-}
-@media (prefers-reduced-motion: reduce) {
-    .vote-carousel-stage--forward .vote-carousel-card--current,
-    .vote-carousel-stage--forward .vote-carousel-card--previous,
-    .vote-carousel-stage--forward .vote-carousel-card--next,
-    .vote-carousel-stage--backward .vote-carousel-card--current,
-    .vote-carousel-stage--backward .vote-carousel-card--previous,
-    .vote-carousel-stage--backward .vote-carousel-card--next {
-        animation: none;
-    }
-}
 
-
-/* Phone layout: keep the two headline nominations side by side. */
-.vote-nomination-row--featured {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-    gap: 12px;
-}
-.vote-nomination-row--featured > .vote-nomination-card--featured {
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-    height: auto;
-    flex: none;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 12px 10px 10px;
-}
-.vote-nomination-card--featured .vote-logo-wrap {
-    display: flex;
-    width: min(100%, 132px);
-    height: auto;
-    aspect-ratio: 1 / 1;
-    flex: 0 0 auto;
-    margin: 0 auto;
-    overflow: hidden;
-}
-.vote-nomination-card--featured .vote-logo-wrap > img.vote-nomination-logo,
-.vote-nomination-card--featured .vote-logo-wrap > .vote-nomination-logo,
-.vote-nomination-card--featured .vote-logo-wrap > .vote-logo-placeholder,
-.vote-nomination-card--featured .vote-logo-wrap > .vote-duo-logo {
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    min-width: 0;
-    min-height: 0;
-    flex: 0 0 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    overflow: hidden;
-}
-.vote-nomination-card--featured .vote-nomination-title {
-    display: flex;
-    width: 100%;
-    min-height: 2.4em;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    font-size: clamp(14px, 3.8vw, 18px);
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-}
-.vote-nomination-card--featured .vote-selected-nominee {
-    min-height: 1.35em;
-    flex: 0 0 auto;
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.25;
-}
-.vote-nomination-card--featured .vote-action-button {
-    min-height: 38px;
-    flex: 0 0 auto;
-    margin-top: 2px;
-    padding: 8px 6px;
-    font-size: 12px;
-    line-height: 1.2;
-}
-
-/* Give the carousel enough vertical room for the full DUO card and controls. */
-.vote-carousel-stage {
-    min-height: 320px;
-}
-.vote-nomination-card.vote-carousel-card {
-    min-height: 252px;
-}
-@media (max-width: 640px) {
-    .vote-carousel-stage {
-        min-height: 310px;
+    .vote-grid-viewport {
+        flex: 1 1 0;
+        min-height: 0;
+        overflow-y: auto;
     }
-    .vote-nomination-card.vote-carousel-card {
-        min-height: 248px;
+
+    .vote-grid {
+        align-content: start;
     }
-}
-@media (max-width: 380px) {
-    .vote-carousel-stage {
-        min-height: 304px;
+
+    .vote-candidate-card {
+        box-sizing: border-box;
+        min-height: 206px;
     }
-    .vote-nomination-card.vote-carousel-card {
-        min-height: 242px;
-    }
-}
-
-
-
-/* Keep every carousel card at one height so the controls stay in one place. */
-.vote-nomination-card.vote-carousel-card {
-    height: 252px;
-    min-height: 252px;
-    max-height: 252px;
-    box-sizing: border-box;
-    zoom: 0.86;
-}
-
-/* Controls sit 18px below the rendered center card. JS measures the
-   actual card box, including responsive sizing and the 0.86 visual scale. */
-.vote-carousel-stage {
-    min-height: 306px;
-}
-
-.vote-carousel-stage > .vote-carousel-controls {
-    position: absolute;
-    top: 253px;
-    right: 0;
-    left: 0;
-    z-index: 5;
-    margin: 0;
 }
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
         min-height: 302px;
     }
+
     .vote-nomination-card.vote-carousel-card {
+        width: min(56%, 194px);
         height: 248px;
         min-height: 248px;
         max-height: 248px;
+        gap: 8px;
+        padding: 10px;
     }
+
+    .vote-nomination-card.vote-carousel-card--previous {
+        width: min(48%, 164px);
+        transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
+    }
+
+    .vote-nomination-card.vote-carousel-card--next {
+        width: min(48%, 164px);
+        transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
+    }
+
     .vote-carousel-stage > .vote-carousel-controls {
         top: 249px;
+    }
+
+    @keyframes vote-carousel-enter-right {
+        from {
+            opacity: 0.4;
+            filter: brightness(0.7);
+            transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
+        }
+        to {
+            opacity: 1;
+            filter: none;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+
+    @keyframes vote-carousel-settle-left {
+        from {
+            opacity: 1;
+            filter: none;
+            transform: translateX(-50%) scale(1);
+        }
+        to {
+            opacity: 0.48;
+            filter: brightness(0.72);
+            transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
+        }
+    }
+
+    @keyframes vote-carousel-appear-right {
+        from {
+            opacity: 0;
+            transform: translateX(calc(-50% + clamp(150px, 44vw, 240px))) scale(0.6);
+        }
+        to {
+            opacity: 0.48;
+            filter: brightness(0.72);
+            transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
+        }
+    }
+
+    @keyframes vote-carousel-enter-left {
+        from {
+            opacity: 0.4;
+            filter: brightness(0.7);
+            transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
+        }
+        to {
+            opacity: 1;
+            filter: none;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+
+    @keyframes vote-carousel-settle-right {
+        from {
+            opacity: 1;
+            filter: none;
+            transform: translateX(-50%) scale(1);
+        }
+        to {
+            opacity: 0.48;
+            filter: brightness(0.72);
+            transform: translateX(calc(-50% + clamp(76px, 24vw, 118px))) scale(0.74);
+        }
+    }
+
+    @keyframes vote-carousel-appear-left {
+        from {
+            opacity: 0;
+            transform: translateX(calc(-50% - clamp(150px, 44vw, 240px))) scale(0.6);
+        }
+        to {
+            opacity: 0.48;
+            filter: brightness(0.72);
+            transform: translateX(calc(-50% - clamp(76px, 24vw, 118px))) scale(0.74);
+        }
     }
 }
 
@@ -468,12 +406,30 @@
     .vote-carousel-stage {
         min-height: 296px;
     }
+
     .vote-nomination-card.vote-carousel-card {
+        width: min(60%, 178px);
         height: 242px;
         min-height: 242px;
         max-height: 242px;
     }
+
     .vote-carousel-stage > .vote-carousel-controls {
         top: 244px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vote-nomination-card.vote-carousel-card {
+        transition: none;
+    }
+
+    .vote-carousel-stage--forward .vote-carousel-card--current,
+    .vote-carousel-stage--forward .vote-carousel-card--previous,
+    .vote-carousel-stage--forward .vote-carousel-card--next,
+    .vote-carousel-stage--backward .vote-carousel-card--current,
+    .vote-carousel-stage--backward .vote-carousel-card--previous,
+    .vote-carousel-stage--backward .vote-carousel-card--next {
+        animation: none;
     }
 }

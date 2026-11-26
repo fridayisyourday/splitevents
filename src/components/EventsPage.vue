@@ -12,6 +12,7 @@ import {
 } from "../../js/events/hidden-state.js?v=20261126-3";
 import { getTelegramUserId } from "../../js/telegram.js?v=20261126-6";
 import { getEventCoverUrl } from "../../js/media.js?v=20261126-1";
+import { getCurrentPage } from "../../js/navigation.js?v=20261127-1";
 
 const userId = getTelegramUserId();
 const hiddenIds = ref(getHiddenEventIds(userId));
@@ -33,12 +34,6 @@ const visibilityLabel = computed(() => (
 const visibilityDisabled = computed(() => (
     hiddenIds.value.size === 0 && !showingHidden.value
 ));
-
-function currentRoute() {
-    return (window.location.hash || "#/")
-        .replace(/^#\/?/, "")
-        .split(/[/?]/)[0] || "home";
-}
 
 function isEventHidden(event) {
     return hiddenIds.value.has(event.id);
@@ -142,7 +137,7 @@ function startClock() {
 }
 
 function syncClockWithRoute() {
-    if (currentRoute() === "events") {
+    if (getCurrentPage() === "events") {
         startClock();
     } else {
         stopClock();

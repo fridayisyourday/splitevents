@@ -1,8 +1,9 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { fetchPublicProfile } from "../../js/api.js?v=20261126-5";
+import { fetchPublicProfile } from "../../js/api.js?v=20261127-1";
 import { getTelegramInitData } from "../../js/telegram.js?v=20261126-6";
-import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261126-3";
+import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-1";
+import { getCurrentPage, getPublicUserId } from "../../js/navigation.js?v=20261127-1";
 
 const initData = getTelegramInitData();
 const status = ref("idle");
@@ -15,16 +16,6 @@ let requestRevision = 0;
 
 const avatarUrl = computed(() => getSafeProfileImageUrl(profile.value?.avatar_url));
 const bannerUrl = computed(() => getSafeProfileImageUrl(profile.value?.banner_url));
-
-function getCurrentPage() {
-    const match = (window.location.hash || "#/").match(/^#\/?([^/?]*)/);
-    return match && match[1] ? match[1] : "home";
-}
-
-function getPublicId() {
-    const match = (window.location.hash || "").match(/^#\/users\/([0-9a-f]{32})(?:[/?]|$)/i);
-    return match ? match[1] : "";
-}
 
 function getDisplayName() {
     const value = profile.value?.display_name;
@@ -66,7 +57,7 @@ async function loadProfile(publicId) {
 
 function handleRouteChange() {
     if (getCurrentPage() === "users") {
-        void loadProfile(getPublicId());
+        void loadProfile(getPublicUserId());
     } else {
         requestRevision += 1;
     }
@@ -92,7 +83,7 @@ function handleBannerError() {
 
 onMounted(() => {
     window.addEventListener("hashchange", handleRouteChange);
-    if (getCurrentPage() === "users") void loadProfile(getPublicId());
+    if (getCurrentPage() === "users") void loadProfile(getPublicUserId());
 });
 
 onBeforeUnmount(() => {

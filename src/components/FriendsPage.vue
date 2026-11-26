@@ -1,8 +1,9 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
-import { fetchFriends } from "../../js/api.js?v=20261126-5";
+import { fetchFriends } from "../../js/api.js?v=20261127-1";
 import { getTelegramInitData } from "../../js/telegram.js?v=20261126-6";
-import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261126-3";
+import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-1";
+import { getCurrentPage } from "../../js/navigation.js?v=20261127-1";
 
 const initData = getTelegramInitData();
 const status = ref("idle");
@@ -23,11 +24,6 @@ const sortedUsers = computed(() => users.value
         collator.compare(left.username || "", right.username || "")
     ))
 );
-
-function getCurrentPage() {
-    const match = (window.location.hash || "#/").match(/^#\/?([^/?]*)/);
-    return match && match[1] ? match[1] : "home";
-}
 
 function getAvatarUrl(user) {
     if (failedAvatarIds.has(user.public_id)) return "";

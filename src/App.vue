@@ -13,6 +13,11 @@ import {
     initTelegram,
     setTelegramBackButtonVisible
 } from "../js/telegram.js?v=20261126-6";
+import {
+    VALID_PAGES,
+    getCurrentPage,
+    getPageHash
+} from "../js/navigation.js?v=20261127-1";
 
 const pageTitles = {
     home: "Сплит — SplitEvents",
@@ -24,23 +29,16 @@ const pageTitles = {
     nominations: "НОМИНАЦИИ 2026 — Сплит"
 };
 
-const validPages = new Set(Object.keys(pageTitles));
-const currentPage = ref(readCurrentPage());
+const validPages = new Set(VALID_PAGES);
+const currentPage = ref(getCurrentPage());
 let menuOpen = false;
-
-function readCurrentPage() {
-    const hash = window.location.hash || "#/";
-    const withoutHash = hash.startsWith("#") ? hash.slice(1) : hash;
-    const page = withoutHash.split("?")[0].split("/").filter(Boolean)[0] || "home";
-    return validPages.has(page) ? page : "home";
-}
 
 function updateTelegramBackButton() {
     setTelegramBackButtonVisible(Boolean(menuOpen || currentPage.value !== "home"));
 }
 
 function syncPage(moveFocus = false) {
-    currentPage.value = readCurrentPage();
+    currentPage.value = getCurrentPage();
 
     window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
         detail: { page: currentPage.value }
@@ -56,7 +54,7 @@ function syncPage(moveFocus = false) {
 
 function navigateTo(page) {
     const safePage = validPages.has(page) ? page : "home";
-    const target = safePage === "home" ? "#/" : "#/" + safePage;
+    const target = getPageHash(safePage);
 
     if (window.location.hash === target) {
         syncPage(true);

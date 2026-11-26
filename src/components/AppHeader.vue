@@ -1,5 +1,6 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
+import { getCurrentPage, getPageHash } from "../../js/navigation.js?v=20261127-1";
 
 const navigationItems = [
     { page: "home", id: "home-nav-button", label: "Главная", icon: "house" },
@@ -37,15 +38,6 @@ const eventsBadgeLabel = computed(() => {
 
     return count + " " + word;
 });
-
-function getCurrentPage() {
-    const route = (window.location.hash || "#/")
-        .replace(/^#\/?/, "")
-        .split(/[/?]/)[0];
-    const allowedPages = ["home", "profile", "friends", "users", "events", "servers", "nominations"];
-
-    return allowedPages.includes(route) ? route : "home";
-}
 
 function updateActivePage() {
     const page = getCurrentPage();
@@ -125,7 +117,7 @@ function toggleMenu() {
 }
 
 function navigateTo(page) {
-    const target = page === "home" ? "#/" : "#/" + page;
+    const target = getPageHash(page);
     closeMenu(false);
 
     if (window.location.hash === target) {
