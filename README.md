@@ -4,9 +4,10 @@ Telegram Mini App для совместных мероприятий, профи
 
 ## Быстрые сведения
 
-- Публикация: GitHub Pages из корня ветки `main`.
-- Точка входа: `index.html` → `app.js`.
-- Сборки и сторонних npm-зависимостей нет: браузер загружает ES-модули и CSS напрямую. Node.js используется только для проверки синтаксиса.
+- Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
+- Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
+- Frontend: Vue 3 + Vite. Переход выполняется постепенно: `App.vue` пока подключает прежнюю HTML-разметку и запускает старый `app.js`, чтобы не переписывать все функции одновременно.
+- Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
 - Собственный аватар ImageKit имеет приоритет; до его загрузки используется фото Telegram, полученное из подписанного `initData`. Баннеры и собственные аватары хранятся в ImageKit Media Library; приватный ImageKit API key хранится только в секрете Worker. D1 хранит ссылки, file ID и случайный стабильный публичный ID для перехода к профилю.
@@ -18,6 +19,11 @@ Telegram Mini App для совместных мероприятий, профи
 ```text
 /
 ├── index.html
+├── src/
+│   ├── main.js
+│   ├── App.vue
+│   └── legacy-shell.html
+├── vite.config.js
 ├── app.js
 ├── README.md
 ├── assets/
@@ -109,6 +115,16 @@ Telegram Mini App для совместных мероприятий, профи
 
 После правки CSS увеличивайте версию соответствующего файла в `index.html`. После правки JavaScript увеличивайте версию импорта этого модуля и версию `app.js` в `index.html`, если менялся список его импортов. Это сбрасывает старый кеш Telegram WebView.
 
-Перед публикацией запускайте `npm run check`: команда проверяет синтаксис всех JavaScript-модулей без сборки и сторонних зависимостей. GitHub Actions выполняет ту же проверку для push и pull request в `main`.
+Перед публикацией запускаются `npm run check` и `npm run build`. Первая команда проверяет синтаксис JavaScript-модулей, вторая проверяет Vue-компоненты и собирает статический сайт в `dist/`. GitHub Actions выполняет обе проверки для pull request и публикует `dist/` в GitHub Pages после изменений в `main`.
 
 Подробная карта модулей и границы ответственности описаны в [docs/architecture.md](docs/architecture.md). Визуальные правила и результаты аудита — в [docs/design-review.md](docs/design-review.md).
+
+
+## Локальная разработка
+
+1. Установите Node.js 22.
+2. Выполните `npm install`.
+3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
+4. Перед публикацией выполните `npm run check` и `npm run build`.
+
+GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Временная совместимость со старым интерфейсом находится в `src/legacy-shell.html`; новые разделы следует разрабатывать как Vue-компоненты.
