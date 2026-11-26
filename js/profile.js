@@ -59,8 +59,7 @@ export function createProfile({
         card: $("profile-card"),
         nameDisplay: $("nickname-display"),
         editButton: $("nickname-edit-button"),
-        editIcon: document.querySelector(".nickname-edit-icon"),
-        saveIcon: document.querySelector(".nickname-save-icon"),
+        actionIcon: document.querySelector(".nickname-action-icon"),
         tag: $("telegram-tag"),
         avatar: $("profile-avatar-image"),
         avatarPlaceholder: $("profile-avatar-placeholder"),
@@ -159,8 +158,10 @@ export function createProfile({
             el.nameDisplay.textContent = currentNickname();
         }
 
-        el.editIcon.hidden = editing;
-        el.saveIcon.hidden = !editing;
+        const iconUse = el.actionIcon.querySelector("use");
+        if (iconUse) {
+            iconUse.setAttribute("href", editing ? "#icon-check" : "#icon-pencil");
+        }
         el.card.classList.toggle("is-media-editing", editing);
         el.avatarButton.tabIndex = editing ? 0 : -1;
         el.bannerButton.tabIndex = editing ? 0 : -1;
