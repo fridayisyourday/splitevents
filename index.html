@@ -32,9 +32,10 @@
     <link rel="stylesheet" href="./css/profile.css?v=20261126-4">
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
     <link rel="stylesheet" href="./css/events.css?v=20261126-12">
+    <link rel="stylesheet" href="./css/nominations.css?v=20261126-1">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-16"></script>
+    <script type="module" src="./app.js?v=20261126-17"></script>
 </head>
 
 <body>
@@ -370,6 +371,155 @@
                 aria-label="Сервера"
                 hidden
             ></section>
+
+            <section
+                id="nominations-page"
+                class="page-view"
+                aria-label="Номинации 2026"
+                hidden
+            >
+                <div class="section-page nominations-page">
+                    <div class="section-page-content nominations-page-content">
+                        <header class="nominations-page-header">
+                            <h1 class="section-page-title">НОМИНАЦИИ 2026</h1>
+                        </header>
+
+                        <div id="vote-widget" class="vote-widget">
+                            <div
+                                id="vote-nominations-list"
+                                class="vote-nominations-list"
+                                aria-label="Список номинаций"
+                            ></div>
+
+                            <div class="vote-submit-panel">
+                                <div class="vote-progress">
+                                    <div class="vote-progress-copy">
+                                        <span class="vote-progress-label">Заполнено номинаций</span>
+                                        <span id="vote-progress-count" class="vote-progress-count">0 из 5</span>
+                                    </div>
+                                    <div
+                                        id="vote-progress-track"
+                                        class="vote-progress-track"
+                                        role="progressbar"
+                                        aria-label="Заполненность голосования"
+                                        aria-valuemin="0"
+                                        aria-valuemax="5"
+                                        aria-valuenow="0"
+                                    >
+                                        <span id="vote-progress-fill" class="vote-progress-fill"></span>
+                                    </div>
+                                </div>
+                                <button
+                                    id="vote-submit-button"
+                                    class="ui-button ui-button--primary vote-submit-button"
+                                    type="button"
+                                    disabled
+                                    aria-disabled="true"
+                                >
+                                    Сформировать бюллетень
+                                </button>
+                            </div>
+
+                            <p
+                                id="vote-submit-notice"
+                                class="vote-submit-notice"
+                                role="status"
+                                aria-live="polite"
+                                hidden
+                            ></p>
+
+                            <div class="vote-overlay" id="vote-vote-overlay" hidden>
+                                <section
+                                    class="vote-dialog"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="vote-vote-title"
+                                >
+                                    <header class="vote-dialog-header">
+                                        <p class="vote-dialog-eyebrow">НОМИНАЦИЯ</p>
+                                        <h2 id="vote-vote-title" class="vote-dialog-title">
+                                            Выбери номинанта
+                                        </h2>
+                                        <p id="vote-vote-description" class="vote-dialog-description">
+                                            Выбери один вариант
+                                        </p>
+                                    </header>
+                                    <div class="vote-grid-viewport">
+                                        <div id="vote-nomination-grid" class="vote-grid"></div>
+                                    </div>
+                                    <footer class="vote-dialog-footer">
+                                        <button
+                                            id="vote-nomination-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие номинанты"
+                                            disabled
+                                        >‹</button>
+                                        <button
+                                            id="vote-vote-close"
+                                            class="ui-button ui-button--secondary vote-close-button"
+                                            type="button"
+                                        >Закрыть</button>
+                                        <button
+                                            id="vote-nomination-next"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Следующие номинанты"
+                                            disabled
+                                        >›</button>
+                                    </footer>
+                                </section>
+                            </div>
+
+                            <div class="vote-overlay vote-picker-overlay" id="vote-picker-overlay" hidden>
+                                <section
+                                    class="vote-dialog"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="vote-picker-title"
+                                >
+                                    <header class="vote-dialog-header">
+                                        <p class="vote-dialog-eyebrow">ОБЩИЙ СПИСОК</p>
+                                        <h2 id="vote-picker-title" class="vote-dialog-title">
+                                            Добавить номинанта
+                                        </h2>
+                                        <p class="vote-dialog-description">
+                                            Здесь участники, которых ещё нет в списке этой номинации
+                                        </p>
+                                    </header>
+                                    <div class="vote-grid-viewport">
+                                        <div id="vote-picker-grid" class="vote-grid"></div>
+                                        <p id="vote-picker-empty" class="vote-empty-state" hidden>
+                                            Все подходящие участники уже добавлены
+                                        </p>
+                                    </div>
+                                    <footer class="vote-dialog-footer">
+                                        <button
+                                            id="vote-picker-prev"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Предыдущие участники"
+                                            disabled
+                                        >‹</button>
+                                        <button
+                                            id="vote-picker-close"
+                                            class="ui-button ui-button--secondary vote-close-button"
+                                            type="button"
+                                        >Назад</button>
+                                        <button
+                                            id="vote-picker-next"
+                                            class="ui-button ui-button--secondary ui-button--icon vote-page-button"
+                                            type="button"
+                                            aria-label="Следующие участники"
+                                            disabled
+                                        >›</button>
+                                    </footer>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
