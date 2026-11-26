@@ -174,6 +174,12 @@ if (missingPages.length || !mainContent) {
         updateTelegramBackButton();
     });
 
+    // Ask the mounted Vue header for its current state in case it was opened
+    // before the legacy page controllers finished initializing.
+    window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
+        detail: { action: "sync-state" }
+    }));
+
     window.addEventListener("splitevents:rerender", () => renderPage(true));
 
     updateActiveEventsBadge();
