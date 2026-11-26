@@ -119,11 +119,6 @@ body,
 /* Component borders are defined locally; avoid a global reset that suppresses
    focus indicators, avatar rings and other meaningful boundaries. */
 
-:focus-visible {
-    outline: 2px solid var(--app-accent);
-    outline-offset: 2px;
-}
-
 .site-header {
     background: var(--app-background);
     box-shadow: var(--app-shadow-header);
@@ -380,14 +375,6 @@ svg {
     display: block;
     width: var(--app-icon-size);
     height: var(--app-icon-size);
-}
-
-.menu-item-icon {
-    display: none;
-}
-
-.menu-navigation {
-    gap: 8px;
 }
 
 /* The top-level menu controls are icon-only; navigation entries are text-only. */
