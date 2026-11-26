@@ -42,18 +42,19 @@
     <link rel="stylesheet" href="./css/components.css?v=20261126-6">
     <link rel="stylesheet" href="./css/layout.css?v=20261126-4">
     <link rel="stylesheet" href="./css/menu.css?v=20261126-11">
-    <link rel="stylesheet" href="./css/profile.css?v=20261126-8">
+    <link rel="stylesheet" href="./css/profile.css?v=20261126-8"
+    <link rel="stylesheet" href="./css/friends.css?v=20261126-1">>
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
     <link rel="stylesheet" href="./css/events.css?v=20261126-17">
     <link rel="stylesheet" href="./css/nominations.css?v=20261126-18">
     <link rel="stylesheet" href="./css/nominations-carousel.css?v=20261126-9">
     <link rel="stylesheet" href="./css/nominations-picker.css?v=20261126-1">
     <link rel="stylesheet" href="./css/nominations-cards.css?v=20261126-4">
-    <link rel="stylesheet" href="./css/design-system.css?v=20261126-15">
+    <link rel="stylesheet" href="./css/design-system.css?v=20261126-16">
     <link rel="stylesheet" href="./css/notifications.css?v=20261126-1">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
-    <script type="module" src="./app.js?v=20261126-43"></script>
+    <script type="module" src="./app.js?v=20261126-44"></script>
 </head>
 
 <body>
@@ -176,6 +177,10 @@
                             <circle cx="18.3" cy="14.5" r="0.8" fill="currentColor" stroke="none"></circle>
                         </svg>
                         <span class="menu-item-label">Сервера</span>
+                    </button>
+
+                    <button id="friends-nav-button" class="menu-item ui-button ui-button--nav ui-button--ghost" type="button">
+                        <span class="menu-item-label">Друзья</span>
                     </button>
 
                     <button class="menu-item menu-item-coming-soon ui-button ui-button--nav ui-button--ghost" type="button" disabled>
@@ -421,6 +426,20 @@
                 id="servers-page"
                 class="page-view"
                 aria-label="Сервера"
+                hidden
+            ></section>
+
+            <section
+                id="friends-page"
+                class="page-view"
+                aria-label="Друзья"
+                hidden
+            ></section>
+
+            <section
+                id="user-profile-page"
+                class="page-view"
+                aria-label="Профиль пользователя"
                 hidden
             ></section>
 
