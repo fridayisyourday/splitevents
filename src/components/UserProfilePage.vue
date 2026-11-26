@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <section id="user-profile-page" class="page-view" aria-label="Профиль пользователя" hidden>
+    <section id="user-profile-page" class="page-view" aria-label="Профиль пользователя">
         <div
             v-if="status === 'loading' || status === 'idle'"
             class="public-profile-loading"

@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <section id="friends-page" class="page-view" aria-label="Друзья" hidden>
+    <section id="friends-page" class="page-view" aria-label="Друзья">
         <div class="section-page friends-page">
             <div class="section-page-content friends-page-content">
                 <header class="section-page-header">

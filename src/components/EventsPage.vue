@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <section id="events-page" class="page-view" aria-label="Текущие события" hidden>
+    <section id="events-page" class="page-view" aria-label="Текущие события">
         <div class="section-page events-page">
             <div class="section-page-content events-page-content">
                 <header class="section-page-header">

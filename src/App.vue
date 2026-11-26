@@ -1,28 +1,18 @@
 <script setup>
-import { onBeforeUnmount, onMounted } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import AppHeader from "./components/AppHeader.vue";
 import EventsPage from "./components/EventsPage.vue";
 import FriendsPage from "./components/FriendsPage.vue";
 import HomePage from "./components/HomePage.vue";
 import NominationsPage from "./components/NominationsPage.vue";
+import NotificationRegion from "./components/NotificationRegion.vue";
 import ProfilePage from "./components/ProfilePage.vue";
 import ServersPage from "./components/ServersPage.vue";
 import UserProfilePage from "./components/UserProfilePage.vue";
-import { createNotifications } from "../js/notifications.js?v=20261126-2";
 import {
     initTelegram,
     setTelegramBackButtonVisible
 } from "../js/telegram.js?v=20261126-6";
-
-const pageElements = {
-    home: "home-page",
-    profile: "profile-page",
-    friends: "friends-page",
-    users: "user-profile-page",
-    events: "events-page",
-    servers: "servers-page",
-    nominations: "nominations-page"
-};
 
 const pageTitles = {
     home: "Сплит — SplitEvents",
@@ -34,50 +24,44 @@ const pageTitles = {
     nominations: "НОМИНАЦИИ 2026 — Сплит"
 };
 
+const validPages = new Set(Object.keys(pageTitles));
+const currentPage = ref(readCurrentPage());
 let menuOpen = false;
-let notifications = null;
 
-function getCurrentPage() {
+function readCurrentPage() {
     const hash = window.location.hash || "#/";
     const withoutHash = hash.startsWith("#") ? hash.slice(1) : hash;
     const page = withoutHash.split("?")[0].split("/").filter(Boolean)[0] || "home";
-    return Object.prototype.hasOwnProperty.call(pageElements, page) ? page : "home";
+    return validPages.has(page) ? page : "home";
 }
 
 function updateTelegramBackButton() {
-    setTelegramBackButtonVisible(Boolean(menuOpen || getCurrentPage() !== "home"));
+    setTelegramBackButtonVisible(Boolean(menuOpen || currentPage.value !== "home"));
 }
 
-function navigateTo(page) {
-    const safePage = Object.prototype.hasOwnProperty.call(pageElements, page)
-        ? page
-        : "home";
-    const target = safePage === "home" ? "#/" : "#/" + safePage;
-
-    if (window.location.hash === target) {
-        renderPage(true);
-    } else {
-        window.location.hash = target;
-    }
-}
-
-function renderPage(moveFocus = false) {
-    const page = getCurrentPage();
-
-    Object.entries(pageElements).forEach(([name, id]) => {
-        const element = document.getElementById(id);
-        if (element) element.hidden = name !== page;
-    });
+function syncPage(moveFocus = false) {
+    currentPage.value = readCurrentPage();
 
     window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
-        detail: { page }
+        detail: { page: currentPage.value }
     }));
 
     updateTelegramBackButton();
-    document.title = pageTitles[page];
+    document.title = pageTitles[currentPage.value];
 
     if (moveFocus) {
         document.getElementById("main-content")?.focus({ preventScroll: true });
+    }
+}
+
+function navigateTo(page) {
+    const safePage = validPages.has(page) ? page : "home";
+    const target = safePage === "home" ? "#/" : "#/" + safePage;
+
+    if (window.location.hash === target) {
+        syncPage(true);
+    } else {
+        window.location.hash = target;
     }
 }
 
@@ -86,24 +70,13 @@ function handleMenuState(event) {
     updateTelegramBackButton();
 }
 
-function handleNotification(event) {
-    const notification = event.detail || {};
-    if (!notifications) return;
-
-    if (notification.type === "error") {
-        notifications.error(notification.message, notification.detail);
-    } else if (notification.type === "warning") {
-        notifications.warning(notification.message, notification.detail);
-    }
-}
-
 function handleHashChange() {
     if (menuOpen) {
         window.dispatchEvent(new CustomEvent("splitevents:menu-command", {
             detail: { action: "close", restoreFocus: false }
         }));
     }
-    renderPage(true);
+    syncPage(true);
 }
 
 function handleBack() {
@@ -114,27 +87,24 @@ function handleBack() {
         return;
     }
 
-    const page = getCurrentPage();
-    if (page === "users") {
+    if (currentPage.value === "users") {
         navigateTo("friends");
-    } else if (page === "nominations") {
+    } else if (currentPage.value === "nominations") {
         navigateTo("events");
-    } else if (page !== "home") {
+    } else if (currentPage.value !== "home") {
         navigateTo("home");
     }
 }
 
 function handleRerender() {
-    renderPage(true);
+    syncPage(true);
 }
 
 function handlePageShow() {
-    renderPage(false);
+    syncPage(false);
 }
 
 onMounted(() => {
-    notifications = createNotifications(document.getElementById("notification-region"));
-    window.addEventListener("splitevents:notification", handleNotification);
     window.addEventListener("splitevents:menu-state", handleMenuState);
     window.addEventListener("splitevents:rerender", handleRerender);
     window.addEventListener("hashchange", handleHashChange);
@@ -146,16 +116,14 @@ onMounted(() => {
         detail: { action: "sync-state" }
     }));
 
-    renderPage(false);
+    syncPage(false);
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener("splitevents:notification", handleNotification);
     window.removeEventListener("splitevents:menu-state", handleMenuState);
     window.removeEventListener("splitevents:rerender", handleRerender);
     window.removeEventListener("hashchange", handleHashChange);
     window.removeEventListener("pageshow", handlePageShow);
-    notifications?.clear();
 });
 </script>
 
@@ -187,15 +155,15 @@ onBeforeUnmount(() => {
         <AppHeader />
 
         <main id="main-content" class="page-content" tabindex="-1">
-            <HomePage />
-            <ProfilePage />
-            <EventsPage />
-            <ServersPage />
-            <FriendsPage />
-            <UserProfilePage />
-            <NominationsPage />
+            <HomePage v-show="currentPage === 'home'"/>
+            <ProfilePage v-show="currentPage === 'profile'"/>
+            <EventsPage v-show="currentPage === 'events'"/>
+            <ServersPage v-show="currentPage === 'servers'"/>
+            <FriendsPage v-show="currentPage === 'friends'"/>
+            <UserProfilePage v-show="currentPage === 'users'"/>
+            <NominationsPage v-show="currentPage === 'nominations'"/>
         </main>
 
-        <div id="notification-region" class="notification-region" aria-label="уведомления"></div>
+        <NotificationRegion />
     </div>
 </template>

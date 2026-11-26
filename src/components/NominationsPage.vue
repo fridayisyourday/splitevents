@@ -460,7 +460,7 @@ defineExpose({
 </script>
 
 <template>
-    <section id="nominations-page" class="page-view" aria-label="Номинации 2026" hidden>
+    <section id="nominations-page" class="page-view" aria-label="Номинации 2026">
         <div class="section-page nominations-page">
             <div class="section-page-content nominations-page-content">
                 <header class="nominations-page-header">
