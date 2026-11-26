@@ -1,5 +1,5 @@
 /* Events page — supports showing and hiding the user's hidden events. */
-import { createEventCard } from "./event-card.js?v=20261126-7";
+import { createEventCard } from "./event-card.js?v=20261126-8";
 import {
     createPageShell,
     createEmptyStateElement
@@ -75,10 +75,11 @@ export function renderEventsPage(container, events = [], options = {}) {
         "button",
         "events-visibility-toggle ui-button ui-button--secondary"
     );
+    const footer = createElement("div", "events-page-footer");
 
     visibilityButton.type = "button";
     visibilityButton.setAttribute("aria-pressed", "false");
-    shell.header.appendChild(visibilityButton);
+    footer.appendChild(visibilityButton);
 
     let showingHidden = false;
     let timerId = null;
@@ -136,18 +137,21 @@ export function renderEventsPage(container, events = [], options = {}) {
         events
             .filter((event) => showingHidden || !hiddenIds.has(event.id))
             .forEach((event) => {
+                const isHidden = hiddenIds.has(event.id);
                 const card = createEventCard(event, {
-                    showHideAction: !hiddenIds.has(event.id),
-                    onHide: (eventId) => {
-                        const wasAlreadyHidden = hiddenIds.has(eventId);
-                        const result = wasAlreadyHidden
-                            ? true
-                            : typeof options.onHideEvent === "function"
-                                ? options.onHideEvent(eventId)
-                                : true;
+                    isHidden,
+                    onToggleHidden: (eventId, shouldHide) => {
+                        const result = typeof options.onToggleHidden === "function"
+                            ? options.onToggleHidden(eventId, shouldHide)
+                            : true;
 
                         if (result !== false) {
-                            hiddenIds.add(eventId);
+                            if (shouldHide) {
+                                hiddenIds.add(eventId);
+                            } else {
+                                hiddenIds.delete(eventId);
+                            }
+
                             updateVisibilityButton();
                             renderCards();
                         }
@@ -164,6 +168,7 @@ export function renderEventsPage(container, events = [], options = {}) {
             showEmptyState();
         }
 
+        shell.body.appendChild(footer);
         startTimer();
     }
 
