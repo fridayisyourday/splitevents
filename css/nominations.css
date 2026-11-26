@@ -1479,3 +1479,49 @@
         padding: 78px 10px 10px;
     }
 }
+
+
+/* Restore full-bleed artwork in the compact carousel cards as well. */
+.vote-nomination-card.vote-nomination-card--featured,
+.vote-nomination-card.vote-carousel-card {
+    gap: 0;
+    padding: 0;
+}
+
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    flex: 1 1 100%;
+    margin: 0;
+    aspect-ratio: auto;
+}
+
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-logo-placeholder,
+.vote-nomination-card.vote-carousel-card .vote-logo-wrap > .vote-duo-logo {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    min-width: 100%;
+    min-height: 100%;
+    flex: 1 1 100%;
+    margin: 0;
+    aspect-ratio: auto;
+    align-self: stretch;
+    border: 0;
+    border-radius: 0;
+    object-fit: cover;
+}
+
+.vote-nomination-card .vote-logo-wrap > img.vote-nomination-logo,
+.vote-nomination-card .vote-logo-wrap > .vote-nomination-logo,
+.vote-nomination-card .vote-logo-wrap > .vote-logo-placeholder {
+    margin: 0;
+    align-self: stretch;
+}
