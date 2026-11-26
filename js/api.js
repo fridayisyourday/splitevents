@@ -29,7 +29,9 @@ async function requestMyProfile(initData, body = null) {
     }
 
     if (!response.ok) {
-        const reason = payload && payload.error ? payload.error : "HTTP " + response.status;
+        const reason = payload && (payload.reason || payload.error)
+            ? (payload.reason || payload.error)
+            : "HTTP " + response.status;
         throw new Error(reason);
     }
 

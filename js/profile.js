@@ -183,7 +183,16 @@ export function createProfile({
                     console.warn("SplitEvents: display name sync failed", error);
                     const reason = error && error.message ? error.message : "";
                     const knownReasons = {
-                        invalid_telegram_init_data: "telegram не подтвердил данные входа. закрой и снова открой мини-приложение.",
+                        invalid_telegram_init_data: "telegram не подтвердил данные входа.",
+                        bot_token_invalid: "секрет BOT_TOKEN в cloudflare недействителен. его нужно заменить токеном бота @spliteventsbot.",
+                        bot_token_wrong_bot: "в cloudflare указан токен другого бота. нужен токен @spliteventsbot.",
+                        telegram_api_unavailable: "сервер не смог связаться с telegram для проверки токена бота.",
+                        signature_mismatch: "токен бота проверен, но подпись initData не совпала. проблема в самих данных входа или их передаче.",
+                        missing_hash: "telegram не передал хеш подписи вместе с данными входа.",
+                        invalid_hash_format: "telegram передал подпись в неожиданном формате.",
+                        invalid_auth_date: "telegram не передал корректное время авторизации.",
+                        auth_data_expired: "данные авторизации telegram устарели или время устройства неверно.",
+                        invalid_user_data: "telegram передал данные пользователя в неожиданном формате.",
                         missing_telegram_init_data: "telegram не передал данные входа. закрой и снова открой мини-приложение.",
                         database_unavailable: "общая база временно недоступна.",
                         telegram_auth_not_configured: "серверная авторизация не настроена.",

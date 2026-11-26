@@ -20,15 +20,62 @@ function json(data, status = 200) {
   });
 }
 
+let telegramBotProbe = { expiresAt: 0, result: null };
+
+async function inspectTelegramBotToken(botToken) {
+  if (telegramBotProbe.result && Date.now() < telegramBotProbe.expiresAt) {
+    return telegramBotProbe.result;
+  }
+
+  let result = "telegram_api_unavailable";
+  try {
+    const response = await fetch("https://api.telegram.org/bot" + botToken + "/getMe");
+    const payload = await response.json();
+
+    if (response.status === 401 || payload?.error_code === 401) {
+      result = "bot_token_invalid";
+    } else if (!response.ok || payload?.ok !== true || !payload.result) {
+      result = "telegram_api_unavailable";
+    } else if (
+      String(payload.result.username || "").replace(/^@/, "").toLowerCase() !==
+      "spliteventsbot"
+    ) {
+      result = "bot_token_wrong_bot";
+    } else {
+      result = "bot_token_valid";
+    }
+  } catch {
+    result = "telegram_api_unavailable";
+  }
+
+  telegramBotProbe = {
+    expiresAt: Date.now() + 60_000,
+    result
+  };
+  return result;
+}
+
 async function verifyTelegramInitData(initData, botToken) {
+  if (typeof initData !== "string" || !initData.trim()) {
+    return { user: null, reason: "missing_init_data" };
+  }
+
   const params = new URLSearchParams(initData);
   const receivedHash = params.get("hash");
-  if (!receivedHash) return null;
+  if (!receivedHash) {
+    return { user: null, reason: "missing_hash" };
+  }
+  if (!/^[0-9a-f]{64}$/i.test(receivedHash)) {
+    return { user: null, reason: "invalid_hash_format" };
+  }
 
   params.delete("hash");
   params.delete("signature");
 
-  const entries = [...params.entries()].sort(([a], [b]) => a.localeCompare(b));
+  // Use a locale-independent lexical sort, as required by Telegram's data-check format.
+  const entries = [...params.entries()].sort(([a], [b]) => (
+    a < b ? -1 : a > b ? 1 : 0
+  ));
   const dataCheckString = entries
     .map(([key, value]) => key + "=" + value)
     .join("\n");
@@ -63,24 +110,41 @@ async function verifyTelegramInitData(initData, botToken) {
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
 
-  if (actualHash.length !== receivedHash.length) return null;
+  if (actualHash.length !== receivedHash.length) {
+    return { user: null, reason: "signature_mismatch" };
+  }
 
   let mismatch = 0;
   for (let index = 0; index < actualHash.length; index += 1) {
     mismatch |= actualHash.charCodeAt(index) ^ receivedHash.charCodeAt(index);
   }
-  if (mismatch !== 0) return null;
+  if (mismatch !== 0) {
+    const tokenStatus = await inspectTelegramBotToken(botToken);
+    return {
+      user: null,
+      reason: tokenStatus === "bot_token_valid"
+        ? "signature_mismatch"
+        : tokenStatus
+    };
+  }
 
   const authDate = Number(params.get("auth_date"));
-  if (!Number.isFinite(authDate) || Math.abs(Date.now() / 1000 - authDate) > 86400) {
-    return null;
+  if (!Number.isFinite(authDate) || authDate <= 0) {
+    return { user: null, reason: "invalid_auth_date" };
+  }
+
+  const now = Date.now() / 1000;
+  if (now - authDate > 86400 || authDate - now > 300) {
+    return { user: null, reason: "auth_data_expired" };
   }
 
   try {
     const user = JSON.parse(params.get("user") || "null");
-    return user && user.id ? user : null;
+    return user && user.id
+      ? { user, reason: null }
+      : { user: null, reason: "invalid_user_data" };
   } catch {
-    return null;
+    return { user: null, reason: "invalid_user_data" };
   }
 }
 
@@ -138,10 +202,14 @@ export default {
         return json({ error: "missing_telegram_init_data" }, 401);
       }
 
-      const user = await verifyTelegramInitData(initData, env.BOT_TOKEN);
-      if (!user) {
-        return json({ error: "invalid_telegram_init_data" }, 401);
+      const verification = await verifyTelegramInitData(initData, String(env.BOT_TOKEN).trim());
+      if (!verification.user) {
+        return json({
+          error: "invalid_telegram_init_data",
+          reason: verification.reason || "verification_failed"
+        }, 401);
       }
+      const user = verification.user;
 
       if (body !== null && (
         typeof body !== "object" ||
