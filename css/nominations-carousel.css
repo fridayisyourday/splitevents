@@ -430,3 +430,24 @@
 .vote-nomination-card.vote-carousel-card {
     zoom: 0.86;
 }
+
+/* Keep the navigation directly beneath the centered, active carousel card. */
+.vote-carousel-stage {
+    min-height: 230px;
+}
+
+.vote-carousel-controls {
+    margin-top: 3px;
+}
+
+@media (max-width: 640px) {
+    .vote-carousel-stage {
+        min-height: 228px;
+    }
+}
+
+@media (max-width: 380px) {
+    .vote-carousel-stage {
+        min-height: 223px;
+    }
+}
