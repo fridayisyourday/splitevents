@@ -260,29 +260,6 @@
     top: -4px;
 }
 
-/* Candidate tiles keep their grid, with a little more breathing room. */
-.vote-dialog .vote-candidate-card {
-    background: var(--app-card-background);
-    color: var(--app-text);
-}
-
-.vote-dialog .vote-candidate-name,
-.vote-dialog .vote-suggest-text {
-    color: var(--app-text);
-}
-
-.vote-dialog .vote-add-symbol,
-.vote-dialog .vote-suggest-symbol {
-    background: var(--app-secondary);
-    color: var(--app-on-secondary);
-    text-shadow: none;
-}
-
-.vote-dialog .vote-grid > .vote-candidate-card:not(:only-child) {
-    width: calc(100% - 12px);
-    justify-self: center;
-}
-
 @media (max-width: 640px) {
     .vote-nomination-content {
         gap: 6px;
