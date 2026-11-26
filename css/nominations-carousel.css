@@ -431,23 +431,28 @@
     zoom: 0.86;
 }
 
-/* Keep the navigation directly beneath the centered, active carousel card. */
+/* The stage now contains both the full card and its overlaid navigation row. */
 .vote-carousel-stage {
-    min-height: 230px;
+    min-height: 275px;
 }
 
 .vote-carousel-controls {
-    margin-top: 3px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    margin: 0;
 }
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 228px;
+        min-height: 273px;
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 223px;
+        min-height: 268px;
     }
 }
