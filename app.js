@@ -15,7 +15,7 @@ import {
 } from "./js/api.js?v=20261126-4";
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
-import { createProfile } from "./js/profile.js?v=20261126-7";
+import { createProfile } from "./js/profile.js?v=20261126-8";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
