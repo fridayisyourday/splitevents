@@ -427,7 +427,7 @@ export function createNominationsWidget(root) {
         const button = createActionButton(
             label,
             Boolean(selected),
-            "vote-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", onClick);
         card.appendChild(button);
@@ -459,7 +459,7 @@ export function createNominationsWidget(root) {
         const button = createActionButton(
             selected ? "Отменить голос" : "Проголосовать",
             selected,
-            "vote-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             activeNomination.selectedPairId = selected ? null : pair.id;
@@ -494,7 +494,7 @@ export function createNominationsWidget(root) {
         const button = createActionButton(
             selectedPerson ? "Отменить голос" : "Добавить кандидата",
             Boolean(selectedPerson),
-            "vote-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             if (activeNomination.selectedFromPoolId) {
@@ -538,7 +538,7 @@ export function createNominationsWidget(root) {
             const button = createActionButton(
                 "Выбрать этот вариант",
                 false,
-                "vote-vote-button"
+                "vote-button"
             );
             button.disabled = !input.value.trim();
             button.addEventListener("click", function () {
@@ -574,7 +574,7 @@ export function createNominationsWidget(root) {
         const button = createActionButton(
             mode === "voted" ? "Отменить голос" : "Предложить другое",
             mode === "voted",
-            "vote-vote-button"
+            "vote-button"
         );
         button.addEventListener("click", function () {
             if (activeNomination.suggestionMode === "voted") {
@@ -765,7 +765,7 @@ export function createNominationsWidget(root) {
     function closePicker() {
         pickerOverlay.hidden = true;
         if (!voteOverlay.hidden) {
-            const addButton = nominationGrid.querySelector(".vote-add-card .vote-vote-button");
+            const addButton = nominationGrid.querySelector(".vote-add-card .vote-button");
             (addButton || voteCloseButton).focus();
         }
     }
