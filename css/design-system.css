@@ -174,8 +174,7 @@ body,
 }
 
 .profile-nickname,
-.profile-telegram-tag,
-.profile-media-status {
+.profile-telegram-tag {
     color: var(--app-text);
 }
 

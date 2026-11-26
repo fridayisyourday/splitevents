@@ -1,21 +1,26 @@
 const ALLOWED_ORIGIN = "https://fridayisyourday.github.io";
 
-function corsHeaders() {
-  return {
-    // Identity is protected by Telegram's signed initData, not by CORS.
-    "Access-Control-Allow-Origin": "*",
+function corsHeaders(origin = "") {
+  const headers = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Telegram-Init-Data",
-    "Access-Control-Max-Age": "86400"
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin"
   };
+
+  if (origin === ALLOWED_ORIGIN) {
+    headers["Access-Control-Allow-Origin"] = ALLOWED_ORIGIN;
+  }
+
+  return headers;
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, origin = "") {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      ...corsHeaders()
+      ...corsHeaders(origin)
     }
   });
 }
@@ -151,10 +156,12 @@ async function verifyTelegramInitData(initData, botToken) {
 
 export default {
   async fetch(request, env) {
+    const requestOrigin = request.headers.get("Origin") || "";
+
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
-        headers: corsHeaders()
+        headers: corsHeaders(requestOrigin)
       });
     }
 
@@ -167,15 +174,15 @@ export default {
           ok: result?.ok === 1,
           service: "split-api",
           database: "connected"
-        });
+        }, 200, requestOrigin);
       } catch {
-        return json({ ok: false, error: "database_unavailable" }, 503);
+        return json({ ok: false, error: "database_unavailable" }, 503, requestOrigin);
       }
     }
 
     if (request.method === "POST" && url.pathname === "/api/me") {
       if (!env.BOT_TOKEN) {
-        return json({ error: "telegram_auth_not_configured" }, 503);
+        return json({ error: "telegram_auth_not_configured" }, 503, requestOrigin);
       }
 
       const contentType = request.headers.get("Content-Type") || "";
@@ -192,7 +199,7 @@ export default {
         try {
           body = await request.json();
         } catch {
-          return json({ error: "invalid_json" }, 400);
+          return json({ error: "invalid_json" }, 400, requestOrigin);
         }
         initData = initData || (body && typeof body.init_data === "string"
           ? body.init_data
@@ -200,7 +207,7 @@ export default {
       }
 
       if (!initData) {
-        return json({ error: "missing_telegram_init_data" }, 401);
+        return json({ error: "missing_telegram_init_data" }, 401, requestOrigin);
       }
 
       const verification = await verifyTelegramInitData(initData, String(env.BOT_TOKEN).trim());
@@ -208,7 +215,7 @@ export default {
         return json({
           error: "invalid_telegram_init_data",
           reason: verification.reason || "verification_failed"
-        }, 401);
+        }, 401, requestOrigin);
       }
       const user = verification.user;
 
@@ -216,53 +223,58 @@ export default {
         typeof body !== "object" ||
         Array.isArray(body)
       )) {
-        return json({ error: "invalid_profile_payload" }, 400);
+        return json({ error: "invalid_profile_payload" }, 400, requestOrigin);
       }
 
       const hasDisplayName = body !== null &&
         Object.prototype.hasOwnProperty.call(body, "display_name");
 
       if (hasDisplayName && typeof body.display_name !== "string") {
-        return json({ error: "invalid_display_name" }, 400);
+        return json({ error: "invalid_display_name" }, 400, requestOrigin);
       }
 
       if (hasDisplayName && body.display_name.length > 64) {
-        return json({ error: "display_name_too_long" }, 400);
+        return json({ error: "display_name_too_long" }, 400, requestOrigin);
       }
 
       const telegramId = String(user.id);
 
       // Identity fields always come from Telegram's signed initData.
       // A client can only update its own optional display_name.
-      await env.DB.prepare(
-        "INSERT INTO users (telegram_id, username, first_name, last_name, updated_at) " +
-        "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) " +
-        "ON CONFLICT(telegram_id) DO UPDATE SET " +
-        "username=excluded.username, first_name=excluded.first_name, " +
-        "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
-      ).bind(
-        telegramId,
-        user.username || null,
-        user.first_name || "",
-        user.last_name || ""
-      ).run();
-
-      if (hasDisplayName) {
-        const displayName = body.display_name.trim() || null;
+      try {
         await env.DB.prepare(
-          "UPDATE users SET display_name=?, updated_at=CURRENT_TIMESTAMP WHERE telegram_id=?"
-        ).bind(displayName, telegramId).run();
+          "INSERT INTO users (telegram_id, username, first_name, last_name, updated_at) " +
+          "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) " +
+          "ON CONFLICT(telegram_id) DO UPDATE SET " +
+          "username=excluded.username, first_name=excluded.first_name, " +
+          "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
+        ).bind(
+          telegramId,
+          user.username || null,
+          user.first_name || "",
+          user.last_name || ""
+        ).run();
+
+        if (hasDisplayName) {
+          const displayName = body.display_name.trim() || null;
+          await env.DB.prepare(
+            "UPDATE users SET display_name=?, updated_at=CURRENT_TIMESTAMP WHERE telegram_id=?"
+          ).bind(displayName, telegramId).run();
+        }
+
+        const profile = await env.DB.prepare(
+          "SELECT telegram_id, username, first_name, last_name, display_name, " +
+          "bio, avatar_url, banner_url, is_public, created_at " +
+          "FROM users WHERE telegram_id=?"
+        ).bind(telegramId).first();
+
+        return json({ user: profile }, 200, requestOrigin);
+      } catch (error) {
+        console.error("Split API: database operation failed", error?.name || "Error");
+        return json({ error: "database_unavailable" }, 503, requestOrigin);
       }
-
-      const profile = await env.DB.prepare(
-        "SELECT telegram_id, username, first_name, last_name, display_name, " +
-        "bio, avatar_url, banner_url, is_public, created_at " +
-        "FROM users WHERE telegram_id=?"
-      ).bind(telegramId).first();
-
-      return json({ user: profile });
     }
 
-    return json({ error: "not_found" }, 404);
+    return json({ error: "not_found" }, 404, requestOrigin);
   }
 };

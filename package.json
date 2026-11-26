@@ -1,0 +1,8 @@
+{
+  "name": "splitevents",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check-js.mjs"
+  }
+}

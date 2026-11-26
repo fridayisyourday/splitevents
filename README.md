@@ -6,9 +6,10 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages из корня ветки `main`.
 - Точка входа: `index.html` → `app.js`.
-- Сборки и пакетного менеджера нет: браузер загружает ES-модули и CSS напрямую.
+- Сборки и сторонних npm-зависимостей нет: браузер загружает ES-модули и CSS напрямую. Node.js используется только для проверки синтаксиса.
 - Маршруты: `#/`, `#/profile`, `#/events`, `#/servers`, `#/nominations?event=...`.
-- Серверной базы и синхронизации голосов пока нет. Каталог номинантов и событий хранится в исходниках; профиль и скрытые события — локально на устройстве.
+- Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя и отображаемое имя синхронизируются с сервером после проверки Telegram `initData`.
+- Голосование пока работает только в памяти текущего запуска. Каталог номинантов и событий хранится в исходниках; аватар и баннер профиля — локально в IndexedDB, скрытые события — в localStorage.
 
 ## Структура
 
@@ -17,9 +18,16 @@ Telegram Mini App для совместных мероприятий, профи
 ├── index.html
 ├── app.js
 ├── README.md
+├── assets/
+│   ├── events/
+│   └── nominees/
+├── .github/
+│   └── workflows/
+│       └── quality.yml
 ├── css/
 │   ├── base.css
 │   ├── design-system.css
+│   ├── notifications.css
 │   ├── components.css
 │   ├── layout.css
 │   ├── pages.css
@@ -31,7 +39,9 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── nominations-picker.css
 │   └── nominations-cards.css
 ├── js/
+│   ├── api.js
 │   ├── dom.js
+│   ├── notifications.js
 │   ├── telegram.js
 │   ├── menu.js
 │   ├── profile.js
@@ -55,9 +65,15 @@ Telegram Mini App для совместных мероприятий, профи
 │       ├── event-card.js
 │       ├── events.js
 │       └── servers.js
+├── worker/
+│   └── index.js
+├── package.json
+├── scripts/
+│   └── check-js.mjs
 └── docs/
     ├── architecture.md
-    └── design-review.md
+    ├── design-review.md
+    └── events.md
 ```
 
 ## Где что менять
@@ -66,9 +82,9 @@ Telegram Mini App для совместных мероприятий, профи
 
 **События.** Список событий — `js/events/data.js`; шаблон карточки — `js/pages/event-card.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
-**Профиль.** Интерфейс — `js/profile.js`; сохранение имени и изображений — `js/storage.js`.
+**Профиль и API.** Интерфейс — `js/profile.js`; локальное хранение имени и изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData` и работа с D1 — `worker/index.js`. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
-**Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
+**Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
 Подробная инструкция по добавлению нескольких событий и их обложек находится в [docs/events.md](docs/events.md).
 
@@ -83,5 +99,7 @@ Telegram Mini App для совместных мероприятий, профи
 ## Правила изменения ресурсов
 
 После правки CSS увеличивайте версию соответствующего файла в `index.html`. После правки JavaScript увеличивайте версию импорта этого модуля и версию `app.js` в `index.html`, если менялся список его импортов. Это сбрасывает старый кеш Telegram WebView.
+
+Перед публикацией запускайте `npm run check`: команда проверяет синтаксис всех JavaScript-модулей без сборки и сторонних зависимостей. GitHub Actions выполняет ту же проверку для push и pull request в `main`.
 
 Подробная карта модулей и границы ответственности описаны в [docs/architecture.md](docs/architecture.md). Визуальные правила и результаты аудита — в [docs/design-review.md](docs/design-review.md).

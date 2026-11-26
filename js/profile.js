@@ -9,12 +9,41 @@ import {
 
 const $ = (id) => document.getElementById(id);
 
+const DISPLAY_NAME_ERRORS = Object.freeze({
+    invalid_telegram_init_data: "telegram не смог подтвердить данные входа. закрой и снова открой мини-приложение.",
+    bot_token_invalid: "серверная авторизация настроена неверно. сообщи администратору.",
+    bot_token_wrong_bot: "серверная авторизация подключена к другому боту. сообщи администратору.",
+    telegram_api_unavailable: "telegram временно недоступен. попробуй сохранить имя позже.",
+    signature_mismatch: "подпись данных telegram не прошла проверку. закрой и снова открой мини-приложение.",
+    missing_hash: "telegram не передал подпись данных входа. перезапусти мини-приложение.",
+    invalid_hash_format: "telegram передал данные входа в неверном формате. перезапусти мини-приложение.",
+    invalid_auth_date: "не удалось проверить время авторизации. перезапусти мини-приложение.",
+    auth_data_expired: "срок действия данных входа истёк. закрой и снова открой мини-приложение.",
+    invalid_user_data: "telegram передал некорректные данные пользователя. перезапусти мини-приложение.",
+    missing_telegram_init_data: "не удалось получить данные входа. открой мини-приложение через бота.",
+    database_unavailable: "общая база данных временно недоступна. попробуй позже.",
+    telegram_auth_not_configured: "серверная авторизация временно недоступна. попробуй позже.",
+    display_name_too_long: "имя должно содержать не более 64 символов.",
+    invalid_display_name: "не удалось сохранить это имя. проверь текст и попробуй ещё раз.",
+    invalid_profile_payload: "сервер получил некорректные данные профиля. попробуй ещё раз."
+});
+
+function getDisplayNameError(error) {
+    const reason = error && typeof error.message === "string"
+        ? error.message
+        : "";
+
+    return DISPLAY_NAME_ERRORS[reason]
+        || "не удалось связаться с сервером. проверь подключение и попробуй ещё раз.";
+}
+
 export function createProfile({
     userId,
     getTelegramName,
     getTelegramTag,
     getTelegramPhotoUrl,
-    saveDisplayName
+    saveDisplayName,
+    notifications
 }) {
     const el = {
         card: $("profile-card"),
@@ -30,8 +59,7 @@ export function createProfile({
         avatarButton: $("avatar-upload-button"),
         bannerButton: $("banner-upload-button"),
         avatarInput: $("avatar-file-input"),
-        bannerInput: $("banner-file-input"),
-        status: $("profile-media-status")
+        bannerInput: $("banner-file-input")
     };
 
     const missing = Object.entries(el)
@@ -39,18 +67,30 @@ export function createProfile({
         .map(([name]) => name);
 
     if (missing.length) {
-        throw new Error(`Profile elements not found: ${missing.join(", ")}`);
+        throw new Error("Profile elements not found: " + missing.join(", "));
     }
+
+    const notifyError = (message, detail) => {
+        if (notifications && typeof notifications.error === "function") {
+            notifications.error(message, detail);
+        }
+    };
+    const notifyWarning = (message, detail) => {
+        if (notifications && typeof notifications.warning === "function") {
+            notifications.warning(message, detail);
+        }
+    };
 
     let nickname = readNickname(userId);
     let editing = false;
+    let savingName = false;
     let nameInput = null;
     let pendingServerProfile = null;
 
-    const imageKeyPrefix = `user-${userId}-`;
+    const imageKeyPrefix = "user-" + userId + "-";
     const images = {
-        avatar: createImageState(el.avatar, el.avatarPlaceholder, `${imageKeyPrefix}avatar`),
-        banner: createImageState(el.banner, el.bannerPlaceholder, `${imageKeyPrefix}banner`)
+        avatar: createImageState(el.avatar, el.avatarPlaceholder, imageKeyPrefix + "avatar"),
+        banner: createImageState(el.banner, el.bannerPlaceholder, imageKeyPrefix + "banner")
     };
 
     function createImageState(element, placeholder, key) {
@@ -68,11 +108,6 @@ export function createProfile({
         return nickname || getTelegramName();
     }
 
-    function showStatus(message) {
-        el.status.textContent = message || "";
-        el.status.hidden = !message;
-    }
-
     function createNicknameInput() {
         const input = document.createElement("input");
         input.id = "nickname-input";
@@ -80,19 +115,21 @@ export function createProfile({
         input.type = "text";
         input.maxLength = 64;
         input.autocomplete = "nickname";
-        input.setAttribute("aria-label", "Отображаемое имя");
+        input.setAttribute("aria-label", "отображаемое имя");
         input.value = currentNickname();
+
         input.addEventListener("keydown", (event) => {
             if (!editing) return;
 
             if (event.key === "Enter") {
                 event.preventDefault();
-                finishEditing(true);
+                void finishEditing(true);
             } else if (event.key === "Escape") {
                 event.preventDefault();
-                finishEditing(false);
+                void finishEditing(false);
             }
         });
+
         return input;
     }
 
@@ -115,13 +152,10 @@ export function createProfile({
         el.card.classList.toggle("is-media-editing", editing);
         el.avatarButton.tabIndex = editing ? 0 : -1;
         el.bannerButton.tabIndex = editing ? 0 : -1;
-        el.editButton.setAttribute(
-            "aria-label",
-            editing ? "Сохранить изменения" : "Изменить профиль"
-        );
-        el.editButton.title = editing
-            ? "Сохранить изменения"
-            : "Изменить профиль";
+
+        const actionLabel = editing ? "сохранить изменения" : "изменить профиль";
+        el.editButton.setAttribute("aria-label", actionLabel);
+        el.editButton.title = actionLabel;
 
         if (!editing) {
             el.avatarInput.value = "";
@@ -130,10 +164,8 @@ export function createProfile({
     }
 
     function startEditing() {
-        showStatus("");
+        if (savingName) return;
         setEditing(true);
-        // Поле появляется по нажатию на карандаш; клавиатура не открывается
-        // автоматически, чтобы не перекрыть кнопки загрузки изображений.
     }
 
     function applyPendingServerProfile() {
@@ -160,64 +192,56 @@ export function createProfile({
     }
 
     async function finishEditing(save) {
-        if (save) {
-            nickname = nameInput ? nameInput.value.trim() : currentNickname();
-            const savedNickname = nickname;
-            const stored = writeNickname(userId, nickname);
-            pendingServerProfile = null;
-            setEditing(false);
-
-            if (typeof saveDisplayName === "function") {
-                el.editButton.disabled = true;
-
-                try {
-                    const serverProfile = await saveDisplayName(savedNickname);
-                    if (serverProfile) applyServerProfile(serverProfile);
-
-                    showStatus(
-                        stored
-                            ? "Имя сохранено."
-                            : "Имя сохранено в общей базе, но не на этом устройстве."
-                    );
-                } catch (error) {
-                    console.warn("SplitEvents: display name sync failed", error);
-                    const reason = error && error.message ? error.message : "";
-                    const knownReasons = {
-                        invalid_telegram_init_data: "telegram не подтвердил данные входа.",
-                        bot_token_invalid: "секрет BOT_TOKEN в cloudflare недействителен. его нужно заменить токеном бота @spliteventsbot.",
-                        bot_token_wrong_bot: "в cloudflare указан токен другого бота. нужен токен @spliteventsbot.",
-                        telegram_api_unavailable: "сервер не смог связаться с telegram для проверки токена бота.",
-                        signature_mismatch: "токен бота проверен, но подпись initData не совпала. проблема в самих данных входа или их передаче.",
-                        missing_hash: "telegram не передал хеш подписи вместе с данными входа.",
-                        invalid_hash_format: "telegram передал подпись в неожиданном формате.",
-                        invalid_auth_date: "telegram не передал корректное время авторизации.",
-                        auth_data_expired: "данные авторизации telegram устарели или время устройства неверно.",
-                        invalid_user_data: "telegram передал данные пользователя в неожиданном формате.",
-                        missing_telegram_init_data: "telegram не передал данные входа. закрой и снова открой мини-приложение.",
-                        database_unavailable: "общая база временно недоступна.",
-                        telegram_auth_not_configured: "серверная авторизация не настроена.",
-                        display_name_too_long: "имя слишком длинное. используй не более 64 символов."
-                    };
-                    const detail = knownReasons[reason] ||
-                        (reason ? "причина: " + reason : "проверь подключение и попробуй ещё раз.");
-
-                    showStatus(
-                        stored
-                            ? "имя сохранено только на этом устройстве. не удалось синхронизировать его с общей базой — " + detail
-                            : "не удалось сохранить имя — " + detail
-                    );
-                } finally {
-                    el.editButton.disabled = false;
-                }
-            } else if (!stored) {
-                showStatus(
-                    "Имя изменено, но браузер не разрешил сохранить его после закрытия приложения."
-                );
-            }
-        } else {
+        if (!save) {
             setEditing(false);
             if (pendingServerProfile) applyPendingServerProfile();
-            showStatus("");
+            return;
+        }
+
+        if (!editing || savingName) return;
+
+        nickname = nameInput ? nameInput.value.trim() : currentNickname();
+        const savedNickname = nickname;
+        const storedLocally = writeNickname(userId, savedNickname);
+
+        pendingServerProfile = null;
+        setEditing(false);
+
+        if (typeof saveDisplayName !== "function") {
+            notifyError(
+                "не удалось синхронизировать имя",
+                storedLocally
+                    ? "изменение осталось только на этом устройстве. открой мини-приложение через telegram, чтобы синхронизировать его."
+                    : "не удалось сохранить изменение. открой мини-приложение через telegram и попробуй ещё раз."
+            );
+            return;
+        }
+
+        savingName = true;
+        el.editButton.disabled = true;
+
+        try {
+            const serverProfile = await saveDisplayName(savedNickname);
+            if (serverProfile) applyServerProfile(serverProfile);
+
+            if (!storedLocally) {
+                notifyWarning(
+                    "не удалось сохранить имя на этом устройстве",
+                    "браузер не смог сохранить его на этом устройстве. при следующем открытии имя загрузится с сервера."
+                );
+            }
+        } catch (error) {
+            console.warn("SplitEvents: display name sync failed", error);
+            notifyError(
+                "не удалось синхронизировать имя",
+                (storedLocally
+                    ? "имя осталось только на этом устройстве. "
+                    : "имя не удалось сохранить. ")
+                    + getDisplayNameError(error)
+            );
+        } finally {
+            savingName = false;
+            el.editButton.disabled = false;
         }
     }
 
@@ -249,7 +273,7 @@ export function createProfile({
             item.element.removeAttribute("src");
             item.element.hidden = true;
             item.placeholder.hidden = false;
-            console.warn(`SplitEvents: ${type} image could not be loaded`);
+            console.warn("SplitEvents: " + type + " image could not be loaded");
         };
 
         item.element.src = source;
@@ -257,7 +281,6 @@ export function createProfile({
     }
 
     async function loadImages() {
-        // Показываем Telegram-фото сразу, если Web App передал ссылку.
         setImage("avatar", getTelegramPhotoUrl(), false);
 
         const avatarRevision = images.avatar.revision;
@@ -288,13 +311,13 @@ export function createProfile({
         if (!file) return;
 
         if (file.type && !file.type.startsWith("image/")) {
-            showStatus("Выбери файл изображения.");
+            notifyError("этот файл не является изображением", "выбери файл изображения в поддерживаемом формате.");
             input.value = "";
             return;
         }
 
         if (file.size > 20 * 1024 * 1024) {
-            showStatus("Файл слишком большой. Максимальный размер — 20 МБ.");
+            notifyError("файл слишком большой", "максимальный размер изображения — 20 мб.");
             input.value = "";
             return;
         }
@@ -302,36 +325,36 @@ export function createProfile({
         const item = images[type];
         const revision = ++item.revision;
         input.disabled = true;
-        showStatus("Обрабатываем изображение…");
 
         try {
-            const blob = await optimizeImage(
-                file,
-                type === "avatar" ? 900 : 1800
-            );
+            const blob = await optimizeImage(file, type === "avatar" ? 900 : 1800);
 
-            // Если пользователь выбрал другое изображение, старый результат не применяем.
             if (revision !== item.revision) return;
 
-            let persisted = true;
+            let storedLocally = true;
             try {
                 await writeImage(item.key, blob);
             } catch (error) {
-                persisted = false;
+                storedLocally = false;
                 console.warn("SplitEvents: image storage unavailable", error);
             }
 
             if (revision !== item.revision) return;
 
             setImage(type, URL.createObjectURL(blob), true);
-            showStatus(
-                persisted
-                    ? "Изображение сохранено на этом устройстве."
-                    : "Изображение установлено, но не сохранится после закрытия приложения."
-            );
+
+            if (!storedLocally) {
+                notifyWarning(
+                    "изображение установлено, но не сохранено",
+                    "браузер не смог записать его в память устройства. после закрытия приложения изображение может исчезнуть."
+                );
+            }
         } catch (error) {
-            console.error(`SplitEvents: ${type} upload failed`, error);
-            showStatus("Не удалось обработать файл. Попробуй JPEG, PNG или WebP.");
+            console.error("SplitEvents: " + type + " upload failed", error);
+            notifyError(
+                "не удалось обработать изображение",
+                "попробуй выбрать другое изображение в формате jpeg, png или webp."
+            );
         } finally {
             input.disabled = false;
             input.value = "";
@@ -343,25 +366,24 @@ export function createProfile({
     }
 
     el.editButton.addEventListener("click", () => {
-        if (editing) finishEditing(true);
+        if (editing) void finishEditing(true);
         else startEditing();
     });
 
     el.avatarButton.addEventListener("click", () => openPicker(el.avatarInput));
     el.bannerButton.addEventListener("click", () => openPicker(el.bannerInput));
-    el.avatarInput.addEventListener("change", () => handleImage(el.avatarInput, "avatar"));
-    el.bannerInput.addEventListener("change", () => handleImage(el.bannerInput, "banner"));
+    el.avatarInput.addEventListener("change", () => void handleImage(el.avatarInput, "avatar"));
+    el.bannerInput.addEventListener("change", () => void handleImage(el.bannerInput, "banner"));
 
     function render() {
         if (pendingServerProfile) applyPendingServerProfile();
         el.nameDisplay.textContent = currentNickname();
         el.tag.textContent = getTelegramTag();
         setEditing(false);
-        showStatus("");
     }
 
     function leave() {
-        if (editing) finishEditing(false);
+        if (editing) void finishEditing(false);
     }
 
     return {
