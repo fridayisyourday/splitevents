@@ -13,7 +13,8 @@ export function createProfile({
     userId,
     getTelegramName,
     getTelegramTag,
-    getTelegramPhotoUrl
+    getTelegramPhotoUrl,
+    saveDisplayName
 }) {
     const el = {
         card: $("profile-card"),
@@ -44,6 +45,7 @@ export function createProfile({
     let nickname = readNickname(userId);
     let editing = false;
     let nameInput = null;
+    let pendingServerProfile = null;
 
     const imageKeyPrefix = `user-${userId}-`;
     const images = {
@@ -134,19 +136,67 @@ export function createProfile({
         // автоматически, чтобы не перекрыть кнопки загрузки изображений.
     }
 
-    function finishEditing(save) {
+    function applyPendingServerProfile() {
+        if (!pendingServerProfile) return;
+
+        nickname = typeof pendingServerProfile.display_name === "string"
+            ? pendingServerProfile.display_name
+            : "";
+        writeNickname(userId, nickname);
+        pendingServerProfile = null;
+        el.nameDisplay.textContent = currentNickname();
+    }
+
+    function applyServerProfile(serverProfile) {
+        if (
+            !serverProfile ||
+            !Object.prototype.hasOwnProperty.call(serverProfile, "display_name")
+        ) {
+            return;
+        }
+
+        pendingServerProfile = serverProfile;
+        if (!editing) applyPendingServerProfile();
+    }
+
+    async function finishEditing(save) {
         if (save) {
             nickname = nameInput ? nameInput.value.trim() : currentNickname();
+            const savedNickname = nickname;
             const stored = writeNickname(userId, nickname);
+            pendingServerProfile = null;
             setEditing(false);
 
-            if (!stored) {
+            if (typeof saveDisplayName === "function") {
+                el.editButton.disabled = true;
+
+                try {
+                    const serverProfile = await saveDisplayName(savedNickname);
+                    if (serverProfile) applyServerProfile(serverProfile);
+
+                    showStatus(
+                        stored
+                            ? "Имя сохранено."
+                            : "Имя сохранено в общей базе, но не на этом устройстве."
+                    );
+                } catch (error) {
+                    console.warn("SplitEvents: display name sync failed", error);
+                    showStatus(
+                        stored
+                            ? "Имя сохранено только на этом устройстве. Не удалось синхронизировать его с общей базой."
+                            : "Не удалось сохранить имя. Проверь подключение и попробуй ещё раз."
+                    );
+                } finally {
+                    el.editButton.disabled = false;
+                }
+            } else if (!stored) {
                 showStatus(
                     "Имя изменено, но браузер не разрешил сохранить его после закрытия приложения."
                 );
             }
         } else {
             setEditing(false);
+            if (pendingServerProfile) applyPendingServerProfile();
             showStatus("");
         }
     }
@@ -283,6 +333,7 @@ export function createProfile({
     el.bannerInput.addEventListener("change", () => handleImage(el.bannerInput, "banner"));
 
     function render() {
+        if (pendingServerProfile) applyPendingServerProfile();
         el.nameDisplay.textContent = currentNickname();
         el.tag.textContent = getTelegramTag();
         setEditing(false);
@@ -296,6 +347,8 @@ export function createProfile({
     return {
         render,
         leave,
-        loadImages
+        loadImages,
+        getSavedNickname: () => nickname,
+        applyServerProfile
     };
 }

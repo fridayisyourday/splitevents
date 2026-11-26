@@ -5,10 +5,15 @@ import {
     getTelegramUserId,
     getTelegramName,
     getTelegramTag,
-    getTelegramPhotoUrl
-} from "./js/telegram.js?v=20261126-4";
+    getTelegramPhotoUrl,
+    getTelegramInitData
+} from "./js/telegram.js?v=20261126-5";
+import {
+    syncTelegramUser,
+    updateTelegramDisplayName
+} from "./js/api.js?v=20261126-2";
 import { createMenu } from "./js/menu.js?v=20261126-4";
-import { createProfile } from "./js/profile.js?v=20261126-2";
+import { createProfile } from "./js/profile.js?v=20261126-3";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
@@ -45,11 +50,19 @@ if (missingPages.length || !mainContent) {
     createNominationsWidget(document.getElementById("vote-widget"));
 
     const telegramUserId = getTelegramUserId();
+    const telegramInitData = getTelegramInitData();
+    let profileSyncPromise = Promise.resolve(null);
+
     const profile = createProfile({
         userId: telegramUserId,
         getTelegramName,
         getTelegramTag,
-        getTelegramPhotoUrl
+        getTelegramPhotoUrl,
+        saveDisplayName: telegramInitData
+            ? (displayName) => profileSyncPromise.then(
+                () => updateTelegramDisplayName(telegramInitData, displayName)
+            )
+            : null
     });
 
     function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
@@ -198,6 +211,24 @@ if (missingPages.length || !mainContent) {
             }
         }
     });
+
+    // Telegram's initData is sent to the API for server-side signature
+    // verification. The raw value is never stored in browser storage or logged.
+    if (telegramInitData) {
+        profileSyncPromise = syncTelegramUser(
+            telegramInitData,
+            profile.getSavedNickname()
+        )
+            .then((serverProfile) => {
+                profile.applyServerProfile(serverProfile);
+                console.info("SplitEvents: Telegram account and profile synced with API");
+                return serverProfile;
+            })
+            .catch((error) => {
+                console.warn("SplitEvents: Telegram account sync failed", error);
+                return null;
+            });
+    }
 
     menu.bind();
 
