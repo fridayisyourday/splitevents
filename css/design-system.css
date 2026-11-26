@@ -522,6 +522,8 @@ h6,
 .profile-nickname,
 .profile-nickname--editing,
 .profile-telegram-tag,
+.friend-card-name,
+.friend-card-tag,
 .vote-candidate-name,
 .vote-selected-nominee {
     text-transform: none;

@@ -198,9 +198,14 @@ async function authenticateUserForm(request, env) {
 }
 
 function publicProfileName(row) {
-  return row.display_name ||
-    [row.first_name, row.last_name].filter(Boolean).join(" ").trim() ||
-    "пользователь";
+  const displayName = typeof row.display_name === "string"
+    ? row.display_name.trim()
+    : "";
+  const telegramName = [row.first_name, row.last_name]
+    .filter((part) => typeof part === "string" && part.trim())
+    .map((part) => part.trim())
+    .join(" ");
+  return displayName || telegramName || "пользователь";
 }
 
 
@@ -301,6 +306,7 @@ async function uploadProfileMedia(request, env, origin) {
       "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
       "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
       "ON CONFLICT(telegram_id) DO UPDATE SET " +
+      "public_id=COALESCE(users.public_id, excluded.public_id), " +
       "username=excluded.username, first_name=excluded.first_name, " +
       "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
     ).bind(
@@ -569,6 +575,7 @@ export default {
           "INSERT INTO users (telegram_id, public_id, username, first_name, last_name, updated_at) " +
           "VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP) " +
           "ON CONFLICT(telegram_id) DO UPDATE SET " +
+          "public_id=COALESCE(users.public_id, excluded.public_id), " +
           "username=excluded.username, first_name=excluded.first_name, " +
           "last_name=excluded.last_name, updated_at=CURRENT_TIMESTAMP"
         ).bind(
