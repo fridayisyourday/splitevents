@@ -2,10 +2,10 @@
 import {
     NOMINEES,
     nomineeById,
-    compareNames,
-    createNominationState
-} from "./nominations/data.js?v=20261126-1";
-import { createNominationModel } from "./nominations/model.js?v=20261126-1";
+    compareNames
+} from "./nominations/database/nominees.js?v=20261126-1";
+import { createNominationState } from "./nominations/state.js?v=20261126-1";
+import { createNominationModel } from "./nominations/model.js?v=20261126-2";
 
 const DESKTOP_PAGE_SIZE = 3;
 const MOBILE_PAGE_SIZE = 2;
@@ -473,6 +473,8 @@ export function createNominationsWidget(root) {
             } else {
                 activeNomination.suggestionMode = "editing";
                 activeNomination.suggestionDraft = "";
+                activeNomination.selectedId = null;
+                renderNominationCards();
                 renderVoteGrid();
                 const input = nominationGrid.querySelector(".vote-suggest-input");
                 if (input) input.focus({ preventScroll: true });
@@ -710,19 +712,56 @@ export function createNominationsWidget(root) {
         if (event.target === pickerOverlay) closePicker();
     });
 
-    root.addEventListener("keydown", function (event) {
-        if (event.key !== "Escape") return;
-        if (!pickerOverlay.hidden) closePicker();
-        else if (!voteOverlay.hidden) closeVote();
-    });
+    function trapDialogFocus(event, dialog) {
+        const focusable = Array.from(dialog.querySelectorAll(
+            'button:not([disabled]), input:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+        )).filter((element) => !element.hidden && element.getClientRects().length > 0);
 
-    window.SPLITEVENTS_NOMINEES = NOMINEES;
-    window.SPLITEVENTS_NOMINATIONS = () => nominationModel.buildNominationSnapshot(NOMINATIONS);
+        if (!focusable.length) {
+            event.preventDefault();
+            dialog.focus({ preventScroll: true });
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (!dialog.contains(document.activeElement)) {
+            event.preventDefault();
+            (event.shiftKey ? last : first).focus();
+        } else if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    }
+
+    root.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            if (!pickerOverlay.hidden) closePicker();
+            else if (!voteOverlay.hidden) closeVote();
+            return;
+        }
+
+        if (event.key !== "Tab") return;
+
+        const activeOverlay = !pickerOverlay.hidden
+            ? pickerOverlay
+            : (!voteOverlay.hidden ? voteOverlay : null);
+        const activeDialog = activeOverlay
+            ? activeOverlay.querySelector(".vote-dialog")
+            : null;
+
+        if (activeDialog) trapDialogFocus(event, activeDialog);
+    });
 
     renderNominationCards();
 
     return {
         getBallot: () => nominationModel.buildBallotPayload(NOMINATIONS),
-        isComplete: () => nominationModel.isBallotComplete(NOMINATIONS)
+        isComplete: () => nominationModel.isBallotComplete(NOMINATIONS),
+        getSnapshot: () => nominationModel.buildNominationSnapshot(NOMINATIONS)
     };
 }
