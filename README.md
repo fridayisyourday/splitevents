@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Все страницы, шапка, навигация, карточки номинаций, карусель и окна выбора реализованы Vue-компонентами. Правила голосования и расчёт бюллетеня находятся в отдельных JS-модулях.
+- Frontend: Vue 3 + Vite. Все страницы, шапка, навигация, карточки номинаций, карусель и окна выбора реализованы Vue-компонентами. Общие разбор и генерация hash-маршрутов находятся в `js/navigation.js`; каталог номинантов, состояние выбора и расчёт локального бюллетеня — в отдельных JS-модулях.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -58,6 +58,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── nominations-picker.css
 │   └── nominations-cards.css
 ├── js/
+│   ├── navigation.js
 │   ├── api.js
 │   ├── telegram.js
 │   ├── storage.js
@@ -83,6 +84,11 @@ Telegram Mini App для совместных мероприятий, профи
 ├── package.json
 ├── scripts/
 │   └── check-js.mjs
+├── tests/
+│   ├── navigation.test.js
+│   ├── events.test.js
+│   ├── nominations.test.js
+│   └── profile-media.test.js
 └── docs/
     ├── architecture.md
     ├── design-review.md
@@ -91,7 +97,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 ## Где что менять
 
-**Номинанты и номинации.** Каталог людей находится в `js/nominations/database/nominees.js`. Правила номинаций и списки допустимых участников — в `js/nominations/database/definitions.js`. Проверка ID и ссылок находится рядом в `validate.js`. Начальное изменяемое состояние создаёт `state.js`, чистые расчёты и сборку локального бюллетеня выполняет `model.js`. Интерфейс, карусель и окна выбора находятся в `src/components/NominationsPage.vue`, повторно используемая карточка — в `NominationCard.vue`, отображение аватаров и изображений — в `NomineeVisual.vue`.
+**Номинанты и номинации.** Каталог людей находится в `js/nominations/database/nominees.js`. Правила номинаций и списки допустимых участников — в `js/nominations/database/definitions.js`. Проверка ID и ссылок находится рядом в `validate.js`. Начальное изменяемое состояние создаёт `state.js`, пары DUO, проверку завершённости и сборку локального бюллетеня выполняет `model.js`. Интерфейс, карусель и окна выбора находятся в `src/components/NominationsPage.vue`, повторно используемая карточка — в `NominationCard.vue`, отображение аватаров и изображений — в `NomineeVisual.vue`.
 
 **События.** Страница и карточки — `src/components/EventsPage.vue`; каталог событий — `js/events/data.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
@@ -115,7 +121,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 После правки CSS увеличивайте версию соответствующего файла в `index.html`. После правки JavaScript увеличивайте версию импорта старого модуля, если он ещё подключается напрямую. Это сбрасывает старый кеш Telegram WebView.
 
-Перед публикацией запускаются `npm run check` и `npm run build`. Первая команда проверяет синтаксис JavaScript-модулей, вторая проверяет Vue-компоненты и собирает статический сайт в `dist/`. GitHub Actions выполняет обе проверки для pull request и публикует `dist/` в GitHub Pages после изменений в `main`.
+Перед публикацией запускаются `npm run check`, `npm test` и `npm run build`. Первая команда проверяет синтаксис JavaScript-модулей, тесты проверяют маршруты, сроки событий и модель голосования, а сборка компилирует Vue-компоненты и формирует статический сайт в `dist/`. GitHub Actions выполняет все три проверки для pull request и публикует `dist/` в GitHub Pages после изменений в `main`.
 
 Подробная карта модулей и границы ответственности описаны в [docs/architecture.md](docs/architecture.md). Визуальные правила и результаты аудита — в [docs/design-review.md](docs/design-review.md).
 
@@ -125,6 +131,6 @@ Telegram Mini App для совместных мероприятий, профи
 1. Установите Node.js 22.
 2. Выполните `npm install`.
 3. Запустите `npm run dev` и откройте адрес, который покажет Vite.
-4. Перед публикацией выполните `npm run check` и `npm run build`.
+4. Перед публикацией выполните `npm run check`, `npm test` и `npm run build`.
 
 GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Все страницы, маршруты и уведомления управляются Vue-компонентами; старые DOM-контроллеры страниц и переходные HTML-фрагменты удалены.

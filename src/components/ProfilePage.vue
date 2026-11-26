@@ -11,7 +11,7 @@ import {
     syncTelegramUser,
     updateTelegramDisplayName,
     uploadProfileImage
-} from "../../js/api.js?v=20261126-5";
+} from "../../js/api.js?v=20261127-1";
 import {
     getTelegramUserId,
     getTelegramName,
@@ -19,6 +19,8 @@ import {
     getTelegramPhotoUrl,
     getTelegramInitData
 } from "../../js/telegram.js?v=20261126-6";
+import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-1";
+import { getCurrentPage } from "../../js/navigation.js?v=20261127-1";
 
 const userId = getTelegramUserId();
 const telegramName = getTelegramName();
@@ -96,18 +98,6 @@ function getDisplayNameError(error) {
         || "не удалось связаться с сервером. проверь подключение и попробуй ещё раз.";
 }
 
-function getSafeImageKitUrl(value) {
-    if (typeof value !== "string" || !value) return "";
-    try {
-        const url = new URL(value);
-        return url.protocol === "https:" && url.hostname.endsWith(".imagekit.io")
-            ? url.href
-            : "";
-    } catch {
-        return "";
-    }
-}
-
 function setImageSource(type, source, isObjectUrl = false) {
     if (objectUrls[type]) {
         URL.revokeObjectURL(objectUrls[type]);
@@ -134,7 +124,7 @@ function applyServerProfile(serverProfile) {
 
     for (const type of ["avatar", "banner"]) {
         if (imageRevisions[type] > 0) continue;
-        const safeUrl = getSafeImageKitUrl(serverProfile[type + "_url"]);
+        const safeUrl = getSafeProfileImageUrl(serverProfile[type + "_url"]);
         if (safeUrl) remoteImages[type] = safeUrl;
     }
 }
@@ -317,7 +307,7 @@ async function handleImageSelection(type, event) {
         if (blob.size > 5 * 1024 * 1024) throw new Error("image_too_large");
 
         const serverProfile = await uploadProfileImage(telegramInitData, type, blob);
-        const remoteUrl = getSafeImageKitUrl(serverProfile && serverProfile[type + "_url"]);
+        const remoteUrl = getSafeProfileImageUrl(serverProfile && serverProfile[type + "_url"]);
         if (!remoteUrl) throw new Error("invalid_media_response");
         if (revision !== imageRevisions[type] || disposed) return;
 
@@ -367,13 +357,6 @@ async function handleImageSelection(type, event) {
 function handleImageError(type) {
     console.warn("SplitEvents: " + type + " image could not be loaded");
     setImageSource(type, "");
-}
-
-function getCurrentPage() {
-    const route = (window.location.hash || "#/")
-        .replace(/^#\/?/, "")
-        .split(/[/?]/)[0];
-    return route || "home";
 }
 
 function handleRouteChange() {
