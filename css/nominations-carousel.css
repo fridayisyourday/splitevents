@@ -9,7 +9,7 @@
 }
 .vote-nomination-card.vote-carousel-card {
     position: absolute;
-    top: 12px;
+    top: 18px;
     left: 50%;
     display: flex;
     width: min(70%, 260px);
@@ -438,12 +438,12 @@
 /* Controls sit 18px below the rendered center card. JS measures the
    actual card box, including responsive sizing and the 0.86 visual scale. */
 .vote-carousel-stage {
-    min-height: 300px;
+    min-height: 306px;
 }
 
 .vote-carousel-stage > .vote-carousel-controls {
     position: absolute;
-    top: 247px;
+    top: 253px;
     right: 0;
     left: 0;
     z-index: 5;
@@ -452,7 +452,7 @@
 
 @media (max-width: 640px) {
     .vote-carousel-stage {
-        min-height: 296px;
+        min-height: 302px;
     }
     .vote-nomination-card.vote-carousel-card {
         height: 248px;
@@ -460,13 +460,13 @@
         max-height: 248px;
     }
     .vote-carousel-stage > .vote-carousel-controls {
-        top: 243px;
+        top: 249px;
     }
 }
 
 @media (max-width: 380px) {
     .vote-carousel-stage {
-        min-height: 290px;
+        min-height: 296px;
     }
     .vote-nomination-card.vote-carousel-card {
         height: 242px;
@@ -474,6 +474,6 @@
         max-height: 242px;
     }
     .vote-carousel-stage > .vote-carousel-controls {
-        top: 238px;
+        top: 244px;
     }
 }
