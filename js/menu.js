@@ -10,7 +10,7 @@ export function createMenu({ onNavigate, onStateChange }) {
         backdrop: $("menu-backdrop"),
         panel: $("menu-panel"),
         closeButton: $("menu-close-button"),
-        eventsUnreadBadge: $("events-unread-badge")
+        eventsActiveBadge: $("events-active-badge")
     };
 
     const navigationItems = [
@@ -52,19 +52,19 @@ export function createMenu({ onNavigate, onStateChange }) {
         });
     }
 
-    function updateUnreadEventsCount(count) {
+    function updateActiveEventsCount(count) {
         const safeCount = Math.max(0, Math.floor(Number(count) || 0));
-        elements.eventsUnreadBadge.hidden = safeCount === 0;
-        elements.eventsUnreadBadge.textContent = safeCount > 99 ? "99+" : String(safeCount);
+        elements.eventsActiveBadge.hidden = safeCount === 0;
+        elements.eventsActiveBadge.textContent = safeCount > 99 ? "99+" : String(safeCount);
 
         const lastTwo = safeCount % 100;
         const lastOne = safeCount % 10;
         const word = lastOne === 1 && lastTwo !== 11
-            ? "новое событие"
+            ? "активное событие"
             : lastOne >= 2 && lastOne <= 4 && (lastTwo < 12 || lastTwo > 14)
-                ? "новых события"
-                : "новых событий";
-        elements.eventsUnreadBadge.setAttribute("aria-label", safeCount + " " + word);
+                ? "активных события"
+                : "активных событий";
+        elements.eventsActiveBadge.setAttribute("aria-label", safeCount + " " + word);
     }
 
     function getFocusableElements() {
@@ -192,6 +192,6 @@ export function createMenu({ onNavigate, onStateChange }) {
         close,
         isOpen: () => isOpen,
         updateForPage,
-        updateUnreadEventsCount
+        updateActiveEventsCount
     };
 }
