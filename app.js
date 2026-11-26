@@ -1,17 +1,9 @@
 /* SplitEvents — application entry point. */
 import {
     initTelegram,
-    setTelegramBackButtonVisible,
-    getTelegramUserId
+    setTelegramBackButtonVisible
 } from "./js/telegram.js?v=20261126-6";
 import { createNotifications } from "./js/notifications.js?v=20261126-2";
-import { renderEventsPage } from "./js/pages/events.js?v=20261126-18";
-import { EVENTS } from "./js/events/data.js?v=20261126-10";
-import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
-import {
-    getActiveEventsCount,
-    getNextActiveEventExpiry
-} from "./js/events/active-state.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-4";
 import { createNominationsWidget } from "./js/nominations.js?v=20261126-19";
 
@@ -45,61 +37,10 @@ if (missingPages.length || !mainContent) {
             notifications.warning(notification.message, notification.detail);
         }
     });
-    let currentPage = null;
-    let currentRouteKey = "";
     let menuOpen = false;
-    let activeEventsBadgeTimeout = null;
 
     createNominationsWidget(document.getElementById("vote-widget"));
 
-    const telegramUserId = getTelegramUserId();
-    function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
-        if (activeEventsBadgeTimeout !== null) {
-            window.clearTimeout(activeEventsBadgeTimeout);
-            activeEventsBadgeTimeout = null;
-        }
-
-        const nextExpiry = getNextActiveEventExpiry(EVENTS, hiddenEventIds);
-        if (!Number.isFinite(nextExpiry)) return;
-
-        const delay = Math.min(
-            Math.max(0, nextExpiry - Date.now() + 50),
-            2_147_483_647
-        );
-        activeEventsBadgeTimeout = window.setTimeout(() => {
-            activeEventsBadgeTimeout = null;
-            updateActiveEventsBadge();
-        }, delay);
-    }
-
-    function updateActiveEventsBadge() {
-        const hiddenEventIds = getHiddenEventIds(telegramUserId);
-        const activeCount = getActiveEventsCount(EVENTS, hiddenEventIds);
-        window.dispatchEvent(new CustomEvent("splitevents:menu-badge", {
-            detail: { count: activeCount }
-        }));
-        scheduleActiveEventsBadgeUpdate(hiddenEventIds);
-    }
-
-    // The event list uses a shared card template and per-user hidden state.
-    const eventsPage = renderEventsPage(pageElements.events, EVENTS, {
-        hiddenEventIds: getHiddenEventIds(telegramUserId),
-        onToggleHidden: (eventId, shouldHide) => {
-            const changed = shouldHide
-                ? hideEvent(eventId, telegramUserId)
-                : unhideEvent(eventId, telegramUserId);
-            updateActiveEventsBadge();
-            return changed;
-        },
-        onParticipateEvent: (event) => {
-            const destination = "#/nominations?event=" + encodeURIComponent(event.id);
-            if (window.location.hash === destination) {
-                renderPage(true);
-            } else {
-                window.location.hash = destination;
-            }
-        }
-    });
     renderServersPage(pageElements.servers);
 
     function getCurrentPage() {
@@ -110,11 +51,6 @@ if (missingPages.length || !mainContent) {
         return Object.prototype.hasOwnProperty.call(pageElements, route)
             ? route
             : "home";
-    }
-
-    function getPublicUserId() {
-        const match = (window.location.hash || "").match(/^#\/users\/([0-9a-f]{32})(?:[/?]|$)/i);
-        return match ? match[1] : "";
     }
 
     function updateTelegramBackButton() {
@@ -149,33 +85,17 @@ if (missingPages.length || !mainContent) {
 
     window.addEventListener("splitevents:rerender", () => renderPage(true));
 
-    updateActiveEventsBadge();
-
     function renderPage(moveFocus = false) {
         const page = getCurrentPage();
-        const publicUserId = page === "users" ? getPublicUserId() : "";
-        const routeKey = page === "users" ? "users:" + publicUserId : page;
-        const changed = routeKey !== currentRouteKey;
-
-        if (changed && currentPage === "events" && page !== "events") {
-            eventsPage.stop();
-        }
-
+        const page = getCurrentPage();
         Object.entries(pageElements).forEach(([pageName, element]) => {
             element.hidden = pageName !== page;
         });
 
-        currentPage = page;
         window.dispatchEvent(new CustomEvent("splitevents:menu-page", {
             detail: { page }
         }));
 
-        if (changed && page === "events") {
-            eventsPage.start();
-        }
-
-        currentRouteKey = routeKey;
-        updateActiveEventsBadge();
 
         updateTelegramBackButton();
 
@@ -225,12 +145,7 @@ if (missingPages.length || !mainContent) {
     });
 
     window.addEventListener("pageshow", () => {
-        updateActiveEventsBadge();
         renderPage(false);
-    });
-
-    document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) updateActiveEventsBadge();
     });
 
     renderPage(false);
