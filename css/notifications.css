@@ -42,6 +42,11 @@
     line-height: 1;
 }
 
+.app-notification__symbol > .lucide-icon {
+    width: 18px;
+    height: 18px;
+}
+
 .app-notification--error .app-notification__symbol {
     background: var(--app-text);
     color: var(--app-background);
@@ -85,9 +90,13 @@
     color: var(--app-on-secondary);
     box-shadow: none;
     font: inherit;
-    font-size: 22px;
     line-height: 1;
     cursor: pointer;
+}
+
+.app-notification__close > .lucide-icon {
+    width: 18px;
+    height: 18px;
 }
 
 .app-notification__close:focus-visible {

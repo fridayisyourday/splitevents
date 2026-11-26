@@ -1,3 +1,5 @@
+import { createIcon } from "./dom.js?v=20261126-2";
+
 /* Accessible, reusable notifications for errors and warnings. */
 const MAX_VISIBLE_NOTIFICATIONS = 3;
 const DEFAULT_DURATION = 8000;
@@ -41,7 +43,7 @@ export function createNotifications(region) {
         const symbol = document.createElement("span");
         symbol.className = "app-notification__symbol";
         symbol.setAttribute("aria-hidden", "true");
-        symbol.textContent = type === "error" ? "!" : "i";
+        symbol.appendChild(createIcon(type === "error" ? "x" : "info"));
 
         const content = document.createElement("div");
         content.className = "app-notification__content";
@@ -62,7 +64,7 @@ export function createNotifications(region) {
         closeButton.className = "app-notification__close";
         closeButton.type = "button";
         closeButton.setAttribute("aria-label", "закрыть уведомление");
-        closeButton.textContent = "×";
+        closeButton.appendChild(createIcon("x"));
         closeButton.addEventListener("click", () => dismiss(id));
 
         element.append(symbol, content, closeButton);

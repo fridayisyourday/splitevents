@@ -1,7 +1,7 @@
 /* Read-only view of another registered user's profile. */
 import { fetchPublicProfile } from "../api.js?v=20261126-5";
-import { createElement } from "../dom.js?v=20261126-1";
-import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-2";
+import { createElement, createIcon } from "../dom.js?v=20261126-2";
+import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-3";
 import { createEmptyStateElement } from "./page-shell.js?v=20261126-2";
 
 function createImage(element, source, placeholder) {
@@ -73,21 +73,7 @@ export function createUserProfilePage(container, { initData }) {
         loading.setAttribute("aria-live", "polite");
         loading.setAttribute("aria-label", "загрузка профиля");
 
-        const spinner = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        spinner.setAttribute("class", "friends-loading-spinner");
-        spinner.setAttribute("viewBox", "0 0 24 24");
-        spinner.setAttribute("fill", "none");
-        spinner.setAttribute("aria-hidden", "true");
-
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", "12");
-        circle.setAttribute("cy", "12");
-        circle.setAttribute("r", "8");
-        circle.setAttribute("stroke", "currentColor");
-        circle.setAttribute("stroke-width", "2");
-        circle.setAttribute("stroke-dasharray", "34 16");
-        spinner.appendChild(circle);
-        loading.appendChild(spinner);
+        loading.appendChild(createIcon("loader-circle", "friends-loading-spinner"));
         container.replaceChildren(loading);
     }
 

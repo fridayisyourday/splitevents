@@ -1,5 +1,5 @@
 /* Shared horizontal event-card template. New events provide data, not markup. */
-import { createElement, createEyeIcon } from "../dom.js?v=20261126-1";
+import { createElement, createEyeIcon } from "../dom.js?v=20261126-2";
 import { getEventCoverUrl } from "../media.js?v=20261126-1";
 
 function createCountdownPart(part, unit) {

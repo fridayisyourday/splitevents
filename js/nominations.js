@@ -6,6 +6,7 @@ import {
 } from "./nominations/database/nominees.js?v=20261126-2";
 import { createNominationState } from "./nominations/state.js?v=20261126-1";
 import { createNominationModel } from "./nominations/model.js?v=20261126-2";
+import { createIcon } from "./dom.js?v=20261126-2";
 
 const DESKTOP_PAGE_SIZE = 3;
 const MOBILE_PAGE_SIZE = 2;
@@ -267,7 +268,8 @@ export function createNominationsWidget(root) {
         const controls = document.createElement("div");
         controls.className = "vote-carousel-controls";
 
-        const previous = createActionButton("‹", false, "vote-page-button");
+        const previous = createActionButton("", false, "vote-page-button");
+        previous.appendChild(createIcon("chevron-left"));
         previous.classList.add("ui-button--icon");
         previous.setAttribute("aria-label", "Предыдущая номинация");
         previous.addEventListener("click", function () {
@@ -275,7 +277,8 @@ export function createNominationsWidget(root) {
             renderNominationCards(-1);
         });
 
-        const next = createActionButton("›", false, "vote-page-button");
+        const next = createActionButton("", false, "vote-page-button");
+        next.appendChild(createIcon("chevron-right"));
         next.classList.add("ui-button--icon");
         next.setAttribute("aria-label", "Следующая номинация");
         next.addEventListener("click", function () {
@@ -356,7 +359,7 @@ export function createNominationsWidget(root) {
         if (["pumpkin-king", "pumpkin-queen"].includes(activeNomination.id)) {
             plus.classList.add("vote-add-symbol--round");
         }
-        plus.textContent = "+";
+        plus.appendChild(createIcon("plus"));
         plus.setAttribute("aria-hidden", "true");
         card.appendChild(plus);
 
@@ -397,7 +400,7 @@ export function createNominationsWidget(root) {
 
         const plus = document.createElement("div");
         plus.className = "vote-suggest-symbol";
-        plus.textContent = "+";
+        plus.appendChild(createIcon("plus"));
         plus.setAttribute("aria-hidden", "true");
         card.appendChild(plus);
 
