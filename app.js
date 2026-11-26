@@ -12,7 +12,10 @@ import { createProfile } from "./js/profile.js?v=20261126-1";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-14";
 import { EVENTS } from "./js/events/data.js?v=20261126-5";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
-import { getActiveEventsCount } from "./js/events/active-state.js?v=20261126-1";
+import {
+    getActiveEventsCount,
+    getNextActiveEventExpiry
+} from "./js/events/active-state.js?v=20261126-2";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-3";
 import { createNominationsWidget } from "./js/nominations.js?v=20261126-6";
 
@@ -37,6 +40,7 @@ if (missingPages.length || !mainContent) {
 } else {
     let currentPage = null;
     let menu = null;
+    let activeEventsBadgeTimeout = null;
 
     createNominationsWidget(document.getElementById("vote-widget"));
 
@@ -48,14 +52,32 @@ if (missingPages.length || !mainContent) {
         getTelegramPhotoUrl
     });
 
+    function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
+        if (activeEventsBadgeTimeout !== null) {
+            window.clearTimeout(activeEventsBadgeTimeout);
+            activeEventsBadgeTimeout = null;
+        }
+
+        const nextExpiry = getNextActiveEventExpiry(EVENTS, hiddenEventIds);
+        if (!Number.isFinite(nextExpiry)) return;
+
+        const delay = Math.min(
+            Math.max(0, nextExpiry - Date.now() + 50),
+            2_147_483_647
+        );
+        activeEventsBadgeTimeout = window.setTimeout(() => {
+            activeEventsBadgeTimeout = null;
+            updateActiveEventsBadge();
+        }, delay);
+    }
+
     function updateActiveEventsBadge() {
         if (!menu) return;
 
-        const activeCount = getActiveEventsCount(
-            EVENTS,
-            getHiddenEventIds(telegramUserId)
-        );
+        const hiddenEventIds = getHiddenEventIds(telegramUserId);
+        const activeCount = getActiveEventsCount(EVENTS, hiddenEventIds);
         menu.updateActiveEventsCount(activeCount);
+        scheduleActiveEventsBadgeUpdate(hiddenEventIds);
     }
 
     // The event list uses a shared card template and per-user hidden state.
@@ -194,9 +216,6 @@ if (missingPages.length || !mainContent) {
     document.addEventListener("visibilitychange", () => {
         if (!document.hidden) updateActiveEventsBadge();
     });
-
-    // Keep the navigation badge accurate when an event reaches its end time.
-    window.setInterval(updateActiveEventsBadge, 15000);
 
     renderPage(false);
     profile.loadImages();
