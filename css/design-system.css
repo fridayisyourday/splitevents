@@ -19,7 +19,7 @@
 
     /* Same subtle card outline in every section; the theme controls its contrast. */
     --app-card-outline-width: 2px;
-    --app-card-outline-color: #E6E6E6;
+    --app-card-outline-color: var(--app-white);
     --app-card-outline: var(--app-card-outline-width) solid var(--app-card-outline-color);
     --app-placeholder: var(--app-gray);
     --app-accent: var(--app-black);
@@ -109,7 +109,7 @@
     --app-on-secondary: var(--app-white);
     --app-placeholder: var(--app-gray-dark);
     --app-accent: var(--app-white);
-    --app-card-outline-color: #FFFFFF;
+    --app-card-outline-color: var(--app-card-background);
     --app-nav-active-background: var(--app-gray-dark);
     --app-nav-active-color: var(--app-white);
 
