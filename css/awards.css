@@ -716,3 +716,30 @@
         transition: none;
     }
 }
+
+
+/* Keep nomination-card actions at the shared application button size. */
+.awards-nomination-card .awards-action-button {
+    min-height: var(--app-control-height);
+    padding-inline: 16px;
+    font-size: var(--app-button-font-size);
+}
+
+.awards-logo-wrap .awards-nomination-logo {
+    width: min(100%, 104px);
+}
+
+.awards-nomination-card--featured .awards-logo-wrap .awards-nomination-logo {
+    width: min(100%, 126px);
+}
+
+.awards-duo-logo .awards-avatar,
+.awards-duo-logo .awards-avatar-placeholder {
+    width: 50%;
+    height: 100%;
+    min-width: 0;
+    flex: 0 0 50%;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+}
