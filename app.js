@@ -16,6 +16,8 @@ import {
 import { createMenu } from "./js/menu.js?v=20261126-4";
 import { createNotifications } from "./js/notifications.js?v=20261126-1";
 import { createProfile } from "./js/profile.js?v=20261126-8";
+import { createFriendsPage } from "./js/pages/friends.js?v=20261126-1";
+import { createUserProfilePage } from "./js/pages/user-profile.js?v=20261126-1";
 import { renderEventsPage } from "./js/pages/events.js?v=20261126-17";
 import { EVENTS } from "./js/events/data.js?v=20261126-10";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
@@ -29,6 +31,8 @@ import { createNominationsWidget } from "./js/nominations.js?v=20261126-18";
 const pageElements = {
     home: document.getElementById("home-page"),
     profile: document.getElementById("profile-page"),
+    friends: document.getElementById("friends-page"),
+    users: document.getElementById("user-profile-page"),
     events: document.getElementById("events-page"),
     servers: document.getElementById("servers-page"),
     nominations: document.getElementById("nominations-page")
@@ -47,6 +51,7 @@ if (missingPages.length || !mainContent) {
 } else {
     const notifications = createNotifications(document.getElementById("notification-region"));
     let currentPage = null;
+    let currentRouteKey = "";
     let menu = null;
     let activeEventsBadgeTimeout = null;
 
@@ -70,6 +75,16 @@ if (missingPages.length || !mainContent) {
         saveProfileImage: telegramInitData
             ? (mediaType, blob) => uploadProfileImage(telegramInitData, mediaType, blob)
             : null
+    });
+
+    const friendsPage = createFriendsPage(pageElements.friends, {
+        initData: telegramInitData,
+        onOpenUser: (publicId) => {
+            window.location.hash = "#/users/" + encodeURIComponent(publicId);
+        }
+    });
+    const userProfilePage = createUserProfilePage(pageElements.users, {
+        initData: telegramInitData
     });
 
     function scheduleActiveEventsBadgeUpdate(hiddenEventIds) {
@@ -131,6 +146,11 @@ if (missingPages.length || !mainContent) {
             : "home";
     }
 
+    function getPublicUserId() {
+        const match = (window.location.hash || "").match(/^#\\/users\\/([0-9a-f]{32})(?:[/?]|$)/i);
+        return match ? match[1] : "";
+    }
+
     function updateTelegramBackButton() {
         const shouldShow = Boolean(
             (menu && menu.isOpen()) || getCurrentPage() !== "home"
@@ -158,7 +178,9 @@ if (missingPages.length || !mainContent) {
 
     function renderPage(moveFocus = false) {
         const page = getCurrentPage();
-        const changed = page !== currentPage;
+        const publicUserId = page === "users" ? getPublicUserId() : "";
+        const routeKey = page === "users" ? "users:" + publicUserId : page;
+        const changed = routeKey !== currentRouteKey;
 
         if (changed && currentPage === "profile" && page !== "profile") {
             profile.leave();
@@ -166,6 +188,14 @@ if (missingPages.length || !mainContent) {
 
         if (changed && currentPage === "events" && page !== "events") {
             eventsPage.stop();
+        }
+
+        if (changed && currentPage === "friends" && page !== "friends") {
+            friendsPage.stop();
+        }
+
+        if (changed && currentPage === "users" && page !== "users") {
+            userProfilePage.stop();
         }
 
         Object.entries(pageElements).forEach(([pageName, element]) => {
@@ -183,6 +213,15 @@ if (missingPages.length || !mainContent) {
             eventsPage.start();
         }
 
+        if (changed && page === "friends") {
+            friendsPage.start();
+        }
+
+        if (changed && page === "users") {
+            userProfilePage.load(publicUserId);
+        }
+
+        currentRouteKey = routeKey;
         updateActiveEventsBadge();
 
         updateTelegramBackButton();
@@ -190,6 +229,8 @@ if (missingPages.length || !mainContent) {
         const pageTitles = {
             home: "Сплит — SplitEvents",
             profile: "Профиль — Сплит",
+            friends: "Друзья — Сплит",
+            users: "Профиль — Сплит",
             events: "Текущие события — Сплит",
             servers: "Сервера — Сплит",
             nominations: "НОМИНАЦИИ 2026 — Сплит"
@@ -209,7 +250,9 @@ if (missingPages.length || !mainContent) {
             }
 
             const page = getCurrentPage();
-            if (page === "nominations") {
+            if (page === "users") {
+                navigateTo("friends");
+            } else if (page === "nominations") {
                 navigateTo("events");
             } else if (page !== "home") {
                 navigateTo("home");
