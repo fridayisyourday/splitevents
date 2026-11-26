@@ -20,24 +20,6 @@ function getPageSize() {
         ? MOBILE_PAGE_SIZE
         : DESKTOP_PAGE_SIZE;
 }
-const compareNames = function (first, second) {
-    return first.name.localeCompare(second.name, "en", {
-        sensitivity: "base",
-        numeric: true
-    });
-};
-const genderOrder = { F: 0, M: 1, I: 2 };
-
-NOMINEES.sort(function (first, second) {
-    return genderOrder[first.gender] - genderOrder[second.gender]
-        || compareNames(first, second);
-});
-
-const nomineeById = new Map(NOMINEES.map(function (person) {
-    return [person.id, person];
-}));
-
-
 export function createNominationsWidget(root) {
     if (!root || root.dataset.initialized === "true") return null;
     root.dataset.initialized = "true";
