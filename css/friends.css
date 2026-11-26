@@ -129,7 +129,7 @@
     width: 32px;
     height: 32px;
     color: var(--app-text);
-    animation: friends-loading-spin 800ms linear infinite;
+    animation: friends-loading-spin var(--app-status-spinner-duration) linear infinite;
 }
 
 @keyframes friends-loading-spin {
