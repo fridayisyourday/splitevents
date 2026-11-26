@@ -173,8 +173,23 @@ svg {
 }
 
 /* Telegram theme variables take priority; these are browser fallbacks. */
+:root[data-color-scheme="dark"] {
+    --app-background: var(--tg-theme-bg-color, #121418);
+    --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #1b1e23));
+    --app-text: var(--tg-theme-text-color, #f3f4f6);
+    --app-hint: var(--tg-theme-subtitle-text-color, var(--tg-theme-hint-color, #a0a6b0));
+    --app-secondary: var(--tg-theme-secondary-bg-color, #262a31);
+    --app-border: var(--tg-theme-section-separator-color, #363c46);
+    --app-placeholder: var(--tg-theme-secondary-bg-color, #252a32);
+    --app-accent: var(--tg-theme-link-color, #74b2ff);
+    --app-shadow-card: 0 12px 30px rgba(0, 0, 0, 0.24);
+    --app-overlay-backdrop: rgba(0, 0, 0, 0.58);
+    --app-media-overlay: rgba(0, 0, 0, 0.46);
+    --app-drawer-shadow: 12px 0 36px rgba(0, 0, 0, 0.38);
+}
+
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-color-scheme]) {
         --app-background: var(--tg-theme-bg-color, #121418);
         --app-card-background: var(--tg-theme-section-bg-color, var(--tg-theme-bg-color, #1b1e23));
         --app-text: var(--tg-theme-text-color, #f3f4f6);
