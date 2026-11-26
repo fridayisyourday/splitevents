@@ -18,6 +18,12 @@ Telegram Mini App для совместных мероприятий, профи
 ├── index.html
 ├── app.js
 ├── README.md
+├── assets/
+│   ├── events/
+│   └── nominees/
+├── .github/
+│   └── workflows/
+│       └── quality.yml
 ├── css/
 │   ├── base.css
 │   ├── design-system.css
