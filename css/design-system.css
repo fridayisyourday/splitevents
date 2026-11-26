@@ -521,6 +521,11 @@ h6,
     text-transform: none;
 }
 
+/* A helper label shares the nominee-name layout but remains ordinary UI copy. */
+.vote-candidate-name--label {
+    text-transform: lowercase;
+}
+
 
 /* Gray accent surfaces stay flat: no decorative shadows on badges or symbols. */
 .menu-item-badge,
