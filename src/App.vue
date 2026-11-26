@@ -1,11 +1,13 @@
 <script setup>
 import { onMounted } from "vue";
 import AppHeader from "./components/AppHeader.vue";
-import legacyPages from "./legacy-pages.html?raw";
+import ProfilePage from "./components/ProfilePage.vue";
+import legacyPagesBeforeProfile from "./legacy-pages-before-profile.html?raw";
+import legacyPagesAfterProfile from "./legacy-pages-after-profile.html?raw";
 
 onMounted(() => {
-    // Legacy page controllers still initialize the existing profile, friends,
-    // events and nominations sections. Navigation itself is now a Vue component.
+    // Legacy page controllers still initialize friends, events and nominations.
+    // The shell, navigation and own profile are now Vue components.
     import("../app.js").catch((error) => {
         console.error("SplitEvents: legacy page controllers failed to start", error);
     });
@@ -39,7 +41,11 @@ onMounted(() => {
         </svg>
         <AppHeader />
 
-        <main id="main-content" class="page-content" tabindex="-1" v-html="legacyPages"></main>
+        <main id="main-content" class="page-content" tabindex="-1">
+            <div class="legacy-page-fragment" v-html="legacyPagesBeforeProfile"></div>
+            <ProfilePage />
+            <div class="legacy-page-fragment" v-html="legacyPagesAfterProfile"></div>
+        </main>
 
         <div
             id="notification-region"
@@ -48,3 +54,9 @@ onMounted(() => {
         ></div>
     </div>
 </template>
+
+<style>
+.legacy-page-fragment {
+    display: contents;
+}
+</style>

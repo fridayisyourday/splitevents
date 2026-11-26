@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Переход выполняется постепенно: `App.vue` пока подключает прежнюю HTML-разметку и запускает старый `app.js`, чтобы не переписывать все функции одновременно.
+- Frontend: Vue 3 + Vite. Шапка, навигация и собственный профиль уже реализованы Vue-компонентами; страницы друзей, чужого профиля, событий и голосования пока используют переходные DOM-модули.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -23,8 +23,10 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── main.js
 │   ├── App.vue
 │   ├── components/
-│   │   └── AppHeader.vue
-│   └── legacy-pages.html
+│   │   ├── AppHeader.vue
+│   │   └── ProfilePage.vue
+│   ├── legacy-pages-before-profile.html
+│   └── legacy-pages-after-profile.html
 ├── vite.config.js
 ├── app.js
 ├── README.md
@@ -54,7 +56,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── dom.js
 │   ├── notifications.js
 │   ├── telegram.js
-│   ├── profile.js
 │   ├── storage.js
 │   ├── nominations.js
 │   ├── nominations/
