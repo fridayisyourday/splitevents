@@ -260,7 +260,7 @@
     width: 22px;
     height: 22px;
     margin: auto;
-    transition: opacity 180ms ease, transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: var(--app-status-icon-transition);
 }
 
 #profile-card .profile-media-icon--plus {
@@ -287,7 +287,7 @@
 #profile-card .profile-media-upload-button[data-upload-state="loading"] .profile-media-icon--spinner {
     opacity: 1;
     transform: rotate(0deg);
-    animation: profile-media-spin 800ms linear infinite;
+    animation: profile-media-spin var(--app-status-spinner-duration) linear infinite;
 }
 
 #profile-card .profile-media-upload-button[data-upload-state="error"] .profile-media-icon--error {
@@ -296,7 +296,7 @@
 }
 
 #profile-card .profile-media-upload-button[data-upload-state="error"] {
-    animation: profile-media-shake 360ms ease-in-out;
+    animation: profile-media-shake var(--app-status-shake-duration) ease-in-out;
 }
 
 @keyframes profile-media-spin {
