@@ -54,7 +54,6 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── dom.js
 │   ├── notifications.js
 │   ├── telegram.js
-│   ├── menu.js
 │   ├── profile.js
 │   ├── storage.js
 │   ├── nominations.js
