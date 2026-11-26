@@ -86,7 +86,7 @@
 .menu-navigation {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .menu-item {
@@ -110,24 +110,6 @@ button.menu-item {
     background: transparent;
     font-weight: var(--app-font-weight-bold);
     text-decoration: none;
-}
-
-.menu-item-badge {
-    display: inline-flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    padding: 0 6px;
-    border-radius: var(--app-radius-pill);
-    border: 2px solid var(--app-border);
-    background: var(--app-secondary);
-    color: var(--app-hint);
-    font-size: 12px;
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
 }
 
 .menu-item-icon {
