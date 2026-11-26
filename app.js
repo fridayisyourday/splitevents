@@ -14,7 +14,7 @@ import { EVENTS } from "./js/events/data.js?v=20261126-5";
 import { getHiddenEventIds, hideEvent, unhideEvent } from "./js/events/hidden-state.js?v=20261126-3";
 import { getActiveEventsCount } from "./js/events/active-state.js?v=20261126-1";
 import { renderServersPage } from "./js/pages/servers.js?v=20261126-3";
-import { createNominationsWidget } from "./js/nominations.js?v=20261126-1";
+import { createNominationsWidget } from "./js/nominations.js?v=20261126-2";
 
 const pageElements = {
     home: document.getElementById("home-page"),
