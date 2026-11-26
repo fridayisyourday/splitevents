@@ -110,7 +110,8 @@ export function createProfile({
             key,
             objectUrl: "",
             revision: 0,
-            loadId: 0
+            loadId: 0,
+            uploadStateTimer: null
         };
     }
 
@@ -331,27 +332,61 @@ export function createProfile({
         }
     }
 
+    function setUploadButtonState(type, state) {
+        const button = type === "avatar" ? el.avatarButton : el.bannerButton;
+        const item = images[type];
+        const label = type === "avatar" ? "аватарку" : "баннер";
+
+        if (item.uploadStateTimer !== null) {
+            window.clearTimeout(item.uploadStateTimer);
+            item.uploadStateTimer = null;
+        }
+
+        if (state === "idle") {
+            button.removeAttribute("data-upload-state");
+            button.disabled = false;
+            button.removeAttribute("aria-busy");
+            button.setAttribute("aria-label", "загрузить " + label);
+            button.title = "загрузить " + label;
+            return;
+        }
+
+        button.dataset.uploadState = state;
+        button.disabled = true;
+        button.setAttribute("aria-busy", state === "loading" ? "true" : "false");
+
+        if (state === "loading") {
+            button.setAttribute("aria-label", "загрузка: " + label);
+            button.title = "загрузка";
+            return;
+        }
+
+        button.setAttribute("aria-label", "не удалось загрузить " + label);
+        button.title = "не удалось загрузить";
+
+        item.uploadStateTimer = window.setTimeout(() => {
+            setUploadButtonState(type, "idle");
+        }, 1000);
+    }
+
     async function handleImage(input, type) {
         const file = input.files && input.files[0];
         if (!file) return;
 
-        if (file.type && !file.type.startsWith("image/")) {
-            notifyError("этот файл не является изображением", "выбери файл изображения в поддерживаемом формате.");
-            input.value = "";
-            return;
-        }
-
-        if (file.size > 20 * 1024 * 1024) {
-            notifyError("файл слишком большой", "максимальный размер изображения — 20 мб.");
-            input.value = "";
-            return;
-        }
-
         const item = images[type];
         const revision = ++item.revision;
         input.disabled = true;
+        setUploadButtonState(type, "loading");
 
         try {
+            if (file.type && !file.type.startsWith("image/")) {
+                throw new Error("unsupported_image_file");
+            }
+
+            if (file.size > 20 * 1024 * 1024) {
+                throw new Error("image_too_large_input");
+            }
+
             const blob = await optimizeImage(file, type === "avatar" ? 900 : 1800);
 
             if (revision !== item.revision) return;
@@ -384,18 +419,27 @@ export function createProfile({
                     "но не удалось сохранить его в локальный кэш устройства."
                 );
             }
+
+            setUploadButtonState(type, "idle");
         } catch (error) {
             console.error("SplitEvents: " + type + " upload failed", error);
             const reason = error && typeof error.message === "string"
                 ? error.message
                 : "";
             const messages = {
+                unsupported_image_file: "выбери файл изображения в поддерживаемом формате.",
+                image_too_large_input: "файл слишком большой. максимальный размер исходного изображения — 20 мб.",
                 media_storage_not_configured: "хранилище изображений ещё не подключено.",
                 media_storage_unavailable: "не удалось загрузить изображение на сервер. проверь подключение и попробуй ещё раз.",
                 image_too_large: "изображение слишком большое. выбери файл поменьше.",
                 unsupported_image_format: "поддерживаются изображения jpeg, png и webp.",
                 missing_telegram_init_data: "открой мини-приложение через telegram и попробуй ещё раз."
             };
+
+            if (revision === item.revision) {
+                setUploadButtonState(type, "error");
+            }
+
             notifyError(
                 "не удалось сохранить изображение",
                 messages[reason] || "попробуй выбрать другое изображение в формате jpeg, png или webp."
