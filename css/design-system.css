@@ -237,7 +237,7 @@ body,
 .vote-suggest-symbol {
     background: var(--app-secondary);
     color: var(--app-on-secondary);
-    box-shadow: var(--app-shadow-control);
+    box-shadow: none;
     text-shadow: none;
 }
 
@@ -259,7 +259,7 @@ body,
     border-radius: var(--app-radius-pill);
     background: var(--app-badge-background);
     color: var(--app-badge-color);
-    box-shadow: var(--app-shadow-control);
+    box-shadow: none;
     font-size: var(--app-font-size-small);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
@@ -402,7 +402,7 @@ svg {
     border-radius: var(--app-radius-control);
     background: var(--app-nav-active-background);
     color: var(--app-nav-active-color);
-    box-shadow: var(--app-shadow-control);
+    box-shadow: none;
     font-weight: var(--app-font-weight-bold);
     text-decoration: none;
 }
@@ -504,4 +504,29 @@ h6,
 .vote-candidate-name,
 .vote-selected-nominee {
     text-transform: none;
+}
+
+
+/* Gray accent surfaces stay flat: no decorative shadows on badges or symbols. */
+.menu-item-badge,
+.vote-add-symbol,
+.vote-suggest-symbol,
+.menu-navigation .menu-item[aria-current="page"] {
+    box-shadow: none;
+}
+
+/* Navigation actions are labels, not headings: always lowercase. */
+.menu-navigation .menu-item,
+.menu-navigation .menu-item * {
+    text-transform: lowercase;
+}
+
+/* The small label above the nominee picker is ordinary interface copy. */
+.vote-dialog--nomination .vote-dialog-eyebrow {
+    text-transform: lowercase;
+}
+
+/* Event descriptions are always lowercase, including the SQUASH edition label. */
+.event-card-description {
+    text-transform: lowercase;
 }
