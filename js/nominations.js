@@ -101,6 +101,9 @@ export function createNominationsWidget(root) {
                 if (image.classList.contains("vote-nomination-logo")) {
                     fallback.classList.add("vote-nomination-logo");
                 }
+                if (image.classList.contains("vote-duo-logo-part")) {
+                    fallback.classList.add("vote-duo-logo-part");
+                }
                 fallback.textContent = initials(person.name);
                 image.replaceWith(fallback);
             }, { once: true });
