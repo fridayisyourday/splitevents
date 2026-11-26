@@ -191,7 +191,7 @@
 
 .event-countdown-unit {
     color: var(--app-hint);
-    font-size: clamp(8px, 0.95cqw, 10px);
+    font-size: clamp(10px, 0.95cqw, 10px);
     font-weight: 450;
 }
 
@@ -272,7 +272,7 @@
     }
 
     .event-countdown-unit {
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .event-card-actions {
@@ -299,13 +299,13 @@
     }
 
     .event-card-description {
-        font-size: 10px;
+        font-size: 12px;
         line-height: 1.35;
     }
 
     .event-card-meta {
         column-gap: 4px;
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .event-card-countdown {
@@ -313,7 +313,7 @@
     }
 
     .event-countdown-unit {
-        font-size: 8px;
+        font-size: 10px;
     }
 
     .event-card-visibility-action {
