@@ -4,9 +4,7 @@ export function getSafeProfileImageUrl(value) {
 
     try {
         const url = new URL(value);
-        return url.protocol === "https:" && url.hostname.endsWith(".imagekit.io")
-            ? url.href
-            : "";
+        return url.protocol === "https:" ? url.href : "";
     } catch {
         return "";
     }
