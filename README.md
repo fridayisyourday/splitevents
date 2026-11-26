@@ -6,7 +6,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 - Публикация: GitHub Pages через GitHub Actions; Vite собирает приложение в `dist/`.
 - Точка входа: `index.html` → `src/main.js` → `src/App.vue`.
-- Frontend: Vue 3 + Vite. Шапка, навигация, собственный и публичный профили, а также каталог друзей реализованы Vue-компонентами; события и голосование пока используют переходные DOM-модули.
+- Frontend: Vue 3 + Vite. Шапка, навигация, собственный и публичный профили, каталог друзей и события реализованы Vue-компонентами; голосование и страница серверов пока используют переходные DOM-модули.
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
@@ -24,6 +24,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── App.vue
 │   ├── components/
 │   │   ├── AppHeader.vue
+│   │   ├── EventsPage.vue
 │   │   ├── FriendsPage.vue
 │   │   ├── ProfilePage.vue
 │   │   └── UserProfilePage.vue
@@ -77,8 +78,6 @@ Telegram Mini App для совместных мероприятий, профи
 │       ├── profile-presentation.js
 │       ├── page-shell.js
 │       ├── empty-state.js
-│       ├── event-card.js
-│       ├── events.js
 │       └── servers.js
 ├── worker/
 │   ├── index.js
@@ -98,7 +97,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **Номинанты и номинации.** Каталог людей находится в `js/nominations/database/nominees.js`. Правила номинаций и списки допустимых участников — в `js/nominations/database/definitions.js`. Проверка ID и ссылок находится рядом в `validate.js`. Начальное изменяемое состояние создаёт `state.js`, расчёты и сборку локального бюллетеня выполняет `model.js`. DOM, окна выбора и карусель находятся в `js/nominations.js`.
 
-**События.** Список событий — `js/events/data.js`; шаблон карточки — `js/pages/event-card.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
+**События.** Страница и карточки — `src/components/EventsPage.vue`; каталог событий — `js/events/data.js`; локальное скрытие и расчёт активных событий — отдельные модули в `js/events/`.
 
 **Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `js/notifications.js`.
 
