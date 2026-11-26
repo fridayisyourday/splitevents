@@ -1,7 +1,7 @@
 /* Friends directory: authenticated, alphabetically sorted registered users. */
 import { fetchFriends } from "../api.js?v=20261126-5";
 import { createElement } from "../dom.js?v=20261126-1";
-import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-1";
+import { createPersonIcon, getSafeProfileImageUrl } from "./profile-presentation.js?v=20261126-2";
 import {
     createPageShell,
     createEmptyStateElement
