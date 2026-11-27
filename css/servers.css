@@ -168,7 +168,7 @@
 .server-card-subtitle {
     margin: 0;
     color: var(--app-hint);
-    }
+}
 
 .server-details-ip-button {
     display: flex;
