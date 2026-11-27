@@ -1,7 +1,8 @@
 /* ImageKit is the single source for site-managed images. */
 export const IMAGEKIT_ENDPOINT_ID = "splitevents";
 const IMAGEKIT_ORIGIN = "https://ik.imagekit.io";
-const IMAGEKIT_ROOT = IMAGEKIT_ORIGIN + "/" + IMAGEKIT_ENDPOINT_ID;
+const IMAGEKIT_LIBRARY_ROOT = "splitevents";
+const IMAGEKIT_ROOT = IMAGEKIT_ORIGIN + "/" + IMAGEKIT_ENDPOINT_ID + "/" + IMAGEKIT_LIBRARY_ROOT;
 
 function isSafePathSegment(segment) {
     return Boolean(segment)
@@ -51,9 +52,10 @@ export function getSafeImageKitUrl(value, expectedFolder = "") {
         const encodedSegments = url.pathname.split("/").filter(Boolean);
         const segments = encodedSegments.map((segment) => decodeURIComponent(segment));
         if (
-            segments.length < 3
+            segments.length < 4
             || segments[0] !== IMAGEKIT_ENDPOINT_ID
-            || (expectedFolder && segments[1] !== expectedFolder)
+            || segments[1] !== IMAGEKIT_LIBRARY_ROOT
+            || (expectedFolder && segments[2] !== expectedFolder)
             || !segments.every(isSafePathSegment)
         ) {
             return "";
