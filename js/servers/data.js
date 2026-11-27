@@ -1,7 +1,7 @@
 import {
     getServerBannerUrl,
     getServerGalleryImageUrl
-} from "../media.js?v=20261127-2";
+} from "../media.js?v=20261127-3";
 
 export const SERVERS = [
     {
