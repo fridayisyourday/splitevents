@@ -273,13 +273,7 @@
     transform: rotate(-90deg);
 }
 
-#profile-card .profile-media-icon--error {
-    opacity: 0;
-    transform: rotate(90deg);
-}
-
-#profile-card .profile-media-upload-button[data-upload-state="loading"] .profile-media-icon--plus,
-#profile-card .profile-media-upload-button[data-upload-state="error"] .profile-media-icon--plus {
+#profile-card .profile-media-upload-button[data-upload-state="loading"] .profile-media-icon--plus {
     opacity: 0;
     transform: rotate(-90deg);
 }
@@ -290,40 +284,15 @@
     animation: profile-media-spin var(--app-status-spinner-duration) linear infinite;
 }
 
-#profile-card .profile-media-upload-button[data-upload-state="error"] .profile-media-icon--error {
-    opacity: 1;
-    transform: rotate(0deg);
-}
-
-#profile-card .profile-media-upload-button[data-upload-state="error"] {
-    animation: profile-media-shake var(--app-status-shake-duration) ease-in-out;
-}
-
 @keyframes profile-media-spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-@keyframes profile-media-shake {
-    0%, 100% {
-        transform: translate(-50%, -50%) translateX(0);
-    }
-    20%, 60% {
-        transform: translate(-50%, -50%) translateX(-4px);
-    }
-    40%, 80% {
-        transform: translate(-50%, -50%) translateX(4px);
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     #profile-card .profile-media-upload-button .profile-media-icon {
         transition-duration: 80ms;
-    }
-
-    #profile-card .profile-media-upload-button[data-upload-state="error"] {
-        animation-duration: 1ms;
     }
 
     #profile-card .profile-media-upload-button[data-upload-state="loading"] .profile-media-icon--spinner {

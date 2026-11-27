@@ -1,24 +1,31 @@
-/* Shared notification surface. Colors adapt through the design tokens. */
+/* Shared bottom-center notification surface. Colors adapt through design tokens. */
 .notification-region {
     position: fixed;
-    top: max(12px, env(safe-area-inset-top, 0px), var(--app-safe-top, 0px));
-    right: max(12px, env(safe-area-inset-right, 0px), var(--app-safe-right, 0px));
+    right: 16px;
+    bottom: max(
+        16px,
+        env(safe-area-inset-bottom, 0px),
+        var(--app-safe-bottom, 0px),
+        var(--app-content-safe-bottom, 0px)
+    );
+    left: 16px;
     z-index: 2000;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     gap: 12px;
-    width: min(420px, calc(100vw - 24px));
+    width: min(420px, calc(100vw - 32px));
+    margin: 0 auto;
     pointer-events: none;
 }
 
 .app-notification {
     display: grid;
     grid-template-columns: 32px minmax(0, 1fr) 32px;
-    align-items: start;
+    align-items: center;
     gap: 12px;
     width: 100%;
-    padding: 14px;
+    padding: 16px;
     border: 0;
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -37,19 +44,11 @@
     border-radius: 50%;
     background: var(--app-secondary);
     color: var(--app-on-secondary);
-    font-size: 18px;
-    font-weight: var(--app-font-weight-bold);
-    line-height: 1;
 }
 
 .app-notification__symbol > .lucide-icon {
     width: 18px;
     height: 18px;
-}
-
-.app-notification--error .app-notification__symbol {
-    background: var(--app-text);
-    color: var(--app-background);
 }
 
 .app-notification__content {
@@ -107,20 +106,12 @@
 @keyframes notification-enter {
     from {
         opacity: 0;
-        transform: translateY(-6px);
+        transform: translateY(8px) scale(0.98);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 480px) {
-    .notification-region {
-        right: 12px;
-        left: 12px;
-        width: auto;
+        transform: translateY(0) scale(1);
     }
 }
 
