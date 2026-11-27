@@ -4,7 +4,14 @@
 }
 
 .nominations-page-content {
+    grid-template-rows: none;
+    row-gap: 0;
     width: min(100%, var(--app-content-width));
+}
+
+.nominations-page-content > * {
+    grid-column: 1 / -1;
+    min-width: 0;
 }
 
 .nominations-page-header {

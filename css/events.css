@@ -1,9 +1,11 @@
 /* SplitEvents — proportional 970 × 250 event banners. */
 .events-list {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+    row-gap: var(--app-grid-row-gap);
     width: 100%;
+}
+
+.events-list > * {
+    grid-column: 1 / -1;
 }
 
 /*
@@ -14,7 +16,7 @@
     position: relative;
     display: flex;
     width: 100%;
-    max-width: 970px;
+    max-width: var(--app-content-width);
     aspect-ratio: 970 / 250;
     overflow: hidden;
     isolation: isolate;

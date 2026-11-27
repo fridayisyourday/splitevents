@@ -35,7 +35,7 @@
 .squash-hero-content {
     position: absolute;
     z-index: 2;
-    left: clamp(24px, 5.5vw, 76px);
+    left: clamp(var(--app-page-gutter), 5.5vw, 76px);
     bottom: clamp(54px, 8vw, 92px);
     width: min(640px, 66%);
     display: flex;
@@ -143,9 +143,9 @@
         margin-bottom: 0;
     }
     .squash-hero-content {
-        left: 22px;
+        left: var(--app-page-gutter);
         bottom: 58px;
-        width: calc(100% - 44px);
+        width: calc(100% - 32px);
     }
     .squash-hero-title {
         font-size: clamp(60px, 17vw, 92px);
@@ -226,7 +226,7 @@
     box-shadow: var(--app-shadow-card);
 }
 .squash-details {
-    width: min(100%, 860px);
+    width: min(100%, var(--app-content-width-reading));
     margin: 0 auto clamp(46px, 7vw, 72px);
 }
 .squash-details-title {

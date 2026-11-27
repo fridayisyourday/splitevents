@@ -516,7 +516,7 @@ defineExpose({
 <template>
     <section id="nominations-page" class="page-view" aria-label="Номинации 2026">
         <div class="section-page nominations-page">
-            <div class="section-page-content nominations-page-content">
+            <div class="section-page-content nominations-page-content page-container">
                 <section class="squash-hero" aria-labelledby="squash-hero-title">
                     <div class="squash-hero-art" aria-hidden="true"></div>
                     <div class="squash-hero-content">
@@ -541,7 +541,7 @@ defineExpose({
                         </div>
                     </div>
 
-                    <section class="squash-details" aria-labelledby="squash-details-title">
+                    <section class="squash-details page-container--reading" aria-labelledby="squash-details-title">
                         <h2 id="squash-details-title" class="squash-details-title">ПОДРОБНЕЕ О ПРЕМИИ</h2>
                         <div class="squash-details-carousel">
                             <button

@@ -1,21 +1,11 @@
 /* SplitEvents — profile page and profile media. */
-#profile-page {
-    min-height: calc(var(--tg-viewport-stable-height, 100dvh) - var(--app-header-height));
-    padding: var(--app-page-top) max(
-        var(--app-page-gutter),
-        env(safe-area-inset-right, 0px),
-        var(--tg-safe-area-inset-right, 0px),
-        var(--app-safe-right, 0px),
-        var(--tg-content-safe-area-inset-right, 0px),
-        var(--app-content-safe-right, 0px)
-    ) calc(max(30px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px)) + max(var(--tg-content-safe-area-inset-bottom, 0px), var(--app-content-safe-bottom, 0px))) max(
-        var(--app-page-gutter),
-        env(safe-area-inset-left, 0px),
-        var(--tg-safe-area-inset-left, 0px),
-        var(--app-safe-left, 0px),
-        var(--tg-content-safe-area-inset-left, 0px),
-        var(--app-content-safe-left, 0px)
-    );
+.profile-page-content {
+    grid-template-rows: minmax(0, 1fr);
+    text-align: left;
+}
+
+.profile-page-body {
+    align-items: center;
 }
 
 .profile-card {

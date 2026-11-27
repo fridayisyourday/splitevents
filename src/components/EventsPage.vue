@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
 <template>
     <section id="events-page" class="page-view" aria-label="Текущие события">
         <div class="section-page events-page">
-            <div class="section-page-content events-page-content">
+            <div class="section-page-content events-page-content page-container">
                 <header class="section-page-header">
                     <h1 class="section-page-title">Текущие события</h1>
                 </header>
@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
                     class="section-page-body events-page-body"
                     :class="{ 'section-page-body--center': visibleEvents.length === 0 }"
                 >
-                    <div v-if="visibleEvents.length" class="events-list" aria-label="Список событий">
+                    <div v-if="visibleEvents.length" class="events-list page-grid" aria-label="Список событий">
                         <article
                             v-for="event in visibleEvents"
                             :key="event.id"
