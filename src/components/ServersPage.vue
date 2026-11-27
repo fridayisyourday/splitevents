@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
-import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
