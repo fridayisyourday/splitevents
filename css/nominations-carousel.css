@@ -147,7 +147,7 @@
     flex: 0 0 auto;
     margin-top: var(--app-space-0-5);
     padding: var(--app-space-2) var(--app-space-1-5);
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
     line-height: var(--app-line-height-snug);
 }
 
@@ -159,13 +159,13 @@
 }
 
 .vote-nomination-card.vote-carousel-card .vote-selected-nominee {
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-action-button {
     min-height: 36px;
     padding-inline: var(--app-space-2);
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
 }
 
 /* Sliding transitions are applied when the carousel changes its active card. */
