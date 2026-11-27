@@ -34,7 +34,7 @@
     box-shadow: var(--app-shadow-card);
     text-align: left;
     cursor: pointer;
--webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .friend-card:focus-visible {
