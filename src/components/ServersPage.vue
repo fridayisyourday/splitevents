@@ -73,7 +73,7 @@ async function copyServerAddress(server) {
                             class="server-entry"
                         >
                             <article
-                                class="server-card page-container--medium"
+                                class="server-card"
                                 :aria-labelledby="'server-title-' + server.id"
                             >
                                 <div class="server-card-artwork" aria-hidden="true"></div>
@@ -117,7 +117,7 @@ async function copyServerAddress(server) {
                                 <section
                                     v-if="expandedServerId === server.id"
                                     :id="'server-details-' + server.id"
-                                    class="server-details-panel page-container--medium"
+                                    class="server-details-panel"
                                     role="region"
                                     :aria-labelledby="'server-title-' + server.id"
                                 >

@@ -389,7 +389,7 @@ onBeforeUnmount(() => {
                 <div class="section-page-body profile-page-body">
         <article
             id="profile-card"
-            class="profile-card page-container--reading"
+            class="profile-card"
             :class="{ 'is-media-editing': editing }"
         >
             <div class="profile-cover" id="profile-cover">

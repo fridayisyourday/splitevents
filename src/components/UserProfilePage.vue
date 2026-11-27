@@ -114,7 +114,7 @@ onBeforeUnmount(() => {
             </div>
         </div>
 
-        <article v-else-if="profile" class="profile-card profile-card--readonly page-container--reading">
+        <article v-else-if="profile" class="profile-card profile-card--readonly">
             <div class="profile-cover">
                 <div
                     class="profile-banner-placeholder"

@@ -11,7 +11,7 @@
 .profile-card {
     position: relative;
     width: 100%;
-    max-width: var(--app-profile-width);
+    max-width: var(--app-content-width);
     margin: 0 auto;
     overflow: hidden;
     background: var(--app-card-background);
