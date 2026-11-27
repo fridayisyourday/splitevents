@@ -71,16 +71,6 @@ onBeforeUnmount(() => {
                 </p>
             </div>
 
-            <button
-                class="app-notification__close ui-button ui-button--icon ui-button--secondary"
-                type="button"
-                aria-label="закрыть уведомление"
-                @click="dismiss(notification.id)"
-            >
-                <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <use href="#icon-x"></use>
-                </svg>
-            </button>
         </article>
     </div>
 </template>

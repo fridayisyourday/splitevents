@@ -21,7 +21,7 @@
 
 .app-notification {
     display: grid;
-    grid-template-columns: var(--app-notification-icon-size) minmax(0, 1fr) var(--app-control-height);
+    grid-template-columns: var(--app-notification-icon-size) minmax(0, 1fr);
     align-items: center;
     gap: var(--app-space-3);
     width: 100%;
@@ -47,8 +47,8 @@
 }
 
 .app-notification__symbol > .lucide-icon {
-    width: var(--app-icon-size-small);
-    height: var(--app-icon-size-small);
+    width: var(--app-icon-size);
+    height: var(--app-icon-size);
 }
 
 .app-notification__content {
@@ -76,28 +76,6 @@
     line-height: 1.45;
 }
 
-.app-notification__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--app-control-height);
-    height: var(--app-control-height);
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    font: inherit;
-    line-height: var(--app-line-height-tight);
-}
-
-.app-notification__close > .lucide-icon {
-    width: var(--app-icon-size-small);
-    height: var(--app-icon-size-small);
-}
-
-.app-notification__close:focus-visible {
-    outline: 2px solid var(--app-accent);
-    outline-offset: 2px;
-}
 
 @keyframes notification-enter {
     from {
