@@ -156,14 +156,14 @@ body.menu-open {
     min-width: 0;
 }
 
-.menu-theme-toggle {
+.menu-panel .menu-theme-toggle {
     flex: 0 0 48px;
     color: var(--app-text);
     background: transparent;
     box-shadow: none;
 }
 
-.menu-theme-toggle:hover {
+.menu-panel .menu-theme-toggle:hover {
     background: transparent;
     opacity: 0.72;
 }
