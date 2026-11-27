@@ -180,10 +180,12 @@
 }
 
 .server-details-ip-button {
-    display: inline-flex;
+    display: flex;
+    flex: 1 1 0;
     align-items: center;
-    justify-content: flex-end;
-    min-width: var(--app-control-height);
+    justify-content: stretch;
+    width: 100%;
+    min-width: 0;
     min-height: var(--app-control-height);
     margin: 0;
     padding: 0;
@@ -199,6 +201,13 @@
     transition:
         opacity var(--app-duration-fast) ease,
         transform var(--app-duration-fast) ease;
+}
+
+.server-details-ip-button .menu-item-badge {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
 }
 
 @media (hover: hover) {
