@@ -66,7 +66,7 @@ async function loadFriends() {
 
     if (!initData) {
         users.value = [];
-        status.value = "auth";
+        status.value = "ready";
         return;
     }
 
@@ -124,16 +124,6 @@ onBeforeUnmount(() => {
                         aria-label="загрузка списка друзей"
                     >
                         <svg class="lucide-icon friends-loading-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
-                    </div>
-
-                    <div
-                        v-else-if="status === 'auth'"
-                        class="empty-state"
-                        role="status"
-                        aria-live="polite"
-                    >
-                        <p class="empty-state-message">открой мини-приложение через telegram</p>
-                        <p class="empty-state-note">для просмотра списка друзей требуется авторизация telegram</p>
                     </div>
 
                     <template v-else-if="status === 'error'">
