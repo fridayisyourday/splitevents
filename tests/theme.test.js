@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getStoredTheme, normalizeTheme, applyTheme, saveTheme } from "../js/theme.js";
+import { getStoredTheme, normalizeTheme, applyTheme, saveTheme, resolveTheme } from "../js/theme.js";
 
 test("theme values normalize to light or dark", () => {
     assert.equal(normalizeTheme("dark"), "dark");
@@ -12,6 +12,14 @@ test("saved theme overrides defaults and invalid storage values are ignored", ()
     assert.equal(getStoredTheme({ getItem: () => "dark" }), "dark");
     assert.equal(getStoredTheme({ getItem: () => "invalid" }), null);
     assert.equal(getStoredTheme({ getItem: () => null }), null);
+});
+
+test("saved theme overrides Telegram and system preferences after reload", () => {
+    assert.equal(resolveTheme("dark", "light", false), "dark");
+    assert.equal(resolveTheme("light", "dark", true), "light");
+    assert.equal(resolveTheme(null, "dark", false), "dark");
+    assert.equal(resolveTheme(null, null, true), "dark");
+    assert.equal(resolveTheme(null, null, false), "light");
 });
 
 test("theme can be applied to a root object and saved", () => {

@@ -1,4 +1,5 @@
 /* Telegram Mini Apps integration. */
+import { getStoredTheme, resolveTheme } from "./theme.js";
 const webApp = window.Telegram && window.Telegram.WebApp
     ? window.Telegram.WebApp
     : null;
@@ -21,7 +22,11 @@ function getPreferredColorScheme() {
 }
 
 function applyTheme() {
-    const colorScheme = getPreferredColorScheme();
+    const savedTheme = getStoredTheme(window.localStorage);
+    const systemDark = Boolean(
+        window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    );
+    const colorScheme = resolveTheme(savedTheme, getPreferredColorScheme(), systemDark);
     const background = colorScheme === "dark" ? "#000000" : "#FFFFFF";
 
     document.documentElement.style.colorScheme = colorScheme;

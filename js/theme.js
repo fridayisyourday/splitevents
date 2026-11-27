@@ -13,6 +13,12 @@ export function getStoredTheme(storage) {
     }
 }
 
+export function resolveTheme(savedTheme, telegramTheme, systemDark) {
+    if (VALID_THEMES.has(savedTheme)) return savedTheme;
+    if (VALID_THEMES.has(telegramTheme)) return telegramTheme;
+    return systemDark ? "dark" : "light";
+}
+
 export function applyTheme(theme, root = document.documentElement) {
     const normalized = normalizeTheme(theme);
     root.dataset.colorScheme = normalized;
