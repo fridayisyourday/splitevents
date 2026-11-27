@@ -1,4 +1,4 @@
-/* Server cards use 80% of the event-card footprint. */
+/* Server cards use 80% of the event-card width and half its height. */
 .servers-page-content {
     width: min(100%, var(--app-content-width));
     text-align: left;
@@ -20,17 +20,20 @@
     width: 100%;
 }
 
-/* Event card: 970 × 250. Server card: 776 × 200 (exactly 80%). */
+/* Event card: 970 × 250. Server card: 776 × 126 (approximately half-height). */
 .server-card {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
+    box-sizing: border-box;
     width: 80%;
     max-width: 776px;
-    aspect-ratio: 970 / 250;
+    height: 126px;
     overflow: hidden;
     isolation: isolate;
     container-type: inline-size;
-    border: 0;
+    border: var(--app-card-outline);
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
     color: var(--app-text);
@@ -38,64 +41,60 @@
 }
 
 .server-card-artwork {
-    position: absolute;
+    position: relative;
     z-index: 0;
-    inset: 0;
+    grid-row: 1;
+    grid-column: 1;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden;
-    background: var(--app-gray-dark);
+    background: var(--app-placeholder);
 }
 
-.server-card-banner {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
-
-.server-card-wash {
+.server-card-artwork::after {
     position: absolute;
-    z-index: 1;
-    inset: 0;
+    inset: 52% 0 0;
     pointer-events: none;
+    content: "";
     background: linear-gradient(
-        90deg,
-        var(--app-card-background) 0%,
-        var(--app-card-background) 31%,
-        color-mix(in srgb, var(--app-card-background) 94%, transparent) 40%,
-        color-mix(in srgb, var(--app-card-background) 76%, transparent) 49%,
-        color-mix(in srgb, var(--app-card-background) 34%, transparent) 59%,
-        transparent 73%
+        180deg,
+        color-mix(in srgb, var(--app-card-background) 0%, transparent) 0%,
+        color-mix(in srgb, var(--app-card-background) 46%, transparent) 54%,
+        var(--app-card-background) 100%
     );
 }
 
 .server-card-content {
     position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 88px minmax(0, 1fr) 128px;
+    z-index: 1;
+    display: flex;
+    grid-row: 1;
+    grid-column: 1;
     align-items: center;
     gap: 20px;
+    box-sizing: border-box;
     width: 100%;
     min-width: 0;
-    padding: 24px;
+    padding: 6px 20px;
+    overflow: visible;
 }
 
 .server-card-logo {
     display: block;
-    width: 88px;
-    height: 88px;
+    flex: 0 0 108px;
+    width: 108px;
+    height: 108px;
     border-radius: 50%;
-    object-fit: cover;
     background: var(--app-secondary);
 }
 
 .server-card-details {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     min-width: 0;
 }
 
@@ -103,10 +102,10 @@
     max-width: 100%;
     margin: 0;
     color: var(--app-text);
-    font-size: clamp(24px, 4.2cqw, 36px);
+    font-size: clamp(38px, 7.2cqw, 56px);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.065em;
-    line-height: 0.98;
+    line-height: 0.92;
     overflow-wrap: anywhere;
 }
 
@@ -129,7 +128,7 @@
     background: transparent;
     color: var(--app-hint);
     font: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: var(--app-font-weight-medium);
     line-height: 1.4;
     text-align: left;
@@ -155,7 +154,23 @@
     white-space: nowrap;
 }
 
+.server-card-footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    grid-row: 2;
+    grid-column: 1;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 0 12px;
+    background: var(--app-card-background);
+}
+
 .server-card-more {
+    flex: 0 0 128px;
     width: 128px;
     min-width: 0;
     padding-right: 12px;
@@ -163,7 +178,6 @@
 }
 
 .server-card-more:disabled {
-    opacity: var(--app-disabled-opacity);
     cursor: not-allowed;
     transform: none;
 }
@@ -171,45 +185,29 @@
 @media (max-width: 640px) {
     .server-card {
         width: 100%;
-        height: 240px;
-        aspect-ratio: auto;
-    }
-
-    .server-card-wash {
-        background: linear-gradient(
-            90deg,
-            var(--app-card-background) 0%,
-            var(--app-card-background) 34%,
-            color-mix(in srgb, var(--app-card-background) 92%, transparent) 48%,
-            color-mix(in srgb, var(--app-card-background) 54%, transparent) 63%,
-            transparent 82%
-        );
+        height: 150px;
     }
 
     .server-card-content {
-        grid-template-columns: 56px minmax(0, 1fr) 84px;
-        gap: 8px;
-        padding: 12px;
+        gap: 12px;
+        padding: 6px 14px;
     }
 
     .server-card-logo {
-        width: 56px;
-        height: 56px;
-    }
-
-    .server-card-details {
-        gap: 6px;
+        flex-basis: 84px;
+        width: 84px;
+        height: 84px;
     }
 
     .server-card-title {
-        font-size: clamp(16px, 5.2cqw, 22px);
+        font-size: clamp(30px, 8.2cqw, 40px);
         letter-spacing: -0.06em;
-        line-height: 1;
+        line-height: 0.96;
     }
 
     .server-card-ip {
-        min-height: 24px;
-        font-size: 12px;
+        min-height: 26px;
+        font-size: 14px;
         letter-spacing: -0.025em;
     }
 
@@ -217,42 +215,31 @@
         gap: 4px;
     }
 
-    .server-card-copy-status {
-        font-size: 10px;
-    }
-
-    .server-card-more {
-        width: 84px;
-        min-height: 42px;
-        padding-right: 6px;
-        padding-left: 6px;
-        font-size: 11px;
+    .server-card-footer {
+        padding-right: 10px;
+        padding-left: 10px;
     }
 }
 
-@media (max-width: 360px) {
+@media (max-width: 380px) {
     .server-card-content {
-        grid-template-columns: 48px minmax(0, 1fr) 76px;
-        gap: 6px;
-        padding: 10px;
+        gap: 8px;
+        padding-right: 10px;
+        padding-left: 10px;
     }
 
     .server-card-logo {
-        width: 48px;
-        height: 48px;
+        flex-basis: 72px;
+        width: 72px;
+        height: 72px;
     }
 
     .server-card-title {
-        font-size: 16px;
+        font-size: clamp(24px, 7.2cqw, 28px);
     }
 
     .server-card-ip {
-        font-size: 10px;
-    }
-
-    .server-card-more {
-        width: 76px;
-        font-size: 10px;
+        font-size: 12px;
     }
 }
 
