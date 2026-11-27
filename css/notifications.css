@@ -1,31 +1,31 @@
 /* Shared bottom-center notification surface. Colors adapt through design tokens. */
 .notification-region {
     position: fixed;
-    right: 16px;
+    right: var(--app-space-4);
     bottom: max(
         16px,
         env(safe-area-inset-bottom, 0px),
         var(--app-safe-bottom, 0px),
         var(--app-content-safe-bottom, 0px)
     );
-    left: 16px;
+    left: var(--app-space-4);
     z-index: 2000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    width: min(420px, calc(100vw - 32px));
+    gap: var(--app-space-3);
+    width: min(var(--app-notification-width), calc(100vw - 2 * var(--app-space-4)));
     margin: 0 auto;
     pointer-events: none;
 }
 
 .app-notification {
     display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) 32px;
+    grid-template-columns: var(--app-notification-icon-size) minmax(0, 1fr) var(--app-control-height);
     align-items: center;
-    gap: 12px;
+    gap: var(--app-space-3);
     width: 100%;
-    padding: 16px;
+    padding: var(--app-space-4);
     border: 0;
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -39,16 +39,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: var(--app-notification-icon-size);
+    height: var(--app-notification-icon-size);
     border-radius: 50%;
     background: var(--app-secondary);
     color: var(--app-on-secondary);
 }
 
 .app-notification__symbol > .lucide-icon {
-    width: 18px;
-    height: 18px;
+    width: var(--app-icon-size-small);
+    height: var(--app-icon-size-small);
 }
 
 .app-notification__content {
@@ -80,8 +80,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: var(--app-control-height);
+    height: var(--app-control-height);
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -94,8 +94,8 @@
 }
 
 .app-notification__close > .lucide-icon {
-    width: 18px;
-    height: 18px;
+    width: var(--app-icon-size-small);
+    height: var(--app-icon-size-small);
 }
 
 .app-notification__close:focus-visible {

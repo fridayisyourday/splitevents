@@ -61,7 +61,7 @@
 }
 .squash-hero-date {
     margin: 14px 0 0;
-    font-size: 14px;
+    font-size: var(--app-font-size-body);
     font-weight: var(--app-font-weight-semibold);
     letter-spacing: .16em;
     color: var(--app-hint);
@@ -100,7 +100,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 6px;
+    gap: var(--app-space-1-5);
     padding: 0;
     background: transparent;
     box-shadow: none;
@@ -123,14 +123,14 @@
 }
 .squash-countdown-label {
     color: var(--app-hint);
-    font-size: 12px;
+    font-size: var(--app-font-size-xs);
     font-weight: var(--app-font-weight-semibold);
     letter-spacing: .08em;
 }
 .squash-countdown-finished {
     margin: 0;
     color: var(--app-text);
-    font-size: 20px;
+    font-size: var(--app-font-size-xl);
     font-weight: var(--app-font-weight-bold);
 }
 .nominations-page-header {
@@ -153,11 +153,11 @@
     .squash-hero-subtitle {
         max-width: 260px;
         margin-top: 14px;
-        font-size: 16px;
+        font-size: var(--app-font-size-default);
     }
     .squash-hero-date {
         margin-top: 12px;
-        font-size: 13px;
+        font-size: var(--app-font-size-body);
     }
     .squash-hero-button {
         margin-top: 22px;
@@ -168,14 +168,14 @@
     }
     .squash-countdown-title {
         margin-bottom: 16px;
-        font-size: 18px;
+        font-size: var(--app-font-size-lg);
     }
     .squash-countdown-units {
-        gap: 8px;
+        gap: var(--app-space-2);
     }
     .squash-countdown-unit {
         flex-basis: 84px;
-        gap: 4px;
+        gap: var(--app-space-1);
     }
     .squash-countdown-number {
         font-size: clamp(26px, 8.5vw, 36px);
@@ -184,7 +184,7 @@
         font-size: clamp(24px, 7vw, 32px);
     }
     .squash-countdown-label {
-        font-size: 11px;
+        font-size: var(--app-font-size-xs);
         letter-spacing: .04em;
     }
 }
@@ -216,9 +216,9 @@
 }
 .squash-partner-placeholder {
     box-sizing: border-box;
-    width: 58px;
-    height: 58px;
-    flex: 0 0 58px;
+    width: var(--app-squash-partner-logo-size);
+    height: var(--app-squash-partner-logo-size);
+    flex: 0 0 var(--app-squash-partner-logo-size);
     overflow: hidden;
     border: var(--app-card-outline);
     border-radius: 50%;
@@ -260,7 +260,7 @@
     width: 100%;
     margin: 0;
     color: var(--app-text);
-    font-size: clamp(15px, 1.7vw, 18px);
+    font-size: clamp(var(--app-font-size-default), 1.7vw, var(--app-font-size-lg));
     font-weight: var(--app-font-weight-regular);
     line-height: 1.65;
     overflow-wrap: anywhere;
@@ -293,27 +293,27 @@
         margin-bottom: 36px;
     }
     .squash-partner-placeholder {
-        width: 52px;
-        height: 52px;
-        flex-basis: 52px;
+        width: var(--app-squash-partner-logo-size-mobile);
+        height: var(--app-squash-partner-logo-size-mobile);
+        flex-basis: var(--app-squash-partner-logo-size-mobile);
     }
     .squash-details {
         margin-bottom: 48px;
     }
     .squash-details-title {
         margin-bottom: 16px;
-        font-size: 20px;
+        font-size: var(--app-font-size-xl);
     }
     .squash-details-carousel {
         grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
-        gap: 8px;
+        gap: var(--app-space-2);
         min-height: 192px;
     }
     .squash-details-viewport {
         min-height: 192px;
     }
     .squash-details-message {
-        font-size: 15px;
+        font-size: var(--app-font-size-default);
         line-height: 1.58;
     }
 }

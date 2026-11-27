@@ -24,7 +24,7 @@
     position: relative;
     z-index: 3;
     width: 100%;
-    height: 190px;
+    height: var(--app-profile-cover-height);
     overflow: visible;
     background: var(--app-placeholder);
 }
@@ -52,12 +52,12 @@
     top: 100%;
     left: 22px;
     z-index: 5;
-    width: 112px;
-    height: 112px;
+    width: var(--app-profile-avatar-size);
+    height: var(--app-profile-avatar-size);
     overflow: hidden;
     transform: translateY(-50%);
     background: var(--app-placeholder);
-    border: 4px solid var(--app-card-background);
+    border: var(--app-media-ring-width) solid var(--app-card-background);
     border-radius: 50%;
 }
 
@@ -208,13 +208,13 @@
 
 @media (max-width: 480px) {
     .profile-cover {
-        height: 170px;
+        height: var(--app-profile-cover-height-mobile);
     }
 
     .profile-avatar {
         left: 16px;
-        width: 104px;
-        height: 104px;
+        width: var(--app-profile-avatar-size-mobile);
+        height: var(--app-profile-avatar-size-mobile);
     }
 
     .profile-details {
