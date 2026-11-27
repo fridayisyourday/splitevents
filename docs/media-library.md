@@ -3,7 +3,7 @@
 URL endpoint проекта: `https://ik.imagekit.io/splitevents/`  
 Корневая папка проекта в Media Library: `/splitevents/`.
 
-Все изображения, которыми управляет сайт, находятся в Media Library под корневой папкой `/splitevents`. Сайт не использует внешние фотохостинги для этих файлов. Папка `/splitevents` — это корень библиотеки проекта внутри Media Library. URL endpoint уже содержит идентификатор `splitevents`, поэтому полный публичный URL имеет вид `https://ik.imagekit.io/splitevents/splitevents/<folder>/<file>`.
+Все изображения, которыми управляет сайт, находятся в Media Library под корневой папкой `/splitevents`. Исключение — временная стартовая аватарка профиля: до первой собственной загрузки приложение может показывать фото Telegram. Папка `/splitevents` — это корень библиотеки проекта внутри Media Library. URL endpoint уже содержит идентификатор `splitevents`, поэтому полный публичный URL имеет вид `https://ik.imagekit.io/splitevents/splitevents/<folder>/<file>`.
 
 ## Структура папок
 
