@@ -25,12 +25,12 @@ test("server entries have unique ids and use the expected ImageKit artwork paths
         assert.ok(server.address);
         assert.equal(
             server.banner,
-            "https://ik.imagekit.io/splitevents/servers/" + server.id + "/banner.webp"
+            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/banner.webp"
         );
         assert.deepEqual(server.gallery, [
-            "https://ik.imagekit.io/splitevents/servers/" + server.id + "/gallery-01.webp",
-            "https://ik.imagekit.io/splitevents/servers/" + server.id + "/gallery-02.webp",
-            "https://ik.imagekit.io/splitevents/servers/" + server.id + "/gallery-03.webp"
+            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-01.webp",
+            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-02.webp",
+            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-03.webp"
         ]);
         assert.equal(Object.hasOwn(server, "logo"), false);
     }
