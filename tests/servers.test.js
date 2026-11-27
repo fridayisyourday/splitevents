@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { SERVERS } from "../js/servers/data.js";
+import { IMAGEKIT_ENDPOINT_ID, IMAGEKIT_LIBRARY_ROOT } from "../js/media.js";
+
+const IMAGEKIT_BASE = "https://ik.imagekit.io/" + IMAGEKIT_ENDPOINT_ID + "/" + IMAGEKIT_LIBRARY_ROOT;
 
 test("TECHNOCRACY server is listed with the supplied metadata", () => {
     assert.equal(SERVERS.length, 1);
@@ -25,12 +28,12 @@ test("server entries have unique ids and use the expected ImageKit artwork paths
         assert.ok(server.address);
         assert.equal(
             server.banner,
-            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/banner.webp"
+            IMAGEKIT_BASE + "/servers/" + server.id + "/banner.webp"
         );
         assert.deepEqual(server.gallery, [
-            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-01.webp",
-            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-02.webp",
-            "https://ik.imagekit.io/splitevents/splitevents/servers/" + server.id + "/gallery-03.webp"
+            IMAGEKIT_BASE + "/servers/" + server.id + "/gallery-01.webp",
+            IMAGEKIT_BASE + "/servers/" + server.id + "/gallery-02.webp",
+            IMAGEKIT_BASE + "/servers/" + server.id + "/gallery-03.webp"
         ]);
         assert.equal(Object.hasOwn(server, "logo"), false);
     }

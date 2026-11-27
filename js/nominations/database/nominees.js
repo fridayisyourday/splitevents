@@ -1,5 +1,5 @@
 /* Canonical list of people who can appear in nomination choices. */
-import { getNomineeAvatarUrl } from "../../media.js?v=20261127-2";
+import { getNomineeAvatarUrl } from "../../media.js?v=20261127-3";
 const NOMINEE_RECORDS = [
     { id: "fridayisyourday", name: "fridayisyourday", gender: "M", avatar: getNomineeAvatarUrl("fridayisyourday") },
     { id: "burgomister", name: "Burgomister", gender: "M", avatar: getNomineeAvatarUrl("burgomister") },

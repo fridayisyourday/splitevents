@@ -1,8 +1,16 @@
-/* ImageKit is the single source for site-managed images. */
-export const IMAGEKIT_ENDPOINT_ID = "splitevents";
+/* Shared ImageKit URL construction and validation for all site-managed media. */
+export const IMAGEKIT_ENDPOINT_ID = "firdayywh";
+export const IMAGEKIT_LIBRARY_ROOT = "splitevents";
+export const IMAGEKIT_FOLDERS = Object.freeze({
+    profile: "profile",
+    servers: "servers",
+    events: "events",
+    nominees: "nominees"
+});
+
 const IMAGEKIT_ORIGIN = "https://ik.imagekit.io";
-const IMAGEKIT_LIBRARY_ROOT = "splitevents";
 const IMAGEKIT_ROOT = IMAGEKIT_ORIGIN + "/" + IMAGEKIT_ENDPOINT_ID + "/" + IMAGEKIT_LIBRARY_ROOT;
+const IMAGEKIT_FOLDER_NAMES = new Set(Object.values(IMAGEKIT_FOLDERS));
 
 function isSafePathSegment(segment) {
     return Boolean(segment)
@@ -26,15 +34,23 @@ function isValidId(value) {
         && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 }
 
+/**
+ * Builds a public URL for a file stored under the shared ImageKit library root.
+ * Pass a path relative to /splitevents, e.g. "servers/technocracy/banner.webp".
+ */
 export function getImageKitAssetUrl(relativePath) {
     const segments = getAssetSegments(relativePath);
-    if (!segments.length) return "";
+    if (!segments.length || !IMAGEKIT_FOLDER_NAMES.has(segments[0])) return "";
 
     return IMAGEKIT_ROOT + "/" + segments
         .map((segment) => encodeURIComponent(segment))
         .join("/");
 }
 
+/**
+ * Validates URLs returned by ImageKit Upload API or stored as asset references.
+ * All folders share the same endpoint, library root and URL validation rules.
+ */
 export function getSafeImageKitUrl(value, expectedFolder = "") {
     if (typeof value !== "string" || !value.trim()) return "";
 
@@ -45,17 +61,21 @@ export function getSafeImageKitUrl(value, expectedFolder = "") {
             || url.hostname !== "ik.imagekit.io"
             || url.username
             || url.password
+            || url.port
         ) {
             return "";
         }
 
         const encodedSegments = url.pathname.split("/").filter(Boolean);
         const segments = encodedSegments.map((segment) => decodeURIComponent(segment));
+        const folder = segments[2];
+
         if (
             segments.length < 4
             || segments[0] !== IMAGEKIT_ENDPOINT_ID
             || segments[1] !== IMAGEKIT_LIBRARY_ROOT
-            || (expectedFolder && segments[2] !== expectedFolder)
+            || !IMAGEKIT_FOLDER_NAMES.has(folder)
+            || (expectedFolder && folder !== expectedFolder)
             || !segments.every(isSafePathSegment)
         ) {
             return "";
@@ -69,17 +89,17 @@ export function getSafeImageKitUrl(value, expectedFolder = "") {
 
 export function getEventCoverUrl(eventId) {
     if (!isValidId(eventId)) return "";
-    return getImageKitAssetUrl("events/" + eventId + "/cover.webp");
+    return getImageKitAssetUrl(IMAGEKIT_FOLDERS.events + "/" + eventId + "/cover.webp");
 }
 
 export function getNomineeAvatarUrl(nomineeId) {
     if (!isValidId(nomineeId)) return "";
-    return getImageKitAssetUrl("nominees/" + nomineeId + ".webp");
+    return getImageKitAssetUrl(IMAGEKIT_FOLDERS.nominees + "/" + nomineeId + ".webp");
 }
 
 export function getServerBannerUrl(serverId) {
     if (!isValidId(serverId)) return "";
-    return getImageKitAssetUrl("servers/" + serverId + "/banner.webp");
+    return getImageKitAssetUrl(IMAGEKIT_FOLDERS.servers + "/" + serverId + "/banner.webp");
 }
 
 export function getServerGalleryImageUrl(serverId, fileName) {
@@ -91,5 +111,5 @@ export function getServerGalleryImageUrl(serverId, fileName) {
         return "";
     }
 
-    return getImageKitAssetUrl("servers/" + serverId + "/" + fileName);
+    return getImageKitAssetUrl(IMAGEKIT_FOLDERS.servers + "/" + serverId + "/" + fileName);
 }
