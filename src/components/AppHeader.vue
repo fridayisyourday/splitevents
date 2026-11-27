@@ -306,6 +306,8 @@ onBeforeUnmount(() => {
             <div class="menu-panel-header">
                 <div class="menu-panel-heading">
                     <h2 id="menu-title" class="menu-panel-title">Меню</h2>
+                </div>
+                <div class="menu-panel-actions">
                     <button
                         id="menu-theme-toggle"
                         class="menu-theme-toggle ui-button ui-button--icon ui-button--secondary"
@@ -318,20 +320,20 @@ onBeforeUnmount(() => {
                             <use :href="colorScheme === 'light' ? '#icon-sun' : '#icon-moon'"></use>
                         </svg>
                     </button>
+                    <button
+                        id="menu-close-button"
+                        ref="closeButtonElement"
+                        class="menu-close-button ui-button ui-button--icon ui-button--secondary"
+                        type="button"
+                        aria-label="Закрыть меню"
+                        title="Закрыть меню"
+                        @click="closeMenu(true)"
+                    >
+                        <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <use href="#icon-x"></use>
+                        </svg>
+                    </button>
                 </div>
-                <button
-                    id="menu-close-button"
-                    ref="closeButtonElement"
-                    class="menu-close-button ui-button ui-button--icon ui-button--secondary"
-                    type="button"
-                    aria-label="Закрыть меню"
-                    title="Закрыть меню"
-                    @click="closeMenu(true)"
-                >
-                    <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                        <use href="#icon-x"></use>
-                    </svg>
-                </button>
             </div>
 
             <nav class="menu-navigation" aria-label="Основная навигация">

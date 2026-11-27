@@ -545,7 +545,7 @@ defineExpose({
                         <h2 id="squash-details-title" class="squash-details-title">ПОДРОБНЕЕ О ПРЕМИИ</h2>
                         <div class="squash-details-carousel">
                             <button
-                                class="ui-button ui-button--primary ui-button--icon squash-details-arrow"
+                                class="ui-button ui-button--secondary ui-button--icon squash-details-arrow"
                                 type="button"
                                 aria-label="Предыдущее сообщение"
                                 @click="changeIntroMessage(-1)"
@@ -562,7 +562,7 @@ defineExpose({
                             </div>
 
                             <button
-                                class="ui-button ui-button--primary ui-button--icon squash-details-arrow"
+                                class="ui-button ui-button--secondary ui-button--icon squash-details-arrow"
                                 type="button"
                                 aria-label="Следующее сообщение"
                                 @click="changeIntroMessage(1)"
@@ -618,7 +618,7 @@ defineExpose({
 
                                 <div class="vote-carousel-controls">
                                     <button
-                                        class="ui-button ui-button--primary ui-button--icon vote-page-button"
+                                        class="ui-button ui-button--secondary ui-button--icon vote-page-button"
                                         type="button"
                                         aria-label="Предыдущая номинация"
                                         title="Предыдущая номинация"
@@ -627,7 +627,7 @@ defineExpose({
                                         <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-left"></use></svg>
                                     </button>
                                     <button
-                                        class="ui-button ui-button--primary ui-button--icon vote-page-button"
+                                        class="ui-button ui-button--secondary ui-button--icon vote-page-button"
                                         type="button"
                                         aria-label="Следующая номинация"
                                         title="Следующая номинация"

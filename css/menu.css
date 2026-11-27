@@ -175,8 +175,14 @@ body.menu-open {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--app-space-2);
     min-width: 0;
+}
+
+.menu-panel-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--app-space-2);
 }
 
 .menu-panel .menu-theme-toggle svg {
