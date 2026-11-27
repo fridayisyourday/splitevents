@@ -15,7 +15,7 @@
     color: var(--app-button-primary-color);
     box-shadow: none;
     font-family: var(--app-font-family);
-    font-size: var(--app-button-font-size);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-button-font-weight);
     line-height: var(--app-line-height-snug);
     text-align: center;
@@ -53,18 +53,3 @@
     border-radius: 50%;
 }
 
-@media (hover: hover) {
-    .ui-button:not(:disabled):hover {
-        filter: brightness(0.96);
-    }
-}
-
-.ui-button:not(:disabled):active {
-    transform: scale(0.97);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .ui-button {
-        transition: none;
-    }
-}

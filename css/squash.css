@@ -45,7 +45,7 @@
 }
 .squash-hero-title {
     margin: 0;
-    font-size: clamp(66px, 10vw, 148px);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.075em;
     line-height: .92;
@@ -74,7 +74,7 @@
 .squash-countdown-title {
     margin: 0 0 var(--app-space-5-5);
     color: var(--app-text);
-    font-size: clamp(18px, 3vw, 24px);
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.025em;
 }
@@ -98,7 +98,7 @@
 }
 .squash-countdown-number {
     color: var(--app-text);
-    font-size: clamp(30px, 6vw, 48px);
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
     letter-spacing: -.06em;
@@ -108,20 +108,20 @@
     flex: 0 0 auto;
     margin-top: 0;
     color: var(--app-hint);
-    font-size: clamp(28px, 5vw, 40px);
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-semibold);
     line-height: var(--app-line-height-tight);
 }
 .squash-countdown-label {
     color: var(--app-hint);
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-semibold);
     letter-spacing: .08em;
 }
 .squash-countdown-finished {
     margin: 0;
     color: var(--app-text);
-    font-size: var(--app-font-size-xl);
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-bold);
 }
 .nominations-page-header {
@@ -139,7 +139,7 @@
         width: calc(100% - 32px);
     }
     .squash-hero-title {
-        font-size: clamp(60px, 17vw, 92px);
+        font-size: var(--app-font-size-title);
     }
     .squash-hero-subtitle {
         max-width: 260px;
@@ -157,7 +157,7 @@
     }
     .squash-countdown-title {
         margin-bottom: var(--app-space-4);
-        font-size: var(--app-font-size-lg);
+        font-size: var(--app-font-size-accent);
     }
     .squash-countdown-units {
         gap: var(--app-space-2);
@@ -167,13 +167,13 @@
         gap: var(--app-space-1);
     }
     .squash-countdown-number {
-        font-size: clamp(26px, 8.5vw, 36px);
+        font-size: var(--app-font-size-heading);
     }
     .squash-countdown-separator {
-        font-size: clamp(24px, 7vw, 32px);
+        font-size: var(--app-font-size-heading);
     }
     .squash-countdown-label {
-        font-size: var(--app-font-size-xs);
+        font-size: var(--app-font-size-main);
         letter-spacing: .04em;
     }
 }
@@ -194,7 +194,7 @@
 .squash-partners-label {
     margin: 0 0 var(--app-space-3-5);
     color: var(--app-hint);
-    font-size: 14px;
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-medium);
 }
 .squash-partners-logos {
@@ -221,7 +221,7 @@
 .squash-details-title {
     margin: 0 0 var(--app-space-5-5);
     color: var(--app-text);
-    font-size: clamp(20px, 3vw, 26px);
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.025em;
     text-align: center;
@@ -256,7 +256,7 @@
     width: 100%;
     margin: 0;
     color: var(--app-text);
-    font-size: clamp(var(--app-font-size-default), 1.7vw, var(--app-font-size-lg));
+    font-size: var(--app-font-size-accent);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-reading);
     overflow-wrap: anywhere;
@@ -298,7 +298,7 @@
     }
     .squash-details-title {
         margin-bottom: var(--app-space-4);
-        font-size: var(--app-font-size-xl);
+        font-size: var(--app-font-size-heading);
     }
     .squash-details-carousel {
         grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
@@ -313,7 +313,7 @@
         max-height: 192px;
     }
     .squash-details-message {
-        font-size: var(--app-font-size-default);
+        font-size: var(--app-font-size-accent);
         line-height: 1.58;
     }
 }

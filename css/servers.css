@@ -156,7 +156,7 @@
     max-width: none;
     margin: 0;
     color: var(--app-text);
-    font-size: 9.2cqw;
+    font-size: var(--app-font-size-heading);
     font-weight: var(--app-font-weight-display);
     letter-spacing: -0.075em;
     line-height: 0.9;
@@ -168,9 +168,6 @@
 .server-card-subtitle {
     margin: 0;
     color: var(--app-hint);
-    font-size: var(--app-font-size-default);
-    font-weight: var(--app-font-weight-medium);
-    line-height: var(--app-line-height-label);
 }
 
 .server-details-ip-button {
@@ -192,9 +189,6 @@
     box-shadow: none;
     font: inherit;
     cursor: pointer;
-    transition:
-        opacity var(--app-duration-fast) ease,
-        transform var(--app-duration-fast) ease;
 }
 
 .server-details-ip-button .menu-item-badge {
@@ -204,16 +198,6 @@
     width: 100%;
     min-width: 100%;
     text-align: center;
-}
-
-@media (hover: hover) {
-    .server-details-ip-button:not(:disabled):hover {
-        opacity: 0.72;
-    }
-}
-
-.server-details-ip-button:not(:disabled):active {
-    transform: scale(0.98);
 }
 
 .server-card-footer {
@@ -292,7 +276,7 @@
 .server-details-label {
     justify-self: start;
     color: var(--app-hint);
-    font-size: var(--app-font-size-body);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-medium);
     line-height: var(--app-line-height-label);
     text-align: left;
@@ -316,9 +300,6 @@
     color: inherit;
     box-shadow: none;
     text-decoration: none;
-    transition:
-        opacity var(--app-duration-fast) ease,
-        transform var(--app-duration-fast) ease;
 }
 
 .server-details-download .menu-item-badge {
@@ -328,16 +309,6 @@
     width: 100%;
     min-width: 0;
     text-align: center;
-}
-
-@media (hover: hover) {
-    .server-details-download:hover {
-        opacity: 0.72;
-    }
-}
-
-.server-details-download:active {
-    transform: scale(0.98);
 }
 
 .server-details-enter-active,
@@ -404,7 +375,7 @@
     }
 
     .server-card-title {
-        font-size: clamp(28px, 9.2cqw, 40px);
+        font-size: var(--app-font-size-heading);
         letter-spacing: -0.065em;
     }
 

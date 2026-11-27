@@ -34,23 +34,12 @@
     box-shadow: var(--app-shadow-card);
     text-align: left;
     cursor: pointer;
-    transition: transform 160ms ease, filter 160ms ease;
     -webkit-tap-highlight-color: transparent;
-}
-
-.friend-card:active {
-    transform: scale(0.99);
 }
 
 .friend-card:focus-visible {
     outline: 2px solid var(--app-accent);
     outline-offset: var(--app-focus-offset);
-}
-
-@media (hover: hover) {
-    .friend-card:hover {
-        filter: brightness(0.97);
-    }
 }
 
 .friend-card-avatar {
@@ -105,7 +94,7 @@
 .friend-card-name {
     overflow: hidden;
     color: var(--app-text);
-    font-size: var(--app-font-size-default);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-semibold);
     line-height: var(--app-line-height-compact);
     text-overflow: ellipsis;
@@ -115,7 +104,7 @@
 .friend-card-tag {
     overflow: hidden;
     color: var(--app-hint);
-    font-size: var(--app-font-size-body);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-label);
     text-overflow: ellipsis;
