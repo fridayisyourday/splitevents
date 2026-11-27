@@ -152,7 +152,7 @@
     min-height: 36px;
     margin-top: var(--app-space-0-5);
     padding-inline: var(--app-space-2);
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
 }
 
 /* Artwork frame: image container covers the full card width and exactly its top 75%. */
