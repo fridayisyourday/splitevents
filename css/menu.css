@@ -132,7 +132,15 @@ button.menu-item {
     cursor: default;
 }
 
-/* Human Glaze uses the shared rounded menu-badge component. */
+/* Activities are the only menu item with a visible icon. */
+.menu-item-coming-soon .menu-item-icon {
+    display: block;
+}
+
+.menu-item-coming-soon .menu-item-label {
+    text-transform: uppercase;
+}
+
 
 body.menu-open {
     overflow: hidden;
