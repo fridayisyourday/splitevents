@@ -1,13 +1,6 @@
 /* Shared validation for profile media returned by the API. */
-export function getSafeProfileImageUrl(value) {
-    if (typeof value !== "string" || !value) return "";
+import { getSafeImageKitUrl } from "../media.js?v=20261127-2";
 
-    try {
-        const url = new URL(value);
-        return url.protocol === "https:" && url.hostname.endsWith(".imagekit.io")
-            ? url.href
-            : "";
-    } catch {
-        return "";
-    }
+export function getSafeProfileImageUrl(value) {
+    return getSafeImageKitUrl(value, "profile");
 }

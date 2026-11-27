@@ -11,7 +11,7 @@ import {
     unhideEvent
 } from "../../js/events/hidden-state.js?v=20261126-3";
 import { getTelegramUserId } from "../../js/telegram.js?v=20261126-6";
-import { getEventCoverUrl } from "../../js/media.js?v=20261126-1";
+import { getEventCoverUrl, getSafeImageKitUrl } from "../../js/media.js?v=20261127-2";
 import { getCurrentPage } from "../../js/navigation.js?v=20261127-1";
 
 const userId = getTelegramUserId();
@@ -41,7 +41,7 @@ function isEventHidden(event) {
 
 function eventImageUrl(event) {
     if (failedImageIds.value.has(event.id)) return "";
-    return event.image || getEventCoverUrl(event.id);
+    return getSafeImageKitUrl(event.image, "events") || getEventCoverUrl(event.id);
 }
 
 function markImageFailed(eventId) {

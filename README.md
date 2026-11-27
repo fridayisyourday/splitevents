@@ -1,6 +1,6 @@
 # SplitEvents
 
-Telegram Mini App для совместных мероприятий, профилей и дружеских номинаций.
+Telegram Mini App для совместных мероприятий, профилей, дружеских номинаций и сервера Minecraft.
 
 ## Быстрые сведения
 
@@ -10,7 +10,7 @@ Telegram Mini App для совместных мероприятий, профи
 - Для разработки: `npm install`, затем `npm run dev`; production-сборка — `npm run build`.
 - Маршруты: `#/`, `#/profile`, `#/friends`, `#/users/<public_id>`, `#/events`, `#/servers`, `#/nominations?event=...`.
 - Backend: Cloudflare Worker (`worker/index.js`) + D1. Профиль пользователя, отображаемое имя, аватар и баннер синхронизируются с сервером после проверки Telegram `initData`.
-- Собственный аватар ImageKit имеет приоритет; до его загрузки используется фото Telegram, полученное из подписанного `initData`. Баннеры и собственные аватары хранятся в ImageKit Media Library; приватный ImageKit API key хранится только в секрете Worker. D1 хранит ссылки, file ID и случайный стабильный публичный ID для перехода к профилю.
+- Собственный аватар ImageKit имеет приоритет; до его загрузки используется фото Telegram, полученное из подписанного `initData`. Собственные аватары и баннеры профилей, обложки событий, изображения номинантов и изображения серверов хранятся в ImageKit Media Library; приватный ImageKit API key хранится только в секрете Worker. D1 хранит ссылки, file ID и случайный стабильный публичный ID для перехода к профилю.
 - Каталог друзей загружается из D1 через авторизованный Worker; текущий пользователь исключается из списка. Публичные ссылки используют случайные идентификаторы, а не Telegram ID.
 - Голосование пока работает только в памяти текущего запуска. Каталог номинантов и событий хранится в исходниках; локальный кэш изображений профиля — в IndexedDB, скрытые события — в localStorage.
 
@@ -58,6 +58,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── nominations-picker.css
 │   └── nominations-cards.css
 ├── js/
+│   ├── media.js
 │   ├── navigation.js
 │   ├── api.js
 │   ├── telegram.js
@@ -92,7 +93,8 @@ Telegram Mini App для совместных мероприятий, профи
 └── docs/
     ├── architecture.md
     ├── design-review.md
-    └── events.md
+    ├── events.md
+    └── media-library.md
 ```
 
 ## Стандарты оформления
@@ -107,7 +109,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Каждый раздел управляет своим состоянием и жизненным циклом через Vue.
 
-**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `src/components/NotificationRegion.vue`.
+**Профиль, друзья и API.** Единая генерация и проверка адресов ImageKit находится в `js/media.js`; интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `src/components/NotificationRegion.vue`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
@@ -138,3 +140,8 @@ Telegram Mini App для совместных мероприятий, профи
 4. Перед публикацией выполните `npm run check`, `npm test` и `npm run build`.
 
 GitHub Pages должен использовать источник **GitHub Actions** в Settings → Pages. Production-сборка публикуется из папки `dist/`. Все страницы, маршруты и уведомления управляются Vue-компонентами; старые DOM-контроллеры страниц и переходные HTML-фрагменты удалены.
+
+
+## Изображения и ImageKit
+
+Все изображения, которыми управляет сайт, загружаются напрямую из ImageKit. Список папок, точные имена и рекомендуемые размеры находится в [docs/media-library.md](docs/media-library.md). Профильные аватар и баннер пользователь загружает через интерфейс профиля; изображения событий, номинантов и серверов администратор добавляет в Media Library вручную.

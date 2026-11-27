@@ -53,7 +53,7 @@ Vue-страница предоставляет `getBallot()`, `isComplete()` и
 - `src/components/NominationsPage.vue` — реактивное состояние страницы голосования и диалогов.
 - `src/components/NominationCard.vue` — карточки основных и дополнительных номинаций.
 - `src/components/NomineeVisual.vue` — аватары, изображения и fallback-представление.
-- `js/pages/profile-presentation.js` — безопасная проверка URL изображения профиля.
+- `js/media.js` — единое построение адресов и проверка изображений из ImageKit; `js/pages/profile-presentation.js` — дополнительная проверка профильной папки.
 - `js/storage.js` — localStorage для имени и IndexedDB для локального кэша изображений профиля.
 
 Отображаемое имя профиля синхронизируется с сервером и дополнительно зеркалируется в localStorage для быстрого отображения. Аватар пользователя хранится в D1 как подтверждённый Telegram photo_url до первой собственной загрузки; после неё приоритет получает изображение ImageKit и его file ID. Баннер сохраняется в ImageKit. IndexedDB используется только как локальный кэш и fallback. Скрытые события — в localStorage.
@@ -63,7 +63,7 @@ Vue-страница предоставляет `getBallot()`, `isComplete()` и
 - `js/api.js` отправляет запросы к Cloudflare Worker.
 - `worker/index.js` проверяет подпись Telegram `initData` с помощью bot-token HMAC и только после успешной проверки читает или обновляет запись текущего пользователя в D1.
 - Worker выдаёт CORS-доступ только origin GitHub Pages. CORS ограничивает браузерный доступ, но не заменяет проверку подписи Telegram.
-- Загрузка `/api/profile/media` принимает только аватар или баннер, проверяет подпись Telegram `initData`, MIME-тип, сигнатуру содержимого и размер до 5 МБ. Worker загружает файл в ImageKit server-to-server; приватный ключ `IMAGEKIT_PRIVATE_KEY` не передаётся браузеру.
+- Загрузка `/api/profile/media` принимает только аватар или баннер, проверяет подпись Telegram `initData`, MIME-тип, сигнатуру содержимого и размер до 5 МБ. Worker загружает файл в ImageKit server-to-server в папку `/splitevents/profile`; приватный ключ `IMAGEKIT_PRIVATE_KEY` не передаётся браузеру.
 - D1 хранит URL и file ID изображений профиля. При замене старый файл удаляется из ImageKit после успешной записи нового; миграция `worker/migrations/0002_profile_media_file_ids.sql` добавляет нужные поля.
 - Миграция `worker/migrations/0003_public_user_ids.sql` добавляет случайный стабильный `public_id` и уникальный индекс. Он используется в маршрутах чужих профилей вместо Telegram ID.
 - `POST /api/friends` и `POST /api/user` требуют подписанный Telegram `initData`. Каталог исключает текущего пользователя на стороне Worker; ответы не раскрывают Telegram ID и содержат только публичные поля профиля.
@@ -98,3 +98,15 @@ Vite формирует production-имена JS/CSS-файлов с хешам�
 - Серверный backend поддерживает профиль, каталог друзей и чтение публичных профилей; синхронизация голосования ещё не реализована.
 - Каталог номинантов и событий статический и обновляется через Git.
 - Статическая проверка исходников не заменяет визуальную проверку в обычном браузере и Telegram WebView.
+
+
+## Изображения сайта и ImageKit
+
+Все управляемые сайтом изображения обслуживаются через единый модуль `js/media.js`. Он строит адреса в ImageKit endpoint `ik.imagekit.io/splitevents` и корневой папке Media Library `/splitevents` и отклоняет URL, которые не принадлежат этому endpoint или ожидаемой папке.
+
+- Профиль: загрузка аватара и баннера через Cloudflare Worker в `/splitevents/profile`. Эти файлы повторно используются в каталоге друзей и публичных профилях.
+- События: обложка каждого события из `/splitevents/events/<event-id>/cover.webp`.
+- Номинанты: портреты и изображения участников из `/splitevents/nominees/<nominee-id>.webp`.
+- Серверы: широкая обложка `/splitevents/servers/<server-id>/banner.webp` и три слайда `gallery-01.webp` — `gallery-03.webp` в той же папке.
+
+Папки и имена файлов перечислены в `docs/media-library.md`. GitHub Pages загружает изображения напрямую из ImageKit; приватный ImageKit API key остаётся только в секретах Worker.
