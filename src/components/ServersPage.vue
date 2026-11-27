@@ -1,12 +1,37 @@
 <script setup>
 import { ref } from "vue";
-import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
+import { SERVERS } from "../../js/servers/data.js?v=20261127-5";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
+const activeServerSlide = ref(0);
 
 function toggleServerDetails(server) {
-    expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
+    const isClosing = expandedServerId.value === server.id;
+
+    expandedServerId.value = isClosing ? "" : server.id;
+
+    if (isClosing) {
+        activeServerSlide.value = 0;
+        return;
+    }
+
+    const isMobile = typeof window.matchMedia === "function"
+        && window.matchMedia("(max-width: 640px)").matches;
+    activeServerSlide.value = isMobile && server.images.length > 1 ? 1 : 0;
+}
+
+function currentServerSlide(server) {
+    return expandedServerId.value === server.id ? activeServerSlide.value : 0;
+}
+
+function changeServerSlide(server, direction) {
+    const imageCount = server.images.length;
+    if (imageCount < 2) return;
+
+    activeServerSlide.value = (
+        activeServerSlide.value + direction + imageCount
+    ) % imageCount;
 }
 
 function openModpack(server, event) {
@@ -79,24 +104,50 @@ async function copyServerAddress(server) {
                             >
                                 <div class="server-card-artwork">
                                     <div class="server-card-gallery" role="group" :aria-label="'изображения сервера ' + server.name">
+                                        <div
+                                            class="server-card-gallery-track"
+                                            :style="{ transform: 'translateX(-' + currentServerSlide(server) * 100 + '%)' }"
+                                        >
+                                            <div
+                                                v-for="(image, index) in server.images"
+                                                :key="image.src"
+                                                class="server-card-gallery-slide"
+                                                :aria-hidden="index !== currentServerSlide(server)"
+                                            >
+                                                <img
+                                                    class="server-card-gallery-image"
+                                                    :src="image.src"
+                                                    :alt="image.alt"
+                                                    :loading="index === 0 ? 'eager' : 'lazy'"
+                                                    draggable="false"
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        v-if="expandedServerId === server.id && server.images.length > 1"
+                                        class="server-card-gallery-controls"
+                                        role="group"
+                                        :aria-label="'управление изображениями сервера ' + server.name"
+                                    >
                                         <button
                                             class="server-card-gallery-arrow ui-button ui-button--secondary ui-button--icon"
                                             type="button"
                                             aria-label="предыдущее изображение"
                                             title="предыдущее изображение"
-                                            disabled
+                                            @click.stop="changeServerSlide(server, -1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                                                 <use href="#icon-chevron-left"></use>
                                             </svg>
                                         </button>
-                                        <div class="server-card-portrait-placeholder" aria-hidden="true"></div>
                                         <button
                                             class="server-card-gallery-arrow ui-button ui-button--secondary ui-button--icon"
                                             type="button"
                                             aria-label="следующее изображение"
                                             title="следующее изображение"
-                                            disabled
+                                            @click.stop="changeServerSlide(server, 1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                                                 <use href="#icon-chevron-right"></use>
