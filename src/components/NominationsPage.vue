@@ -24,9 +24,10 @@ let countdownInterval = null;
 const introMessages = [
     "первая большая премия ρumρkin ρie, где вы определите самые запомнившиеся моменты 2026 года.",
     "в каждой номинации можно выбрать только один вариант. если, на ваш взгляд, достойного кандидата нет среди предложенных, можно номинировать собственного.",
-    "голосование закрывается 20 декабря в 23:59. стань частью истории и выбери тех, кто по-настоящему достоин стать победителем SQUASH 2026."
+    "голосование закрывается 19 декабря в 23:59. стань частью истории и выбери тех, кто по-настоящему достоин стать победителем SQUASH 2026."
 ];
 const introMessageIndex = ref(0);
+const introMessageDirection = ref(1);
 let introCarouselInterval = null;
 const nominationModel = createNominationModel({ nomineeById, compareNames });
 
@@ -164,10 +165,12 @@ function scrollToNominations() {
 }
 
 function advanceIntroMessage() {
+    introMessageDirection.value = 1;
     introMessageIndex.value = (introMessageIndex.value + 1) % introMessages.length;
 }
 
 function changeIntroMessage(direction) {
+    introMessageDirection.value = direction;
     introMessageIndex.value = (
         introMessageIndex.value + direction + introMessages.length
     ) % introMessages.length;
@@ -551,7 +554,7 @@ defineExpose({
                             </button>
 
                             <div class="squash-details-viewport" aria-live="polite" aria-atomic="true">
-                                <Transition name="squash-message" mode="out-in">
+                                <Transition :name="introMessageDirection > 0 ? 'squash-message-forward' : 'squash-message-backward'" mode="out-in">
                                     <p :key="introMessageIndex" class="squash-details-message">
                                         {{ introMessages[introMessageIndex] }}
                                     </p>
