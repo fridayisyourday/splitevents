@@ -93,10 +93,12 @@
 
 .page-container--medium {
     width: min(100%, var(--app-content-width-medium));
+    margin-inline: auto;
 }
 
 .page-container--reading {
     width: min(100%, var(--app-content-width-reading));
+    margin-inline: auto;
 }
 
 .page-grid,
