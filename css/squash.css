@@ -242,15 +242,22 @@
     grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
     align-items: center;
     gap: clamp(var(--app-space-2-5), 2vw, var(--app-space-5-5));
+    box-sizing: border-box;
+    height: 156px;
     min-height: 156px;
+    max-height: 156px;
 }
 .squash-details-arrow {
     justify-self: center;
 }
 .squash-details-viewport {
     display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: 156px;
     min-width: 0;
     min-height: 156px;
+    max-height: 156px;
     align-items: center;
     justify-content: center;
     overflow: hidden;
@@ -307,10 +314,14 @@
     .squash-details-carousel {
         grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
         gap: var(--app-space-2);
+        height: 192px;
         min-height: 192px;
+        max-height: 192px;
     }
     .squash-details-viewport {
+        height: 192px;
         min-height: 192px;
+        max-height: 192px;
     }
     .squash-details-message {
         font-size: var(--app-font-size-default);
