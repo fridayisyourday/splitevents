@@ -102,7 +102,7 @@ Vite формирует production-имена JS/CSS-файлов с хешам�
 
 ## Изображения сайта и ImageKit
 
-Все управляемые сайтом изображения обслуживаются через единый модуль `js/media.js`. Он строит адреса в ImageKit endpoint `ik.imagekit.io/splitevents` и отклоняет URL, которые не принадлежат этому endpoint или ожидаемой папке.
+Все управляемые сайтом изображения обслуживаются через единый модуль `js/media.js`. Он строит адреса в ImageKit endpoint `ik.imagekit.io/splitevents` и корневой папке Media Library `/splitevents` и отклоняет URL, которые не принадлежат этому endpoint или ожидаемой папке.
 
 - Профиль: загрузка аватара и баннера через Cloudflare Worker в `/splitevents/profile`. Эти файлы повторно используются в каталоге друзей и публичных профилях.
 - События: обложка каждого события из `/splitevents/events/<event-id>/cover.webp`.
