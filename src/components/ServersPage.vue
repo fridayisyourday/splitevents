@@ -109,7 +109,7 @@ function openModpack(server, event) {
                                                     class="server-card-gallery-slide"
                                                     :class="'server-card-gallery-slide--' + slide"
                                                     role="img"
-                                                    :aria-label="'нейтральная заглушка баннера ' + (slide + 1)"
+                                                    :aria-label="'изображение сервера ' + (slide + 1)"
                                                     :aria-hidden="(galleryIndexes[server.id] ?? 0) !== slide"
                                                 >
                                                     <img
