@@ -93,7 +93,8 @@ Telegram Mini App для совместных мероприятий, профи
 └── docs/
     ├── architecture.md
     ├── design-review.md
-    └── events.md
+    ├── events.md
+    └── media-library.md
 ```
 
 ## Стандарты оформления
@@ -108,7 +109,7 @@ Telegram Mini App для совместных мероприятий, профи
 
 **Страницы.** Главная, сервера и номинации имеют отдельные Vue-компоненты. Каждый раздел управляет своим состоянием и жизненным циклом через Vue.
 
-**Профиль, друзья и API.** Интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `src/components/NotificationRegion.vue`.
+**Профиль, друзья и API.** Единая генерация и проверка адресов ImageKit находится в `js/media.js`; интерфейс собственного профиля — `src/components/ProfilePage.vue`; каталог друзей — `src/components/FriendsPage.vue`; чужой профиль — `src/components/UserProfilePage.vue`; безопасная проверка URL изображений — `js/pages/profile-presentation.js`; локальный кэш изображений — `js/storage.js`. Запросы к API — `js/api.js`; проверка Telegram `initData`, запись метаданных в D1, выдача списка пользователей и серверная загрузка медиа в ImageKit — `worker/index.js`. Секрет `IMAGEKIT_PRIVATE_KEY` хранится только в Cloudflare Worker. Общие уведомления об ошибках и проблемах хранения — `src/components/NotificationRegion.vue`.
 
 **Визуал.** Общие цвета, радиусы, размеры, тени и состояния — `css/design-system.css`. Уведомления имеют отдельный слой `css/notifications.css`. Стили номинаций разделены по назначению: базовая структура, карусель, окно выбора и оформление самих карточек.
 
