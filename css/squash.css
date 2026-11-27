@@ -5,7 +5,7 @@
     width: 100%;
     height: clamp(430px, 62svh, 650px);
     min-height: 420px;
-    margin: 0 0 clamp(38px, 6vw, 70px);
+    margin: 0;
     overflow: hidden;
     isolation: isolate;
     border: var(--app-card-outline);
@@ -140,7 +140,7 @@
     .squash-hero {
         height: 470px;
         min-height: 430px;
-        margin-bottom: 38px;
+        margin-bottom: 0;
     }
     .squash-hero-content {
         left: 22px;
@@ -191,5 +191,125 @@
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
+    }
+}
+
+
+/* SQUASH! partners and the introductory message carousel. */
+.squash-partners {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: clamp(24px, 4vw, 36px) 0 clamp(38px, 6vw, 54px);
+}
+.squash-partners-label {
+    margin: 0 0 14px;
+    color: var(--app-hint);
+    font-size: 14px;
+    font-weight: var(--app-font-weight-medium);
+}
+.squash-partners-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(12px, 2vw, 18px);
+}
+.squash-partner-placeholder {
+    box-sizing: border-box;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    overflow: hidden;
+    border: var(--app-card-outline);
+    border-radius: 50%;
+    background: var(--app-placeholder);
+    box-shadow: var(--app-shadow-card);
+}
+.squash-details {
+    width: min(100%, 860px);
+    margin: 0 auto clamp(46px, 7vw, 72px);
+}
+.squash-details-title {
+    margin: 0 0 22px;
+    color: var(--app-text);
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: var(--app-font-weight-bold);
+    letter-spacing: -.025em;
+    text-align: center;
+}
+.squash-details-carousel {
+    display: grid;
+    grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
+    align-items: center;
+    gap: clamp(10px, 2vw, 22px);
+    min-height: 156px;
+}
+.squash-details-arrow {
+    justify-self: center;
+}
+.squash-details-viewport {
+    display: flex;
+    min-width: 0;
+    min-height: 156px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-align: center;
+}
+.squash-details-message {
+    width: 100%;
+    margin: 0;
+    color: var(--app-text);
+    font-size: clamp(15px, 1.7vw, 18px);
+    font-weight: var(--app-font-weight-regular);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+.squash-message-enter-active,
+.squash-message-leave-active {
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+.squash-message-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+.squash-message-leave-to {
+    opacity: 0;
+    transform: translateY(-8px);
+}
+@media (max-width: 640px) {
+    .squash-partners {
+        margin-top: 24px;
+        margin-bottom: 36px;
+    }
+    .squash-partner-placeholder {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+    }
+    .squash-details {
+        margin-bottom: 48px;
+    }
+    .squash-details-title {
+        margin-bottom: 16px;
+        font-size: 20px;
+    }
+    .squash-details-carousel {
+        grid-template-columns: 40px minmax(0, 1fr) 40px;
+        gap: 8px;
+        min-height: 192px;
+    }
+    .squash-details-viewport {
+        min-height: 192px;
+    }
+    .squash-details-message {
+        font-size: 15px;
+        line-height: 1.58;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .squash-message-enter-active,
+    .squash-message-leave-active {
+        transition-duration: 0.01ms;
     }
 }
