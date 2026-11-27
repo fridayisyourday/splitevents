@@ -65,7 +65,7 @@
     justify-content: center;
     background: var(--app-secondary);
     color: var(--app-on-secondary);
-    font-size: clamp(56px, 12vw, 84px);
+    font-size: var(--app-font-size-heading);
     font-weight: 400;
     line-height: var(--app-line-height-tight);
 }
@@ -140,12 +140,12 @@
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
     min-height: 2.4em;
-    font-size: var(--app-font-size-default);
+    font-size: var(--app-font-size-accent);
     line-height: var(--app-line-height-snug);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-selected-nominee {
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-action-button {
