@@ -82,7 +82,7 @@
     overflow: hidden;
 }
 
-.vote-nomination-card--featured .vote-logo-wrap {
+    .vote-nomination-card--featured .vote-logo-wrap {
     height: 148px;
     flex-basis: 148px;
 }
