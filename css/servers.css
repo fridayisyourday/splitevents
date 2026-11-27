@@ -319,11 +319,6 @@
         transform: none;
     }
 
-    .server-card-title {
-        font-size: clamp(30px, 9.6cqw, 42px);
-        letter-spacing: -0.065em;
-    }
-
     .server-card-ip {
         min-height: var(--app-control-height);
         font-size: var(--app-font-size-body);
