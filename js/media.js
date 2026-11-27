@@ -106,7 +106,7 @@ export function getServerGalleryImageUrl(serverId, fileName) {
     if (
         !isValidId(serverId)
         || typeof fileName !== "string"
-        || !/^gallery-[0-9]{2}\\.webp$/.test(fileName)
+        || !/^gallery-[0-9]{2}\.webp$/.test(fileName)
     ) {
         return "";
     }
