@@ -58,6 +58,7 @@ Telegram Mini App для совместных мероприятий, профи
 │   ├── nominations-picker.css
 │   └── nominations-cards.css
 ├── js/
+│   ├── media.js
 │   ├── navigation.js
 │   ├── api.js
 │   ├── telegram.js
