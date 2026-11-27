@@ -208,7 +208,7 @@
     flex-direction: column;
     gap: var(--app-space-4);
     overflow-y: auto;
-    padding: clamp(var(--app-space-4), 3vw, var(--app-space-6));
+    padding: var(--app-container-padding);
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -271,7 +271,7 @@
     align-items: stretch;
     justify-content: space-between;
     gap: var(--app-space-2-5);
-    padding: var(--app-space-3);
+    padding: var(--app-container-padding);
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-medium);
     background: var(--app-secondary);
@@ -510,7 +510,7 @@
 
     .vote-candidate-card {
         min-height: 206px;
-        padding: var(--app-space-2-5);
+        padding: var(--app-container-padding);
     }
 
     .vote-avatar,

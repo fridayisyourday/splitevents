@@ -26,7 +26,7 @@
     width: 100%;
     min-height: 84px;
     gap: var(--app-space-3-5);
-    padding: var(--app-space-3-5) var(--app-space-4);
+    padding: var(--app-container-padding);
     border: 0;
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -163,7 +163,6 @@
 @media (max-width: 480px) {
     .friend-card {
         min-height: 78px;
-        padding: var(--app-space-3) var(--app-space-3-5);
         gap: var(--app-space-3);
     }
 

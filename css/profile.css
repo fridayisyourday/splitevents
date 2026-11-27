@@ -147,7 +147,7 @@
     min-height: 112px;
     flex-direction: column;
     align-items: flex-start;
-    padding: 66px var(--app-space-5) var(--app-space-5);
+    padding: 66px var(--app-container-padding) var(--app-container-padding);
     background: var(--app-card-background);
 }
 
@@ -225,7 +225,7 @@
     }
 
     .profile-details {
-        padding: 60px var(--app-space-4) var(--app-space-4-5);
+        padding: 60px var(--app-container-padding) var(--app-container-padding);
     }
 }
 

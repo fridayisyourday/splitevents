@@ -25,7 +25,7 @@
         min-height: 0;
         height: auto;
         gap: var(--app-space-2);
-        padding: var(--app-space-2-5);
+        padding: var(--app-container-padding);
     }
     .vote-avatar,
     .vote-avatar-placeholder,

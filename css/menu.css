@@ -33,12 +33,12 @@
         max(var(--app-space-4), env(safe-area-inset-top, var(--app-space-0)), var(--tg-safe-area-inset-top, var(--app-space-0)), var(--app-safe-top, var(--app-space-0)))
         + var(--tg-content-safe-area-inset-top, var(--app-content-safe-top, var(--app-space-0)))
     );
-    padding-right: max(var(--app-space-4), env(safe-area-inset-right, var(--app-space-0)));
+    padding-right: max(var(--app-container-padding), env(safe-area-inset-right, var(--app-space-0)));
     padding-bottom: calc(
         max(var(--app-space-4), env(safe-area-inset-bottom, var(--app-space-0)), var(--tg-safe-area-inset-bottom, var(--app-space-0)), var(--app-safe-bottom, var(--app-space-0)))
         + var(--tg-content-safe-area-inset-bottom, var(--app-content-safe-bottom, var(--app-space-0)))
     );
-    padding-left: max(var(--app-space-4), env(safe-area-inset-left, var(--app-space-0)));
+    padding-left: max(var(--app-container-padding), env(safe-area-inset-left, var(--app-space-0)));
     overflow-y: auto;
     overscroll-behavior: contain;
     background: var(--app-card-background);

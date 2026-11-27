@@ -40,6 +40,7 @@
     --app-profile-width: var(--app-content-width);
     --app-header-height: 64px;
     --app-control-height: 48px;
+    --app-container-padding: 16px;
     --app-page-gutter: 16px;
     --app-page-top: 24px;
     --app-section-gap: 24px;
@@ -157,6 +158,12 @@
 
     --app-icon-size: 24px;
     --app-icon-stroke: 2px;
+}
+
+@media (max-width: 640px) {
+    :root {
+        --app-container-padding: 14px;
+    }
 }
 
 :root[data-color-scheme="dark"] {

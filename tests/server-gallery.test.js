@@ -89,5 +89,8 @@ test("server card dimensions are increased to 1.2 times the compact layout", () 
     assert.match(styles, /\.server-card\s*\{[^}]*height:\s*220px;/s);
     assert.match(styles, /\.server-card-title\s*\{[^}]*font-size:\s*9\.2cqw;/s);
     assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.server-card\s*\{[^}]*height:\s*264px;/);
-    assert.match(styles, /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*62px;/s);
+    assert.match(
+        styles,
+        /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*grid-template-rows:\s*minmax\(0, 1fr\) calc\(var\(--app-control-height\) \+ var\(--app-container-padding\) \+ var\(--app-container-padding\)\);/s
+    );
 });
