@@ -489,7 +489,7 @@ defineExpose({
             <div class="section-page-content nominations-page-content">
                 <section class="squash-hero" aria-labelledby="squash-hero-title">
                     <div class="squash-hero-art" aria-hidden="true">
-                        <img src="./assets/squash-hero.svg" alt="" fetchpriority="high">
+                        <img src="../../assets/squash-hero.svg" alt="" fetchpriority="high">
                     </div>
                     <div class="squash-hero-content">
                         <h1 id="squash-hero-title" class="squash-hero-title">SQUASH!</h1>
