@@ -1,10 +1,31 @@
 <script setup>
-import { ref } from "vue";
-import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
+import { reactive, ref } from "vue";
+import { SERVERS } from "../../js/servers/data.js?v=20261127-5";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
 const gallerySlides = [0, 1, 2];
+const failedBannerIds = reactive(new Set());
+const failedGalleryImageIds = reactive(new Set());
+
+function bannerImageUrl(server) {
+    return failedBannerIds.has(server.id) ? "" : (server.banner || "");
+}
+
+function galleryImageUrl(server, slide) {
+    const imageId = server.id + ":" + slide;
+    return failedGalleryImageIds.has(imageId)
+        ? ""
+        : (server.gallery?.[slide] || "");
+}
+
+function markBannerImageFailed(serverId) {
+    failedBannerIds.add(serverId);
+}
+
+function markGalleryImageFailed(serverId, slide) {
+    failedGalleryImageIds.add(serverId + ":" + slide);
+}
 
 function shiftGallery(server, direction) {
     const currentIndex = galleryIndexes.value[server.id] ?? 0;
@@ -56,6 +77,15 @@ function openModpack(server, event) {
                                 :aria-labelledby="'server-title-' + server.id"
                             >
                                 <div class="server-card-artwork">
+                                    <img
+                                        v-if="bannerImageUrl(server)"
+                                        class="server-card-banner-image"
+                                        :src="bannerImageUrl(server)"
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                        @error="markBannerImageFailed(server.id)"
+                                    >
                                     <div class="server-card-gallery" role="group" :aria-label="'изображения сервера ' + server.name">
                                         <button
                                             class="server-card-gallery-arrow server-card-gallery-arrow--previous ui-button ui-button--secondary ui-button--icon"
@@ -81,7 +111,17 @@ function openModpack(server, event) {
                                                     role="img"
                                                     :aria-label="'нейтральная заглушка баннера ' + (slide + 1)"
                                                     :aria-hidden="(galleryIndexes[server.id] ?? 0) !== slide"
-                                                ></div>
+                                                >
+                                                    <img
+                                                        v-if="galleryImageUrl(server, slide)"
+                                                        class="server-card-gallery-image"
+                                                        :src="galleryImageUrl(server, slide)"
+                                                        alt=""
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                        @error="markGalleryImageFailed(server.id, slide)"
+                                                    >
+                                                </div>
                                             </div>
                                         </div>
                                         <button
@@ -129,6 +169,10 @@ function openModpack(server, event) {
                                     :aria-labelledby="'server-title-' + server.id"
                                 >
                                     <div class="server-details-panel-surface">
+                                        <div class="server-details-description">
+                                            <span class="server-details-label">описание</span>
+                                            <p>{{ server.description }}</p>
+                                        </div>
                                         <div class="server-details-grid">
                                             <span class="server-details-label">загрузчик</span>
                                             <span class="menu-item-badge menu-item-badge--accent">{{ server.loader }}</span>
