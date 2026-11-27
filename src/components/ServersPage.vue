@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-5";
+import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
@@ -51,6 +52,38 @@ function openModpack(server, event) {
     } catch (error) {
         console.warn("SplitEvents: Telegram could not open the modpack link", error);
         window.open(server.modpackUrl, "_blank", "noopener,noreferrer");
+    }
+}
+
+async function copyText(value) {
+    if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+        return;
+    }
+
+    const field = document.createElement("textarea");
+    field.value = value;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    field.style.pointerEvents = "none";
+    document.body.appendChild(field);
+    field.select();
+    const copied = document.execCommand("copy");
+    field.remove();
+
+    if (!copied) throw new Error("Clipboard is unavailable");
+}
+
+async function copyServerAddress(server) {
+    try {
+        await copyText(server.address);
+        notifySuccess("скопировано");
+    } catch {
+        notifyError(
+            "не удалось скопировать ip",
+            "попробуйте выделить адрес вручную."
+        );
     }
 }
 
@@ -143,6 +176,7 @@ function openModpack(server, event) {
                                         <h2 :id="'server-title-' + server.id" class="server-card-title">
                                             {{ server.name }}
                                         </h2>
+                                        <p class="server-card-subtitle">{{ server.description }}</p>
                                     </div>
                                 </div>
 
@@ -169,9 +203,17 @@ function openModpack(server, event) {
                                     :aria-labelledby="'server-title-' + server.id"
                                 >
                                     <div class="server-details-panel-surface">
-                                        <div class="server-details-description">
-                                            <span class="server-details-label">описание</span>
-                                            <p>{{ server.description }}</p>
+                                        <div class="server-details-ip-row">
+                                            <span class="server-details-label">ip</span>
+                                            <button
+                                                class="server-details-ip-value"
+                                                type="button"
+                                                :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
+                                                title="скопировать ip"
+                                                @click="copyServerAddress(server)"
+                                            >
+                                                {{ server.address }}
+                                            </button>
                                         </div>
                                         <div class="server-details-grid">
                                             <span class="server-details-label">загрузчик</span>
