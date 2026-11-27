@@ -11,7 +11,7 @@ test("TECHNOCRACY server is listed with the supplied address", () => {
     assert.equal(SERVERS[0].version, "21.1");
     assert.equal(
         SERVERS[0].modpackUrl,
-        "https://drive.google.com/drive/u/0/mobile/folders/1YmdjPFOAKPpo0AKIUSurRo5AMLkzZPdX?hl=ru&sort=13&direction=a"
+        "https://drive.google.com/drive/folders/1YmdjPFOAKPpo0AKIUSurRo5AMLkzZPdX?hl=ru&sort=13&direction=a"
     );
 });
 
