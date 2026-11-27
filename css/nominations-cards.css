@@ -101,7 +101,7 @@
     align-items: center;
     gap: var(--app-space-2);
     margin-top: auto;
-    padding: 132px var(--app-space-4-5) var(--app-space-4-5);
+    padding: 132px var(--app-container-padding) var(--app-container-padding);
     color: var(--app-text);
     text-align: center;
 }
@@ -130,12 +130,12 @@
 }
 
 .vote-nomination-card--featured .vote-nomination-content {
-    padding: 154px var(--app-space-5) var(--app-space-5);
+    padding: 154px var(--app-container-padding) var(--app-container-padding);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content {
     gap: var(--app-space-1-5);
-    padding: 88px var(--app-space-3) var(--app-space-3);
+    padding: 88px var(--app-container-padding) var(--app-container-padding);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
@@ -226,14 +226,14 @@
 @media (max-width: 640px) {
     .vote-nomination-content {
         gap: var(--app-space-1-5);
-        padding: 110px var(--app-space-2-5) var(--app-space-2-5);
+        padding: 110px var(--app-container-padding) var(--app-container-padding);
     }
 
     .vote-nomination-card--featured .vote-nomination-content {
-        padding: 118px var(--app-space-2-5) var(--app-space-2-5);
+        padding: 118px var(--app-container-padding) var(--app-container-padding);
     }
 
     .vote-nomination-card.vote-carousel-card .vote-nomination-content {
-        padding: 78px var(--app-space-2-5) var(--app-space-2-5);
+        padding: 78px var(--app-container-padding) var(--app-container-padding);
     }
 }
