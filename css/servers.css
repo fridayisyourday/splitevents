@@ -195,10 +195,10 @@
 .server-details-ip-button .menu-item-badge {
     display: flex;
     box-sizing: border-box;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     min-width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
 @media (hover: hover) {
@@ -264,11 +264,11 @@
 
 .server-details-grid {
     display: grid;
-    grid-template-columns: max-content minmax(156px, max-content);
-    grid-auto-rows: minmax(var(--app-control-height), auto);
+    grid-template-columns: max-content minmax(176px, max-content);
+    grid-auto-rows: minmax(24px, auto);
     align-items: center;
     justify-content: center;
-    column-gap: var(--app-space-4-5);
+    column-gap: var(--app-space-2-5);
     row-gap: 2px;
     width: fit-content;
     max-width: 100%;
@@ -278,16 +278,19 @@
 .server-details-grid > .menu-item-badge {
     display: flex;
     box-sizing: border-box;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     min-width: 0;
+    text-align: left;
 }
 
 .server-details-label {
+    justify-self: end;
     color: var(--app-hint);
     font-size: var(--app-font-size-body);
     font-weight: var(--app-font-weight-medium);
     line-height: var(--app-line-height-label);
+    text-align: right;
 }
 
 .server-details-download {
@@ -367,8 +370,8 @@
     }
 
     .server-details-grid {
-        grid-template-columns: max-content minmax(156px, max-content);
-        column-gap: var(--app-space-3);
+        grid-template-columns: max-content minmax(176px, max-content);
+        column-gap: var(--app-space-2);
         row-gap: 2px;
     }
 
