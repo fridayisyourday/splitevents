@@ -129,7 +129,7 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    font-size: clamp(14px, 3.8vw, 18px);
+    font-size: var(--app-font-size-accent);
     line-height: var(--app-line-height-snug);
     overflow-wrap: anywhere;
 }
@@ -138,7 +138,7 @@
     min-height: 1.35em;
     flex: 0 0 auto;
     margin: 0;
-    font-size: var(--app-font-size-xs);
+    font-size: var(--app-font-size-main);
     line-height: var(--app-line-height-title);
 }
 
@@ -154,7 +154,7 @@
 /* Secondary cards are smaller than the two featured nominations. */
 .vote-nomination-card.vote-carousel-card .vote-nomination-title {
     min-height: 2.4em;
-    font-size: var(--app-font-size-default);
+    font-size: var(--app-font-size-accent);
     line-height: var(--app-line-height-snug);
 }
 
