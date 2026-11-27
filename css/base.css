@@ -73,7 +73,7 @@ svg {
     width: 2px;
     height: 2px;
     padding: 0;
-    margin: 0px;
+    margin: var(--app-space-0);
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -87,7 +87,7 @@ svg {
     z-index: 2000;
     width: auto;
     height: auto;
-    padding: 12px;
+    padding: var(--app-space-3);
     margin: 0;
     overflow: visible;
     clip: auto;
@@ -103,7 +103,7 @@ svg {
     width: 2px;
     height: 2px;
     padding: 0;
-    margin: 0px;
+    margin: var(--app-space-0);
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;

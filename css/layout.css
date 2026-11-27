@@ -19,23 +19,23 @@
     width: 100%;
     min-height: var(--app-header-height);
     padding-top: calc(
-        max(8px, env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), var(--app-safe-top, 0px))
-        + var(--tg-content-safe-area-inset-top, var(--app-content-safe-top, 0px))
+        max(var(--app-space-2), env(safe-area-inset-top, var(--app-space-0)), var(--tg-safe-area-inset-top, var(--app-space-0)), var(--app-safe-top, var(--app-space-0)))
+        + var(--tg-content-safe-area-inset-top, var(--app-content-safe-top, var(--app-space-0)))
     );
     padding-right: max(
-        16px,
-        env(safe-area-inset-right, 0px),
-        var(--tg-safe-area-inset-right, 0px),
-        var(--app-safe-right, 0px),
-        var(--tg-content-safe-area-inset-right, 0px)
+        var(--app-space-4),
+        env(safe-area-inset-right, var(--app-space-0)),
+        var(--tg-safe-area-inset-right, var(--app-space-0)),
+        var(--app-safe-right, var(--app-space-0)),
+        var(--tg-content-safe-area-inset-right, var(--app-space-0))
     );
-    padding-bottom: 8px;
+    padding-bottom: var(--app-space-2);
     padding-left: max(
-        16px,
-        env(safe-area-inset-left, 0px),
-        var(--tg-safe-area-inset-left, 0px),
-        var(--app-safe-left, 0px),
-        var(--tg-content-safe-area-inset-left, 0px)
+        var(--app-space-4),
+        env(safe-area-inset-left, var(--app-space-0)),
+        var(--tg-safe-area-inset-left, var(--app-space-0)),
+        var(--app-safe-left, var(--app-space-0)),
+        var(--tg-content-safe-area-inset-left, var(--app-space-0))
     );
     background: var(--tg-theme-header-bg-color, var(--app-background));
     border-bottom: 2px solid var(--app-border);
@@ -60,7 +60,7 @@
     font-size: var(--app-font-size-brand);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -2px;
-    line-height: 1;
+    line-height: var(--app-line-height-tight);
     user-select: none;
     pointer-events: none;
 }
@@ -71,8 +71,8 @@
     min-width: 0;
     min-height: 2px;
     padding-bottom: calc(
-        max(16px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px))
-        + var(--tg-content-safe-area-inset-bottom, var(--app-content-safe-bottom, 0px))
+        max(var(--app-space-4), env(safe-area-inset-bottom, var(--app-space-0)), var(--tg-safe-area-inset-bottom, var(--app-space-0)), var(--app-safe-bottom, var(--app-space-0)))
+        + var(--tg-content-safe-area-inset-bottom, var(--app-content-safe-bottom, var(--app-space-0)))
     );
     background: var(--app-background);
 }
@@ -133,6 +133,6 @@
     .page-grid,
     .section-page-content {
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        column-gap: 12px;
+        column-gap: var(--app-space-3);
     }
 }

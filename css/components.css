@@ -17,7 +17,7 @@
     font-family: var(--app-font-family);
     font-size: var(--app-button-font-size);
     font-weight: var(--app-button-font-weight);
-    line-height: 1.2;
+    line-height: var(--app-line-height-snug);
     text-align: center;
     text-decoration: none;
     cursor: pointer;
