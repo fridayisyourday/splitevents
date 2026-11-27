@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, ref } from "vue";
-import { SERVERS } from "../../js/servers/data.js?v=20261127-3";
+import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
 
 const copiedServerId = ref("");
 const expandedServerId = ref("");
@@ -8,6 +8,21 @@ let copiedTimeout = null;
 
 function toggleServerDetails(server) {
     expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
+}
+
+function openModpack(server, event) {
+    const webApp = window.Telegram?.WebApp;
+
+    if (typeof webApp?.openLink !== "function") return;
+
+    event.preventDefault();
+
+    try {
+        webApp.openLink(server.modpackUrl);
+    } catch (error) {
+        console.warn("SplitEvents: Telegram could not open the modpack link", error);
+        window.open(server.modpackUrl, "_blank", "noopener,noreferrer");
+    }
 }
 
 async function copyText(value) {
@@ -105,7 +120,7 @@ onBeforeUnmount(() => {
 
                                 <div class="server-card-footer">
                                     <button
-                                        class="server-card-more ui-button ui-button--primary"
+                                        class="server-card-more ui-button"
                                         type="button"
                                         :aria-expanded="expandedServerId === server.id"
                                         :aria-controls="'server-details-' + server.id"
@@ -135,10 +150,12 @@ onBeforeUnmount(() => {
 
                                             <span class="server-details-label">модпак</span>
                                             <a
-                                                class="server-details-download ui-button ui-button--primary"
+                                                class="server-details-download ui-button"
                                                 :href="server.modpackUrl"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
+                                                :aria-label="'загрузить модпак сервера ' + server.name"
+                                                @click="openModpack(server, $event)"
                                             >
                                                 загрузить
                                             </a>
