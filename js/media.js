@@ -1,5 +1,5 @@
 /* ImageKit is the single source for site-managed images. */
-export const IMAGEKIT_ENDPOINT_ID = "splitevents";
+export const IMAGEKIT_ENDPOINT_ID = "firdayywh";
 const IMAGEKIT_ORIGIN = "https://ik.imagekit.io";
 const IMAGEKIT_LIBRARY_ROOT = "splitevents";
 const IMAGEKIT_ROOT = IMAGEKIT_ORIGIN + "/" + IMAGEKIT_ENDPOINT_ID + "/" + IMAGEKIT_LIBRARY_ROOT;
