@@ -183,7 +183,7 @@
     display: flex;
     flex: 1 1 0;
     align-items: center;
-    justify-content: stretch;
+    justify-content: flex-start;
     width: 100%;
     min-width: 0;
     min-height: var(--app-control-height);
