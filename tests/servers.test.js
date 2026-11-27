@@ -7,6 +7,12 @@ test("TECHNOCRACY server is listed with the supplied address", () => {
     assert.equal(SERVERS[0].id, "technocracy");
     assert.equal(SERVERS[0].name, "TECHNOCRACY");
     assert.equal(SERVERS[0].address, "26.135.106.225:4444");
+    assert.equal(SERVERS[0].loader, "neoforge");
+    assert.equal(SERVERS[0].version, "21.1");
+    assert.equal(
+        SERVERS[0].modpackUrl,
+        "https://drive.google.com/drive/u/0/mobile/folders/1YmdjPFOAKPpo0AKIUSurRo5AMLkzZPdX?hl=ru&sort=13&direction=a"
+    );
 });
 
 test("server entries have unique ids and only metadata, without fabricated artwork", () => {
