@@ -175,8 +175,8 @@
     justify-content: center;
     width: 100%;
     min-width: 0;
-    height: var(--app-control-height);
-    min-height: var(--app-control-height);
+    height: var(--app-space-9);
+    min-height: var(--app-space-9);
     margin: 0;
     padding: 0;
     border: 0;
@@ -266,7 +266,7 @@
 .server-details-grid {
     display: grid;
     grid-template-columns: max-content minmax(184px, max-content);
-    grid-auto-rows: minmax(var(--app-control-height), auto);
+    grid-auto-rows: minmax(var(--app-space-9), auto);
     align-items: center;
     justify-content: center;
     column-gap: var(--app-space-3);
@@ -303,8 +303,8 @@
     justify-self: stretch;
     width: 100%;
     min-width: 0;
-    height: var(--app-control-height);
-    min-height: var(--app-control-height);
+    height: var(--app-space-9);
+    min-height: var(--app-space-9);
     padding: 0;
     border: 0;
     border-radius: 0;
