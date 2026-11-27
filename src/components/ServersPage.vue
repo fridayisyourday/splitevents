@@ -206,13 +206,15 @@ async function copyServerAddress(server) {
                                         <div class="server-details-ip-row">
                                             <span class="server-details-label">ip</span>
                                             <button
-                                                class="server-details-ip-value"
+                                                class="server-details-ip-button"
                                                 type="button"
                                                 :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
                                                 title="скопировать ip"
                                                 @click="copyServerAddress(server)"
                                             >
-                                                {{ server.address }}
+                                                <span class="menu-item-badge menu-item-badge--accent">
+                                                    {{ server.address }}
+                                                </span>
                                             </button>
                                         </div>
                                         <div class="server-details-grid">
