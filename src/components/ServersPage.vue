@@ -1,11 +1,9 @@
 <script setup>
-import { onBeforeUnmount, ref } from "vue";
+import { ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
-import { notifyError } from "../../js/notifications.js?v=20261127-1";
+import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
-const copiedServerId = ref("");
 const expandedServerId = ref("");
-let copiedTimeout = null;
 
 function toggleServerDetails(server) {
     expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
@@ -49,12 +47,7 @@ async function copyText(value) {
 async function copyServerAddress(server) {
     try {
         await copyText(server.address);
-        copiedServerId.value = server.id;
-        if (copiedTimeout !== null) window.clearTimeout(copiedTimeout);
-        copiedTimeout = window.setTimeout(() => {
-            copiedServerId.value = "";
-            copiedTimeout = null;
-        }, 1600);
+        notifySuccess("скопировано");
     } catch {
         notifyError(
             "не удалось скопировать ip",
@@ -62,10 +55,6 @@ async function copyServerAddress(server) {
         );
     }
 }
-
-onBeforeUnmount(() => {
-    if (copiedTimeout !== null) window.clearTimeout(copiedTimeout);
-});
 </script>
 
 <template>
@@ -106,12 +95,6 @@ onBeforeUnmount(() => {
                                             >
                                                 {{ server.address }}
                                             </button>
-                                            <span
-                                                v-if="copiedServerId === server.id"
-                                                class="server-card-copy-status"
-                                                role="status"
-                                                aria-live="polite"
-                                            >скопировано</span>
                                         </div>
                                     </div>
                                 </div>
