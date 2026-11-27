@@ -6,6 +6,7 @@ const NOMINEE_RECORDS = [
     { id: "holydark", name: "HolyDark", gender: "F", avatar: getNomineeAvatarUrl("holydark") },
     { id: "cyathere", name: "cyathere", gender: "F", avatar: getNomineeAvatarUrl("cyathere") },
     { id: "vale", name: "Vale", gender: "F", avatar: getNomineeAvatarUrl("vale") },
+    { id: "vamorii", name: "vamorii", gender: "F", avatar: getNomineeAvatarUrl("vamorii") },
     { id: "theriazon", name: "theriazon", gender: "M", avatar: getNomineeAvatarUrl("theriazon") },
     { id: "otorgy", name: "Otorgy", gender: "M", avatar: getNomineeAvatarUrl("otorgy") },
     { id: "skatpoint", name: "skatpoint", gender: "M", avatar: getNomineeAvatarUrl("skatpoint") },
