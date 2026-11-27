@@ -131,23 +131,10 @@ async function copyServerAddress(server) {
                                 </div>
 
                                 <div class="server-card-content">
-                                    <div class="server-card-logo" aria-hidden="true"></div>
-
                                     <div class="server-card-details">
                                         <h2 :id="'server-title-' + server.id" class="server-card-title">
                                             {{ server.name }}
                                         </h2>
-                                        <div class="server-card-address-row">
-                                            <button
-                                                class="server-card-ip"
-                                                type="button"
-                                                :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
-                                                title="скопировать ip"
-                                                @click="copyServerAddress(server)"
-                                            >
-                                                {{ server.address }}
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
 
