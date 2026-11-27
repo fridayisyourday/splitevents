@@ -1,12 +1,20 @@
 <script setup>
-import { nextTick, reactive, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-5";
+import {
+    getInitialServerGalleryPosition,
+    getNextServerGalleryPosition,
+    getServerGalleryLayout,
+    getServerGallerySlides,
+    isServerGalleryClonePosition,
+    normalizeServerGalleryPosition
+} from "../../js/servers/gallery.js?v=20261129-1";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
 const galleryTransitionDisabled = ref({});
-const gallerySlides = [2, 0, 1, 2, 0];
+const galleryAnimating = ref({});
 const failedBannerIds = reactive(new Set());
 const failedGalleryImageIds = reactive(new Set());
 
@@ -29,17 +37,88 @@ function markGalleryImageFailed(serverId, slide) {
     failedGalleryImageIds.add(serverId + ":" + slide);
 }
 
-function shiftGallery(server, direction) {
-    const currentIndex = galleryIndexes.value[server.id] ?? 1;
-    galleryIndexes.value = {
-        ...galleryIndexes.value,
-        [server.id]: currentIndex + direction
+function gallerySlidesFor(server) {
+    return getServerGallerySlides(server.gallery);
+}
+
+function galleryPosition(server) {
+    return galleryIndexes.value[server.id] ?? getInitialServerGalleryPosition(server.gallery);
+}
+
+function galleryTrackStyle(server) {
+    return getServerGalleryLayout(server.gallery, galleryPosition(server));
+}
+
+function gallerySlideStyle(server) {
+    return {
+        flexBasis: getServerGalleryLayout(server.gallery, galleryPosition(server)).slideBasis
     };
 }
 
-async function normalizeGalleryLoop(server) {
-    const currentIndex = galleryIndexes.value[server.id] ?? 1;
-    if (currentIndex !== 0 && currentIndex !== gallerySlides.length - 1) return;
+function resetServerPageState() {
+    expandedServerId.value = "";
+    galleryIndexes.value = {};
+    galleryTransitionDisabled.value = {};
+    galleryAnimating.value = {};
+}
+
+function resetServerGallery(server) {
+    galleryIndexes.value = {
+        ...galleryIndexes.value,
+        [server.id]: getInitialServerGalleryPosition(server.gallery)
+    };
+    galleryTransitionDisabled.value = {
+        ...galleryTransitionDisabled.value,
+        [server.id]: false
+    };
+    galleryAnimating.value = {
+        ...galleryAnimating.value,
+        [server.id]: false
+    };
+}
+
+function prefersReducedMotion() {
+    return typeof window.matchMedia === "function"
+        && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function shiftGallery(server, direction) {
+    const imageCount = Array.isArray(server.gallery) ? server.gallery.length : 0;
+    if (imageCount < 2 || galleryAnimating.value[server.id]) return;
+
+    const currentIndex = galleryPosition(server);
+    const reduceMotion = prefersReducedMotion();
+    const nextIndex = getNextServerGalleryPosition(
+        currentIndex,
+        direction,
+        server.gallery,
+        reduceMotion
+    );
+
+    galleryAnimating.value = {
+        ...galleryAnimating.value,
+        [server.id]: !reduceMotion
+    };
+    galleryIndexes.value = {
+        ...galleryIndexes.value,
+        [server.id]: nextIndex
+    };
+}
+
+async function normalizeGalleryLoop(server, event) {
+    if (
+        event.target !== event.currentTarget
+        || event.propertyName !== "transform"
+    ) return;
+
+    const currentIndex = galleryPosition(server);
+    if (!isServerGalleryClonePosition(currentIndex, server.gallery)) {
+        galleryAnimating.value = {
+            ...galleryAnimating.value,
+            [server.id]: false
+        };
+        return;
+    }
 
     galleryTransitionDisabled.value = {
         ...galleryTransitionDisabled.value,
@@ -47,7 +126,7 @@ async function normalizeGalleryLoop(server) {
     };
     galleryIndexes.value = {
         ...galleryIndexes.value,
-        [server.id]: currentIndex === 0 ? gallerySlides.length - 2 : 1
+        [server.id]: normalizeServerGalleryPosition(currentIndex, server.gallery)
     };
 
     await nextTick();
@@ -56,12 +135,37 @@ async function normalizeGalleryLoop(server) {
             ...galleryTransitionDisabled.value,
             [server.id]: false
         };
+        galleryAnimating.value = {
+            ...galleryAnimating.value,
+            [server.id]: false
+        };
     });
 }
 
 function toggleServerDetails(server) {
-    expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
+    if (expandedServerId.value === server.id) {
+        resetServerPageState();
+        return;
+    }
+
+    resetServerPageState();
+    expandedServerId.value = server.id;
+    resetServerGallery(server);
 }
+
+function handleMenuPageChange(event) {
+    if (event.detail?.page !== "servers") {
+        resetServerPageState();
+    }
+}
+
+onMounted(() => {
+    window.addEventListener("splitevents:menu-page", handleMenuPageChange);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("splitevents:menu-page", handleMenuPageChange);
+});
 
 function openModpack(server, event) {
     const webApp = window.Telegram?.WebApp;
@@ -142,12 +246,18 @@ async function copyServerAddress(server) {
                                         decoding="async"
                                         @error="markBannerImageFailed(server.id)"
                                     >
-                                    <div class="server-card-gallery" role="group" :aria-label="'изображения сервера ' + server.name">
+                                    <div
+                                        v-if="server.gallery?.length > 1"
+                                        class="server-card-gallery"
+                                        role="group"
+                                        :aria-label="'изображения сервера ' + server.name"
+                                    >
                                         <button
                                             class="server-card-gallery-arrow server-card-gallery-arrow--previous ui-button ui-button--secondary ui-button--icon"
                                             type="button"
                                             aria-label="предыдущее изображение"
                                             title="предыдущее изображение"
+                                            :disabled="galleryAnimating[server.id]"
                                             @click="shiftGallery(server, -1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -158,17 +268,18 @@ async function copyServerAddress(server) {
                                             <div
                                                 class="server-card-gallery-track"
                                                 :class="{ 'server-card-gallery-track--instant': galleryTransitionDisabled[server.id] }"
-                                                :style="{ transform: 'translateX(-' + (galleryIndexes[server.id] ?? 1) * 100 + '%)' }"
-                                                @transitionend="normalizeGalleryLoop(server)"
+                                                :style="galleryTrackStyle(server)"
+                                                @transitionend="normalizeGalleryLoop(server, $event)"
                                             >
                                                 <div
-                                                    v-for="(slide, position) in gallerySlides"
+                                                    v-for="(slide, position) in gallerySlidesFor(server)"
                                                     :key="position"
                                                     class="server-card-gallery-slide"
                                                     :class="'server-card-gallery-slide--' + slide"
+                                                    :style="gallerySlideStyle(server)"
                                                     role="img"
                                                     :aria-label="'изображение сервера ' + (slide + 1)"
-                                                    :aria-hidden="(galleryIndexes[server.id] ?? 1) !== position"
+                                                    :aria-hidden="galleryPosition(server) !== position"
                                                 >
                                                     <img
                                                         v-if="galleryImageUrl(server, slide)"
@@ -187,6 +298,7 @@ async function copyServerAddress(server) {
                                             type="button"
                                             aria-label="следующее изображение"
                                             title="следующее изображение"
+                                            :disabled="galleryAnimating[server.id]"
                                             @click="shiftGallery(server, 1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
