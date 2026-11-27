@@ -1,9 +1,9 @@
 # ImageKit: папки и изображения SplitEvents
 
-URL endpoint проекта: `https://ik.imagekit.io/splitevents/`  
+URL endpoint проекта: `https://ik.imagekit.io/firdayywh/`  
 Корневая папка проекта в Media Library: `/splitevents/`.
 
-Все изображения, которыми управляет сайт, находятся в Media Library под корневой папкой `/splitevents`. Исключение — временная стартовая аватарка профиля: до первой собственной загрузки приложение может показывать фото Telegram. Папка `/splitevents` — это корень библиотеки проекта внутри Media Library. URL endpoint уже содержит идентификатор `splitevents`, поэтому полный публичный URL имеет вид `https://ik.imagekit.io/splitevents/splitevents/<folder>/<file>`.
+Все изображения, которыми управляет сайт, находятся в Media Library под корневой папкой `/splitevents`. Исключение — временная стартовая аватарка профиля: до первой собственной загрузки приложение может показывать фото Telegram. Папка `/splitevents` — это корень библиотеки проекта внутри Media Library. URL endpoint имеет идентификатор `firdayywh`, поэтому полный публичный URL имеет вид `https://ik.imagekit.io/firdayywh/splitevents/<folder>/<file>`. Endpoint ID и имя папки Media Library — разные значения; не подменяйте одно другим.
 
 ## Структура папок
 
