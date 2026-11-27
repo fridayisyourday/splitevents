@@ -5,8 +5,22 @@ import NomineeVisual from "./NomineeVisual.vue";
 import { NOMINEES, nomineeById, compareNames } from "../../js/nominations/database/nominees.js?v=20261126-2";
 import { createNominationState } from "../../js/nominations/state.js?v=20261126-1";
 import { createNominationModel } from "../../js/nominations/model.js?v=20261126-2";
+import { getCountdownParts } from "../../js/nominations/countdown.js";
 
 const nominations = reactive(createNominationState());
+const nominationsAnchor = ref(null);
+const countdownNow = ref(Date.now());
+const awardDeadline = new Date(2026, 11, 21, 0, 0, 0).getTime();
+const countdown = computed(() => {
+    const parts = getCountdownParts(awardDeadline, countdownNow.value);
+    return {
+        ...parts,
+        days: String(parts.days).padStart(2, "0"),
+        hours: String(parts.hours).padStart(2, "0"),
+        minutes: String(parts.minutes).padStart(2, "0")
+    };
+});
+let countdownInterval = null;
 const nominationModel = createNominationModel({ nomineeById, compareNames });
 
 const pageSize = ref(getPageSize());
@@ -137,6 +151,9 @@ function getPageSize() {
 function syncPageSize() {
     const nextSize = getPageSize();
     if (nextSize !== pageSize.value) pageSize.value = nextSize;
+}
+function scrollToNominations() {
+    nominationsAnchor.value?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function getSelectedPair(nomination) {
@@ -446,10 +463,17 @@ watch([availablePeople, pageSize], clampPages);
 
 onMounted(() => {
     window.addEventListener("resize", syncPageSize);
+    countdownInterval = window.setInterval(() => {
+        countdownNow.value = Date.now();
+    }, 60_000);
 });
 
 onBeforeUnmount(() => {
     window.removeEventListener("resize", syncPageSize);
+    if (countdownInterval !== null) {
+        window.clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
 });
 
 defineExpose({
@@ -463,7 +487,23 @@ defineExpose({
     <section id="nominations-page" class="page-view" aria-label="Номинации 2026">
         <div class="section-page nominations-page">
             <div class="section-page-content nominations-page-content">
-                <header class="nominations-page-header">
+                <section class="squash-hero" aria-labelledby="squash-hero-title">
+                    <div class="squash-hero-art" aria-hidden="true">
+                        <img src="../../assets/squash-hero.svg" alt="" fetchpriority="high">
+                    </div>
+                    <div class="squash-hero-content">
+                        <h1 id="squash-hero-title" class="squash-hero-title">SQUASH!</h1>
+                        <p class="squash-hero-subtitle">главная премия ρumρkin ρie</p>
+                        <p class="squash-hero-date">20.12.26</p>
+                        <button
+                            class="ui-button ui-button--primary squash-hero-button"
+                            type="button"
+                            @click="scrollToNominations"
+                        >проголосовать</button>
+                    </div>
+                </section>
+
+                <header ref="nominationsAnchor" class="nominations-page-header">
                     <h1 class="section-page-title">НОМИНАЦИИ 2026</h1>
                 </header>
 
@@ -529,6 +569,25 @@ defineExpose({
                             </div>
                         </section>
                     </div>
+
+                    <section class="squash-countdown" aria-label="До конца премии">
+                        <h2 class="squash-countdown-title">ДО КОНЦА ПРЕМИИ:</h2>
+                        <p v-if="countdown.finished" class="squash-countdown-finished">ПРЕМИЯ ЗАВЕРШЕНА</p>
+                        <div v-else class="squash-countdown-units" aria-live="off">
+                            <div class="squash-countdown-unit">
+                                <span class="squash-countdown-number">{{ countdown.days }}</span>
+                                <span class="squash-countdown-label">дней</span>
+                            </div>
+                            <div class="squash-countdown-unit">
+                                <span class="squash-countdown-number">{{ countdown.hours }}</span>
+                                <span class="squash-countdown-label">часов</span>
+                            </div>
+                            <div class="squash-countdown-unit">
+                                <span class="squash-countdown-number">{{ countdown.minutes }}</span>
+                                <span class="squash-countdown-label">минут</span>
+                            </div>
+                        </div>
+                    </section>
 
                     <div
                         id="vote-vote-overlay"

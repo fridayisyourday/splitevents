@@ -5,6 +5,7 @@ import { NOMINEES, compareNames, nomineeById } from "../js/nominations/database/
 import { validateNominationDatabase } from "../js/nominations/database/validate.js";
 import { createNominationModel } from "../js/nominations/model.js";
 import { createNominationState } from "../js/nominations/state.js";
+import { getCountdownParts } from "../js/nominations/countdown.js";
 
 const model = createNominationModel({ nomineeById, compareNames });
 
@@ -65,4 +66,13 @@ test("an invalid nominee ID cannot complete a nomination", () => {
     const nominations = createNominationState();
     nominations[0].selectedId = "not-in-the-catalogue";
     assert.equal(model.isBallotComplete(nominations), false);
+});
+
+test("countdown splits time into days, hours, and minutes without seconds", () => {
+    const target = 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000 + 15 * 60 * 1000;
+    assert.deepEqual(getCountdownParts(target, 0), { days: 1, hours: 2, minutes: 15, finished: false });
+});
+
+test("countdown clamps after the deadline", () => {
+    assert.deepEqual(getCountdownParts(100, 101), { days: 0, hours: 0, minutes: 0, finished: true });
 });
