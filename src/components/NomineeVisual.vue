@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, watch } from "vue";
-import { getSafeImageKitUrl } from "../../js/media.js?v=20261127-2";
+import { getSafeImageKitUrl, IMAGEKIT_FOLDERS } from "../../js/media.js?v=20261127-3";
 
 const props = defineProps({
     person: { type: Object, required: true },
@@ -11,7 +11,7 @@ const props = defineProps({
 const imageFailed = ref(false);
 
 const imageSource = computed(() => (
-    getSafeImageKitUrl(props.person?.avatar, "nominees")
+    getSafeImageKitUrl(props.person?.avatar, IMAGEKIT_FOLDERS.nominees)
 ));
 
 const imageClass = computed(() => ({
