@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, ref, watch } from "vue";
+import { ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
@@ -8,34 +8,6 @@ const expandedServerId = ref("");
 function toggleServerDetails(server) {
     expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
 }
-
-function syncServerOverlayTop() {
-    const header = document.querySelector(".site-header");
-    if (!header) return;
-
-    const headerBottom = Math.max(0, Math.ceil(header.getBoundingClientRect().bottom));
-    document.documentElement.style.setProperty("--app-server-details-top", headerBottom + "px");
-}
-
-function clearServerOverlayState() {
-    document.body.classList.remove("server-details-open");
-    window.removeEventListener("resize", syncServerOverlayTop);
-    document.documentElement.style.removeProperty("--app-server-details-top");
-}
-
-watch(expandedServerId, (serverId) => {
-    if (!serverId) {
-        clearServerOverlayState();
-        return;
-    }
-
-    syncServerOverlayTop();
-    document.body.classList.add("server-details-open");
-    window.addEventListener("resize", syncServerOverlayTop);
-});
-
-onBeforeUnmount(clearServerOverlayState);
-
 
 function openModpack(server, event) {
     const webApp = window.Telegram?.WebApp;
