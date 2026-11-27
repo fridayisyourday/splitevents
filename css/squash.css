@@ -295,7 +295,7 @@
         font-size: 20px;
     }
     .squash-details-carousel {
-        grid-template-columns: 40px minmax(0, 1fr) 40px;
+        grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
         gap: 8px;
         min-height: 192px;
     }
