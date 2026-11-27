@@ -266,7 +266,7 @@
 .server-details-grid {
     display: grid;
     grid-template-columns: max-content minmax(184px, max-content);
-    grid-auto-rows: minmax(24px, auto);
+    grid-auto-rows: minmax(var(--app-control-height), auto);
     align-items: center;
     justify-content: center;
     column-gap: var(--app-space-3);
