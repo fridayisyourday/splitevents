@@ -264,11 +264,12 @@
 
 .server-details-grid {
     display: grid;
-    grid-template-columns: minmax(156px, max-content) max-content;
+    grid-template-columns: max-content minmax(156px, max-content);
     grid-auto-rows: minmax(var(--app-control-height), auto);
     align-items: center;
     justify-content: center;
-    gap: var(--app-space-2) var(--app-space-4-5);
+    column-gap: var(--app-space-4-5);
+    row-gap: 2px;
     width: fit-content;
     max-width: 100%;
     margin-inline: auto;
@@ -290,7 +291,7 @@
 }
 
 .server-details-download {
-    grid-column: 1;
+    grid-column: 2;
     justify-self: stretch;
     width: 100%;
     min-width: 0;
@@ -366,9 +367,9 @@
     }
 
     .server-details-grid {
-        grid-template-columns: minmax(156px, max-content) max-content;
+        grid-template-columns: max-content minmax(156px, max-content);
         column-gap: var(--app-space-3);
-        row-gap: var(--app-space-2);
+        row-gap: 2px;
     }
 
     .server-entry--expanded {
