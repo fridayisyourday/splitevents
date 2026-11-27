@@ -18,9 +18,7 @@ const serverPage = readProjectFile("src/components/ServersPage.vue");
 test("shared descriptive copy typography has one documented source of truth", () => {
     const block = designCss.match(/\.app-description\s*\{([^}]+)\}/);
     assert.ok(block, "the shared .app-description rule must exist");
-    const descriptionRule = designCss.match(/\.app-description\s*\{([^}]+)\}/);
-    assert.ok(descriptionRule, "the shared description role must exist");
-    assert.match(descriptionRule[1], /font-size:\s*var\(--app-font-size-accent\)/);
+    assert.match(block[1], /font-size:\s*var\(--app-font-size-accent\)/);
     assert.match(block[1], /font-weight:\s*var\(--app-font-weight-subtle\)/);
     assert.match(block[1], /line-height:\s*var\(--app-line-height-label\)/);
     assert.match(designGuide, /16 px/);
@@ -68,7 +66,9 @@ test("the four typography roles match their visual references", () => {
     assert.match(squashCss, /\.squash-hero-title\s*\{[^}]*font-size:\s*var\(--app-font-size-title\)/s);
     assert.match(readProjectFile("css/pages.css"), /\.section-page-title\s*\{[^}]*font-size:\s*var\(--app-font-size-heading\)/s);
     assert.match(readProjectFile("css/profile.css"), /\.profile-telegram-tag\s*\{[^}]*font-size:\s*var\(--app-font-size-main\)/s);
-    assert.match(block[1], /font-size:\s*var\(--app-font-size-accent\)/);
+    const descriptionRule = designCss.match(/\.app-description\s*\{([^}]+)\}/);
+    assert.ok(descriptionRule, "the shared description role must exist");
+    assert.match(descriptionRule[1], /font-size:\s*var\(--app-font-size-accent\)/);
 });
 
 test("every stylesheet uses only the four semantic text-size roles", () => {
