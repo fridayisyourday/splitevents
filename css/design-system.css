@@ -35,12 +35,16 @@
 
     /* Shared layout dimensions. All fixed pixel dimensions use a 2px step. */
     --app-content-width: 970px;
-    --app-profile-width: 720px;
+    --app-content-width-medium: 776px;
+    --app-content-width-reading: 720px;
+    --app-profile-width: var(--app-content-width-reading);
     --app-header-height: 64px;
     --app-control-height: 48px;
     --app-page-gutter: 16px;
     --app-page-top: 24px;
     --app-section-gap: 24px;
+    --app-grid-column-gap: 16px;
+    --app-grid-row-gap: 24px;
 
     /* Typography. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -67,6 +71,9 @@
     --app-space-6: 24px;
     --app-space-7: 28px;
     --app-space-8: 32px;
+    --app-space-9: 36px;
+    --app-space-10: 40px;
+    --app-space-11: 48px;
     --app-radius-small: 12px;
     --app-radius-control: 14px;
     --app-radius-card: 20px;

@@ -94,6 +94,9 @@ onBeforeUnmount(() => {
 
 <template>
     <section id="user-profile-page" class="page-view" aria-label="Профиль пользователя">
+        <div class="section-page public-profile-page">
+            <div class="section-page-content public-profile-page-content page-container">
+                <div class="section-page-body public-profile-page-body">
         <div
             v-if="status === 'loading' || status === 'idle'"
             class="public-profile-loading"
@@ -111,7 +114,7 @@ onBeforeUnmount(() => {
             </div>
         </div>
 
-        <article v-else-if="profile" class="profile-card profile-card--readonly">
+        <article v-else-if="profile" class="profile-card profile-card--readonly page-container--reading">
             <div class="profile-cover">
                 <div
                     class="profile-banner-placeholder"
@@ -156,5 +159,8 @@ onBeforeUnmount(() => {
                 <p class="profile-telegram-tag">{{ getUsername() }}</p>
             </div>
         </article>
+                </div>
+            </div>
+        </div>
     </section>
 </template>

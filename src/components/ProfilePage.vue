@@ -384,9 +384,12 @@ onBeforeUnmount(() => {
 
 <template>
     <section id="profile-page" class="page-view" aria-label="Профиль">
+        <div class="section-page profile-page">
+            <div class="section-page-content profile-page-content page-container">
+                <div class="section-page-body profile-page-body">
         <article
             id="profile-card"
-            class="profile-card"
+            class="profile-card page-container--reading"
             :class="{ 'is-media-editing': editing }"
         >
             <div class="profile-cover" id="profile-cover">
@@ -547,5 +550,8 @@ onBeforeUnmount(() => {
             tabindex="-1"
             @change="handleImageSelection('banner', $event)"
         >
+                </div>
+            </div>
+        </div>
     </section>
 </template>

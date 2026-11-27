@@ -60,20 +60,20 @@ async function copyServerAddress(server) {
 <template>
     <section id="servers-page" class="page-view" aria-label="Сервера">
         <div class="section-page servers-page">
-            <div class="section-page-content servers-page-content">
+            <div class="section-page-content servers-page-content page-container">
                 <header class="section-page-header">
                     <h1 class="section-page-title">Сервера</h1>
                 </header>
 
                 <div class="section-page-body servers-page-body">
-                    <div class="servers-list" aria-label="Список серверов">
+                    <div class="servers-list page-grid" aria-label="Список серверов">
                         <div
                             v-for="server in SERVERS"
                             :key="server.id"
                             class="server-entry"
                         >
                             <article
-                                class="server-card"
+                                class="server-card page-container--medium"
                                 :aria-labelledby="'server-title-' + server.id"
                             >
                                 <div class="server-card-artwork" aria-hidden="true"></div>
@@ -117,7 +117,7 @@ async function copyServerAddress(server) {
                                 <section
                                     v-if="expandedServerId === server.id"
                                     :id="'server-details-' + server.id"
-                                    class="server-details-panel"
+                                    class="server-details-panel page-container--medium"
                                     role="region"
                                     :aria-labelledby="'server-title-' + server.id"
                                 >

@@ -13,22 +13,23 @@
 }
 
 .servers-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--app-space-6);
+    row-gap: var(--app-grid-row-gap);
     width: 100%;
 }
 
-/* Event card: 970 × 250. Server card: 776 × 160. */
+.servers-list > * {
+    grid-column: 1 / -1;
+}
+
+/* Server cards use the shared medium-width content container. */
 .server-card {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
     box-sizing: border-box;
-    width: 80%;
-    max-width: 776px;
+    width: 100%;
+    max-width: var(--app-content-width-medium);
     height: 160px;
     overflow: hidden;
     isolation: isolate;
@@ -185,8 +186,8 @@
 
 .server-details-panel {
     box-sizing: border-box;
-    width: 80%;
-    max-width: 776px;
+    width: 100%;
+    max-width: var(--app-content-width-medium);
     max-height: 180px;
     margin-top: 8px;
     overflow: hidden;

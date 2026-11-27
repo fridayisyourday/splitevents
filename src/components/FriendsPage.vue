@@ -107,7 +107,7 @@ onBeforeUnmount(() => {
 <template>
     <section id="friends-page" class="page-view" aria-label="Друзья">
         <div class="section-page friends-page">
-            <div class="section-page-content friends-page-content">
+            <div class="section-page-content friends-page-content page-container">
                 <header class="section-page-header">
                     <h1 class="section-page-title">Друзья</h1>
                 </header>
@@ -150,7 +150,7 @@ onBeforeUnmount(() => {
 
                     <div
                         v-else
-                        class="friends-list"
+                        class="friends-list page-grid"
                         aria-label="зарегистрированные пользователи"
                     >
                         <button

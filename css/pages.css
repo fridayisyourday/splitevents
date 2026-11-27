@@ -23,17 +23,16 @@
 }
 
 .section-page-content {
-    display: flex;
     flex: 1;
-    flex-direction: column;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: 0;
     width: min(100%, var(--app-content-width));
-    min-width: 0;
     margin: 0 auto;
     text-align: center;
 }
 
 .section-page-header {
-    flex: 0 0 auto;
+    grid-column: 1 / -1;
     margin: 0 0 var(--app-section-gap);
     text-align: center;
 }
@@ -53,6 +52,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
+    grid-column: 1 / -1;
     width: 100%;
     min-width: 0;
 }
