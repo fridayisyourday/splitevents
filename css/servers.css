@@ -29,7 +29,7 @@
     grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
     box-sizing: border-box;
     width: 100%;
-    max-width: var(--app-content-width-medium);
+    max-width: var(--app-content-width);
     height: 160px;
     overflow: hidden;
     isolation: isolate;
@@ -187,7 +187,7 @@
 .server-details-panel {
     box-sizing: border-box;
     width: 100%;
-    max-width: var(--app-content-width-medium);
+    max-width: var(--app-content-width);
     max-height: 180px;
     margin-top: 8px;
     overflow: hidden;

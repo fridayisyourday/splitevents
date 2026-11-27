@@ -37,7 +37,7 @@
     --app-content-width: 970px;
     --app-content-width-medium: 776px;
     --app-content-width-reading: 720px;
-    --app-profile-width: var(--app-content-width-reading);
+    --app-profile-width: var(--app-content-width);
     --app-header-height: 64px;
     --app-control-height: 48px;
     --app-page-gutter: 16px;
