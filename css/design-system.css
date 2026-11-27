@@ -270,14 +270,14 @@ body,
     box-shadow: var(--app-shadow-card);
 }
 
-.event-card-title,
-.event-card-countdown-value {
+.event-card-title {
     color: var(--app-text);
 }
 
 .event-card-description,
 .event-card-meta,
 .event-card-date,
+.event-countdown-value,
 .event-countdown-unit {
     color: var(--app-hint);
 }
@@ -683,7 +683,7 @@ h6,
 }
 
 
-/* Shared description typography for server, event and award cards. */
+/* Single source of truth for descriptions and secondary date/time metadata. */
 .app-description {
     color: var(--app-hint);
     font-size: var(--app-font-size-default);
