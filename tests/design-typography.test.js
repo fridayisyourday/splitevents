@@ -18,7 +18,7 @@ const serverPage = readProjectFile("src/components/ServersPage.vue");
 test("shared descriptive copy typography has one documented source of truth", () => {
     const block = designCss.match(/\.app-description\s*\{([^}]+)\}/);
     assert.ok(block, "the shared .app-description rule must exist");
-    assert.match(block[1], /font-size:\s*var\(--app-font-size-default\)/);
+    assert.match(block[1], /font-size:\s*var\(--app-font-size-accent\)/);
     assert.match(block[1], /font-weight:\s*var\(--app-font-weight-subtle\)/);
     assert.match(block[1], /line-height:\s*var\(--app-line-height-label\)/);
     assert.match(designGuide, /16 px/);
@@ -55,4 +55,46 @@ test("server page resets expanded gallery state whenever navigation leaves it", 
     assert.match(serverPage, /window\.addEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
     assert.match(serverPage, /window\.removeEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
     assert.match(serverPage, /if \(event\.detail\?\.page !== "servers"\)\s*\{\s*resetServerPageState\(\);/);
+});
+
+
+test("the four typography roles match their visual references", () => {
+    assert.match(designCss, /--app-font-size-title:\s*clamp\(66px, 10vw, 148px\)/);
+    assert.match(designCss, /--app-font-size-heading:\s*clamp\(32px, 4vw, 40px\)/);
+    assert.match(designCss, /--app-font-size-main:\s*14px/);
+    assert.match(designCss, /--app-font-size-accent:\s*16px/);
+    assert.match(squashCss, /\.squash-hero-title\s*\{[^}]*font-size:\s*var\(--app-font-size-title\)/s);
+    assert.match(readProjectFile("css/pages.css"), /\.section-page-title\s*\{[^}]*font-size:\s*var\(--app-font-size-heading\)/s);
+    assert.match(readProjectFile("css/profile.css"), /\.profile-telegram-tag\s*\{[^}]*font-size:\s*var\(--app-font-size-main\)/s);
+    assert.match(block[1], /font-size:\s*var\(--app-font-size-accent\)/);
+});
+
+test("every stylesheet uses only the four semantic text-size roles", () => {
+    const stylesheets = [
+        "css/base.css",
+        "css/components.css",
+        "css/design-system.css",
+        "css/events.css",
+        "css/friends.css",
+        "css/layout.css",
+        "css/menu.css",
+        "css/nominations.css",
+        "css/nominations-cards.css",
+        "css/nominations-carousel.css",
+        "css/nominations-picker.css",
+        "css/notifications.css",
+        "css/pages.css",
+        "css/profile.css",
+        "css/servers.css",
+        "css/squash.css"
+    ];
+    const allowed = /^var\(--app-font-size-(?:title|heading|main|accent)\)$|^inherit$/;
+
+    for (const path of stylesheets) {
+        const css = readProjectFile(path);
+        assert.doesNotMatch(css, /--app-font-size-(?!title\b|heading\b|main\b|accent\b)[A-Za-z0-9_-]+/);
+        for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
+            assert.match(match[1].trim(), allowed, `${path} has an unapproved font size: ${match[0]}`);
+        }
+    }
 });
