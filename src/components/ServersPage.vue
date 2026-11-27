@@ -109,10 +109,11 @@ async function copyServerAddress(server) {
                                                     v-for="slide in gallerySlides"
                                                     :key="slide"
                                                     class="server-card-gallery-slide"
-                                                    aria-hidden="true"
-                                                >
-                                                    <div class="server-card-portrait-placeholder"></div>
-                                                </div>
+                                                    :class="'server-card-gallery-slide--' + slide"
+                                                    role="img"
+                                                    :aria-label="'нейтральная заглушка баннера ' + (slide + 1)"
+                                                    :aria-hidden="(galleryIndexes[server.id] ?? 0) !== slide"
+                                                ></div>
                                             </div>
                                         </div>
                                         <button
