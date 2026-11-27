@@ -7,18 +7,18 @@
     min-height: calc(var(--tg-viewport-stable-height, 100dvh) - var(--app-header-height));
     padding: var(--app-page-top) max(
         var(--app-page-gutter),
-        env(safe-area-inset-right, 0px),
-        var(--tg-safe-area-inset-right, 0px),
-        var(--app-safe-right, 0px),
-        var(--tg-content-safe-area-inset-right, 0px),
-        var(--app-content-safe-right, 0px)
-    ) calc(max(30px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px)) + max(var(--tg-content-safe-area-inset-bottom, 0px), var(--app-content-safe-bottom, 0px))) max(
+        env(safe-area-inset-right, var(--app-space-0)),
+        var(--tg-safe-area-inset-right, var(--app-space-0)),
+        var(--app-safe-right, var(--app-space-0)),
+        var(--tg-content-safe-area-inset-right, var(--app-space-0)),
+        var(--app-content-safe-right, var(--app-space-0))
+    ) calc(max(30px, env(safe-area-inset-bottom, var(--app-space-0)), var(--tg-safe-area-inset-bottom, var(--app-space-0)), var(--app-safe-bottom, var(--app-space-0))) + max(var(--tg-content-safe-area-inset-bottom, var(--app-space-0)), var(--app-content-safe-bottom, var(--app-space-0)))) max(
         var(--app-page-gutter),
-        env(safe-area-inset-left, 0px),
-        var(--tg-safe-area-inset-left, 0px),
-        var(--app-safe-left, 0px),
-        var(--tg-content-safe-area-inset-left, 0px),
-        var(--app-content-safe-left, 0px)
+        env(safe-area-inset-left, var(--app-space-0)),
+        var(--tg-safe-area-inset-left, var(--app-space-0)),
+        var(--app-safe-left, var(--app-space-0)),
+        var(--tg-content-safe-area-inset-left, var(--app-space-0)),
+        var(--app-content-safe-left, var(--app-space-0))
     );
 }
 
@@ -80,9 +80,9 @@
 .empty-state-message {
     margin: 0;
     color: var(--app-hint);
-    font-size: 18px;
+    font-size: var(--app-font-size-lg);
     font-weight: var(--app-font-weight-semibold);
-    line-height: 1.4;
+    line-height: var(--app-line-height-label);
 }
 
 .empty-state-note {
@@ -105,6 +105,6 @@
 
 @media (max-width: 480px) {
     .section-page {
-        padding-bottom: calc(max(24px, env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--app-safe-bottom, 0px)) + max(var(--tg-content-safe-area-inset-bottom, 0px), var(--app-content-safe-bottom, 0px)));
+        padding-bottom: calc(max(var(--app-space-6), env(safe-area-inset-bottom, var(--app-space-0)), var(--tg-safe-area-inset-bottom, var(--app-space-0)), var(--app-safe-bottom, var(--app-space-0))) + max(var(--tg-content-safe-area-inset-bottom, var(--app-space-0)), var(--app-content-safe-bottom, var(--app-space-0))));
     }
 }

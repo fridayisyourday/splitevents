@@ -36,7 +36,7 @@
     width: 100%;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    gap: var(--app-space-4-5);
 }
 
 .vote-nomination-row {
@@ -45,7 +45,7 @@
     flex-wrap: wrap;
     align-items: stretch;
     justify-content: center;
-    gap: 14px;
+    gap: var(--app-space-3-5);
 }
 
 .vote-nomination-card {
@@ -55,8 +55,8 @@
     min-height: 264px;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 14px;
+    gap: var(--app-space-2-5);
+    padding: var(--app-space-3-5);
     overflow: hidden;
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-card);
@@ -68,7 +68,7 @@
 .vote-nomination-card--featured {
     flex-basis: 236px;
     min-height: 302px;
-    padding: 18px;
+    padding: var(--app-space-4-5);
 }
 
 .vote-logo-wrap {
@@ -107,7 +107,7 @@
     background: var(--app-secondary);
     color: var(--app-hint);
     object-fit: cover;
-    font-size: 26px;
+    font-size: var(--app-font-size-avatar-initials);
     font-weight: var(--app-font-weight-bold);
 }
 
@@ -134,7 +134,7 @@
     background: var(--app-secondary);
     color: var(--app-hint);
     object-fit: cover;
-    font-size: 18px;
+    font-size: var(--app-font-size-lg);
     font-weight: var(--app-font-weight-bold);
 }
 
@@ -142,25 +142,25 @@
     width: 100%;
     margin: 0;
     color: var(--app-text);
-    font-size: 18px;
+    font-size: var(--app-font-size-lg);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.025em;
-    line-height: 1.25;
+    line-height: var(--app-line-height-title);
     overflow-wrap: anywhere;
     text-align: center;
 }
 
 .vote-nomination-card--featured .vote-nomination-title {
-    font-size: 22px;
+    font-size: var(--app-font-size-nomination-featured);
 }
 
 .vote-selected-nominee {
     width: 100%;
     margin: 0;
     color: var(--app-hint);
-    font-size: 14px;
+    font-size: var(--app-font-size-body);
     font-weight: var(--app-font-weight-semibold);
-    line-height: 1.35;
+    line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
 }
@@ -183,11 +183,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding:
-        max(12px, env(safe-area-inset-top, 0px))
-        max(12px, env(safe-area-inset-right, 0px))
-        max(12px, env(safe-area-inset-bottom, 0px))
-        max(12px, env(safe-area-inset-left, 0px));
+    padding: max(var(--app-space-3), env(safe-area-inset-top, var(--app-space-0)))
+        max(var(--app-space-3), env(safe-area-inset-right, var(--app-space-0)))
+        max(var(--app-space-3), env(safe-area-inset-bottom, var(--app-space-0)))
+        max(var(--app-space-3), env(safe-area-inset-left, var(--app-space-0)));
     background: var(--app-overlay-backdrop);
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter: blur(6px);
@@ -207,9 +206,9 @@
     max-height: min(88dvh, 820px);
     min-width: 0;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--app-space-4);
     overflow-y: auto;
-    padding: clamp(16px, 3vw, 24px);
+    padding: clamp(var(--app-space-4), 3vw, var(--app-space-6));
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -230,7 +229,7 @@
 }
 
 .vote-dialog-eyebrow {
-    margin-bottom: 6px;
+    margin-bottom: var(--app-space-1-5);
 }
 
 .vote-dialog-title {
@@ -239,12 +238,12 @@
     font-size: clamp(22px, 4vw, 28px);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.04em;
-    line-height: 1.2;
+    line-height: var(--app-line-height-snug);
     overflow-wrap: anywhere;
 }
 
 .vote-dialog-description {
-    margin: 8px 0 0;
+    margin: var(--app-space-2) 0 0;
     color: var(--app-hint);
     font-size: var(--app-font-size-body);
     line-height: 1.45;
@@ -253,7 +252,7 @@
 .vote-grid-viewport {
     width: 100%;
     min-width: 0;
-    padding: 4px;
+    padding: var(--app-space-1);
 }
 
 .vote-grid {
@@ -261,7 +260,7 @@
     width: 100%;
     min-width: 0;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: var(--app-space-3);
 }
 
 .vote-candidate-card {
@@ -271,10 +270,10 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    gap: 10px;
-    padding: 12px;
+    gap: var(--app-space-2-5);
+    padding: var(--app-space-3);
     border: 2px solid var(--app-border);
-    border-radius: 16px;
+    border-radius: var(--app-radius-medium);
     background: var(--app-secondary);
     text-align: center;
 }
@@ -290,13 +289,13 @@
     align-items: center;
     justify-content: center;
     align-self: center;
-    margin: 4px auto 0;
+    margin: var(--app-space-1) auto 0;
     overflow: hidden;
     border: 2px solid var(--app-border);
     background: var(--app-card-background);
     color: var(--app-hint);
     object-fit: cover;
-    font-size: 26px;
+    font-size: var(--app-font-size-avatar-initials);
     font-weight: var(--app-font-weight-bold);
 }
 
@@ -307,12 +306,12 @@
 
 .vote-image-avatar,
 .vote-image-placeholder {
-    border-radius: 16px;
+    border-radius: var(--app-radius-medium);
 }
 
 .vote-image-avatar,
 .vote-image-placeholder {
-    font-size: 24px;
+    font-size: var(--app-font-size-2xl);
 }
 
 .vote-candidate-name {
@@ -324,9 +323,9 @@
     justify-content: center;
     margin: 0;
     color: var(--app-text);
-    font-size: 16px;
+    font-size: var(--app-font-size-default);
     font-weight: var(--app-font-weight-semibold);
-    line-height: 1.35;
+    line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
 }
@@ -335,7 +334,7 @@
     width: 100%;
     min-height: var(--app-control-height);
     margin-top: auto;
-    padding-inline: 8px;
+    padding-inline: var(--app-space-2);
     font-size: var(--app-button-font-size);
 }
 
@@ -345,8 +344,8 @@
     min-width: 0;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    margin: 4px auto 0;
+    gap: var(--app-space-1-5);
+    margin: var(--app-space-1) auto 0;
 }
 
 .vote-duo-avatars .vote-avatar,
@@ -358,7 +357,7 @@
 .vote-duo-plus {
     flex: 0 0 auto;
     color: var(--app-hint);
-    font-size: 20px;
+    font-size: var(--app-font-size-xl);
     font-weight: var(--app-font-weight-semibold);
 }
 
@@ -371,9 +370,9 @@
     align-items: center;
     justify-content: center;
     align-self: center;
-    margin: 4px auto 0;
+    margin: var(--app-space-1) auto 0;
     border: 2px dashed var(--app-border);
-    border-radius: 16px;
+    border-radius: var(--app-radius-medium);
     background: var(--app-card-background);
     color: var(--app-hint);
 }
@@ -400,15 +399,15 @@
     width: 100%;
     min-width: 0;
     min-height: 42px;
-    padding: 8px 10px;
+    padding: var(--app-space-2) var(--app-space-2-5);
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-control);
     outline: 0;
     background: var(--app-card-background);
     color: var(--app-text);
     font-family: inherit;
-    font-size: 14px;
-    line-height: 1.35;
+    font-size: var(--app-font-size-body);
+    line-height: var(--app-line-height-caption);
     text-align: center;
 }
 
@@ -422,16 +421,16 @@
     max-height: 58px;
     overflow: hidden;
     color: var(--app-text);
-    font-size: 14px;
+    font-size: var(--app-font-size-body);
     font-weight: var(--app-font-weight-semibold);
-    line-height: 1.35;
+    line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
 }
 
 .vote-empty-state {
     margin: 0;
-    padding: 28px 12px;
+    padding: var(--app-space-7) var(--app-space-3);
     color: var(--app-hint);
     font-size: var(--app-font-size-body);
     text-align: center;
@@ -442,8 +441,8 @@
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding-top: 4px;
+    gap: var(--app-space-3);
+    padding-top: var(--app-space-1);
 }
 
 .vote-page-button {
@@ -480,7 +479,7 @@
 }
 
 .squash-error {
-    padding: 32px 0;
+    padding: var(--app-space-8) 0;
 }
 
 @media (max-width: 640px) {
@@ -489,7 +488,7 @@
         flex-basis: calc((100% - 14px) / 2);
         max-width: 220px;
         min-height: 260px;
-        padding: 12px;
+        padding: var(--app-space-3);
     }
 
     .vote-nomination-card--featured .vote-logo-wrap {
@@ -505,17 +504,17 @@
     }
 
     .vote-nomination-card--featured .vote-nomination-title {
-        font-size: 18px;
+        font-size: var(--app-font-size-lg);
     }
 
     .vote-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        gap: var(--app-space-2-5);
     }
 
     .vote-candidate-card {
         min-height: 206px;
-        padding: 10px;
+        padding: var(--app-space-2-5);
     }
 
     .vote-avatar,
@@ -531,13 +530,13 @@
     .vote-nomination-card,
     .vote-nomination-card--featured {
         min-height: 246px;
-        gap: 8px;
-        padding: 10px;
+        gap: var(--app-space-2);
+        padding: var(--app-space-2-5);
     }
 
     .vote-nomination-title,
     .vote-nomination-card--featured .vote-nomination-title {
-        font-size: 14px;
+        font-size: var(--app-font-size-body);
     }
 
     .vote-nomination-card--featured .vote-logo-wrap {
@@ -553,7 +552,7 @@
     }
 
     .vote-button {
-        font-size: 12px;
+        font-size: var(--app-font-size-xs);
     }
 }
 
@@ -569,7 +568,7 @@
 /* Keep nomination-card actions at the shared application button size. */
 .vote-nomination-card .vote-action-button {
     min-height: var(--app-control-height);
-    padding-inline: 16px;
+    padding-inline: var(--app-space-4);
     font-size: var(--app-button-font-size);
 }
 
@@ -603,7 +602,7 @@
 @media (max-width: 760px), (pointer: coarse) {
     .vote-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        gap: var(--app-space-2-5);
     }
 }
 
