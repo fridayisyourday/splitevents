@@ -234,7 +234,7 @@ onBeforeUnmount(() => {
                                     {{ event.description || "" }}
                                 </p>
 
-                                <div class="event-card-meta">
+                                <div class="event-card-meta app-description">
                                     <time class="event-card-date" :datetime="eventDateTime(event)">
                                         {{ event.dateLabel || "" }}
                                     </time>

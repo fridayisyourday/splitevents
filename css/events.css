@@ -90,10 +90,6 @@
     justify-content: center;
     gap: 0.8cqw;
     max-width: 100%;
-    color: var(--app-hint);
-    font-size: clamp(var(--app-font-size-2xs), 1.15cqw, var(--app-font-size-xs));
-    font-weight: var(--app-font-weight-normal);
-    line-height: var(--app-line-height-compact);
 }
 
 .event-card-date {
@@ -189,7 +185,6 @@
 
     .event-card-meta {
         gap: var(--app-space-1-5);
-        font-size: var(--app-font-size-2xs);
     }
 
     .event-card-meta-separator {
@@ -226,7 +221,6 @@
 
     .event-card-meta {
         column-gap: var(--app-space-1);
-        font-size: var(--app-font-size-2xs);
     }
 
     .event-card-countdown {

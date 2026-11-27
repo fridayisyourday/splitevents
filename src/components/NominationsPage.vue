@@ -522,7 +522,7 @@ defineExpose({
                     <div class="squash-hero-content">
                         <h1 id="squash-hero-title" class="squash-hero-title">SQUASH!</h1>
                         <p class="squash-hero-subtitle app-description">главная премия ρumρkin ρie</p>
-                        <p class="squash-hero-date">20.12.26</p>
+                        <p class="squash-hero-date app-description">20.12.26</p>
                         <button
                             class="ui-button ui-button--primary squash-hero-button"
                             type="button"
