@@ -169,21 +169,10 @@
     line-height: var(--app-line-height-label);
 }
 
-.server-details-ip-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--app-space-3);
-    min-width: 0;
-    min-height: var(--app-control-height);
-    margin-bottom: var(--app-space-2);
-}
-
 .server-details-ip-button {
     display: flex;
-    flex: 1 1 0;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     width: 100%;
     min-width: 0;
     min-height: var(--app-control-height);
@@ -205,8 +194,10 @@
 
 .server-details-ip-button .menu-item-badge {
     display: flex;
+    box-sizing: border-box;
     justify-content: center;
     width: 100%;
+    min-width: 100%;
     text-align: center;
 }
 
@@ -256,7 +247,7 @@
     box-sizing: border-box;
     width: 100%;
     max-width: var(--app-content-width);
-    max-height: 200px;
+    max-height: 256px;
     margin-top: var(--app-space-2);
     overflow: hidden;
     border-radius: var(--app-radius-card);
@@ -273,10 +264,22 @@
 
 .server-details-grid {
     display: grid;
-    grid-template-columns: max-content max-content minmax(120px, 1fr);
-    grid-template-rows: repeat(3, minmax(32px, auto));
+    grid-template-columns: minmax(156px, max-content) max-content;
+    grid-auto-rows: minmax(var(--app-control-height), auto);
     align-items: center;
+    justify-content: center;
     gap: var(--app-space-2) var(--app-space-4-5);
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+}
+
+.server-details-grid > .menu-item-badge {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
 }
 
 .server-details-label {
@@ -287,10 +290,10 @@
 }
 
 .server-details-download {
-    grid-row: 3;
-    grid-column: 3;
-    justify-self: end;
-    min-width: 120px;
+    grid-column: 1;
+    justify-self: stretch;
+    width: 100%;
+    min-width: 0;
 }
 
 .server-details-enter-active,
@@ -312,7 +315,7 @@
 
 .server-details-enter-to,
 .server-details-leave-from {
-    max-height: 200px;
+    max-height: 256px;
     margin-top: var(--app-space-2);
     opacity: 1;
     transform: translateY(0);
@@ -363,14 +366,9 @@
     }
 
     .server-details-grid {
-        grid-template-columns: max-content minmax(0, 1fr);
+        grid-template-columns: minmax(156px, max-content) max-content;
         column-gap: var(--app-space-3);
         row-gap: var(--app-space-2);
-    }
-
-    .server-details-download {
-        grid-column: 2;
-        min-width: 112px;
     }
 
     .server-entry--expanded {
