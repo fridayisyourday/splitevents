@@ -4,6 +4,16 @@ import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
+const galleryIndexes = ref({});
+const gallerySlides = [0, 1, 2];
+
+function shiftGallery(server, direction) {
+    const currentIndex = galleryIndexes.value[server.id] ?? 0;
+    galleryIndexes.value = {
+        ...galleryIndexes.value,
+        [server.id]: (currentIndex + direction + gallerySlides.length) % gallerySlides.length
+    };
+}
 
 function toggleServerDetails(server) {
     expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
@@ -80,23 +90,37 @@ async function copyServerAddress(server) {
                                 <div class="server-card-artwork">
                                     <div class="server-card-gallery" role="group" :aria-label="'изображения сервера ' + server.name">
                                         <button
-                                            class="server-card-gallery-arrow ui-button ui-button--secondary ui-button--icon"
+                                            class="server-card-gallery-arrow server-card-gallery-arrow--previous ui-button ui-button--secondary ui-button--icon"
                                             type="button"
                                             aria-label="предыдущее изображение"
                                             title="предыдущее изображение"
-                                            disabled
+                                            @click="shiftGallery(server, -1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                                                 <use href="#icon-chevron-left"></use>
                                             </svg>
                                         </button>
-                                        <div class="server-card-portrait-placeholder" aria-hidden="true"></div>
+                                        <div class="server-card-gallery-viewport" aria-live="polite">
+                                            <div
+                                                class="server-card-gallery-track"
+                                                :style="{ transform: 'translateX(-' + (galleryIndexes[server.id] ?? 0) * 100 + '%)' }"
+                                            >
+                                                <div
+                                                    v-for="slide in gallerySlides"
+                                                    :key="slide"
+                                                    class="server-card-gallery-slide"
+                                                    aria-hidden="true"
+                                                >
+                                                    <div class="server-card-portrait-placeholder"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <button
-                                            class="server-card-gallery-arrow ui-button ui-button--secondary ui-button--icon"
+                                            class="server-card-gallery-arrow server-card-gallery-arrow--next ui-button ui-button--secondary ui-button--icon"
                                             type="button"
                                             aria-label="следующее изображение"
                                             title="следующее изображение"
-                                            disabled
+                                            @click="shiftGallery(server, 1)"
                                         >
                                             <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                                                 <use href="#icon-chevron-right"></use>
