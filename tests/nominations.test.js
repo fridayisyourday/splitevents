@@ -14,6 +14,19 @@ test("the published nominee catalogue and rules are valid", () => {
     assert.equal(new Set(NOMINEES.map((person) => person.id)).size, NOMINEES.length);
 });
 
+test("vamorii is available in the female nominee pool but is not preselected in a nomination", () => {
+    const vamorii = nomineeById.get("vamorii");
+    assert.ok(vamorii);
+    assert.equal(vamorii.name, "vamorii");
+    assert.equal(vamorii.gender, "F");
+
+    const publishedNomineeIds = NOMINATION_DEFINITIONS.flatMap((nomination) => [
+        ...(nomination.nomineeIds || []),
+        ...(nomination.duoPairs || []).flatMap((pair) => [pair.firstId, pair.secondId])
+    ]);
+    assert.equal(publishedNomineeIds.includes("vamorii"), false);
+});
+
 test("featured SQUASH nominations use their updated titles", () => {
     assert.equal(
         NOMINATION_DEFINITIONS.find((item) => item.id === "pumpkin-king")?.title,

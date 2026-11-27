@@ -1,5 +1,5 @@
 /* Eligibility rules for each published nomination. Runtime selections live in state.js. */
-import { NOMINEES } from "./nominees.js?v=20261126-1";
+import { NOMINEES } from "./nominees.js?v=20261127-1";
 import { validateNominationDatabase } from "./validate.js?v=20261126-1";
 
 const NOMINATION_RECORDS = [
