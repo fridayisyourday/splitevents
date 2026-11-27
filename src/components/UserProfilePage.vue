@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { fetchPublicProfile } from "../../js/api.js?v=20261127-1";
 import { getTelegramInitData } from "../../js/telegram.js?v=20261126-6";
-import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-1";
+import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-2";
 import { getCurrentPage, getPublicUserId } from "../../js/navigation.js?v=20261127-1";
 
 const initData = getTelegramInitData();
