@@ -225,14 +225,14 @@ async function copyServerAddress(server) {
 
                                             <span class="server-details-label">модпак</span>
                                             <a
-                                                class="server-details-download ui-button ui-button--secondary"
+                                                class="server-details-download"
                                                 :href="server.modpackUrl"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 :aria-label="'загрузить модпак сервера ' + server.name"
                                                 @click="openModpack(server, $event)"
                                             >
-                                                загрузить
+                                                <span class="menu-item-badge menu-item-badge--accent">загрузить</span>
                                             </a>
                                         </div>
                                     </div>

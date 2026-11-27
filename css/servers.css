@@ -175,8 +175,8 @@
     justify-content: center;
     width: 100%;
     min-width: 0;
-    height: 28px;
-    min-height: 28px;
+    height: var(--app-control-height);
+    min-height: var(--app-control-height);
     margin: 0;
     padding: 0;
     border: 0;
@@ -295,13 +295,45 @@
 }
 
 .server-details-download {
+    display: flex;
+    box-sizing: border-box;
     grid-column: 2;
+    align-items: center;
+    justify-content: center;
     justify-self: stretch;
     width: 100%;
     min-width: 0;
-    height: 28px;
-    min-height: 28px;
-    padding: 0 var(--app-space-3);
+    height: var(--app-control-height);
+    min-height: var(--app-control-height);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+    text-decoration: none;
+    transition:
+        opacity var(--app-duration-fast) ease,
+        transform var(--app-duration-fast) ease;
+}
+
+.server-details-download .menu-item-badge {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+}
+
+@media (hover: hover) {
+    .server-details-download:hover {
+        opacity: 0.72;
+    }
+}
+
+.server-details-download:active {
+    transform: scale(0.98);
 }
 
 .server-details-enter-active,
@@ -436,6 +468,7 @@
     .server-card,
     .server-card-gallery-track,
     .server-details-ip-button,
+    .server-details-download,
     .server-details-enter-active,
     .server-details-leave-active {
         transition: none;
