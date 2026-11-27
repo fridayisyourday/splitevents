@@ -60,7 +60,7 @@
     min-width: 0;
     height: 100%;
     margin-left: auto;
-    padding: 2cqw 2.5cqw;
+    padding: var(--app-container-padding);
     background: var(--app-card-background);
     color: var(--app-text);
     text-align: center;
@@ -175,7 +175,7 @@
         flex-basis: 50%;
         width: 50%;
         gap: var(--app-space-2-5);
-        padding: var(--app-space-4-5) var(--app-space-2-5);
+        padding: var(--app-container-padding);
     }
 
     .event-card-title {
@@ -215,8 +215,6 @@
 @media (max-width: 380px) {
     .event-card-content {
         gap: var(--app-space-2);
-        padding-right: var(--app-space-2);
-        padding-left: var(--app-space-2);
     }
 
     .event-card-meta {
