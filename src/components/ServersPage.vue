@@ -8,7 +8,7 @@ import {
     getServerGallerySlides,
     isServerGalleryClonePosition,
     normalizeServerGalleryPosition
-} from "../../js/servers/gallery.js?v=20261129-1";
+} from "../../js/servers/gallery.js?v=20261128-1";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
@@ -46,7 +46,11 @@ function galleryPosition(server) {
 }
 
 function galleryTrackStyle(server) {
-    return getServerGalleryLayout(server.gallery, galleryPosition(server));
+    const layout = getServerGalleryLayout(server.gallery, galleryPosition(server));
+    return {
+        width: layout.trackWidth,
+        transform: layout.transform
+    };
 }
 
 function gallerySlideStyle(server) {
