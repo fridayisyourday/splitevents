@@ -1,61 +1,106 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+    IMAGEKIT_ENDPOINT_ID,
+    IMAGEKIT_LIBRARY_ROOT,
+    IMAGEKIT_FOLDERS,
     getImageKitAssetUrl,
-    getSafeImageKitUrl
+    getSafeImageKitUrl,
+    getEventCoverUrl,
+    getNomineeAvatarUrl,
+    getServerBannerUrl,
+    getServerGalleryImageUrl
 } from "../js/media.js";
 import { getSafeProfileImageUrl } from "../js/pages/profile-presentation.js";
 
-test("accepts HTTPS ImageKit media inside the SplitEvents profile folder", () => {
-    const url = "https://ik.imagekit.io/splitevents/splitevents/profile/avatar.webp";
-    assert.equal(getSafeProfileImageUrl(url), url);
-    assert.equal(getSafeImageKitUrl(url, "profile"), url);
+const IMAGEKIT_BASE = "https://ik.imagekit.io/firdayywh/splitevents";
+
+test("uses one configured ImageKit endpoint and library root for all media", () => {
+    assert.equal(IMAGEKIT_ENDPOINT_ID, "firdayywh");
+    assert.equal(IMAGEKIT_LIBRARY_ROOT, "splitevents");
+    assert.deepEqual(IMAGEKIT_FOLDERS, {
+        profile: "profile",
+        servers: "servers",
+        events: "events",
+        nominees: "nominees"
+    });
 });
 
-test("accepts only the requested SplitEvents ImageKit media folder", () => {
-    const eventUrl = "https://ik.imagekit.io/splitevents/splitevents/events/squash-award-2026/cover.webp";
-    const nomineeUrl = "https://ik.imagekit.io/splitevents/splitevents/nominees/fridayisyourday.webp";
+test("accepts ImageKit Upload API URLs for profile avatar and banner", () => {
+    const avatarUrl = IMAGEKIT_BASE + "/profile/avatar-123.webp?updatedAt=1795814309498";
+    const bannerUrl = IMAGEKIT_BASE + "/profile/banner-456.jpg";
 
-    assert.equal(getSafeImageKitUrl(eventUrl, "events"), eventUrl);
-    assert.equal(getSafeImageKitUrl(nomineeUrl, "nominees"), nomineeUrl);
-    assert.equal(getSafeImageKitUrl(eventUrl, "nominees"), "");
+    assert.equal(getSafeProfileImageUrl(avatarUrl), avatarUrl);
+    assert.equal(getSafeProfileImageUrl(bannerUrl), bannerUrl);
+    assert.equal(getSafeImageKitUrl(avatarUrl, IMAGEKIT_FOLDERS.profile), avatarUrl);
+    assert.equal(getSafeImageKitUrl(bannerUrl, IMAGEKIT_FOLDERS.profile), bannerUrl);
 });
 
-test("rejects non-HTTPS, foreign hosts, and foreign ImageKit endpoints", () => {
+test("builds stable URLs for events, nominees, server banners and gallery images", () => {
     assert.equal(
-        getSafeImageKitUrl("http://ik.imagekit.io/splitevents/profile/avatar.webp"),
-        ""
+        getEventCoverUrl("squash-award-2026"),
+        IMAGEKIT_BASE + "/events/squash-award-2026/cover.webp"
     );
     assert.equal(
-        getSafeImageKitUrl("https://example.com/splitevents/profile/avatar.webp"),
-        ""
+        getNomineeAvatarUrl("fridayisyourday"),
+        IMAGEKIT_BASE + "/nominees/fridayisyourday.webp"
     );
     assert.equal(
-        getSafeImageKitUrl("https://other.imagekit.io/splitevents/profile/avatar.webp"),
-        ""
+        getServerBannerUrl("technocracy"),
+        IMAGEKIT_BASE + "/servers/technocracy/banner.webp"
     );
     assert.equal(
-        getSafeImageKitUrl("https://ik.imagekit.io/another-project/profile/avatar.webp"),
-        ""
+        getServerGalleryImageUrl("technocracy", "gallery-01.webp"),
+        IMAGEKIT_BASE + "/servers/technocracy/gallery-01.webp"
     );
-    assert.equal(
-        getSafeImageKitUrl("https://ik.imagekit.io/splitevents/splitevents/profile/%2e%2e/avatar.webp"),
-        ""
-    );
-    assert.equal(getSafeImageKitUrl("javascript:alert(1)"), "");
 });
 
-test("rejects missing or malformed values", () => {
+test("validates every managed media folder through the same URL validator", () => {
+    for (const folder of Object.values(IMAGEKIT_FOLDERS)) {
+        const url = IMAGEKIT_BASE + "/" + folder + "/asset.webp";
+        assert.equal(getSafeImageKitUrl(url, folder), url);
+    }
+});
+
+test("rejects foreign endpoints, wrong roots, folders and protocols", () => {
+    assert.equal(
+        getSafeImageKitUrl("https://ik.imagekit.io/splitevents/splitevents/profile/avatar.webp"),
+        ""
+    );
+    assert.equal(
+        getSafeImageKitUrl("https://ik.imagekit.io/another-endpoint/splitevents/profile/avatar.webp"),
+        ""
+    );
+    assert.equal(
+        getSafeImageKitUrl("https://ik.imagekit.io/firdayywh/other-root/profile/avatar.webp"),
+        ""
+    );
+    assert.equal(
+        getSafeImageKitUrl("https://ik.imagekit.io/firdayywh/splitevents/unknown/avatar.webp"),
+        ""
+    );
+    assert.equal(
+        getSafeImageKitUrl("http://ik.imagekit.io/firdayywh/splitevents/profile/avatar.webp"),
+        ""
+    );
+    assert.equal(
+        getSafeImageKitUrl("https://example.com/firdayywh/splitevents/profile/avatar.webp"),
+        ""
+    );
+});
+
+test("rejects malformed, missing, and unsafe asset paths", () => {
+    assert.equal(getImageKitAssetUrl("../outside.webp"), "");
+    assert.equal(getImageKitAssetUrl("unknown/outside.webp"), "");
+    assert.equal(getImageKitAssetUrl("servers/../banner.webp"), "");
+    assert.equal(getServerGalleryImageUrl("technocracy", "banner.webp"), "");
+    assert.equal(getServerBannerUrl("../technocracy"), "");
     assert.equal(getSafeImageKitUrl(""), "");
     assert.equal(getSafeImageKitUrl(null), "");
     assert.equal(getSafeImageKitUrl(undefined), "");
     assert.equal(getSafeProfileImageUrl("not a URL"), "");
-});
-
-test("builds stable ImageKit paths for events, nominees, and server images", () => {
     assert.equal(
-        getImageKitAssetUrl("servers/technocracy/banner.webp"),
-        "https://ik.imagekit.io/splitevents/splitevents/servers/technocracy/banner.webp"
+        getSafeImageKitUrl(IMAGEKIT_BASE + "/profile/%2e%2e/avatar.webp"),
+        ""
     );
-    assert.equal(getImageKitAssetUrl("../outside.webp"), "");
 });
