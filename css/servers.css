@@ -301,7 +301,7 @@
     .server-card-content {
         top: auto;
         bottom: var(--app-space-13);
-        height: calc(var(--app-friends-avatar-size) + var(--app-space-4));
+        height: calc(var(--app-profile-avatar-size) + var(--app-space-4));
         gap: var(--app-space-3);
         padding: var(--app-space-1-5) var(--app-space-3-5);
     }
@@ -400,6 +400,10 @@
 }
 
 @media (max-width: 480px) {
+    .server-card-content {
+        height: calc(var(--app-profile-avatar-size-mobile) + var(--app-space-4));
+    }
+
     .server-card-logo {
         flex-basis: var(--app-profile-avatar-size-mobile);
         width: var(--app-profile-avatar-size-mobile);
