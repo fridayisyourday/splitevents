@@ -53,11 +53,6 @@
 }
 .squash-hero-subtitle {
     margin: var(--app-space-4-5) 0 0;
-    font-size: clamp(16px, 2vw, 22px);
-    font-weight: var(--app-font-weight-semibold);
-    letter-spacing: -.02em;
-    line-height: var(--app-line-height-compact);
-    color: var(--app-hint);
 }
 .squash-hero-date {
     margin: var(--app-space-3-5) 0 0;
@@ -153,7 +148,6 @@
     .squash-hero-subtitle {
         max-width: 260px;
         margin-top: var(--app-space-3-5);
-        font-size: var(--app-font-size-default);
     }
     .squash-hero-date {
         margin-top: var(--app-space-3);
