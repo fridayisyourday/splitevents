@@ -1,9 +1,14 @@
 <script setup>
 import { onBeforeUnmount, ref } from "vue";
-import { SERVERS } from "../../js/servers/data.js?v=20261127-2";
+import { SERVERS } from "../../js/servers/data.js?v=20261127-3";
 
 const copiedServerId = ref("");
+const expandedServerId = ref("");
 let copiedTimeout = null;
+
+function toggleServerDetails(server) {
+    expandedServerId.value = expandedServerId.value === server.id ? "" : server.id;
+}
 
 async function copyText(value) {
     if (navigator.clipboard?.writeText) {
@@ -60,52 +65,88 @@ onBeforeUnmount(() => {
 
                 <div class="section-page-body servers-page-body">
                     <div class="servers-list" aria-label="Список серверов">
-                        <article
+                        <div
                             v-for="server in SERVERS"
                             :key="server.id"
-                            class="server-card"
-                            :aria-labelledby="'server-title-' + server.id"
+                            class="server-entry"
                         >
-                            <div class="server-card-artwork" aria-hidden="true"></div>
+                            <article
+                                class="server-card"
+                                :aria-labelledby="'server-title-' + server.id"
+                            >
+                                <div class="server-card-artwork" aria-hidden="true"></div>
 
-                            <div class="server-card-content">
-                                <div class="server-card-logo" aria-hidden="true"></div>
+                                <div class="server-card-content">
+                                    <div class="server-card-logo" aria-hidden="true"></div>
 
-                                <div class="server-card-details">
-                                    <h2 :id="'server-title-' + server.id" class="server-card-title">
-                                        {{ server.name }}
-                                    </h2>
-                                    <div class="server-card-address-row">
-                                        <button
-                                            class="server-card-ip"
-                                            type="button"
-                                            :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
-                                            title="скопировать ip"
-                                            @click="copyServerAddress(server)"
-                                        >
-                                            {{ server.address }}
-                                        </button>
-                                        <span
-                                            v-if="copiedServerId === server.id"
-                                            class="server-card-copy-status"
-                                            role="status"
-                                            aria-live="polite"
-                                        >скопировано</span>
+                                    <div class="server-card-details">
+                                        <h2 :id="'server-title-' + server.id" class="server-card-title">
+                                            {{ server.name }}
+                                        </h2>
+                                        <div class="server-card-address-row">
+                                            <button
+                                                class="server-card-ip"
+                                                type="button"
+                                                :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
+                                                title="скопировать ip"
+                                                @click="copyServerAddress(server)"
+                                            >
+                                                {{ server.address }}
+                                            </button>
+                                            <span
+                                                v-if="copiedServerId === server.id"
+                                                class="server-card-copy-status"
+                                                role="status"
+                                                aria-live="polite"
+                                            >скопировано</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="server-card-footer">
-                                <button
-                                    class="server-card-more ui-button ui-button--primary"
-                                    type="button"
-                                    disabled
-                                    title="скоро"
+                                <div class="server-card-footer">
+                                    <button
+                                        class="server-card-more ui-button ui-button--primary"
+                                        type="button"
+                                        :aria-expanded="expandedServerId === server.id"
+                                        :aria-controls="'server-details-' + server.id"
+                                        :aria-label="(expandedServerId === server.id ? 'свернуть' : 'подробнее') + ' о сервере ' + server.name"
+                                        @click="toggleServerDetails(server)"
+                                    >
+                                        {{ expandedServerId === server.id ? "свернуть" : "подробнее" }}
+                                    </button>
+                                </div>
+                            </article>
+
+                            <Transition name="server-details">
+                                <section
+                                    v-if="expandedServerId === server.id"
+                                    :id="'server-details-' + server.id"
+                                    class="server-details-panel"
+                                    role="region"
+                                    :aria-labelledby="'server-title-' + server.id"
                                 >
-                                    подробнее
-                                </button>
-                            </div>
-                        </article>
+                                    <div class="server-details-panel-surface">
+                                        <div class="server-details-grid">
+                                            <span class="server-details-label">загрузчик</span>
+                                            <span class="menu-item-badge menu-item-badge--accent">{{ server.loader }}</span>
+
+                                            <span class="server-details-label">версия</span>
+                                            <span class="menu-item-badge menu-item-badge--accent">{{ server.version }}</span>
+
+                                            <span class="server-details-label">модпак</span>
+                                            <a
+                                                class="server-details-download ui-button ui-button--primary"
+                                                :href="server.modpackUrl"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                загрузить
+                                            </a>
+                                        </div>
+                                    </div>
+                                </section>
+                            </Transition>
+                        </div>
                     </div>
                 </div>
             </div>
