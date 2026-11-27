@@ -21,6 +21,13 @@ const countdown = computed(() => {
     };
 });
 let countdownInterval = null;
+const introMessages = [
+    "первая большая премия ρumρkin ρie, где вы определите самые запомнившиеся моменты 2026 года.",
+    "в каждой номинации можно выбрать только один вариант. если, на ваш взгляд, достойного кандидата нет среди предложенных, можно номинировать собственного.",
+    "голосование закрывается 20 декабря в 23:59. стань частью истории и выбери тех, кто по-настоящему достоин стать победителем SQUASH 2026."
+];
+const introMessageIndex = ref(0);
+let introCarouselInterval = null;
 const nominationModel = createNominationModel({ nomineeById, compareNames });
 
 const pageSize = ref(getPageSize());
@@ -154,6 +161,21 @@ function syncPageSize() {
 }
 function scrollToNominations() {
     nominationsAnchor.value?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function advanceIntroMessage() {
+    introMessageIndex.value = (introMessageIndex.value + 1) % introMessages.length;
+}
+
+function changeIntroMessage(direction) {
+    introMessageIndex.value = (
+        introMessageIndex.value + direction + introMessages.length
+    ) % introMessages.length;
+
+    if (introCarouselInterval !== null) {
+        window.clearInterval(introCarouselInterval);
+    }
+    introCarouselInterval = window.setInterval(advanceIntroMessage, 6_000);
 }
 
 function getSelectedPair(nomination) {
@@ -466,6 +488,7 @@ onMounted(() => {
     countdownInterval = window.setInterval(() => {
         countdownNow.value = Date.now();
     }, 60_000);
+    introCarouselInterval = window.setInterval(advanceIntroMessage, 6_000);
 });
 
 onBeforeUnmount(() => {
@@ -473,6 +496,10 @@ onBeforeUnmount(() => {
     if (countdownInterval !== null) {
         window.clearInterval(countdownInterval);
         countdownInterval = null;
+    }
+    if (introCarouselInterval !== null) {
+        window.clearInterval(introCarouselInterval);
+        introCarouselInterval = null;
     }
 });
 
@@ -499,6 +526,48 @@ defineExpose({
                             @click="scrollToNominations"
                         >проголосовать</button>
                     </div>
+                </section>
+
+                <section class="squash-intro" aria-label="О премии SQUASH">
+                    <div class="squash-partners">
+                        <p class="squash-partners-label">совместно с</p>
+                        <div class="squash-partners-logos" aria-label="Партнёры премии">
+                            <div class="squash-partner-placeholder" aria-hidden="true"></div>
+                            <div class="squash-partner-placeholder" aria-hidden="true"></div>
+                            <div class="squash-partner-placeholder" aria-hidden="true"></div>
+                        </div>
+                    </div>
+
+                    <section class="squash-details" aria-labelledby="squash-details-title">
+                        <h2 id="squash-details-title" class="squash-details-title">ПОДРОБНЕЕ О ПРЕМИИ</h2>
+                        <div class="squash-details-carousel">
+                            <button
+                                class="ui-button ui-button--primary ui-button--icon squash-details-arrow"
+                                type="button"
+                                aria-label="Предыдущее сообщение"
+                                @click="changeIntroMessage(-1)"
+                            >
+                                <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-left"></use></svg>
+                            </button>
+
+                            <div class="squash-details-viewport" aria-live="polite" aria-atomic="true">
+                                <Transition name="squash-message" mode="out-in">
+                                    <p :key="introMessageIndex" class="squash-details-message">
+                                        {{ introMessages[introMessageIndex] }}
+                                    </p>
+                                </Transition>
+                            </div>
+
+                            <button
+                                class="ui-button ui-button--primary ui-button--icon squash-details-arrow"
+                                type="button"
+                                aria-label="Следующее сообщение"
+                                @click="changeIntroMessage(1)"
+                            >
+                                <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-chevron-right"></use></svg>
+                            </button>
+                        </div>
+                    </section>
                 </section>
 
                 <header ref="nominationsAnchor" class="nominations-page-header">
