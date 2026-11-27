@@ -488,9 +488,7 @@ defineExpose({
         <div class="section-page nominations-page">
             <div class="section-page-content nominations-page-content">
                 <section class="squash-hero" aria-labelledby="squash-hero-title">
-                    <div class="squash-hero-art" aria-hidden="true">
-                        <img src="../../assets/squash-hero.svg" alt="" fetchpriority="high">
-                    </div>
+                    <div class="squash-hero-art" aria-hidden="true"></div>
                     <div class="squash-hero-content">
                         <h1 id="squash-hero-title" class="squash-hero-title">SQUASH!</h1>
                         <p class="squash-hero-subtitle">главная премия ρumρkin ρie</p>
@@ -578,10 +576,12 @@ defineExpose({
                                 <span class="squash-countdown-number">{{ countdown.days }}</span>
                                 <span class="squash-countdown-label">дней</span>
                             </div>
+                            <span class="squash-countdown-separator" aria-hidden="true">:</span>
                             <div class="squash-countdown-unit">
                                 <span class="squash-countdown-number">{{ countdown.hours }}</span>
                                 <span class="squash-countdown-label">часов</span>
                             </div>
+                            <span class="squash-countdown-separator" aria-hidden="true">:</span>
                             <div class="squash-countdown-unit">
                                 <span class="squash-countdown-number">{{ countdown.minutes }}</span>
                                 <span class="squash-countdown-label">минут</span>
