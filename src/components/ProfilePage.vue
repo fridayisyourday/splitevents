@@ -12,6 +12,7 @@ import {
     updateTelegramDisplayName,
     uploadProfileImage
 } from "../../js/api.js?v=20261127-1";
+import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 import {
     getTelegramUserId,
     getTelegramName,
@@ -47,7 +48,6 @@ const imageKeys = {
 const imageRevisions = { avatar: 0, banner: 0 };
 const remoteImages = { avatar: "", banner: "" };
 const objectUrls = { avatar: "", banner: "" };
-const uploadTimers = { avatar: null, banner: null };
 
 let profileSyncPromise = Promise.resolve(null);
 let pendingServerProfile = null;
@@ -83,12 +83,6 @@ const DISPLAY_NAME_ERRORS = Object.freeze({
     unsupported_image_format: "поддерживаются изображения jpeg, png и webp.",
     invalid_media_response: "сервер сохранил изображение, но не вернул ссылку. попробуй обновить профиль."
 });
-
-function notify(type, message, detail = "") {
-    window.dispatchEvent(new CustomEvent("splitevents:notification", {
-        detail: { type, message, detail }
-    }));
-}
 
 function getDisplayNameError(error) {
     const reason = error && typeof error.message === "string"
@@ -166,8 +160,7 @@ async function saveName() {
     pendingServerProfile = null;
 
     if (!telegramInitData) {
-        notify(
-            "error",
+        notifyError(
             "не удалось синхронизировать имя",
             storedLocally
                 ? "изменение осталось только на этом устройстве. открой мини-приложение через telegram, чтобы синхронизировать его."
@@ -187,8 +180,7 @@ async function saveName() {
         if (serverProfile) applyServerProfile(serverProfile);
 
         if (!storedLocally) {
-            notify(
-                "warning",
+            notifyError(
                 "не удалось сохранить имя на этом устройстве",
                 "браузер не смог сохранить его на этом устройстве. при следующем открытии имя загрузится с сервера."
             );
@@ -196,8 +188,7 @@ async function saveName() {
     } catch (error) {
         pendingServerProfile = null;
         console.warn("SplitEvents: display name sync failed", error);
-        notify(
-            "error",
+        notifyError(
             "не удалось синхронизировать имя",
             (storedLocally
                 ? "имя осталось только на этом устройстве. "
@@ -211,17 +202,7 @@ async function saveName() {
 }
 
 function setUploadState(type, state) {
-    if (uploadTimers[type] !== null) {
-        window.clearTimeout(uploadTimers[type]);
-        uploadTimers[type] = null;
-    }
     uploadStates[type] = state;
-    if (state === "error") {
-        uploadTimers[type] = window.setTimeout(() => {
-            uploadStates[type] = "idle";
-            uploadTimers[type] = null;
-        }, 1000);
-    }
 }
 
 function chooseImage(type) {
@@ -280,7 +261,6 @@ async function loadImages(serverProfile = null) {
 function imageAccessibleLabel(type) {
     const label = type === "avatar" ? "аватарку" : "баннер";
     if (uploadStates[type] === "loading") return "загрузка: " + label;
-    if (uploadStates[type] === "error") return "не удалось загрузить " + label;
     return "загрузить " + label;
 }
 
@@ -314,17 +294,21 @@ async function handleImageSelection(type, event) {
         remoteImages[type] = remoteUrl;
         setImageSource(type, remoteUrl);
 
+        let cachedLocally = true;
         try {
             await writeImage(imageKeys[type], blob);
         } catch (error) {
+            cachedLocally = false;
             console.warn("SplitEvents: local image cache unavailable", error);
-            notify(
-                "warning",
-                "изображение сохранено на сервере",
-                "но не удалось сохранить его в локальный кэш устройства."
-            );
         }
+
         setUploadState(type, "idle");
+        notifySuccess(
+            type === "avatar" ? "аватар обновлён" : "баннер обновлён",
+            cachedLocally
+                ? ""
+                : "изображение сохранено на сервере, но не попало в локальный кэш устройства."
+        );
     } catch (error) {
         console.error("SplitEvents: " + type + " upload failed", error);
         const reason = error && typeof error.message === "string"
@@ -341,10 +325,9 @@ async function handleImageSelection(type, event) {
         };
 
         if (revision === imageRevisions[type] && !disposed) {
-            setUploadState(type, "error");
+            setUploadState(type, "idle");
         }
-        notify(
-            "error",
+        notifyError(
             "не удалось сохранить изображение",
             messages[reason] || "попробуй выбрать другое изображение в формате jpeg, png или webp."
         );
@@ -357,6 +340,10 @@ async function handleImageSelection(type, event) {
 function handleImageError(type) {
     console.warn("SplitEvents: " + type + " image could not be loaded");
     setImageSource(type, "");
+    notifyError(
+        type === "avatar" ? "не удалось отобразить аватар" : "не удалось отобразить баннер",
+        "попробуй обновить профиль или выбрать другое изображение."
+    );
 }
 
 function handleRouteChange() {
@@ -380,8 +367,7 @@ onMounted(() => {
 
     void profileSyncPromise.then((serverProfile) => loadImages(serverProfile)).catch((error) => {
         console.error("SplitEvents: profile images failed to load", error);
-        notify(
-            "warning",
+        notifyError(
             "не удалось загрузить изображения профиля",
             "попробуй перезапустить приложение."
         );
@@ -394,7 +380,6 @@ onBeforeUnmount(() => {
     disposed = true;
     window.removeEventListener("hashchange", handleRouteChange);
     for (const type of ["avatar", "banner"]) {
-        if (uploadTimers[type] !== null) window.clearTimeout(uploadTimers[type]);
         if (objectUrls[type]) URL.revokeObjectURL(objectUrls[type]);
     }
 });
@@ -439,7 +424,6 @@ onBeforeUnmount(() => {
                 >
                     <svg class="lucide-icon profile-media-icon profile-media-icon--plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg>
                     <svg class="lucide-icon profile-media-icon profile-media-icon--spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
-                    <svg class="lucide-icon profile-media-icon profile-media-icon--error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg>
                 </button>
 
                 <div class="profile-avatar" id="profile-avatar">
@@ -478,7 +462,6 @@ onBeforeUnmount(() => {
                     >
                         <svg class="lucide-icon profile-media-icon profile-media-icon--plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg>
                         <svg class="lucide-icon profile-media-icon profile-media-icon--spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
-                        <svg class="lucide-icon profile-media-icon profile-media-icon--error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-x"></use></svg>
                     </button>
                 </div>
             </div>

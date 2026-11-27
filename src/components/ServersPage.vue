@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeUnmount, ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
+import { notifyError } from "../../js/notifications.js?v=20261127-1";
 
 const copiedServerId = ref("");
 const expandedServerId = ref("");
@@ -55,13 +56,10 @@ async function copyServerAddress(server) {
             copiedTimeout = null;
         }, 1600);
     } catch {
-        window.dispatchEvent(new CustomEvent("splitevents:notification", {
-            detail: {
-                type: "error",
-                message: "не удалось скопировать ip",
-                detail: "попробуйте выделить адрес вручную"
-            }
-        }));
+        notifyError(
+            "не удалось скопировать ip",
+            "попробуйте выделить адрес вручную."
+        );
     }
 }
 

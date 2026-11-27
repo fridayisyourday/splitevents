@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const MAX_VISIBLE_NOTIFICATIONS = 3;
-const DEFAULT_DURATION = 8000;
+const DEFAULT_DURATION = 5000;
 
 const notifications = ref([]);
 const timers = new Map();
@@ -35,9 +35,8 @@ function show(type, message, detail = "") {
 
 function handleNotification(event) {
     const notification = event.detail || {};
-    if (notification.type === "error" || notification.type === "warning") {
-        show(notification.type, notification.message, notification.detail);
-    }
+    if (notification.type !== "error" && notification.type !== "success") return;
+    show(notification.type, notification.message, notification.detail);
 }
 
 onMounted(() => {
@@ -51,7 +50,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div id="notification-region" class="notification-region" aria-label="уведомления">
+    <div id="notification-region" class="notification-region" role="region" aria-label="уведомления">
         <article
             v-for="notification in notifications"
             :key="notification.id"
@@ -61,15 +60,7 @@ onBeforeUnmount(() => {
         >
             <span class="app-notification__symbol" aria-hidden="true">
                 <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <template v-if="notification.type === 'error'">
-                        <path d="M18 6 6 18"></path>
-                        <path d="m6 6 12 12"></path>
-                    </template>
-                    <template v-else>
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M12 16v-4"></path>
-                        <path d="M12 8h.01"></path>
-                    </template>
+                    <use :href="notification.type === 'error' ? '#icon-x' : '#icon-check'"></use>
                 </svg>
             </span>
 
@@ -87,8 +78,7 @@ onBeforeUnmount(() => {
                 @click="dismiss(notification.id)"
             >
                 <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
+                    <use href="#icon-x"></use>
                 </svg>
             </button>
         </article>
