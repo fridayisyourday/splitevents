@@ -15,13 +15,19 @@ test("TECHNOCRACY server is listed with the supplied address", () => {
     );
 });
 
-test("server entries have unique ids and only metadata, without fabricated artwork", () => {
+test("server entries have unique ids and a multi-image banner gallery", () => {
     const ids = SERVERS.map((server) => server.id);
     assert.equal(new Set(ids).size, ids.length);
 
     for (const server of SERVERS) {
         assert.ok(server.name);
         assert.ok(server.address);
+        assert.ok(Array.isArray(server.images));
+        assert.ok(server.images.length >= 2);
+        for (const image of server.images) {
+            assert.match(image.src, /^\.\/assets\/servers\/.+\.webp$/);
+            assert.ok(image.alt);
+        }
         assert.equal(Object.hasOwn(server, "banner"), false);
         assert.equal(Object.hasOwn(server, "logo"), false);
     }
