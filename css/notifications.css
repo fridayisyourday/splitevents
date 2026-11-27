@@ -85,12 +85,8 @@
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: transparent;
-    color: var(--app-text);
-    box-shadow: none;
     font: inherit;
     line-height: var(--app-line-height-tight);
-    cursor: pointer;
 }
 
 .app-notification__close > .lucide-icon {

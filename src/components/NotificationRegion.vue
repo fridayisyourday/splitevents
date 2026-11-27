@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
             </div>
 
             <button
-                class="app-notification__close"
+                class="app-notification__close ui-button ui-button--icon ui-button--secondary"
                 type="button"
                 aria-label="закрыть уведомление"
                 @click="dismiss(notification.id)"

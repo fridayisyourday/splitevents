@@ -137,8 +137,12 @@
     --app-drawer-shadow: 12px 0 32px rgba(0, 0, 0, 0.16);
 
     /* One button and one icon language across the application. */
-    --app-button-background: var(--app-white);
-    --app-button-color: var(--app-black);
+    --app-button-primary-background: var(--app-black);
+    --app-button-primary-color: var(--app-white);
+    --app-button-secondary-background: var(--app-gray);
+    --app-button-secondary-color: var(--app-black);
+    --app-button-background: var(--app-button-primary-background);
+    --app-button-color: var(--app-button-primary-color);
     --app-button-font-size: var(--app-font-size-sm);
     --app-button-font-weight: 700;
     --app-button-transition: background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease, transform var(--app-duration-fast) ease, filter var(--app-duration-fast) ease;
@@ -171,6 +175,12 @@
     --app-card-outline-color: var(--app-card-background);
     --app-nav-active-background: var(--app-gray-dark);
     --app-nav-active-color: var(--app-white);
+    --app-button-primary-background: var(--app-white);
+    --app-button-primary-color: var(--app-black);
+    --app-button-secondary-background: var(--app-gray-dark);
+    --app-button-secondary-color: var(--app-white);
+    --app-button-background: var(--app-button-primary-background);
+    --app-button-color: var(--app-button-primary-color);
 
     --app-shadow-card: 0 12px 24px rgba(238, 238, 238, 0.12), 0 4px 8px rgba(238, 238, 238, 0.08);
     --app-shadow-control: 0 4px 12px rgba(238, 238, 238, 0.18);
@@ -434,23 +444,6 @@ svg {
 }
 
 /* The top-level menu controls are icon-only; navigation entries are text-only. */
-.header-button,
-.menu-close-button {
-    background: transparent;
-    color: var(--app-text);
-    box-shadow: none;
-}
-
-.menu-navigation .ui-button--nav {
-    justify-content: flex-start;
-    min-height: 48px;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
-    color: var(--app-text);
-    box-shadow: none;
-}
-
 .menu-navigation .menu-item[aria-current="page"] {
     min-height: 48px;
     padding: 0 var(--app-space-3-5);

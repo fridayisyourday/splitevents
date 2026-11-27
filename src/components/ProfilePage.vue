@@ -412,7 +412,7 @@ onBeforeUnmount(() => {
 
                 <button
                     id="banner-upload-button"
-                    class="profile-media-upload-button banner-upload-button ui-button ui-button--icon ui-button--round ui-button--media"
+                    class="profile-media-upload-button banner-upload-button ui-button ui-button--icon ui-button--secondary"
                     type="button"
                     :aria-label="imageAccessibleLabel('banner')"
                     :title="uploadStates.banner === 'loading' ? 'загрузка' : imageAccessibleLabel('banner')"
@@ -450,7 +450,7 @@ onBeforeUnmount(() => {
 
                     <button
                         id="avatar-upload-button"
-                        class="profile-media-upload-button avatar-upload-button ui-button ui-button--icon ui-button--round ui-button--media"
+                        class="profile-media-upload-button avatar-upload-button ui-button ui-button--icon ui-button--secondary"
                         type="button"
                         :aria-label="imageAccessibleLabel('avatar')"
                         :title="uploadStates.avatar === 'loading' ? 'загрузка' : imageAccessibleLabel('avatar')"

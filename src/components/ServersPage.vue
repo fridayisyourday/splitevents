@@ -101,7 +101,7 @@ async function copyServerAddress(server) {
 
                                 <div class="server-card-footer">
                                     <button
-                                        class="server-card-more ui-button"
+                                        class="server-card-more ui-button ui-button--primary"
                                         type="button"
                                         :aria-expanded="expandedServerId === server.id"
                                         :aria-controls="'server-details-' + server.id"
@@ -131,7 +131,7 @@ async function copyServerAddress(server) {
 
                                             <span class="server-details-label">модпак</span>
                                             <a
-                                                class="server-details-download ui-button"
+                                                class="server-details-download ui-button ui-button--secondary"
                                                 :href="server.modpackUrl"
                                                 target="_blank"
                                                 rel="noopener noreferrer"

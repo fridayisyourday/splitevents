@@ -262,7 +262,7 @@ onBeforeUnmount(() => {
                                         {{ event.actionLabel || "Принять участие" }}
                                     </button>
                                     <button
-                                        class="event-card-visibility-action ui-button ui-button--icon ui-button--secondary ui-button--round"
+                                        class="event-card-visibility-action ui-button ui-button--icon ui-button--secondary"
                                         type="button"
                                         :aria-label="isEventHidden(event) ? 'Вернуть событие' : 'Скрыть событие'"
                                         :title="isEventHidden(event) ? 'Вернуть событие' : 'Скрыть событие'"

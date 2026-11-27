@@ -445,10 +445,6 @@
     padding-top: var(--app-space-1);
 }
 
-.vote-page-button {
-    --ui-button-size: var(--app-control-height);
-}
-
 .vote-page-button > .lucide-icon {
     width: 22px;
     height: 22px;

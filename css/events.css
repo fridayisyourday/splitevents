@@ -155,7 +155,6 @@
 }
 
 .event-card-visibility-action {
-    --ui-button-size: var(--app-control-height);
     flex-shrink: 0;
 }
 
@@ -231,8 +230,7 @@
     }
 
     .event-card-visibility-action {
-        --ui-button-size: var(--app-control-height);
-    }
+        }
 }
 
 @media (max-width: 380px) {
@@ -261,8 +259,7 @@
     }
 
     .event-card-visibility-action {
-        --ui-button-size: var(--app-control-height);
-    }
+        }
 }
 
 
