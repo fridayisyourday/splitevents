@@ -20,7 +20,7 @@ import {
     getTelegramPhotoUrl,
     getTelegramInitData
 } from "../../js/telegram.js?v=20261126-6";
-import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-1";
+import { getSafeProfileImageUrl } from "../../js/pages/profile-presentation.js?v=20261127-2";
 import { getCurrentPage } from "../../js/navigation.js?v=20261127-1";
 
 const userId = getTelegramUserId();
