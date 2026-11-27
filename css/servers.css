@@ -258,22 +258,22 @@
 
 .server-details-panel-surface {
     box-sizing: border-box;
-    padding: var(--app-space-3-5) var(--app-space-4-5);
+    padding: var(--app-space-3-5) var(--app-space-6);
     border-radius: inherit;
     background: var(--app-card-background);
 }
 
 .server-details-grid {
     display: grid;
-    grid-template-columns: max-content minmax(184px, max-content);
+    grid-template-columns: minmax(0, 1fr) minmax(184px, max-content);
     grid-auto-rows: minmax(var(--app-space-9), auto);
     align-items: center;
     justify-content: center;
     column-gap: var(--app-space-3);
     row-gap: 2px;
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
-    margin-inline: auto;
+    margin: 0;
 }
 
 .server-details-grid > .menu-item-badge {
@@ -402,11 +402,11 @@
     }
 
     .server-details-panel-surface {
-        padding: var(--app-space-3) var(--app-space-3-5);
+        padding: var(--app-space-3) var(--app-space-2-5);
     }
 
     .server-details-grid {
-        grid-template-columns: max-content minmax(184px, max-content);
+        grid-template-columns: minmax(0, 1fr) minmax(184px, max-content);
         column-gap: var(--app-space-2-5);
         row-gap: 2px;
     }
@@ -454,6 +454,13 @@
         height: 64px;
         min-height: 64px;
         padding: 0 var(--app-space-3-5) var(--app-space-2-5);
+    }
+}
+
+@media (max-width: 380px) {
+    .server-details-panel-surface {
+        padding-right: var(--app-space-2);
+        padding-left: var(--app-space-2);
     }
 }
 
