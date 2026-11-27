@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-4";
-import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
@@ -34,37 +33,6 @@ function openModpack(server, event) {
     }
 }
 
-async function copyText(value) {
-    if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-        return;
-    }
-
-    const field = document.createElement("textarea");
-    field.value = value;
-    field.setAttribute("readonly", "");
-    field.style.position = "fixed";
-    field.style.opacity = "0";
-    field.style.pointerEvents = "none";
-    document.body.appendChild(field);
-    field.select();
-    const copied = document.execCommand("copy");
-    field.remove();
-
-    if (!copied) throw new Error("Clipboard is unavailable");
-}
-
-async function copyServerAddress(server) {
-    try {
-        await copyText(server.address);
-        notifySuccess("скопировано");
-    } catch {
-        notifyError(
-            "не удалось скопировать ip",
-            "попробуйте выделить адрес вручную."
-        );
-    }
-}
 </script>
 
 <template>
@@ -131,23 +99,10 @@ async function copyServerAddress(server) {
                                 </div>
 
                                 <div class="server-card-content">
-                                    <div class="server-card-logo" aria-hidden="true"></div>
-
                                     <div class="server-card-details">
                                         <h2 :id="'server-title-' + server.id" class="server-card-title">
                                             {{ server.name }}
                                         </h2>
-                                        <div class="server-card-address-row">
-                                            <button
-                                                class="server-card-ip"
-                                                type="button"
-                                                :aria-label="'скопировать ip сервера ' + server.name + ': ' + server.address"
-                                                title="скопировать ip"
-                                                @click="copyServerAddress(server)"
-                                            >
-                                                {{ server.address }}
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
 
