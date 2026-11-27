@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, ref } from "vue";
-import { SERVERS } from "../../js/servers/data.js?v=20261127-1";
+import { SERVERS } from "../../js/servers/data.js?v=20261127-2";
 
 const copiedServerId = ref("");
 let copiedTimeout = null;
@@ -66,29 +66,10 @@ onBeforeUnmount(() => {
                             class="server-card"
                             :aria-labelledby="'server-title-' + server.id"
                         >
-                            <div class="server-card-artwork" aria-hidden="true">
-                                <img
-                                    class="server-card-banner"
-                                    :src="server.banner"
-                                    alt=""
-                                    width="1200"
-                                    height="400"
-                                    loading="lazy"
-                                    decoding="async"
-                                >
-                            </div>
-                            <div class="server-card-wash" aria-hidden="true"></div>
+                            <div class="server-card-artwork" aria-hidden="true"></div>
 
                             <div class="server-card-content">
-                                <img
-                                    class="server-card-logo"
-                                    :src="server.logo"
-                                    :alt="server.name + ' — логотип'"
-                                    width="512"
-                                    height="512"
-                                    loading="lazy"
-                                    decoding="async"
-                                >
+                                <div class="server-card-logo" aria-hidden="true"></div>
 
                                 <div class="server-card-details">
                                     <h2 :id="'server-title-' + server.id" class="server-card-title">
@@ -112,7 +93,9 @@ onBeforeUnmount(() => {
                                         >скопировано</span>
                                     </div>
                                 </div>
+                            </div>
 
+                            <div class="server-card-footer">
                                 <button
                                     class="server-card-more ui-button ui-button--primary"
                                     type="button"
