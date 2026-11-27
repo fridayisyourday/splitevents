@@ -1,4 +1,4 @@
-/* Server cards use 80% of the event-card width and half its height. */
+/* Server cards use 80% of the event-card width, with a larger 2:1 vertical split. */
 .servers-page-content {
     width: min(100%, var(--app-content-width));
     text-align: left;
