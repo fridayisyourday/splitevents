@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
     getInitialServerGalleryPosition,
@@ -58,4 +59,35 @@ test("server gallery handles both directions and reduced motion", () => {
     assert.equal(getNextServerGalleryPosition(3, 1, gallery, true), 1);
     assert.equal(getNextServerGalleryPosition(1, 0, gallery), 1);
     assert.equal(getNextServerGalleryPosition(0, 1, ["only.webp"]), 0);
+});
+
+
+test("carousel clone normalization is committed before transitions are restored", () => {
+    const component = readFileSync(
+        new URL("../src/components/ServersPage.vue", import.meta.url),
+        "utf8"
+    );
+    const handlerStart = component.indexOf("async function normalizeGalleryLoop");
+    const handlerEnd = component.indexOf("\nfunction toggleServerDetails", handlerStart);
+    assert.ok(handlerStart >= 0 && handlerEnd > handlerStart);
+
+    const handler = component.slice(handlerStart, handlerEnd);
+    const awaitIndex = handler.indexOf("await nextTick()");
+    const layoutFlushIndex = handler.indexOf("void track.offsetWidth");
+    const restoreTransitionIndex = handler.indexOf("requestAnimationFrame", layoutFlushIndex);
+
+    assert.ok(awaitIndex >= 0, "Vue must flush the no-transition state");
+    assert.ok(layoutFlushIndex > awaitIndex, "the browser layout must be committed after Vue updates");
+    assert.ok(restoreTransitionIndex > layoutFlushIndex, "animation must only be restored after the layout flush");
+});
+
+test("server card dimensions are increased to 1.2 times the compact layout", () => {
+    const styles = readFileSync(
+        new URL("../css/servers.css", import.meta.url),
+        "utf8"
+    );
+    assert.match(styles, /\.server-card\s*\{[^}]*height:\s*220px;/s);
+    assert.match(styles, /\.server-card-title\s*\{[^}]*font-size:\s*9\.2cqw;/s);
+    assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.server-card\s*\{[^}]*height:\s*264px;/);
+    assert.match(styles, /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*62px;/s);
 });

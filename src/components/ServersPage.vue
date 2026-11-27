@@ -115,6 +115,7 @@ async function normalizeGalleryLoop(server, event) {
         || event.propertyName !== "transform"
     ) return;
 
+    const track = event.currentTarget;
     const currentIndex = galleryPosition(server);
     if (!isServerGalleryClonePosition(currentIndex, server.gallery)) {
         galleryAnimating.value = {
@@ -134,6 +135,12 @@ async function normalizeGalleryLoop(server, event) {
     };
 
     await nextTick();
+
+    // Commit the no-transition clone-to-original position before restoring
+    // animation. Without this layout flush, browsers may animate the reset
+    // itself and visibly snap the carousel back across the track.
+    void track.offsetWidth;
+
     requestAnimationFrame(() => {
         galleryTransitionDisabled.value = {
             ...galleryTransitionDisabled.value,
