@@ -6,7 +6,6 @@ import { applyTheme, saveTheme } from "../../js/theme.js?v=20261127-1";
 const navigationItems = [
     { page: "home", id: "home-nav-button", label: "Главная", icon: "house" },
     { page: "events", id: "events-nav-button", label: "События", icon: "ticket" },
-    { page: "activities", id: "activities-nav-button", label: "активность", icon: "gamepad", disabled: true, badge: "скоро" },
     { page: "servers", id: "servers-nav-button", label: "Сервера", icon: "server" },
     { page: "friends", id: "friends-nav-button", label: "Друзья", icon: "users-round" },
     { page: "profile", id: "profile-nav-button", label: "Профиль", icon: "user-round" }
@@ -340,11 +339,9 @@ onBeforeUnmount(() => {
                     :id="item.id"
                     :key="item.page"
                     class="menu-item ui-button ui-button--nav ui-button--ghost"
-                    :class="{ 'menu-item-coming-soon': item.disabled }"
                     type="button"
-                    :disabled="Boolean(item.disabled)"
-                    :aria-current="!item.disabled && activePage === item.page ? 'page' : undefined"
-                    @click="!item.disabled && navigateTo(item.page)"
+                    :aria-current="activePage === item.page ? 'page' : undefined"
+                    @click="navigateTo(item.page)"
                 >
                     <svg class="lucide-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                         <use :href="'#icon-' + item.icon"></use>
@@ -358,7 +355,18 @@ onBeforeUnmount(() => {
                         aria-live="polite"
                         :aria-label="eventsBadgeLabel"
                     >{{ eventsBadgeText }}</span>
-                    <span v-if="item.badge" class="menu-item-badge menu-item-badge--accent">{{ item.badge }}</span>
+                </button>
+
+                <button
+                    class="menu-item menu-item-coming-soon ui-button ui-button--nav ui-button--ghost"
+                    type="button"
+                    disabled
+                >
+                    <svg class="lucide-icon menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <use href="#icon-gamepad"></use>
+                    </svg>
+                    <span class="menu-item-label">активности</span>
+                    <span class="menu-item-badge menu-item-badge--accent">скоро</span>
                 </button>
             </nav>
         </aside>
