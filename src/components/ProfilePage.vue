@@ -180,10 +180,7 @@ async function saveName() {
         if (serverProfile) applyServerProfile(serverProfile);
 
         if (!storedLocally) {
-            notifyError(
-                "не удалось сохранить имя на этом устройстве",
-                "браузер не смог сохранить его на этом устройстве. при следующем открытии имя загрузится с сервера."
-            );
+            console.warn("SplitEvents: display name was synced but could not be cached locally");
         }
     } catch (error) {
         pendingServerProfile = null;
