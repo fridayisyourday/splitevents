@@ -53,7 +53,7 @@ Vue-страница предоставляет `getBallot()`, `isComplete()` и
 - `src/components/NominationsPage.vue` — реактивное состояние страницы голосования и диалогов.
 - `src/components/NominationCard.vue` — карточки основных и дополнительных номинаций.
 - `src/components/NomineeVisual.vue` — аватары, изображения и fallback-представление.
-- `js/pages/profile-presentation.js` — безопасная проверка URL изображения профиля.
+- `js/media.js` — единое построение адресов и проверка изображений из ImageKit; `js/pages/profile-presentation.js` — дополнительная проверка профильной папки.
 - `js/storage.js` — localStorage для имени и IndexedDB для локального кэша изображений профиля.
 
 Отображаемое имя профиля синхронизируется с сервером и дополнительно зеркалируется в localStorage для быстрого отображения. Аватар пользователя хранится в D1 как подтверждённый Telegram photo_url до первой собственной загрузки; после неё приоритет получает изображение ImageKit и его file ID. Баннер сохраняется в ImageKit. IndexedDB используется только как локальный кэш и fallback. Скрытые события — в localStorage.
