@@ -1,11 +1,12 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import { SERVERS } from "../../js/servers/data.js?v=20261127-5";
 import { notifyError, notifySuccess } from "../../js/notifications.js?v=20261127-1";
 
 const expandedServerId = ref("");
 const galleryIndexes = ref({});
-const gallerySlides = [0, 1, 2];
+const galleryTransitionDisabled = ref({});
+const gallerySlides = [2, 0, 1, 2, 0];
 const failedBannerIds = reactive(new Set());
 const failedGalleryImageIds = reactive(new Set());
 
@@ -29,11 +30,33 @@ function markGalleryImageFailed(serverId, slide) {
 }
 
 function shiftGallery(server, direction) {
-    const currentIndex = galleryIndexes.value[server.id] ?? 0;
+    const currentIndex = galleryIndexes.value[server.id] ?? 1;
     galleryIndexes.value = {
         ...galleryIndexes.value,
-        [server.id]: (currentIndex + direction + gallerySlides.length) % gallerySlides.length
+        [server.id]: currentIndex + direction
     };
+}
+
+async function normalizeGalleryLoop(server) {
+    const currentIndex = galleryIndexes.value[server.id] ?? 1;
+    if (currentIndex !== 0 && currentIndex !== gallerySlides.length - 1) return;
+
+    galleryTransitionDisabled.value = {
+        ...galleryTransitionDisabled.value,
+        [server.id]: true
+    };
+    galleryIndexes.value = {
+        ...galleryIndexes.value,
+        [server.id]: currentIndex === 0 ? gallerySlides.length - 2 : 1
+    };
+
+    await nextTick();
+    requestAnimationFrame(() => {
+        galleryTransitionDisabled.value = {
+            ...galleryTransitionDisabled.value,
+            [server.id]: false
+        };
+    });
 }
 
 function toggleServerDetails(server) {
@@ -134,16 +157,18 @@ async function copyServerAddress(server) {
                                         <div class="server-card-gallery-viewport" aria-live="polite">
                                             <div
                                                 class="server-card-gallery-track"
-                                                :style="{ transform: 'translateX(-' + (galleryIndexes[server.id] ?? 0) * 100 + '%)' }"
+                                                :class="{ 'server-card-gallery-track--instant': galleryTransitionDisabled[server.id] }"
+                                                :style="{ transform: 'translateX(-' + (galleryIndexes[server.id] ?? 1) * 100 + '%)' }"
+                                                @transitionend="normalizeGalleryLoop(server)"
                                             >
                                                 <div
-                                                    v-for="slide in gallerySlides"
-                                                    :key="slide"
+                                                    v-for="(slide, position) in gallerySlides"
+                                                    :key="position"
                                                     class="server-card-gallery-slide"
                                                     :class="'server-card-gallery-slide--' + slide"
                                                     role="img"
                                                     :aria-label="'изображение сервера ' + (slide + 1)"
-                                                    :aria-hidden="(galleryIndexes[server.id] ?? 0) !== slide"
+                                                    :aria-hidden="(galleryIndexes[server.id] ?? 1) !== position"
                                                 >
                                                     <img
                                                         v-if="galleryImageUrl(server, slide)"
