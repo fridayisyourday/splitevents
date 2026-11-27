@@ -58,7 +58,7 @@ function eventDateTime(event) {
 
 function countdown(event) {
     if (!event.endsAt) {
-        return { days: "-", hours: "-", minutes: "-", seconds: "-" };
+        return { days: "-", hours: "-", minutes: "-" };
     }
 
     const endTime = new Date(event.endsAt).getTime();
@@ -71,8 +71,7 @@ function countdown(event) {
     return {
         days: String(Math.floor(totalSeconds / 86400)),
         hours: String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2, "0"),
-        minutes: String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0"),
-        seconds: String(totalSeconds % 60).padStart(2, "0")
+        minutes: String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0")
     };
 }
 
@@ -133,7 +132,7 @@ function startClock() {
     countdownInterval = window.setInterval(() => {
         now.value = Date.now();
         dispatchActiveEventsBadge();
-    }, 1000);
+    }, 60_000);
 }
 
 function syncClockWithRoute() {
@@ -249,7 +248,6 @@ onBeforeUnmount(() => {
                                         <span class="event-countdown-part"><span class="event-countdown-value">{{ countdown(event).days }}</span><span class="event-countdown-unit">д</span></span>
                                         <span class="event-countdown-part"><span class="event-countdown-value">{{ countdown(event).hours }}</span><span class="event-countdown-unit">ч</span></span>
                                         <span class="event-countdown-part"><span class="event-countdown-value">{{ countdown(event).minutes }}</span><span class="event-countdown-unit">м</span></span>
-                                        <span class="event-countdown-part"><span class="event-countdown-value">{{ countdown(event).seconds }}</span><span class="event-countdown-unit">с</span></span>
                                     </span>
                                 </div>
 
