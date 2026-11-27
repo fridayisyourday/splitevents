@@ -294,8 +294,22 @@
     }
 
     .server-card-content {
+        top: auto;
+        bottom: 62px;
+        height: calc(var(--app-server-logo-size-mobile) + var(--app-space-4));
         gap: var(--app-space-3);
         padding: var(--app-space-1-5) var(--app-space-3-5);
+    }
+
+    .server-card-details {
+        flex: 1 1 0;
+        width: 0;
+    }
+
+    .server-card-title {
+        font-size: clamp(20px, 6.4cqw, 28px);
+        letter-spacing: -0.06em;
+        white-space: nowrap;
     }
 
     .server-card-logo {
@@ -303,11 +317,6 @@
         width: var(--app-server-logo-size-mobile);
         height: var(--app-server-logo-size-mobile);
         transform: none;
-    }
-
-    .server-card-title {
-        font-size: clamp(30px, 9.6cqw, 42px);
-        letter-spacing: -0.065em;
     }
 
     .server-card-ip {
@@ -393,8 +402,9 @@
         z-index: 4;
         top: auto;
         right: 0;
-        bottom: 48px;
+        bottom: 64px;
         left: 0;
+        height: calc(var(--app-server-logo-size-mobile) + var(--app-space-4));
         align-items: center;
         min-height: 0;
         padding: var(--app-space-1-5) var(--app-space-3-5);
@@ -423,8 +433,13 @@
         height: var(--app-server-logo-size-compact);
     }
 
+    .server-card-content {
+        height: calc(var(--app-server-logo-size-compact) + var(--app-space-4));
+    }
+
     .server-entry--expanded .server-card-content {
-        bottom: 54px;
+        bottom: 64px;
+        height: calc(var(--app-server-logo-size-compact) + var(--app-space-4));
     }
 
     .server-card-ip {
