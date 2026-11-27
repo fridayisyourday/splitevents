@@ -193,7 +193,7 @@
     }
 
     .event-card-meta-separator {
-        font-size: var(--app-font-size-xs);
+        font-size: inherit;
     }
 
     .event-card-countdown {
