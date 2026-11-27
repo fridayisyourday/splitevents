@@ -29,7 +29,7 @@
     box-sizing: border-box;
     width: 100%;
     max-width: var(--app-content-width);
-    height: 160px;
+    height: 288px;
     overflow: hidden;
     isolation: isolate;
     container-type: inline-size;
@@ -79,6 +79,10 @@
     height: 100%;
     transition: transform 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
     will-change: transform;
+}
+
+.server-card-gallery-track--instant {
+    transition: none;
 }
 
 .server-card-gallery-slide {
@@ -364,7 +368,7 @@
 @media (max-width: 640px) {
     .server-card {
         width: 100%;
-        height: 190px;
+        height: 342px;
         transition: height 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
     }
 
