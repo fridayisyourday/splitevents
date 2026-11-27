@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from "vue";
 import { getCurrentPage, getPageHash } from "../../js/navigation.js?v=20261127-1";
+import { applyTheme, saveTheme } from "../../js/theme.js?v=20261127-1";
 
 const navigationItems = [
     { page: "home", id: "home-nav-button", label: "Главная", icon: "house" },
@@ -11,6 +12,7 @@ const navigationItems = [
 ];
 
 const activePage = ref("home");
+const colorScheme = ref(document.documentElement.dataset.colorScheme === "dark" ? "dark" : "light");
 const activeEventsCount = ref(0);
 const isOpen = ref(false);
 const isVisible = ref(false);
@@ -41,6 +43,15 @@ const eventsBadgeLabel = computed(() => {
 
     return count + " " + word;
 });
+
+function toggleTheme() {
+    const nextTheme = colorScheme.value === "light" ? "dark" : "light";
+    colorScheme.value = saveTheme(nextTheme);
+    applyTheme(colorScheme.value);
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) themeColor.content = colorScheme.value === "dark" ? "#000000" : "#FFFFFF";
+}
+
 
 function updateActivePage() {
     const page = getCurrentPage();
@@ -292,7 +303,21 @@ onBeforeUnmount(() => {
             tabindex="-1"
         >
             <div class="menu-panel-header">
-                <h2 id="menu-title" class="menu-panel-title">Меню</h2>
+                <div class="menu-panel-heading">
+                    <h2 id="menu-title" class="menu-panel-title">Меню</h2>
+                    <button
+                        id="menu-theme-toggle"
+                        class="menu-theme-toggle ui-button ui-button--icon ui-button--secondary"
+                        type="button"
+                        :aria-label="colorScheme === 'light' ? 'Переключить на тёмную тему' : 'Переключить на светлую тему'"
+                        :title="colorScheme === 'light' ? 'Тёмная тема' : 'Светлая тема'"
+                        @click="toggleTheme"
+                    >
+                        <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <use :href="colorScheme === 'light' ? '#icon-sun' : '#icon-moon'"></use>
+                        </svg>
+                    </button>
+                </div>
                 <button
                     id="menu-close-button"
                     ref="closeButtonElement"

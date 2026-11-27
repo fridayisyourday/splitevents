@@ -30,10 +30,20 @@
                 : null;
             const systemDark = window.matchMedia
                 && window.matchMedia("(prefers-color-scheme: dark)").matches;
-            const scheme = telegramScheme === "dark" || telegramScheme === "light"
-                ? telegramScheme
-                : (systemDark ? "dark" : "light");
+            let savedScheme = null;
+            try {
+                savedScheme = window.localStorage.getItem("splitevents-color-scheme");
+            } catch {
+                savedScheme = null;
+            }
+            const scheme = savedScheme === "dark" || savedScheme === "light"
+                ? savedScheme
+                : (telegramScheme === "dark" || telegramScheme === "light"
+                    ? telegramScheme
+                    : (systemDark ? "dark" : "light"));
             document.documentElement.dataset.colorScheme = scheme;
+            const themeColor = document.querySelector('meta[name="theme-color"]');
+            if (themeColor) themeColor.content = scheme === "dark" ? "#000000" : "#FFFFFF";
         })();
     </script>
 
@@ -41,7 +51,7 @@
     <link rel="stylesheet" href="./css/base.css?v=20261126-10">
     <link rel="stylesheet" href="./css/components.css?v=20261126-6">
     <link rel="stylesheet" href="./css/layout.css?v=20261126-4">
-    <link rel="stylesheet" href="./css/menu.css?v=20261127-2">
+    <link rel="stylesheet" href="./css/menu.css?v=20261127-3">
     <link rel="stylesheet" href="./css/profile.css?v=20261126-10">
     <link rel="stylesheet" href="./css/friends.css?v=20261127-2">
     <link rel="stylesheet" href="./css/pages.css?v=20261126-5">
@@ -51,7 +61,7 @@
     <link rel="stylesheet" href="./css/nominations-picker.css?v=20261126-1">
     <link rel="stylesheet" href="./css/nominations-cards.css?v=20261126-5">
     <link rel="stylesheet" href="./css/squash.css?v=20261127-2">
-    <link rel="stylesheet" href="./css/design-system.css?v=20261126-20">
+    <link rel="stylesheet" href="./css/design-system.css?v=20261127-1">
     <link rel="stylesheet" href="./css/notifications.css?v=20261126-2">
 
     <!-- ES-модуль приложения загружает остальные JS-модули. -->
