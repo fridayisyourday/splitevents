@@ -230,7 +230,7 @@ onBeforeUnmount(() => {
                                 <h2 :id="'event-title-' + event.id" class="event-card-title">
                                     {{ event.title }}
                                 </h2>
-                                <p :id="'event-description-' + event.id" class="event-card-description">
+                                <p :id="'event-description-' + event.id" class="event-card-description app-description">
                                     {{ event.description || "" }}
                                 </p>
 
