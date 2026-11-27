@@ -34,37 +34,6 @@ function openModpack(server, event) {
     }
 }
 
-async function copyText(value) {
-    if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-        return;
-    }
-
-    const field = document.createElement("textarea");
-    field.value = value;
-    field.setAttribute("readonly", "");
-    field.style.position = "fixed";
-    field.style.opacity = "0";
-    field.style.pointerEvents = "none";
-    document.body.appendChild(field);
-    field.select();
-    const copied = document.execCommand("copy");
-    field.remove();
-
-    if (!copied) throw new Error("Clipboard is unavailable");
-}
-
-async function copyServerAddress(server) {
-    try {
-        await copyText(server.address);
-        notifySuccess("скопировано");
-    } catch {
-        notifyError(
-            "не удалось скопировать ip",
-            "попробуйте выделить адрес вручную."
-        );
-    }
-}
 </script>
 
 <template>
