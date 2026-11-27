@@ -62,7 +62,7 @@
 }
 
 .vote-carousel-controls .vote-page-button {
-    flex: 0 0 42px;
+    flex: 0 0 var(--app-control-height);
 }
 
 .vote-carousel-stage > .vote-carousel-controls {

@@ -440,7 +440,7 @@
 }
 
 .vote-page-button {
-    --ui-button-size: 42px;
+    --ui-button-size: var(--app-control-height);
 }
 
 .vote-page-button > .lucide-icon {
