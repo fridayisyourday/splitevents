@@ -145,3 +145,30 @@ body.menu-open {
         transition-duration: 0.01ms;
     }
 }
+
+
+/* Theme switch sits beside the menu heading and follows the shared icon-button style. */
+.menu-panel-heading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    min-width: 0;
+}
+
+.menu-panel .menu-theme-toggle {
+    flex: 0 0 48px;
+    color: var(--app-text);
+    background: transparent;
+    box-shadow: none;
+}
+
+.menu-panel .menu-theme-toggle:hover {
+    background: transparent;
+    opacity: 0.72;
+}
+
+.menu-theme-toggle svg {
+    width: 24px;
+    height: 24px;
+}
