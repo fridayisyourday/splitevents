@@ -203,8 +203,7 @@ async function copyServerAddress(server) {
                                     :aria-labelledby="'server-title-' + server.id"
                                 >
                                     <div class="server-details-panel-surface">
-                                        <div class="server-details-ip-row">
-                                            <span class="server-details-label">адрес</span>
+                                        <div class="server-details-grid">
                                             <button
                                                 class="server-details-ip-button"
                                                 type="button"
@@ -216,15 +215,14 @@ async function copyServerAddress(server) {
                                                     {{ server.address }}
                                                 </span>
                                             </button>
-                                        </div>
-                                        <div class="server-details-grid">
-                                            <span class="server-details-label">загрузчик</span>
+                                            <span class="server-details-label">адрес</span>
+
                                             <span class="menu-item-badge menu-item-badge--accent">{{ server.loader }}</span>
+                                            <span class="server-details-label">загрузчик</span>
 
-                                            <span class="server-details-label">версия</span>
                                             <span class="menu-item-badge menu-item-badge--accent">{{ server.version }}</span>
+                                            <span class="server-details-label">версия</span>
 
-                                            <span class="server-details-label">модпак</span>
                                             <a
                                                 class="server-details-download ui-button ui-button--secondary"
                                                 :href="server.modpackUrl"
@@ -235,6 +233,7 @@ async function copyServerAddress(server) {
                                             >
                                                 загрузить
                                             </a>
+                                            <span class="server-details-label">модпак</span>
                                         </div>
                                     </div>
                                 </section>
