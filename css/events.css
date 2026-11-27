@@ -155,7 +155,6 @@
 }
 
 .event-card-visibility-action {
-    --ui-button-size: var(--app-control-height);
     flex-shrink: 0;
 }
 
@@ -230,9 +229,6 @@
         max-width: none;
     }
 
-    .event-card-visibility-action {
-        --ui-button-size: var(--app-control-height);
-    }
 }
 
 @media (max-width: 380px) {
@@ -260,9 +256,6 @@
         font-size: var(--app-font-size-2xs);
     }
 
-    .event-card-visibility-action {
-        --ui-button-size: var(--app-control-height);
-    }
 }
 
 

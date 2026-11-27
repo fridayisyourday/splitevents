@@ -11,9 +11,9 @@
     padding: 0 var(--app-space-4);
     border: 0;
     border-radius: var(--app-radius-control);
-    background: var(--app-button-background);
-    color: var(--app-button-color);
-    box-shadow: var(--app-shadow-control);
+    background: var(--app-button-primary-background);
+    color: var(--app-button-primary-color);
+    box-shadow: none;
     font-family: var(--app-font-family);
     font-size: var(--app-button-font-size);
     font-weight: var(--app-button-font-weight);
@@ -33,51 +33,24 @@
 
 
 .ui-button--primary {
-    border: 0;
-    background: var(--ui-button-background, var(--app-text));
-    color: var(--ui-button-color, var(--app-background));
-    box-shadow: var(--app-shadow-control);
-}
-
-.ui-button--secondary {
-    border: 0;
-    background: var(--app-secondary);
-    color: var(--app-on-secondary);
+    background: var(--app-button-primary-background);
+    color: var(--app-button-primary-color);
     box-shadow: none;
 }
 
-.ui-button--ghost {
-    border: 0;
-    background: transparent;
-    color: var(--app-text);
+.ui-button--secondary {
+    background: var(--app-button-secondary-background);
+    color: var(--app-button-secondary-color);
     box-shadow: none;
 }
 
 .ui-button--icon {
-    flex: 0 0 var(--ui-button-size, var(--app-control-height));
-    width: var(--ui-button-size, var(--app-control-height));
-    height: var(--ui-button-size, var(--app-control-height));
-    min-height: var(--ui-button-size, var(--app-control-height));
-    padding: 0;
-}
-
-.ui-button--round {
-    border-radius: 50%;
-}
-
-.ui-button--nav {
-    justify-content: flex-start;
-    width: 100%;
+    flex: 0 0 var(--app-control-height);
+    width: var(--app-control-height);
+    height: var(--app-control-height);
     min-height: var(--app-control-height);
-    padding: 0 var(--app-space-3-5);
-    text-align: left;
-}
-
-.ui-button--media {
-    border: 2px solid var(--app-card-background);
-    background: var(--app-card-background);
-    color: var(--app-text);
-    box-shadow: none;
+    padding: 0;
+    border-radius: 50%;
 }
 
 @media (hover: hover) {
@@ -88,10 +61,6 @@
 
 .ui-button:not(:disabled):active {
     transform: scale(0.97);
-}
-
-.ui-button--nav:not(:disabled):active {
-    transform: scale(0.985);
 }
 
 @media (prefers-reduced-motion: reduce) {
