@@ -74,23 +74,10 @@
 
     /* Typography. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    --app-font-size-2xs: 10px;
-    --app-font-size-xs: 12px;
-    --app-font-size-sm: 14px;
-    --app-font-size-default: 16px;
-    --app-font-size-lg: 18px;
-    --app-font-size-xl: 20px;
-    --app-font-size-2xl: 24px;
-    --app-font-size-nomination-featured: 22px;
-    --app-font-size-avatar-initials: 26px;
-    --app-font-size-3xl: 32px;
-    --app-font-size-brand: var(--app-font-size-2xl);
-    --app-font-size-menu-title: 22px;
-    --app-font-size-navigation: var(--app-font-size-default);
-    --app-font-size-profile-name: var(--app-font-size-xl);
-    --app-font-size-body: var(--app-font-size-sm);
-    --app-font-size-small: var(--app-font-size-xs);
-    --app-font-size-page-title: clamp(32px, 4vw, 40px);
+    --app-font-size-title: clamp(66px, 10vw, 148px);
+    --app-font-size-heading: clamp(32px, 4vw, 40px);
+    --app-font-size-main: 14px;
+    --app-font-size-accent: 16px;
     --app-font-weight-regular: 400;
     --app-font-weight-medium: 600;
     --app-font-weight-semibold: 700;
@@ -142,9 +129,10 @@
     --app-button-secondary-color: var(--app-black);
     --app-button-background: var(--app-button-primary-background);
     --app-button-color: var(--app-button-primary-color);
-    --app-button-font-size: var(--app-font-size-sm);
     --app-button-font-weight: 700;
-    --app-button-transition: background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease, transform var(--app-duration-fast) ease, filter var(--app-duration-fast) ease;
+    --app-button-transition: transform var(--app-duration-fast) var(--app-easing-standard), filter var(--app-duration-fast) ease, opacity var(--app-duration-fast) ease, background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease;
+    --app-button-hover-brightness: 0.96;
+    --app-button-pressed-scale: 0.97;
     --app-focus-width: 2px;
     --app-focus-offset: 4px;
     --app-duration-fast: 160ms;
@@ -163,6 +151,7 @@
 @media (max-width: 640px) {
     :root {
         --app-container-padding: 14px;
+        --app-font-size-title: clamp(60px, 17vw, 92px);
     }
 }
 
@@ -344,7 +333,7 @@ body,
     background: var(--app-badge-background);
     color: var(--app-badge-color);
     box-shadow: none;
-    font-size: var(--app-font-size-small);
+    font-size: var(--app-font-size-main);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
     line-height: var(--app-line-height-tight);
@@ -383,8 +372,21 @@ body,
     opacity: 1;
 }
 
-.ui-button:not(:disabled):active {
-    transform: scale(0.98);
+button:not(.menu-backdrop),
+a.server-details-download {
+    transition: var(--app-button-transition);
+}
+
+@media (hover: hover) {
+    button:not(.menu-backdrop):not(:disabled):hover,
+    a.server-details-download:hover {
+        filter: brightness(var(--app-button-hover-brightness));
+    }
+}
+
+button:not(.menu-backdrop):not(:disabled):active,
+a.server-details-download:active {
+    transform: scale(var(--app-button-pressed-scale));
 }
 
 .ui-button:focus-visible {
@@ -470,13 +472,9 @@ svg {
     box-shadow: none;
 }
 
-.menu-navigation .menu-item:not(:disabled):hover {
-    background: transparent;
-    opacity: 0.72;
-}
-
 .menu-navigation .menu-item[aria-current="page"]:hover {
     background: var(--app-nav-active-background);
+    filter: none;
     opacity: 1;
 }
 
@@ -520,7 +518,8 @@ svg {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .ui-button,
+    button:not(.menu-backdrop),
+    a.server-details-download,
     .menu-backdrop,
     .menu-panel {
         transition: none;
@@ -528,9 +527,19 @@ svg {
 }
 
 
-/* Typography standard: ordinary interface copy is lowercase by default. */
+/* Every text element starts at the main role; semantic classes below assign the other three roles. */
 body {
+    font-size: var(--app-font-size-main);
     text-transform: lowercase;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: var(--app-font-size-heading);
 }
 
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
@@ -693,7 +702,7 @@ h6,
 /* Single source of truth for descriptions and secondary date/time metadata. */
 .app-description {
     color: var(--app-hint);
-    font-size: var(--app-font-size-default);
+    font-size: var(--app-font-size-accent);
     font-weight: var(--app-font-weight-subtle);
     line-height: var(--app-line-height-label);
 }
