@@ -97,15 +97,16 @@
 }
 
 .event-card-date {
-    font-weight: var(--app-font-weight-normal);
+    color: inherit;
+    font: inherit;
     white-space: nowrap;
 }
 
 .event-card-meta-separator {
     color: var(--app-border);
-    font-size: 1.4cqw;
-    font-weight: 400;
-    line-height: var(--app-line-height-tight);
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
 }
 
 .event-card-countdown {
@@ -113,26 +114,24 @@
     flex-wrap: nowrap;
     align-items: baseline;
     gap: 0.65cqw;
+    color: inherit;
+    font: inherit;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    font-weight: var(--app-font-weight-subtle);
 }
 
 .event-countdown-part {
     display: inline-flex;
     align-items: baseline;
     gap: 0.18cqw;
+    color: inherit;
+    font: inherit;
 }
 
-.event-countdown-value {
-    color: var(--app-text);
-    font-weight: var(--app-font-weight-normal);
-}
-
+.event-countdown-value,
 .event-countdown-unit {
-    color: var(--app-hint);
-    font-size: clamp(var(--app-font-size-2xs), 0.95cqw, var(--app-font-size-xs));
-    font-weight: var(--app-font-weight-subtle);
+    color: inherit;
+    font: inherit;
 }
 
 .event-card-actions {
@@ -160,7 +159,7 @@
     height: 54%;
 }
 
-.is-event-ended .event-card-countdown {
+.is-event-ended .event-card-meta {
     opacity: 0.58;
 }
 
@@ -205,10 +204,6 @@
         gap: var(--app-space-0-5);
     }
 
-    .event-countdown-unit {
-        font-size: var(--app-font-size-2xs);
-    }
-
     .event-card-actions {
         width: 100%;
         gap: var(--app-space-1-5);
@@ -236,10 +231,6 @@
 
     .event-card-countdown {
         gap: var(--app-space-0-5);
-    }
-
-    .event-countdown-unit {
-        font-size: var(--app-font-size-2xs);
     }
 
 }
