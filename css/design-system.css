@@ -681,3 +681,12 @@ h6,
         display: none;
     }
 }
+
+
+/* Shared description typography for server, event and award cards. */
+.app-description {
+    color: var(--app-hint);
+    font-size: var(--app-font-size-default);
+    font-weight: var(--app-font-weight-subtle);
+    line-height: var(--app-line-height-label);
+}
