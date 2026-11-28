@@ -842,7 +842,7 @@ defineExpose({
                             <header class="vote-dialog-header">
                                 <p class="vote-dialog-eyebrow">добавить номинанта</p>
                                 <h2 id="vote-picker-title" class="vote-dialog-title">
-                                    добавить номинанта
+                                    {{ activeNomination?.title || "" }}
                                 </h2>
                             </header>
                             <div class="vote-grid-viewport">
