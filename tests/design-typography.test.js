@@ -26,7 +26,7 @@ const notificationCss = readProjectFile("css/notifications.css");
 const friendsCss = readProjectFile("css/friends.css");
 const componentsCss = readProjectFile("css/components.css");
 
-test("the six typography roles remain constant across viewport widths", () => {
+test("the seven typography roles remain constant across viewport widths", () => {
     assert.match(baseCss, /html\s*\{[^}]*font-size:\s*16px;[^}]*-webkit-text-size-adjust:\s*100%;[^}]*text-size-adjust:\s*100%;/s);
     assert.match(designCss, /--app-font-size-small:\s*0\.75rem;/);
     assert.match(designCss, /--app-font-size-normal:\s*1rem;/);
