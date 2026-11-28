@@ -8,7 +8,6 @@ function readProjectFile(path) {
 
 const designCss = readProjectFile("css/design-system.css");
 const designGuide = readProjectFile("docs/design-system.md");
-
 const stylesheets = [
     "css/base.css", "css/components.css", "css/design-system.css", "css/events.css",
     "css/friends.css", "css/layout.css", "css/menu.css", "css/nominations.css",
@@ -50,15 +49,14 @@ test("no bold text is used across the app", () => {
 });
 
 test("titles avoid breaking words and component headings adapt to their own card width", () => {
-    assert.match(designCss, /\.event-card-title\s*\{[^}]*container|\.event-card-title\s*\{[^}]*font-size:\s*clamp\([^}]+cqw/s);
+    assert.match(designCss, /\.event-card-title\s*\{[^}]*font-size:\s*clamp\([^}]+cqw/s);
     assert.match(designCss, /\.server-card-title\s*\{[^}]*font-size:\s*clamp\([^}]+cqw/s);
-    assert.match(designCss, /\.event-card-title,[\s\S]*?overflow-wrap:\s*normal/);
-    assert.match(designCss, /\.server-card-title,[\s\S]*?overflow-wrap:\s*normal/);
+    assert.match(designCss, /body,\s*body \*\s*\{[^}]*overflow-wrap:\s*normal/s);
 });
 
 test("dates and timers use the smallest role, descriptions and menu controls use large", () => {
     assert.match(designCss, /\.event-card-meta,[\s\S]*?font-size:\s*var\(--app-type-small\)/);
     assert.match(designCss, /\.squash-countdown-title,[\s\S]*?font-size:\s*var\(--app-type-small\)/);
-    assert.match(designCss, /\.app-description\s*\{[^}]*font-size:\s*var\(--app-type-large\)/s);
-    assert.match(designCss, /\.menu-item,[\s\S]*?font-size:\s*var\(--app-type-large\)/);
+    assert.match(designCss, /\.app-description\s*\{[^}]*font-size:s*var\(--app-type-large\)/s);
+    assert.match(designCss, /\.menu-item,[\s\S]*?font-size:s*var\(--app-type-large\)/);
 });
