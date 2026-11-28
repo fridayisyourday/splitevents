@@ -39,10 +39,10 @@ test("all four responsive typography roles have rem-based fluid ranges", () => {
     assert.match(designCss, /--app-font-size-regular:\s*clamp\(1rem,\s*calc\(0\.94rem\s*\+\s*0\.2vw\),\s*1\.125rem\)/);
     assert.match(designCss, /--app-font-size-large:\s*clamp\(1\.125rem,\s*calc\(1\.02rem\s*\+\s*0\.32vw\),\s*1\.375rem\)/);
     assert.match(designCss, /--app-font-size-title:\s*clamp\(1\.75rem,\s*calc\(1\.5rem\s*\+\s*1vw\),\s*2\.5rem\)/);
-    assert.match(designGuide, /мелкий 14–15 px/i);
-    assert.match(designGuide, /обычный 16–18 px/i);
-    assert.match(designGuide, /крупный 18–22 px/i);
-    assert.match(designGuide, /титульный 28–40 px/i);
+    assert.match(designGuide, /\*\*Мелкий\*\* — `--app-font-size-small`/);
+    assert.match(designGuide, /\*\*Обычный\*\* — `--app-font-size-regular`/);
+    assert.match(designGuide, /\*\*Крупный\*\* — `--app-font-size-large`/);
+    assert.match(designGuide, /\*\*Титульный\*\* — `--app-font-size-title`/);
 });
 
 test("descriptions and metadata use separate large and small roles", () => {
