@@ -78,8 +78,6 @@
     --app-font-size-normal: clamp(0.875rem, calc(0.82rem + 0.18vw), 1rem);
     --app-font-size-large: clamp(1rem, calc(0.94rem + 0.35vw), 1.25rem);
     --app-font-size-title: clamp(1.5rem, calc(1.25rem + 1.8vw), 3rem);
-    --app-font-size-normal: 14px;
-    --app-font-size-large: 16px;
     --app-font-weight-regular: 400;
     --app-font-weight-medium: 400;
     --app-font-weight-semibold: 400;
@@ -717,7 +715,6 @@ h6,
     --app-font-size-small: clamp(0.75rem, calc(0.72rem + 0.12vw), 0.875rem);
     --app-font-size-normal: clamp(0.875rem, calc(0.82rem + 0.18vw), 1rem);
     --app-font-size-large: clamp(1rem, calc(0.94rem + 0.35vw), 1.25rem);
-    --app-font-size-title: clamp(1.5rem, calc(1.25rem + 1.8vw), 3rem);
 }
 
 /* No text hierarchy depends on bold weight: all interface copy stays regular. */
@@ -776,8 +773,7 @@ h6 {
     hyphens: manual;
 }
 
-.ui-button,
-button.ui-button,
+button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"] {
