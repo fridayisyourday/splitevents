@@ -425,7 +425,7 @@
     }
 
     .server-details-grid {
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
         row-gap: var(--app-content-gap-tight);
     }
 
