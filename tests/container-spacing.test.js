@@ -40,11 +40,11 @@ test("server card button has equal horizontal and bottom inset", () => {
     );
     assert.match(
         servers,
-        /\.server-card-content\s*\{[^}]*inset:\s*0 0 calc\(var\(--app-control-height\) \+ var\(--app-container-padding\) \+ var\(--app-container-padding\)\)[^}]*padding:\s*0 var\(--app-container-padding\)/s
+        /\.server-card-content\s*\{[^}]*position:\s*relative;[^}]*grid-row:\s*1;[^}]*padding:\s*0 var\(--app-container-padding\)/s
     );
 });
 
 test("all CSS bundles use the refreshed cache key", () => {
     const html = read("index.html");
-    assert.equal((html.match(/20261128-38/g) || []).length, 16);
+    assert.equal((html.match(/20261128-39/g) || []).length, 16);
 });

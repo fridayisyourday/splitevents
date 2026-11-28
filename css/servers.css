@@ -239,7 +239,7 @@
     box-sizing: border-box;
     width: 100%;
     max-width: var(--app-content-width);
-    max-height: 300px;
+    max-height: 420px;
     margin-top: var(--app-space-2);
     overflow: hidden;
     border-radius: var(--app-radius-card);
@@ -344,7 +344,7 @@
 
 .server-details-enter-to,
 .server-details-leave-from {
-    max-height: 300px;
+    max-height: 420px;
     margin-top: var(--app-space-2);
     opacity: 1;
     transform: translateY(0);
