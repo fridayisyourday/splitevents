@@ -108,7 +108,7 @@
     color: var(--app-hint);
     object-fit: cover;
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
 }
 
 .vote-nomination-card--featured .vote-nomination-logo,
@@ -135,7 +135,7 @@
     color: var(--app-hint);
     object-fit: cover;
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
 }
 
 .vote-nomination-title {
@@ -143,7 +143,7 @@
     margin: 0;
     color: var(--app-text);
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
     letter-spacing: -0.025em;
     line-height: var(--app-line-height-title);
     overflow-wrap: anywhere;
@@ -159,7 +159,7 @@
     margin: 0;
     color: var(--app-hint);
     font-size: var(--app-font-size-normal);
-    font-weight: var(--app-font-weight-semibold);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
@@ -236,7 +236,7 @@
     margin: 0;
     color: var(--app-text);
     font-size: var(--app-font-size-title);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
     letter-spacing: -0.04em;
     line-height: var(--app-line-height-snug);
     overflow-wrap: anywhere;
@@ -296,7 +296,7 @@
     color: var(--app-hint);
     object-fit: cover;
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
 }
 
 .vote-avatar,
@@ -324,7 +324,7 @@
     margin: 0;
     color: var(--app-text);
     font-size: var(--app-font-size-normal);
-    font-weight: var(--app-font-weight-semibold);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
@@ -358,7 +358,7 @@
     flex: 0 0 auto;
     color: var(--app-hint);
     font-size: var(--app-font-size-normal);
-    font-weight: var(--app-font-weight-semibold);
+    font-weight: var(--app-font-weight-regular);
 }
 
 .vote-add-symbol,
@@ -422,7 +422,7 @@
     overflow: hidden;
     color: var(--app-text);
     font-size: var(--app-font-size-normal);
-    font-weight: var(--app-font-weight-semibold);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-caption);
     overflow-wrap: anywhere;
     text-align: center;
