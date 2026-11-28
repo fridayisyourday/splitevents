@@ -185,6 +185,25 @@
     }
 }
 
+/* Compact tile actions retain a 48px hit area while allowing long labels to wrap. */
+.vote-dialog .vote-candidate-card > .vote-button {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    min-height: var(--app-control-height);
+    flex: 0 0 auto;
+    padding: var(--app-space-2) var(--app-space-2);
+    font-size: var(--app-font-size-control-compact);
+    line-height: var(--app-line-height-control-compact);
+    white-space: normal;
+    text-wrap: balance;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
 /* Candidate tiles keep their grid, with a little more breathing room. */
 .vote-dialog .vote-candidate-card {
     background: var(--app-card-background);

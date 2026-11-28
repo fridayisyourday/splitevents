@@ -730,11 +730,10 @@ defineExpose({
                                                     @keydown.enter.prevent="selectSuggestion"
                                                 >
                                                 <p
-                                                    v-else
-                                                    class="vote-suggest-text"
-                                                    :class="{ 'vote-candidate-name': activeNomination.suggestionMode === 'voted' }"
+                                                    v-else-if="activeNomination.suggestionMode === 'voted'"
+                                                    class="vote-suggest-text vote-candidate-name"
                                                 >
-                                                    {{ activeNomination.suggestionMode === "voted" ? activeNomination.suggestedText : "предложить вариант" }}
+                                                    {{ activeNomination.suggestedText }}
                                                 </p>
                                             </div>
                                             <button
@@ -745,7 +744,7 @@ defineExpose({
                                                 :aria-pressed="activeNomination.suggestionMode === 'voted' ? 'true' : undefined"
                                                 @click="activeNomination.suggestionMode === 'editing' ? selectSuggestion() : editSuggestion()"
                                             >
-                                                {{ activeNomination.suggestionMode === "editing" ? "выбрать этот вариант" : (activeNomination.suggestionMode === "voted" ? "отменить голос" : "предложить другое") }}
+                                                {{ activeNomination.suggestionMode === "editing" ? "выбрать этот вариант" : (activeNomination.suggestionMode === "voted" ? "отменить голос" : "предложить вариант") }}
                                             </button>
                                         </article>
 
@@ -757,12 +756,9 @@ defineExpose({
                                             >
                                                 <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                             </div>
-                                            <div class="vote-add-details">
-                                                <p
-                                                    class="vote-candidate-name"
-                                                    :class="{ 'vote-candidate-name--label': !activeNomination.selectedFromPoolId }"
-                                                >
-                                                    {{ activeNomination.selectedFromPoolId ? nomineeById.get(activeNomination.selectedFromPoolId)?.name : "добавить номинанта" }}
+                                            <div v-if="activeNomination.selectedFromPoolId" class="vote-add-details">
+                                                <p class="vote-candidate-name">
+                                                    {{ nomineeById.get(activeNomination.selectedFromPoolId)?.name }}
                                                 </p>
                                             </div>
                                             <button
@@ -772,7 +768,7 @@ defineExpose({
                                                 :aria-pressed="activeNomination.selectedFromPoolId ? 'true' : undefined"
                                                 @click="togglePoolNominee($event)"
                                             >
-                                                {{ activeNomination.selectedFromPoolId ? "отменить голос" : "добавить" }}
+                                                {{ activeNomination.selectedFromPoolId ? "отменить голос" : "добавить номинанта" }}
                                             </button>
                                         </article>
 

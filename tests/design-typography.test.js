@@ -30,6 +30,8 @@ test("the six typography roles scale fluidly from a rem baseline", () => {
     assert.match(designCss, /--app-font-size-normal:\s*clamp\(1rem,/);
     assert.match(designCss, /--app-font-size-control:\s*clamp\(1rem,/);
     assert.match(designCss, /--app-line-height-control:\s*1\.3/);
+    assert.match(designCss, /--app-font-size-control-compact:\s*clamp\(0\.875rem,/);
+    assert.match(designCss, /--app-line-height-control-compact:\s*1\.25/);
     assert.match(designCss, /--app-font-size-large:\s*clamp\(1\.125rem,/);
     assert.match(designCss, /--app-font-size-display:\s*clamp\(1\.5rem,/);
     assert.match(designCss, /--app-font-size-hero:\s*clamp\(2\.4rem,\s*calc\(2\.08rem \+ 1\.6vw\),\s*3\.6rem\)/);
@@ -116,7 +118,8 @@ test("server detail labels are large, while capsule values stay normal", () => {
     assert.match(badge[1], /font-size:\s*var\(--app-font-size-normal\)/);
     assert.match(badge[1], /font-weight:\s*var\(--app-font-weight-regular\)/);
     assert.match(serverCss, /grid-auto-rows:\s*minmax\(var\(--app-space-11\),\s*auto\)/);
-    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 1fr\) minmax\(0, min\(52%, 256px\)\)/);
+    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.9fr\) minmax\(0, 1\.1fr\)/);
+    assert.match(serverCss, /\.server-details-grid \.menu-item-badge\s*\{[^}]*overflow-wrap:\s*anywhere/s);
     assert.match(serverCss, /\.server-details-ip-button\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
     assert.match(serverCss, /\.server-details-download\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
 });
@@ -132,8 +135,11 @@ test("voting buttons wrap and candidate cards can grow to fit labels", () => {
     assert.doesNotMatch(suggestion[1], /max-height|overflow:\s*hidden/);
     assert.match(nominationCss, /\.vote-add-card \.vote-candidate-name--label\s*\{[^}]*font-size:\s*var\(--app-font-size-normal\)[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
     assert.match(nominationCss, /\.vote-button\s*\{[^}]*height:\s*auto;[^}]*font-size:\s*var\(--app-font-size-control\)/s);
-    assert.match(nominationPickerCss, /\.vote-candidate-card \.vote-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)/s);
+    assert.match(nominationPickerCss, /\.vote-dialog \.vote-candidate-card > \.vote-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)[^}]*font-size:\s*var\(--app-font-size-control-compact\)/s);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-grid > \.vote-candidate-card\s*\{[^}]*height:\s*auto/s);
+    assert.match(votingPage, /предложить вариант/);
+    assert.doesNotMatch(votingPage, /предложить другое/);
+    assert.match(votingPage, /добавить номинанта/);
     assert.match(nominationCardsCss, /\.vote-nomination-card\.vote-carousel-card \.vote-nomination-content \.vote-action-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)/s);
     assert.match(nominationCarouselCss, /\.vote-nomination-card\.vote-carousel-card\s*\{[^}]*height:\s*280px/s);
 });
@@ -170,14 +176,14 @@ test("all CSS font sizes use one of the six semantic tokens", () => {
         "css/nominations-cards.css", "css/nominations-carousel.css", "css/nominations-picker.css",
         "css/notifications.css", "css/pages.css", "css/profile.css", "css/servers.css", "css/squash.css"
     ];
-    const allowed = /^var\(--app-font-size-(?:small|normal|control|large|display|hero)\)$|^inherit$/;
+    const allowed = /^var\(--app-font-size-(?:small|normal|control-compact|control|large|display|hero)\)$|^inherit$/;
     for (const path of stylesheets) {
         const css = readProjectFile(path);
-        assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|control\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);
+        assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|control-compact\b|control\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
             assert.match(match[1].trim(), allowed, path + " has an unapproved font size: " + match[0]);
         }
-        assert.doesNotMatch(css, /overflow-wrap:\s*anywhere|word-break:\s*break-all/);
+        assert.doesNotMatch(css, /word-break:\s*break-all/);
     }
 });
 
