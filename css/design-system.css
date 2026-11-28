@@ -540,6 +540,8 @@ h6 {
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
    the site-wide casing rule so every static and dynamically-created button follows it. */
 button,
+.ui-button,
+button.ui-button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
