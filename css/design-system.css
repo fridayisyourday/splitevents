@@ -76,11 +76,12 @@
        and grow continuously with the viewport instead of jumping at breakpoints. */
     --app-font-family: Inter, "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --app-font-size-small: clamp(0.75rem, calc(0.72rem + 0.16vw), 0.875rem);
-    --app-font-size-normal: clamp(0.875rem, calc(0.84rem + 0.2vw), 1rem);
-    --app-font-size-large: clamp(1rem, calc(0.94rem + 0.34vw), 1.1875rem);
+    --app-font-size-normal: clamp(1rem, calc(0.94rem + 0.34vw), 1.1875rem);
+    --app-font-size-large: clamp(1.125rem, calc(1.07rem + 0.42vw), 1.375rem);
     --app-font-size-display: clamp(1.5rem, calc(1.3rem + 1vw), 2.25rem);
     --app-font-weight-regular: 400;
     --app-font-weight-medium: 500;
+    --app-font-weight-bold: 700;
     --app-line-height-tight: 1.08;
     --app-line-height-snug: 1.2;
     --app-line-height-heading: 1.12;
@@ -125,7 +126,7 @@
     --app-button-secondary-color: var(--app-black);
     --app-button-background: var(--app-button-primary-background);
     --app-button-color: var(--app-button-primary-color);
-    --app-button-font-weight: var(--app-font-weight-medium);
+    --app-button-font-weight: var(--app-font-weight-bold);
     --app-button-transition: transform var(--app-duration-fast) var(--app-easing-standard), filter var(--app-duration-fast) ease, opacity var(--app-duration-fast) ease, background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease;
     --app-button-hover-brightness: 0.96;
     --app-button-pressed-scale: 0.97;
@@ -453,7 +454,7 @@ svg {
     background: var(--app-nav-active-background);
     color: var(--app-nav-active-color);
     box-shadow: none;
-    font-weight: var(--app-font-weight-medium);
+    font-weight: var(--app-font-weight-bold);
     text-decoration: none;
 }
 
@@ -535,6 +536,7 @@ h4,
 h5,
 h6 {
     font-size: var(--app-font-size-display);
+    font-weight: var(--app-font-weight-bold);
 }
 
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
@@ -698,7 +700,7 @@ h6,
 .app-description {
     color: var(--app-hint);
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-regular);
+    font-weight: var(--app-font-weight-bold);
     line-height: var(--app-line-height-label);
     overflow-wrap: normal;
     word-break: normal;
