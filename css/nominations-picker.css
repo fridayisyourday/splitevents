@@ -226,3 +226,20 @@
     width: calc(100% - 12px);
     justify-self: center;
 }
+
+
+/* Keep long nominee actions fully inside narrow two-column picker cards. */
+.vote-dialog .vote-candidate-card > .vote-button {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    min-height: var(--app-control-height);
+    padding: var(--app-space-1-5) var(--app-space-1);
+    font-size: var(--app-font-size-small);
+    line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-wrap: pretty;
+}
