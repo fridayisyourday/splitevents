@@ -251,7 +251,7 @@
     font-size: var(--app-font-size-large);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-reading);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 .squash-message-forward-enter-active,
 .squash-message-forward-leave-active,
