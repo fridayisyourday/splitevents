@@ -751,7 +751,6 @@ defineExpose({
 
                                         <article v-else-if="entry.type === 'add-card'" class="vote-candidate-card vote-add-card">
                                             <div
-                                                class="vote-add-symbol"
                                                 class="vote-add-symbol vote-add-symbol--round"
                                                 aria-hidden="true"
                                             >
