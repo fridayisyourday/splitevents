@@ -2,8 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
 import NominationCard from "./NominationCard.vue";
 import NomineeVisual from "./NomineeVisual.vue";
-import { NOMINEES, nomineeById, compareNames } from "../../js/nominations/database/nominees.js?v=20261127-1";
-import { createNominationState } from "../../js/nominations/state.js?v=20261126-1";
+import { NOMINEES, nomineeById, compareNames } from "../../js/nominations/database/nominees.js?v=20261127-2";
+import { createNominationState } from "../../js/nominations/state.js?v=20261126-2";
 import { createNominationModel } from "../../js/nominations/model.js?v=20261126-2";
 import { getCountdownParts } from "../../js/nominations/countdown.js";
 
