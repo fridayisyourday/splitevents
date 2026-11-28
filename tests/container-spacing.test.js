@@ -46,5 +46,30 @@ test("server card button has equal horizontal and bottom inset", () => {
 
 test("all CSS bundles use the refreshed cache key", () => {
     const html = read("index.html");
-    assert.equal((html.match(/20261128-39/g) || []).length, 16);
+    assert.equal((html.match(/20261128-40/g) || []).length, 16);
+});
+
+test("all content gaps use the shared semantic spacing scale", () => {
+    const design = read("css/design-system.css");
+    for (const [token, value] of [
+        ["--app-content-gap-tight", "--app-space-1"],
+        ["--app-content-gap", "--app-space-2"],
+        ["--app-content-gap-relaxed", "--app-space-3"],
+        ["--app-content-gap-group", "--app-space-4"],
+        ["--app-container-gap", "--app-space-6"]
+    ]) {
+        assert.match(design, new RegExp(token + ":\\s*var\\(" + value + "\\)"));
+    }
+
+    const sharedGaps = [
+        ["css/events.css", /\.event-card-content\s*\{[^}]*gap:\s*var\(--app-content-gap\)/s],
+        ["css/servers.css", /\.server-card-details\s*\{[^}]*gap:\s*var\(--app-content-gap-tight\)/s],
+        ["css/profile.css", /\.profile-name-row\s*\{[^}]*gap:\s*var\(--app-content-gap\)/s],
+        ["css/friends.css", /\.friend-card\s*\{[^}]*gap:\s*var\(--app-content-gap-relaxed\)/s],
+        ["css/nominations.css", /\.vote-candidate-card\s*\{[^}]*gap:\s*var\(--app-content-gap\)/s],
+        ["css/components.css", /\.ui-button\s*\{[^}]*gap:\s*var\(--app-content-gap\)/s]
+    ];
+    for (const [path, pattern] of sharedGaps) {
+        assert.match(read(path), pattern, path + " should use the shared semantic gap scale");
+    }
 });
