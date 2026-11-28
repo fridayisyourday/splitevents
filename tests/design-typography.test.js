@@ -127,3 +127,11 @@ test("server description and navigation lifecycle remain standardized", () => {
     assert.match(serverPage, /window\.removeEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
     assert.match(serverPage, /if \(event\.detail\?\.page !== "servers"\)\s*\{\s*resetServerPageState\(\);/);
 });
+
+
+test("the inner SQUASH section heading uses large, not title, typography", () => {
+    assert.match(
+        squashCss,
+        /\.squash-details-title\s*\{[^}]*font-size:\s*var\(--app-font-size-large\)/s
+    );
+});
