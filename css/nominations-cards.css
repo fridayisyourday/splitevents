@@ -149,7 +149,7 @@
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-action-button {
-    min-height: 36px;
+    min-height: var(--app-control-height);
     margin-top: var(--app-space-0-5);
     padding-inline: var(--app-space-2);
     font-size: var(--app-font-size-large);

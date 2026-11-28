@@ -337,12 +337,26 @@
     text-align: center;
 }
 
+.vote-add-card .vote-candidate-name--label {
+    min-height: 48px;
+    padding-block: var(--app-space-1);
+    font-size: var(--app-font-size-large);
+    font-weight: var(--app-font-weight-bold);
+    line-height: var(--app-line-height-snug);
+    text-wrap: balance;
+}
+
 .vote-button {
     width: 100%;
+    height: auto;
     min-height: var(--app-control-height);
+    flex: 0 0 auto;
     margin-top: auto;
-    padding-inline: var(--app-space-2);
+    padding: var(--app-space-2) var(--app-space-2);
     font-size: var(--app-font-size-large);
+    line-height: var(--app-line-height-snug);
+    text-wrap: balance;
+    white-space: normal;
 }
 
 .vote-duo-avatars {
@@ -425,8 +439,9 @@
 
 .vote-suggest-text {
     width: 100%;
-    max-height: 58px;
-    overflow: hidden;
+    min-height: 42px;
+    margin: 0;
+    overflow: visible;
     color: var(--app-text);
     font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-regular);
