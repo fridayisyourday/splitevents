@@ -14,7 +14,7 @@ test("the published nominee catalogue and rules are valid", () => {
     assert.equal(new Set(NOMINEES.map((person) => person.id)).size, NOMINEES.length);
 });
 
-test("vamorii is available in the female nominee pool but is not preselected in a nomination", () => {
+test("vamorii is available in the female pool and is nominated in CREATOR", () => {
     const vamorii = nomineeById.get("vamorii");
     assert.ok(vamorii);
     assert.equal(vamorii.name, "vamorii");
@@ -24,7 +24,7 @@ test("vamorii is available in the female nominee pool but is not preselected in 
         ...(nomination.nomineeIds || []),
         ...(nomination.duoPairs || []).flatMap((pair) => [pair.firstId, pair.secondId])
     ]);
-    assert.equal(publishedNomineeIds.includes("vamorii"), true);
+    assert.equal(publishedNomineeIds.includes("vamorii"), true);\n    assert.deepEqual(NOMINATION_DEFINITIONS.find((item) => item.id === "creator")?.nomineeIds.includes("vamorii"), true);
 });
 
 test("featured SQUASH nominations use their updated titles", () => {
@@ -45,8 +45,8 @@ test("the eight new nominations are included in the wheel with their intended no
         gamer: ["burgomister", "dlv1190", "theriazon"],
         creator: ["burgomister", "cyathere", "fridayisyourday", "holydark", "vamorii"],
         gnil: ["burgomister", "dlv1190", "fridayisyourday", "otorgy", "tr1ckl"],
-        mit: ["a-vy-verite", "burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft"],
-        mem: ["ip-picked", "metaverse", "slenderman-mansion", "tadc-voiceover", "a-vy-verite"],
+        mit: ["burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft", "halloween"],
+        mem: ["ip-picked", "a-vy-verite", "metaverse", "slenderman-mansion", "tadc-voiceover"],
         mog: ["cyathere", "dlv1190", "holydark"]
     };
 
