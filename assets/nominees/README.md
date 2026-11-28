@@ -26,3 +26,13 @@
 - `shalker.webp`
 - `misterion.webp`
 - `windigo.webp`
+- `halloween.webp`
+- `isada-birthday.webp`
+- `loft.webp`
+- `kemerovo-dumplings.webp`
+- `burgomister-dacha.webp`
+- `slenderman-mansion.webp`
+- `a-vy-verite.webp`
+- `tadc-voiceover.webp`
+- `metaverse.webp`
+- `ip-picked.webp`
