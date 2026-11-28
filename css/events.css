@@ -86,6 +86,10 @@
     hyphens: manual;
 }
 
+.event-card-title.app-heading-hero {
+    font-size: clamp(var(--app-font-size-display), 8.5cqi, var(--app-font-size-hero));
+}
+
 .event-card-description {
     display: block;
     align-self: stretch;
