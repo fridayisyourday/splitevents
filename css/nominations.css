@@ -142,6 +142,7 @@
     width: 100%;
     margin: 0;
     color: var(--app-text);
+    font-size: var(--app-font-size-large);
     font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
     font-weight: var(--app-font-weight-medium);
     letter-spacing: -0.025em;
@@ -151,6 +152,7 @@
 }
 
 .vote-nomination-card--featured .vote-nomination-title {
+    font-size: var(--app-font-size-large);
     font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
     font-weight: var(--app-font-weight-medium);
 }
@@ -503,7 +505,8 @@
     }
 
     .vote-nomination-card--featured .vote-nomination-title {
-        font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
+        font-size: var(--app-font-size-large);
+    font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
         font-weight: var(--app-font-weight-medium);
 }
 
@@ -651,6 +654,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: var(--app-font-size-large);
     font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
     font-weight: var(--app-font-weight-medium);
 }
