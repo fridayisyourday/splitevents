@@ -521,7 +521,7 @@ svg {
 }
 
 
-/* Every text element starts at the main role; semantic classes below assign the other three roles. */
+/* Every text element starts at the regular role; semantic classes below assign the other three roles. */
 body {
     font-size: var(--app-font-size-regular);
     font-weight: var(--app-font-weight-regular);
