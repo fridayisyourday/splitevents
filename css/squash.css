@@ -157,7 +157,6 @@
     }
     .squash-countdown-title {
         margin-bottom: var(--app-space-4);
-        font-size: var(--app-font-size-large);
     }
     .squash-countdown-units {
         gap: var(--app-space-2);
