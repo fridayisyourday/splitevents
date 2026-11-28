@@ -82,7 +82,7 @@
 .event-card-description {
     max-width: 100%;
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .event-card-meta {
