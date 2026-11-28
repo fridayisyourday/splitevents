@@ -46,5 +46,5 @@ test("server card button has equal horizontal and bottom inset", () => {
 
 test("all CSS bundles use the refreshed cache key", () => {
     const html = read("index.html");
-    assert.equal((html.match(/20261128-36/g) || []).length, 16);
+    assert.equal((html.match(/20261128-37/g) || []).length, 16);
 });
