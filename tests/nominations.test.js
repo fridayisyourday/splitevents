@@ -24,7 +24,8 @@ test("vamorii is available in the female pool and is nominated in CREATOR", () =
         ...(nomination.nomineeIds || []),
         ...(nomination.duoPairs || []).flatMap((pair) => [pair.firstId, pair.secondId])
     ]);
-    assert.equal(publishedNomineeIds.includes("vamorii"), true);\n    assert.deepEqual(NOMINATION_DEFINITIONS.find((item) => item.id === "creator")?.nomineeIds.includes("vamorii"), true);
+    assert.equal(publishedNomineeIds.includes("vamorii"), true);
+    assert.deepEqual(NOMINATION_DEFINITIONS.find((item) => item.id === "creator")?.nomineeIds.includes("vamorii"), true);
 });
 
 test("featured SQUASH nominations use their updated titles", () => {
