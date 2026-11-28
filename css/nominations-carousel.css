@@ -129,7 +129,7 @@
     align-items: center;
     justify-content: center;
     margin: 0;
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-font-size-large);
     line-height: var(--app-line-height-snug);
     overflow-wrap: anywhere;
 }
@@ -138,7 +138,7 @@
     min-height: 1.35em;
     flex: 0 0 auto;
     margin: 0;
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
     line-height: var(--app-line-height-title);
 }
 
@@ -147,25 +147,25 @@
     flex: 0 0 auto;
     margin-top: var(--app-space-0-5);
     padding: var(--app-space-2) var(--app-space-1-5);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
     line-height: var(--app-line-height-snug);
 }
 
 /* Secondary cards are smaller than the two featured nominations. */
 .vote-nomination-card.vote-carousel-card .vote-nomination-title {
     min-height: 2.4em;
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-font-size-large);
     line-height: var(--app-line-height-snug);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-selected-nominee {
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-action-button {
     min-height: 36px;
     padding-inline: var(--app-space-2);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
 }
 
 /* Sliding transitions are applied when the carousel changes its active card. */
