@@ -785,7 +785,6 @@ input[type="reset"] {
 
 .profile-telegram-tag,
 .friend-card-tag,
-.vote-dialog-eyebrow + .vote-dialog-title,
 .vote-empty-state,
 .app-notification__detail {
     font-size: var(--app-font-size-normal);
