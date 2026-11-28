@@ -59,7 +59,7 @@
 .app-notification__title,
 .app-notification__detail {
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .app-notification__title {
