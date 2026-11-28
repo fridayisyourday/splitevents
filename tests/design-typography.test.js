@@ -102,6 +102,9 @@ test("all stylesheets use only the four text roles or their bounded container-ti
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
             assert.match(match[1].trim(), allowed, path + " has an unapproved font size: " + match[0]);
         }
+        for (const match of css.matchAll(/font\s*:\s*([^;]+);/g)) {
+            assert.equal(match[1].trim(), "inherit", path + " must not hide an unapproved size or weight in a font shorthand");
+        }
     }
 });
 
