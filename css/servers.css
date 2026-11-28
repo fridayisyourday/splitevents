@@ -142,6 +142,7 @@
 }
 
 .server-card-details {
+    container-type: inline-size;
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
@@ -153,16 +154,17 @@
 }
 
 .server-card-title {
+    --app-font-size-title: clamp(1.125rem, calc(0.8rem + 4cqi), 2.5rem);
     max-width: none;
     margin: 0;
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
-    font-weight: var(--app-font-weight-display);
-    letter-spacing: -0.075em;
+    font-size: var(--app-font-size-title);
+    font-weight: var(--app-font-weight-regular);
+    letter-spacing: -0.035em;
     line-height: 0.9;
     white-space: nowrap;
-    overflow: visible;
-    text-overflow: clip;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .server-card-subtitle {
@@ -276,7 +278,7 @@
 .server-details-label {
     justify-self: start;
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-regular);
     font-weight: var(--app-font-weight-medium);
     line-height: var(--app-line-height-label);
     text-align: left;
@@ -374,10 +376,6 @@
         align-self: center;
     }
 
-    .server-card-title {
-        font-size: var(--app-font-size-heading);
-        letter-spacing: -0.065em;
-    }
 
     .server-details-panel {
         width: 100%;
