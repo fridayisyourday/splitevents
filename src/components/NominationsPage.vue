@@ -520,7 +520,7 @@ defineExpose({
                 <section class="squash-hero" aria-labelledby="squash-hero-title">
                     <div class="squash-hero-art" aria-hidden="true"></div>
                     <div class="squash-hero-content">
-                        <h1 id="squash-hero-title" class="squash-hero-title">SQUASH!</h1>
+                        <h1 id="squash-hero-title" class="squash-hero-title app-heading-hero">SQUASH!</h1>
                         <p class="squash-hero-subtitle app-description">главная премия ρumρkin ρie</p>
                         <p class="squash-hero-date app-meta">20.12.26</p>
                         <button
