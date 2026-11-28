@@ -87,7 +87,7 @@ test("server card dimensions are increased to 1.2 times the compact layout", () 
         "utf8"
     );
     assert.match(styles, /\.server-card\s*\{[^}]*height:\s*220px;/s);
-    assert.match(styles, /\.server-card-title\s*\{[^}]*font-size:\s*var\(--app-font-size-heading\);/s);
+    assert.match(styles, /\.server-card-title\s*\{[^}]*font-size:\s*var\(--app-font-size-display\);/s);
     assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.server-card\s*\{[^}]*height:\s*264px;/);
     assert.match(
         styles,
