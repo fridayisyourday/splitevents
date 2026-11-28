@@ -74,7 +74,7 @@
 .squash-countdown-title {
     margin: 0 0 var(--app-space-5-5);
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.025em;
 }
@@ -98,7 +98,7 @@
 }
 .squash-countdown-number {
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
     letter-spacing: -.06em;
@@ -108,20 +108,20 @@
     flex: 0 0 auto;
     margin-top: 0;
     color: var(--app-hint);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-semibold);
     line-height: var(--app-line-height-tight);
 }
 .squash-countdown-label {
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-semibold);
     letter-spacing: .08em;
 }
 .squash-countdown-finished {
     margin: 0;
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
 }
 .nominations-page-header {
@@ -157,7 +157,7 @@
     }
     .squash-countdown-title {
         margin-bottom: var(--app-space-4);
-        font-size: var(--app-font-size-accent);
+        font-size: var(--app-font-size-large);
     }
     .squash-countdown-units {
         gap: var(--app-space-2);
@@ -167,13 +167,13 @@
         gap: var(--app-space-1);
     }
     .squash-countdown-number {
-        font-size: var(--app-font-size-heading);
+        font-size: var(--app-font-size-title);
     }
     .squash-countdown-separator {
-        font-size: var(--app-font-size-heading);
+        font-size: var(--app-font-size-title);
     }
     .squash-countdown-label {
-        font-size: var(--app-font-size-main);
+        font-size: var(--app-font-size-normal);
         letter-spacing: .04em;
     }
 }
@@ -194,7 +194,7 @@
 .squash-partners-label {
     margin: 0 0 var(--app-space-3-5);
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-medium);
 }
 .squash-partners-logos {
@@ -221,7 +221,7 @@
 .squash-details-title {
     margin: 0 0 var(--app-space-5-5);
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.025em;
     text-align: center;
@@ -256,7 +256,7 @@
     width: 100%;
     margin: 0;
     color: var(--app-text);
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-font-size-large);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-reading);
     overflow-wrap: anywhere;
@@ -298,7 +298,7 @@
     }
     .squash-details-title {
         margin-bottom: var(--app-space-4);
-        font-size: var(--app-font-size-heading);
+        font-size: var(--app-font-size-title);
     }
     .squash-details-carousel {
         grid-template-columns: var(--app-control-height) minmax(0, 1fr) var(--app-control-height);
@@ -313,7 +313,7 @@
         max-height: 192px;
     }
     .squash-details-message {
-        font-size: var(--app-font-size-accent);
+        font-size: var(--app-font-size-large);
         line-height: 1.58;
     }
 }
