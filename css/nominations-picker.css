@@ -36,12 +36,12 @@
     }
     .vote-candidate-name {
         min-height: 34px;
-        font-size: var(--app-font-size-main);
+        font-size: var(--app-font-size-large);
     }
     .vote-candidate-card .vote-button {
         min-height: 36px;
         margin-top: 0;
-        font-size: var(--app-font-size-main);
+        font-size: var(--app-font-size-regular);
     }
 }
 
