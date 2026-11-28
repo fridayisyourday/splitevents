@@ -267,3 +267,16 @@
     width: 18px;
     height: 18px;
 }
+
+
+/* Event-card descriptions stay on one line on compact Telegram viewports. */
+@media (max-width: 760px) {
+    .event-card-description {
+        min-width: 0;
+        font-size: var(--app-font-size-control-compact);
+        line-height: var(--app-line-height-control-compact);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
