@@ -74,17 +74,17 @@
 
     /* Typography. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    --app-font-size-title: clamp(66px, 10vw, 148px);
-    --app-font-size-heading: clamp(32px, 4vw, 40px);
-    --app-font-size-main: 14px;
-    --app-font-size-accent: 16px;
+    --app-font-size-small: clamp(0.75rem, calc(0.72rem + 0.18vw), 0.875rem);
+    --app-font-size-regular: clamp(0.875rem, calc(0.84rem + 0.2vw), 1rem);
+    --app-font-size-large: clamp(1rem, calc(0.94rem + 0.3vw), 1.25rem);
+    --app-font-size-title: clamp(1.375rem, calc(1.05rem + 1.4vw), 2.5rem);
     --app-font-weight-regular: 400;
-    --app-font-weight-medium: 600;
-    --app-font-weight-semibold: 700;
-    --app-font-weight-bold: 800;
-    --app-font-weight-subtle: 450;
-    --app-font-weight-normal: 500;
-    --app-font-weight-display: 950;
+    --app-font-weight-medium: 400;
+    --app-font-weight-semibold: 400;
+    --app-font-weight-bold: 400;
+    --app-font-weight-subtle: 400;
+    --app-font-weight-normal: 400;
+    --app-font-weight-display: 400;
     --app-line-height-tight: 1;
     --app-line-height-snug: 1.2;
     --app-line-height-heading: 1.08;
@@ -129,7 +129,7 @@
     --app-button-secondary-color: var(--app-black);
     --app-button-background: var(--app-button-primary-background);
     --app-button-color: var(--app-button-primary-color);
-    --app-button-font-weight: 700;
+    --app-button-font-weight: 400;
     --app-button-transition: transform var(--app-duration-fast) var(--app-easing-standard), filter var(--app-duration-fast) ease, opacity var(--app-duration-fast) ease, background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease;
     --app-button-hover-brightness: 0.96;
     --app-button-pressed-scale: 0.97;
@@ -151,7 +151,6 @@
 @media (max-width: 640px) {
     :root {
         --app-container-padding: 14px;
-        --app-font-size-title: clamp(60px, 17vw, 92px);
     }
 }
 
@@ -333,7 +332,7 @@ body,
     background: var(--app-badge-background);
     color: var(--app-badge-color);
     box-shadow: none;
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-regular);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
     line-height: var(--app-line-height-tight);
@@ -527,9 +526,13 @@ svg {
 }
 
 
-/* Every text element starts at the main role; semantic classes below assign the other three roles. */
+/* Fluid roles use rem bounds and viewport scaling, preserving zoom and user font preferences. */
 body {
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-regular);
+    font-weight: var(--app-font-weight-regular);
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
     text-transform: lowercase;
 }
 
@@ -539,7 +542,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
 }
 
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
@@ -699,10 +702,86 @@ h6,
 }
 
 
-/* Single source of truth for descriptions and secondary date/time metadata. */
+/* Descriptions use large; date/time metadata opts into small. */
 .app-description {
     color: var(--app-hint);
-    font-size: var(--app-font-size-accent);
-    font-weight: var(--app-font-weight-subtle);
+    font-size: var(--app-font-size-large);
+    font-weight: var(--app-font-weight-regular);
+    line-height: var(--app-line-height-body);
+}
+
+.app-description--small {
+    font-size: var(--app-font-size-small);
     line-height: var(--app-line-height-label);
+}
+
+strong,
+b {
+    font-weight: var(--app-font-weight-regular);
+}
+
+.ui-button,
+button:not(.menu-backdrop),
+.menu-item,
+.event-card-action,
+.vote-action-button {
+    font-size: var(--app-font-size-large);
+    font-weight: var(--app-font-weight-regular);
+}
+
+.section-page-title,
+.header-logo,
+.menu-panel-title,
+.event-card-title,
+.server-card-title,
+.vote-dialog-title,
+.squash-hero-title,
+.squash-details-title {
+    font-size: var(--app-font-size-title);
+    font-weight: var(--app-font-weight-regular);
+}
+
+.event-card-description,
+.profile-nickname,
+.friend-card-name,
+.server-card-subtitle,
+.vote-nomination-title,
+.squash-hero-subtitle,
+.squash-countdown-title,
+.squash-countdown-number,
+.squash-countdown-separator,
+.squash-details-message,
+.app-notification__title {
+    font-size: var(--app-font-size-large);
+    font-weight: var(--app-font-weight-regular);
+}
+
+.event-card-meta,
+.squash-hero-date,
+.server-details-label,
+.squash-countdown-label,
+.squash-partners-label,
+.menu-item-badge {
+    font-size: var(--app-font-size-small);
+    font-weight: var(--app-font-weight-regular);
+}
+
+.profile-telegram-tag,
+.friend-card-tag,
+.vote-dialog-description,
+.vote-candidate-name,
+.app-notification__detail {
+    font-size: var(--app-font-size-regular);
+    font-weight: var(--app-font-weight-regular);
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-page-title,
+.event-card-title,
+.vote-dialog-title,
+.vote-nomination-title {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    text-wrap: balance;
 }
