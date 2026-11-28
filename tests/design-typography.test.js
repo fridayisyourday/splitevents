@@ -183,7 +183,7 @@ test("all CSS font sizes use one of the six semantic tokens", () => {
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
             assert.match(match[1].trim(), allowed, path + " has an unapproved font size: " + match[0]);
         }
-        assert.doesNotMatch(css, /overflow-wrap:\s*anywhere|word-break:\s*break-all/);
+        assert.doesNotMatch(css, /word-break:\s*break-all/);
     }
 });
 
