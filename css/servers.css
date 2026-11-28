@@ -360,11 +360,6 @@
     }
 
     .server-card-content {
-        top: 0;
-        right: 0;
-        bottom: calc(var(--app-control-height) + var(--app-container-padding) + var(--app-container-padding));
-        left: 0;
-        height: auto;
         gap: 0;
         padding: 0 var(--app-container-padding);
     }
