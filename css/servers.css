@@ -257,7 +257,7 @@
 
 .server-details-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
     grid-auto-rows: minmax(var(--app-space-11), auto);
     align-items: center;
     justify-content: center;
@@ -287,14 +287,13 @@
     min-width: 0;
     height: auto;
     min-height: 32px;
-    padding: var(--app-space-1) var(--app-content-gap);
-    font-size: var(--app-font-size-normal);
+    padding: var(--app-space-1) var(--app-space-1-5);
+    font-size: var(--app-font-size-small);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-body);
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: normal;
-    text-wrap: balance;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
 }
 
@@ -369,7 +368,10 @@
 }
 
 .server-details-ip-button .menu-item-badge {
-    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
     word-break: normal;
 }
 
