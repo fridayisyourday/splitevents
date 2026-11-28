@@ -58,7 +58,7 @@
     transform: translateX(-50%);
     color: var(--app-text);
     font-size: var(--app-font-size-title);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-medium);
     letter-spacing: -2px;
     line-height: var(--app-line-height-tight);
     user-select: none;
