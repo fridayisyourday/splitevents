@@ -55,7 +55,11 @@
     line-height: .92;
 }
 .squash-hero-subtitle {
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
     margin: var(--app-space-4-5) 0 0;
+    text-align: left;
 }
 .squash-hero-date {
     margin: var(--app-space-3-5) 0 0;
