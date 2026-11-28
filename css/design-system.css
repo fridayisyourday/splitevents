@@ -541,15 +541,6 @@ h6 {
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
    the site-wide casing rule so every static and dynamically-created button follows it. */
 button,
-.ui-button,
-button.ui-.vote-button,
-.vote-action-button,
-.vote-candidate-card .vote-button,
-.vote-nomination-card .vote-action-button,
-.vote-nomination-card--featured .vote-action-button,
-.vote-nomination-card.vote-carousel-card .vote-action-button,
-.vote-candidate-card .vote-button,
-button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
@@ -771,6 +762,12 @@ h6 {
     hyphens: manual;
 }
 
+.vote-button,
+.vote-action-button,
+.vote-candidate-card .vote-button,
+.vote-nomination-card .vote-action-button,
+.vote-nomination-card--featured .vote-action-button,
+.vote-nomination-card.vote-carousel-card .vote-action-button,
 button,
 input[type="button"],
 input[type="submit"],
