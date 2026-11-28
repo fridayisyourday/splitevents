@@ -208,3 +208,10 @@ test("server page resets expanded gallery state whenever navigation leaves it", 
     assert.match(serverPage, /window\.removeEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
     assert.match(serverPage, /if \(event\.detail\?\.page !== "servers"\)\s*\{\s*resetServerPageState\(\);/);
 });
+
+test("event descriptions wrap into multiple lines on mobile", () => {
+    const mobileDescription = eventCss.match(/@media \(max-width: 760px\)[\s\S]*?\.event-card-description\s*\{([^}]+)\}/);
+    assert.ok(mobileDescription);
+    assert.match(mobileDescription[1], /white-space:\s*normal;/);
+    assert.doesNotMatch(mobileDescription[1], /text-overflow|overflow:\s*hidden/);
+});
