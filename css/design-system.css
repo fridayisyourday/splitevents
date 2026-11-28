@@ -333,7 +333,7 @@ body,
     color: var(--app-badge-color);
     box-shadow: none;
     font-size: var(--app-font-size-regular);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
     font-variant-numeric: tabular-nums;
     line-height: var(--app-line-height-tight);
     white-space: nowrap;
