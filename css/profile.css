@@ -173,8 +173,8 @@
     outline: none;
     background: transparent;
     color: var(--app-text);
-    font-size: var(--app-font-size-accent);
-    font-weight: var(--app-font-weight-semibold);
+    font-size: var(--app-font-size-large);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-compact);
     text-align: left;
     text-overflow: ellipsis;
@@ -206,7 +206,7 @@
     min-height: 22px;
     margin: var(--app-space-0-5) 0 0;
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-regular);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-body);
     text-align: left;
