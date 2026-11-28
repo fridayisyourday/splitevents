@@ -111,17 +111,18 @@ test("profile name and Telegram tag use a compact natural-height row", () => {
     assert.match(tag[1], /margin:\s*var\(--app-content-gap-tight\) 0 0/);
 });
 
-test("server detail labels are large, while capsule values stay normal", () => {
+test("server detail labels are large, while capsule values stay compact", () => {
     const label = serverCss.match(/\.server-details-label\s*\{([^}]+)\}/);
     const badge = serverCss.match(/\.server-details-grid \.menu-item-badge\s*\{([^}]+)\}/);
     assert.ok(label && badge);
     assert.match(label[1], /font-size:\s*var\(--app-font-size-large\)/);
     assert.match(label[1], /font-weight:\s*var\(--app-font-weight-bold\)/);
-    assert.match(badge[1], /font-size:\s*var\(--app-font-size-normal\)/);
+    assert.match(badge[1], /font-size:\s*var\(--app-font-size-small\)/);
     assert.match(badge[1], /font-weight:\s*var\(--app-font-weight-regular\)/);
     assert.match(serverCss, /grid-auto-rows:\s*minmax\(var\(--app-space-11\),\s*auto\)/);
     assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.9fr\) minmax\(0, 1\.1fr\)/);
-    assert.match(serverCss, /\.server-details-grid \.menu-item-badge\s*\{[^}]*overflow-wrap:\s*anywhere/s);
+    assert.match(badge[1], /white-space:\s*nowrap/);
+    assert.match(badge[1], /text-overflow:\s*ellipsis/);
     assert.match(serverCss, /\.server-details-ip-button\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
     assert.match(serverCss, /\.server-details-download\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
 });
