@@ -171,6 +171,7 @@
 }
 
 .server-details-ip-button {
+    font-size: var(--app-font-size-large);
     display: flex;
     align-items: center;
     justify-content: center;
