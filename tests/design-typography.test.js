@@ -7,6 +7,7 @@ function readProjectFile(path) {
 }
 
 const designCss = readProjectFile("css/design-system.css");
+const baseCss = readProjectFile("css/base.css");
 const designGuide = readProjectFile("docs/design-system.md");
 const eventCss = readProjectFile("css/events.css");
 const squashCss = readProjectFile("css/squash.css");
@@ -25,7 +26,8 @@ const notificationCss = readProjectFile("css/notifications.css");
 const friendsCss = readProjectFile("css/friends.css");
 const componentsCss = readProjectFile("css/components.css");
 
-test("the six typography roles scale fluidly from a rem baseline", () => {
+test("the six typography roles scale fluidly from a fixed 16px rem baseline", () => {
+    assert.match(baseCss, /html\s*\{[^}]*font-size:\s*16px;[^}]*-webkit-text-size-adjust:\s*100%;[^}]*text-size-adjust:\s*100%;/s);
     assert.match(designCss, /--app-font-size-small:\s*clamp\(0\.75rem,/);
     assert.match(designCss, /--app-font-size-normal:\s*clamp\(1rem,/);
     assert.match(designCss, /--app-font-size-control:\s*clamp\(1rem,/);
@@ -109,17 +111,18 @@ test("profile name and Telegram tag use a compact natural-height row", () => {
     assert.match(tag[1], /margin:\s*var\(--app-content-gap-tight\) 0 0/);
 });
 
-test("server detail labels are large, while capsule values stay normal", () => {
+test("server detail labels are large, while capsule values stay compact", () => {
     const label = serverCss.match(/\.server-details-label\s*\{([^}]+)\}/);
     const badge = serverCss.match(/\.server-details-grid \.menu-item-badge\s*\{([^}]+)\}/);
     assert.ok(label && badge);
     assert.match(label[1], /font-size:\s*var\(--app-font-size-large\)/);
     assert.match(label[1], /font-weight:\s*var\(--app-font-weight-bold\)/);
-    assert.match(badge[1], /font-size:\s*var\(--app-font-size-normal\)/);
+    assert.match(badge[1], /font-size:\s*var\(--app-font-size-small\)/);
     assert.match(badge[1], /font-weight:\s*var\(--app-font-weight-regular\)/);
     assert.match(serverCss, /grid-auto-rows:\s*minmax\(var\(--app-space-11\),\s*auto\)/);
-    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.9fr\) minmax\(0, 1\.1fr\)/);
-    assert.match(serverCss, /\.server-details-grid \.menu-item-badge\s*\{[^}]*overflow-wrap:\s*anywhere/s);
+    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.78fr\) minmax\(0, 1\.22fr\)/);
+    assert.match(badge[1], /white-space:\s*nowrap/);
+    assert.match(badge[1], /text-overflow:\s*ellipsis/);
     assert.match(serverCss, /\.server-details-ip-button\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
     assert.match(serverCss, /\.server-details-download\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
 });
@@ -135,6 +138,7 @@ test("voting buttons wrap and candidate cards can grow to fit labels", () => {
     assert.doesNotMatch(suggestion[1], /max-height|overflow:\s*hidden/);
     assert.match(nominationCss, /\.vote-add-card \.vote-candidate-name--label\s*\{[^}]*font-size:\s*var\(--app-font-size-normal\)[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
     assert.match(nominationCss, /\.vote-button\s*\{[^}]*height:\s*auto;[^}]*font-size:\s*var\(--app-font-size-control\)/s);
+    assert.match(nominationCss, /@media \(max-width:\s*380px\)[\s\S]*?\.vote-button\s*\{[^}]*font-size:\s*var\(--app-font-size-control\)/);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-candidate-card > \.vote-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)[^}]*font-size:\s*var\(--app-font-size-control-compact\)/s);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-grid > \.vote-candidate-card\s*\{[^}]*height:\s*auto/s);
     assert.match(votingPage, /предложить вариант/);
@@ -181,7 +185,11 @@ test("all CSS font sizes use one of the six semantic tokens", () => {
         const css = readProjectFile(path);
         assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|control-compact\b|control\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
-            assert.match(match[1].trim(), allowed, path + " has an unapproved font size: " + match[0]);
+            const isRootFontBaseline = path === "css/base.css" && match[1].trim() === "16px";
+            assert.ok(
+                allowed.test(match[1].trim()) || isRootFontBaseline,
+                path + " has an unapproved font size: " + match[0]
+            );
         }
         assert.doesNotMatch(css, /word-break:\s*break-all/);
     }
