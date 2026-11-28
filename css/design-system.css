@@ -264,6 +264,7 @@ body,
 }
 
 .event-card-description,
+.vote-nomination-card--featured .vote-nomination-title,
 .event-card-meta,
 .event-card-date,
 .event-countdown-value,
@@ -541,7 +542,14 @@ h6 {
    the site-wide casing rule so every static and dynamically-created button follows it. */
 button,
 .ui-button,
-button.ui-button,
+button.ui-.vote-button,
+.vote-action-button,
+.vote-candidate-card .vote-button,
+.vote-nomination-card .vote-action-button,
+.vote-nomination-card--featured .vote-action-button,
+.vote-nomination-card.vote-carousel-card .vote-action-button,
+.vote-candidate-card .vote-button,
+button,
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
@@ -736,6 +744,7 @@ b {
     font-size: var(--app-font-size-large);
 }
 
+.vote-nomination-card--featured .vote-nomination-title,
 .section-page-title,
 .header-logo,
 .menu-panel-title,
@@ -785,6 +794,8 @@ input[type="reset"] {
     line-height: var(--app-line-height-label);
 }
 
+.vote-nomination-card--featured .vote-selected-nominee,
+.vote-nomination-card.vote-carousel-card .vote-selected-nominee,
 .profile-telegram-tag,
 .friend-card-tag,
 .vote-empty-state,
