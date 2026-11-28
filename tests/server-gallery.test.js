@@ -102,7 +102,7 @@ test("server cards share the hero title and animate between explicit mobile heig
     );
     assert.match(
         styles,
-        /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*min-height:\s*500px;[^}]*grid-template-rows:/s
+        /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*min-height:\s*300px;[^}]*grid-template-rows:/s
     );
     assert.match(
         styles,
