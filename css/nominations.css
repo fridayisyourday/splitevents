@@ -241,7 +241,7 @@
     font-weight: var(--app-font-weight-regular);
     letter-spacing: -0.04em;
     line-height: var(--app-line-height-snug);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .vote-dialog-description {
@@ -328,7 +328,7 @@
     font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-caption);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
     text-align: center;
 }
 
