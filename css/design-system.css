@@ -708,7 +708,7 @@ h6,
 }
 
 
-/* Semantic oversized title: exactly 1.6× the display role across the fluid scale. */
+/* Semantic oversized title: exactly 1.6× the display role at every viewport width. */
 .app-heading-hero {
     font-size: var(--app-font-size-hero);
     font-weight: var(--app-font-weight-bold);
