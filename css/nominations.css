@@ -171,9 +171,21 @@
 }
 
 .vote-action-button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    min-height: 40px;
+    height: auto;
+    min-height: var(--app-control-height);
+    flex: 0 0 auto;
     margin-top: auto;
+    padding: var(--app-content-gap) var(--app-content-gap);
+    font-size: var(--app-font-size-control);
+    line-height: var(--app-line-height-control);
+    white-space: normal;
+    text-wrap: balance;
+    overflow: visible;
 }
 
 .vote-overlay[hidden],
@@ -270,8 +282,11 @@
 
 .vote-candidate-card {
     display: flex;
+    box-sizing: border-box;
+    width: 100%;
     min-width: 0;
     min-height: 224px;
+    height: auto;
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
@@ -321,9 +336,10 @@
 
 .vote-candidate-name {
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
+    width: 100%;
     min-width: 0;
-    min-height: 42px;
+    min-height: 0;
     align-items: center;
     justify-content: center;
     margin: 0;
@@ -338,25 +354,33 @@
 }
 
 .vote-add-card .vote-candidate-name--label {
-    min-height: 48px;
-    padding-block: var(--app-space-1);
-    font-size: var(--app-font-size-large);
+    min-height: 0;
+    flex: 0 0 auto;
+    padding: 0;
+    font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-bold);
-    line-height: var(--app-line-height-snug);
+    line-height: var(--app-line-height-control);
     text-wrap: balance;
 }
 
 .vote-button {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     height: auto;
     min-height: var(--app-control-height);
     flex: 0 0 auto;
     margin-top: auto;
-    padding: var(--app-space-2) var(--app-space-2);
-    font-size: var(--app-font-size-large);
-    line-height: var(--app-line-height-snug);
+    padding: var(--app-content-gap) var(--app-content-gap);
+    font-size: var(--app-font-size-control);
+    line-height: var(--app-line-height-control);
     text-wrap: balance;
     white-space: normal;
+    overflow: visible;
 }
 
 .vote-duo-avatars {
@@ -407,9 +431,10 @@
 .vote-add-details,
 .vote-suggest-details {
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
+    width: 100%;
     min-width: 0;
-    min-height: 42px;
+    min-height: 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -439,7 +464,7 @@
 
 .vote-suggest-text {
     width: 100%;
-    min-height: 42px;
+    min-height: 0;
     margin: 0;
     overflow: visible;
     color: var(--app-text);
@@ -583,8 +608,9 @@
 /* Keep nomination-card actions at the shared application button size. */
 .vote-nomination-card .vote-action-button {
     min-height: var(--app-control-height);
-    padding-inline: var(--app-space-4);
-    font-size: var(--app-font-size-large);
+    padding-inline: var(--app-content-gap);
+    font-size: var(--app-font-size-control);
+    line-height: var(--app-line-height-control);
 }
 
 .vote-logo-wrap .vote-nomination-logo {

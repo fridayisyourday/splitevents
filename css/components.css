@@ -6,6 +6,8 @@
     justify-content: center;
     gap: var(--app-content-gap);
     width: auto;
+    min-width: 0;
+    max-width: 100%;
     height: auto;
     min-height: var(--app-control-height);
     padding: var(--app-content-gap) var(--app-space-4);
@@ -15,9 +17,9 @@
     color: var(--app-button-primary-color);
     box-shadow: none;
     font-family: var(--app-font-family);
-    font-size: var(--app-font-size-large);
+    font-size: var(--app-font-size-control);
     font-weight: var(--app-button-font-weight);
-    line-height: var(--app-line-height-snug);
+    line-height: var(--app-line-height-control);
     text-align: center;
     text-wrap: balance;
     white-space: normal;

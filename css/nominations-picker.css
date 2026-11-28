@@ -43,7 +43,9 @@
         min-height: var(--app-control-height);
         flex-shrink: 0;
         margin-top: 0;
-        font-size: var(--app-font-size-large);
+        padding: var(--app-content-gap) var(--app-content-gap);
+        font-size: var(--app-font-size-control);
+        line-height: var(--app-line-height-control);
     }
 }
 
@@ -134,18 +136,26 @@
     margin: 0 auto;
 }
 
-.vote-dialog .vote-candidate-card > .vote-candidate-name,
+.vote-dialog .vote-candidate-card > .vote-candidate-name {
+    box-sizing: border-box;
+    min-height: 0;
+    flex: 0 1 auto;
+}
+
 .vote-dialog .vote-candidate-card > .vote-add-details,
 .vote-dialog .vote-candidate-card > .vote-suggest-details {
     box-sizing: border-box;
-    min-height: 42px;
-    flex: 1 1 auto;
+    min-height: 0;
+    flex: 0 0 auto;
 }
 
 .vote-dialog .vote-add-details > .vote-candidate-name,
-.vote-dialog .vote-suggest-details > .vote-suggest-text,
+.vote-dialog .vote-suggest-details > .vote-suggest-text {
+    min-height: 0;
+}
+
 .vote-dialog .vote-suggest-details > .vote-suggest-input {
-    min-height: 42px;
+    min-height: var(--app-control-height);
 }
 
 @media (max-width: 760px), (pointer: coarse) {

@@ -75,7 +75,6 @@
     margin: 0;
     overflow: visible;
     color: var(--app-text);
-    font-size: clamp(var(--app-font-size-display), 8.5cqi, var(--app-font-size-hero));
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.035em;
     line-height: var(--app-line-height-heading);
@@ -84,10 +83,6 @@
     overflow-wrap: normal;
     word-break: normal;
     hyphens: manual;
-}
-
-.event-card-title.app-heading-hero {
-    font-size: clamp(var(--app-font-size-display), 8.5cqi, var(--app-font-size-hero));
 }
 
 .event-card-description {
@@ -152,11 +147,13 @@
 
 .event-card-actions {
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     justify-content: center;
     gap: var(--app-content-gap-tight);
     width: 100%;
     max-width: 100%;
+    padding-inline: var(--app-content-gap);
 }
 
 .event-card-action {
@@ -164,8 +161,9 @@
     width: auto;
     max-width: none;
     min-width: 0;
-    padding: var(--app-content-gap) var(--app-content-gap-relaxed);
-    line-height: var(--app-line-height-snug);
+    padding: var(--app-content-gap) var(--app-content-gap);
+    font-size: var(--app-font-size-control);
+    line-height: var(--app-line-height-control);
     text-wrap: balance;
 }
 
@@ -195,9 +193,13 @@
         height: auto;
     }
 
+    .event-card-artwork {
+        width: 42%;
+    }
+
     .event-card-content {
-        flex-basis: 50%;
-        width: 50%;
+        flex-basis: 58%;
+        width: 58%;
         min-height: 300px;
         gap: var(--app-space-2-5);
         padding: var(--app-container-padding);
@@ -225,7 +227,8 @@
 
     .event-card-actions {
         width: 100%;
-        gap: var(--app-space-1-5);
+        gap: var(--app-content-gap-tight);
+        padding-inline: var(--app-content-gap);
     }
 
     .event-card-action {
