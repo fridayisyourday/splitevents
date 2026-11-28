@@ -227,7 +227,7 @@ onBeforeUnmount(() => {
                             <div class="event-card-wash artwork-fade artwork-fade--right" aria-hidden="true"></div>
 
                             <div class="event-card-content">
-                                <h2 :id="'event-title-' + event.id" class="event-card-title">
+                                <h2 :id="'event-title-' + event.id" class="event-card-title app-heading-hero">
                                     {{ event.title }}
                                 </h2>
                                 <p :id="'event-description-' + event.id" class="event-card-description app-description">

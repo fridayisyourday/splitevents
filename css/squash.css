@@ -45,7 +45,6 @@
 }
 .squash-hero-title {
     margin: 0;
-    font-size: var(--app-font-size-display);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -.075em;
     line-height: .92;
@@ -139,7 +138,7 @@
         width: calc(100% - 32px);
     }
     .squash-hero-title {
-        font-size: var(--app-font-size-display);
+        font-size: var(--app-font-size-hero);
     }
     .squash-hero-subtitle {
         max-width: 260px;

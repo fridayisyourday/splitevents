@@ -321,7 +321,7 @@ async function copyServerAddress(server) {
 
                                 <div class="server-card-content">
                                     <div class="server-card-details">
-                                        <h2 :id="'server-title-' + server.id" class="server-card-title" :title="server.name">
+                                        <h2 :id="'server-title-' + server.id" class="server-card-title app-heading-hero" :title="server.name">
                                             {{ server.name }}
                                         </h2>
                                         <p class="server-card-subtitle app-description">{{ server.description }}</p>

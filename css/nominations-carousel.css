@@ -7,7 +7,7 @@
 .vote-carousel-stage {
     position: relative;
     width: 100%;
-    min-height: 322px;
+    min-height: 350px;
     overflow: hidden;
     isolation: isolate;
 }
@@ -18,9 +18,9 @@
     left: 50%;
     display: flex;
     width: min(56%, 210px);
-    height: 252px;
-    min-height: 252px;
-    max-height: 252px;
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
     box-sizing: border-box;
     flex: 0 0 auto;
     gap: var(--app-space-2);
@@ -67,7 +67,7 @@
 
 .vote-carousel-stage > .vote-carousel-controls {
     position: absolute;
-    top: 252px;
+    top: 280px;
     right: 0;
     left: 0;
     z-index: 5;
@@ -143,7 +143,7 @@
 }
 
 .vote-nomination-card--featured .vote-action-button {
-    min-height: 38px;
+    min-height: var(--app-control-height);
     flex: 0 0 auto;
     margin-top: var(--app-space-0-5);
     padding: var(--app-space-2) var(--app-space-1-5);
@@ -163,7 +163,7 @@
 }
 
 .vote-nomination-card.vote-carousel-card .vote-action-button {
-    min-height: 36px;
+    min-height: var(--app-control-height);
     padding-inline: var(--app-space-2);
     font-size: var(--app-font-size-large);
 }
