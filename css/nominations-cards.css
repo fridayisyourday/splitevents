@@ -114,7 +114,8 @@
 .vote-nomination-content .vote-nomination-title {
     width: 100%;
     margin: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: normal;
     text-wrap: balance;
 }
 
