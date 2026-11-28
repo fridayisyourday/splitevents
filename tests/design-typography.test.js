@@ -26,17 +26,17 @@ const notificationCss = readProjectFile("css/notifications.css");
 const friendsCss = readProjectFile("css/friends.css");
 const componentsCss = readProjectFile("css/components.css");
 
-test("the six typography roles scale fluidly from a fixed 16px rem baseline", () => {
+test("the seven typography roles remain constant across viewport widths", () => {
     assert.match(baseCss, /html\s*\{[^}]*font-size:\s*16px;[^}]*-webkit-text-size-adjust:\s*100%;[^}]*text-size-adjust:\s*100%;/s);
-    assert.match(designCss, /--app-font-size-small:\s*clamp\(0\.75rem,/);
-    assert.match(designCss, /--app-font-size-normal:\s*clamp\(1rem,/);
-    assert.match(designCss, /--app-font-size-control:\s*clamp\(1rem,/);
+    assert.match(designCss, /--app-font-size-small:\s*0\.75rem;/);
+    assert.match(designCss, /--app-font-size-normal:\s*1rem;/);
+    assert.match(designCss, /--app-font-size-control:\s*1rem;/);
     assert.match(designCss, /--app-line-height-control:\s*1\.3/);
-    assert.match(designCss, /--app-font-size-control-compact:\s*clamp\(0\.875rem,/);
+    assert.match(designCss, /--app-font-size-control-compact:\s*0\.875rem;/);
     assert.match(designCss, /--app-line-height-control-compact:\s*1\.25/);
-    assert.match(designCss, /--app-font-size-large:\s*clamp\(1\.125rem,/);
-    assert.match(designCss, /--app-font-size-display:\s*clamp\(1\.5rem,/);
-    assert.match(designCss, /--app-font-size-hero:\s*clamp\(2\.4rem,\s*calc\(2\.08rem \+ 1\.6vw\),\s*3\.6rem\)/);
+    assert.match(designCss, /--app-font-size-large:\s*1\.125rem;/);
+    assert.match(designCss, /--app-font-size-display:\s*1\.5rem;/);
+    assert.match(designCss, /--app-font-size-hero:\s*2\.4rem;/);
     assert.match(designCss, /\.app-heading-hero\s*\{[^}]*font-size:\s*var\(--app-font-size-hero\)/s);
     assert.match(designCss, /\.app-heading-hero\s*\{[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
     assert.match(designGuide, /шесть семантических ролей/);
