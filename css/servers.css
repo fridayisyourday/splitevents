@@ -151,7 +151,8 @@
     align-self: flex-end;
     align-items: flex-start;
     justify-content: center;
-    gap: var(--app-space-1-5);
+    gap: var(--app-content-gap-tight);
+    width: 100%;
     min-width: 0;
 }
 
@@ -240,7 +241,7 @@
     width: 100%;
     max-width: var(--app-content-width);
     max-height: 420px;
-    margin-top: var(--app-space-2);
+    margin-top: var(--app-content-gap);
     overflow: hidden;
     border-radius: var(--app-radius-card);
     background: var(--app-card-background);
@@ -260,8 +261,8 @@
     grid-auto-rows: minmax(var(--app-space-11), auto);
     align-items: center;
     justify-content: center;
-    column-gap: var(--app-space-3);
-    row-gap: 2px;
+    column-gap: var(--app-content-gap);
+    row-gap: var(--app-content-gap-tight);
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -280,8 +281,8 @@
     height: auto;
     min-height: 32px;
     padding-block: var(--app-space-1);
-    font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-bold);
+    font-size: var(--app-font-size-normal);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-snug);
     white-space: normal;
     text-wrap: balance;
@@ -345,7 +346,7 @@
 .server-details-enter-to,
 .server-details-leave-from {
     max-height: 420px;
-    margin-top: var(--app-space-2);
+    margin-top: var(--app-content-gap);
     opacity: 1;
     transform: translateY(0);
 }
@@ -375,13 +376,15 @@
     .server-entry--expanded .server-card-content {
         height: auto;
         min-height: calc(var(--app-profile-avatar-size) + var(--app-space-4));
-        gap: var(--app-space-3);
-        padding: var(--app-space-1-5) var(--app-container-padding);
-        align-items: center;
+        gap: var(--app-content-gap);
+        padding: var(--app-content-gap-tight) var(--app-container-padding);
+        align-items: flex-end;
     }
 
     .server-entry--expanded .server-card-details {
-        align-self: center;
+        align-self: flex-end;
+        align-items: flex-start;
+        width: 100%;
     }
 
     .server-card-title {
@@ -398,7 +401,7 @@
 
     .server-details-grid {
         grid-template-columns: minmax(0, 1fr) clamp(160px, calc(100% - 80px), 256px);
-        row-gap: 2px;
+        row-gap: var(--app-content-gap-tight);
     }
 
     .server-entry--expanded {

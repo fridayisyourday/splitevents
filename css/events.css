@@ -55,7 +55,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.15cqw;
+    gap: var(--app-content-gap);
     width: 50%;
     min-width: 0;
     min-height: 250px;
@@ -69,22 +69,35 @@
 
 .event-card-title {
     display: block;
+    align-self: stretch;
+    width: 100%;
     max-width: 100%;
     margin: 0;
     overflow: visible;
     color: var(--app-text);
+    font-size: clamp(var(--app-font-size-display), 8.5cqi, var(--app-font-size-hero));
+    font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.035em;
+    line-height: var(--app-line-height-heading);
+    text-align: center;
     text-wrap: balance;
     overflow-wrap: normal;
     word-break: normal;
     hyphens: manual;
 }
 
+.event-card-title.app-heading-hero {
+    font-size: clamp(var(--app-font-size-display), 8.5cqi, var(--app-font-size-hero));
+}
+
 .event-card-description {
     display: block;
+    align-self: stretch;
+    width: 100%;
     max-width: 100%;
     margin: 0;
     overflow: visible;
+    text-align: center;
     overflow-wrap: normal;
     word-break: normal;
     hyphens: manual;
@@ -95,7 +108,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.8cqw;
+    gap: var(--app-content-gap-tight);
     max-width: 100%;
 }
 
@@ -116,7 +129,7 @@
     display: inline-flex;
     flex-wrap: nowrap;
     align-items: baseline;
-    gap: 0.65cqw;
+    gap: var(--app-content-gap-tight);
     color: inherit;
     font: inherit;
     white-space: nowrap;
@@ -126,7 +139,7 @@
 .event-countdown-part {
     display: inline-flex;
     align-items: baseline;
-    gap: 0.18cqw;
+    gap: var(--app-space-0-5);
     color: inherit;
     font: inherit;
 }
@@ -141,15 +154,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.7cqw;
-    width: min(100%, 29cqw);
+    gap: var(--app-content-gap-tight);
+    width: 100%;
+    max-width: 100%;
 }
 
 .event-card-action {
     flex: 1 1 auto;
     width: auto;
-    max-width: 23.7cqw;
+    max-width: none;
     min-width: 0;
+    padding: var(--app-content-gap) var(--app-content-gap-relaxed);
+    line-height: var(--app-line-height-snug);
+    text-wrap: balance;
 }
 
 .event-card-visibility-action {

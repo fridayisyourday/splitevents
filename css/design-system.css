@@ -42,10 +42,10 @@
     --app-control-height: 48px;
     --app-container-padding: 16px;
     --app-page-gutter: 16px;
-    --app-page-top: 24px;
-    --app-section-gap: 24px;
-    --app-grid-column-gap: 16px;
-    --app-grid-row-gap: 24px;
+    --app-page-top: var(--app-container-gap);
+    --app-section-gap: var(--app-container-gap);
+    --app-grid-column-gap: var(--app-content-gap-group);
+    --app-grid-row-gap: var(--app-container-gap);
 
     /* Repeated component dimensions. Breakpoints are documented with the page grid. */
     --app-menu-panel-width: 340px;
@@ -104,6 +104,14 @@
     --app-space-9: 36px;
     --app-space-10: 40px;
     --app-space-11: 48px;
+
+    /* Semantic gaps between content inside containers. */
+    --app-content-gap-tight: var(--app-space-1);       /* 4px */
+    --app-content-gap: var(--app-space-2);              /* 8px */
+    --app-content-gap-relaxed: var(--app-space-3);      /* 12px */
+    --app-content-gap-group: var(--app-space-4);         /* 16px */
+    --app-container-gap: var(--app-space-6);             /* 24px */
+
     --app-radius-small: 12px;
     --app-radius-control: 14px;
     --app-radius-medium: 16px;

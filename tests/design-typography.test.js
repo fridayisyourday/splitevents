@@ -59,6 +59,9 @@ test("event title and description are never line-clamped or hidden", () => {
     assert.doesNotMatch(title[1], /line-clamp|text-overflow|overflow:\s*hidden/);
     assert.doesNotMatch(description[1], /line-clamp|text-overflow|overflow:\s*hidden/);
     assert.match(eventPage, /class="event-card-title app-heading-hero"/);
+    assert.match(eventCss, /\.event-card-title\.app-heading-hero\s*\{[^}]*font-size:\s*clamp\(var\(--app-font-size-display\), 8\.5cqi, var\(--app-font-size-hero\)\)/s);
+    assert.match(eventCss, /\.event-card-title\s*\{[^}]*width:\s*100%;[^}]*text-align:\s*center;/s);
+    assert.match(eventCss, /\.event-card-actions\s*\{[^}]*width:\s*100%;/s);
     assert.match(eventPage, /class="event-card-description app-description"/);
     assert.match(eventPage, /class="event-card-meta app-meta"/);
 });
@@ -85,14 +88,27 @@ test("server titles use the hero role and their text contributes to card height"
     assert.match(content[1], /grid-row:\s*1/);
 });
 
-test("server detail labels and values use bold large typography and 48px controls", () => {
+test("profile name and Telegram tag use a compact natural-height row", () => {
+    const row = profileCss.match(/\.profile-name-row\s*\{([^}]+)\}/);
+    const nickname = profileCss.match(/\.profile-nickname\s*\{([^}]+)\}/);
+    const edit = profileCss.match(/\.profile-edit-button\s*\{([^}]+)\}/);
+    const tag = profileCss.match(/\.profile-telegram-tag\s*\{([^}]+)\}/);
+    assert.ok(row && nickname && edit && tag);
+    assert.match(row[1], /min-height:\s*28px/);
+    assert.match(nickname[1], /height:\s*auto/);
+    assert.match(edit[1], /position:\s*absolute/);
+    assert.match(edit[1], /translate:\s*0 -50%/);
+    assert.match(tag[1], /margin:\s*var\(--app-content-gap-tight\) 0 0/);
+});
+
+test("server detail labels are large, while capsule values stay normal", () => {
     const label = serverCss.match(/\.server-details-label\s*\{([^}]+)\}/);
     const badge = serverCss.match(/\.server-details-grid \.menu-item-badge\s*\{([^}]+)\}/);
     assert.ok(label && badge);
-    for (const block of [label[1], badge[1]]) {
-        assert.match(block, /font-size:\s*var\(--app-font-size-large\)/);
-        assert.match(block, /font-weight:\s*var\(--app-font-weight-bold\)/);
-    }
+    assert.match(label[1], /font-size:\s*var\(--app-font-size-large\)/);
+    assert.match(label[1], /font-weight:\s*var\(--app-font-weight-bold\)/);
+    assert.match(badge[1], /font-size:\s*var\(--app-font-size-normal\)/);
+    assert.match(badge[1], /font-weight:\s*var\(--app-font-weight-regular\)/);
     assert.match(serverCss, /grid-auto-rows:\s*minmax\(var\(--app-space-11\),\s*auto\)/);
     assert.match(serverCss, /\.server-details-ip-button\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
     assert.match(serverCss, /\.server-details-download\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
@@ -144,7 +160,7 @@ test("all CSS font sizes use one of the five semantic tokens", () => {
         "css/nominations-cards.css", "css/nominations-carousel.css", "css/nominations-picker.css",
         "css/notifications.css", "css/pages.css", "css/profile.css", "css/servers.css", "css/squash.css"
     ];
-    const allowed = /^var\(--app-font-size-(?:small|normal|large|display|hero)\)$|^inherit$/;
+    const allowed = /^var\(--app-font-size-(?:small|normal|large|display|hero)\)$|^clamp\(var\(--app-font-size-display\), 8\.5cqi, var\(--app-font-size-hero\)\)$|^inherit$/;
     for (const path of stylesheets) {
         const css = readProjectFile(path);
         assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);

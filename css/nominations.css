@@ -211,7 +211,7 @@
     max-height: min(88dvh, 820px);
     min-width: 0;
     flex-direction: column;
-    gap: var(--app-space-4);
+    gap: var(--app-content-gap-group);
     overflow-y: auto;
     padding: var(--app-container-padding);
     border: 2px solid var(--app-border);
@@ -275,7 +275,7 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    gap: var(--app-space-2-5);
+    gap: var(--app-content-gap);
     padding: var(--app-container-padding);
     border: 2px solid var(--app-border);
     border-radius: var(--app-radius-medium);
