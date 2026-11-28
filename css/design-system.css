@@ -822,14 +822,15 @@ input[type="reset"] {
 }
 
 .vote-candidate-name {
-    display: -webkit-box;
     max-width: 100%;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
     overflow-wrap: normal;
     word-break: normal;
     text-wrap: balance;
+}
+
+.vote-suggest-text {
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .friend-card-name,
