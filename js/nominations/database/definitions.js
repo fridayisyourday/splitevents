@@ -1,5 +1,5 @@
 /* Eligibility rules for each published nomination. Runtime selections live in state.js. */
-import { NOMINEES } from "./nominees.js?v=20261127-1";
+import { NOMINEES } from "./nominees.js?v=20261127-2";
 import { validateNominationDatabase } from "./validate.js?v=20261126-1";
 
 const NOMINATION_RECORDS = [
@@ -42,6 +42,56 @@ const NOMINATION_RECORDS = [
         title: "NEXTGEN",
         type: "fixed",
         nomineeIds: ["tr1ckl", "theriazon", "fork", "yaarbuzik"]
+    },
+    {
+        id: "nerd",
+        title: "NERD",
+        type: "individual",
+        nomineeIds: ["dlv1190", "fridayisyourday", "otorgy", "vale"]
+    },
+    {
+        id: "geek",
+        title: "GEEK",
+        type: "individual",
+        nomineeIds: ["burgomister", "fridayisyourday", "holydark", "otorgy", "theriazon"]
+    },
+    {
+        id: "gamer",
+        title: "GAMER",
+        type: "individual",
+        nomineeIds: ["burgomister", "dlv1190", "theriazon"]
+    },
+    {
+        id: "creator",
+        title: "CREATOR",
+        type: "individual",
+        nomineeIds: ["burgomister", "cyathere", "fridayisyourday", "holydark", "vamorii"]
+    },
+    {
+        id: "gnil",
+        title: "ГНИЛЬ",
+        type: "individual",
+        nomineeIds: ["burgomister", "dlv1190", "fridayisyourday", "otorgy", "tr1ckl"]
+    },
+    {
+        id: "mit",
+        title: "МИТ",
+        type: "image",
+        gender: "I",
+        nomineeIds: ["burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft", "halloween"]
+    },
+    {
+        id: "mem",
+        title: "МЕМ",
+        type: "image",
+        gender: "I",
+        nomineeIds: ["ip-picked", "a-vy-verite", "metaverse", "slenderman-mansion", "tadc-voiceover"]
+    },
+    {
+        id: "mog",
+        title: "MOG",
+        type: "individual",
+        nomineeIds: ["cyathere", "dlv1190", "holydark"]
     }
 ];
 

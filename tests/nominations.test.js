@@ -14,7 +14,7 @@ test("the published nominee catalogue and rules are valid", () => {
     assert.equal(new Set(NOMINEES.map((person) => person.id)).size, NOMINEES.length);
 });
 
-test("vamorii is available in the female nominee pool but is not preselected in a nomination", () => {
+test("vamorii is available in the female pool and is nominated in CREATOR", () => {
     const vamorii = nomineeById.get("vamorii");
     assert.ok(vamorii);
     assert.equal(vamorii.name, "vamorii");
@@ -24,7 +24,8 @@ test("vamorii is available in the female nominee pool but is not preselected in 
         ...(nomination.nomineeIds || []),
         ...(nomination.duoPairs || []).flatMap((pair) => [pair.firstId, pair.secondId])
     ]);
-    assert.equal(publishedNomineeIds.includes("vamorii"), false);
+    assert.equal(publishedNomineeIds.includes("vamorii"), true);
+    assert.deepEqual(NOMINATION_DEFINITIONS.find((item) => item.id === "creator")?.nomineeIds.includes("vamorii"), true);
 });
 
 test("featured SQUASH nominations use their updated titles", () => {
@@ -36,6 +37,55 @@ test("featured SQUASH nominations use their updated titles", () => {
         NOMINATION_DEFINITIONS.find((item) => item.id === "pumpkin-queen")?.title,
         "PUMPQUEEN"
     );
+});
+
+test("the eight new nominations are included in the wheel with their intended nominee types", () => {
+    const expected = {
+        nerd: ["dlv1190", "fridayisyourday", "otorgy", "vale"],
+        geek: ["burgomister", "fridayisyourday", "holydark", "otorgy", "theriazon"],
+        gamer: ["burgomister", "dlv1190", "theriazon"],
+        creator: ["burgomister", "cyathere", "fridayisyourday", "holydark", "vamorii"],
+        gnil: ["burgomister", "dlv1190", "fridayisyourday", "otorgy", "tr1ckl"],
+        mit: ["burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft", "halloween"],
+        mem: ["ip-picked", "a-vy-verite", "metaverse", "slenderman-mansion", "tadc-voiceover"],
+        mog: ["cyathere", "dlv1190", "holydark"]
+    };
+
+    for (const [id, nomineeIds] of Object.entries(expected)) {
+        const nomination = NOMINATION_DEFINITIONS.find((item) => item.id === id);
+        assert.ok(nomination, id + " is present");
+        assert.deepEqual(nomination.nomineeIds, nomineeIds, id + " nominee order");
+        assert.equal(nomination.type, ["mit", "mem"].includes(id) ? "image" : "individual");
+        assert.equal(nomination.gender, ["mit", "mem"].includes(id) ? "I" : undefined);
+        assert.deepEqual(
+            nomination.nomineeIds.map((nomineeId) => nomineeById.get(nomineeId)).sort(compareNames).map((person) => person.id),
+            nomineeIds,
+            id + " is alphabetically sorted"
+        );
+    }
+
+    assert.equal(NOMINATION_DEFINITIONS.length, 13);
+});
+
+test("new image nominees have square-image catalogue entries", () => {
+    const imageNomineeIds = [
+        "halloween",
+        "isada-birthday",
+        "loft",
+        "kemerovo-dumplings",
+        "burgomister-dacha",
+        "slenderman-mansion",
+        "a-vy-verite",
+        "tadc-voiceover",
+        "metaverse",
+        "ip-picked"
+    ];
+    for (const id of imageNomineeIds) {
+        const nominee = nomineeById.get(id);
+        assert.ok(nominee, id + " exists");
+        assert.equal(nominee.gender, "I");
+        assert.ok(nominee.avatar.includes("/nominees/" + id + ".webp"));
+    }
 });
 
 test("nomination state is independent between widget instances", () => {

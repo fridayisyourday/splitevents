@@ -21,7 +21,18 @@ const NOMINEE_RECORDS = [
     { id: "fridayisyourday-42", name: "fridayisyourday 42", gender: "I", avatar: getNomineeAvatarUrl("fridayisyourday-42") },
     { id: "shalker", name: "Шалкер", gender: "I", avatar: getNomineeAvatarUrl("shalker") },
     { id: "misterion", name: "Мистерион", gender: "I", avatar: getNomineeAvatarUrl("misterion") },
-    { id: "windigo", name: "Виндиго", gender: "I", avatar: getNomineeAvatarUrl("windigo") }
+    { id: "windigo", name: "Виндиго", gender: "I", avatar: getNomineeAvatarUrl("windigo") },
+
+    { id: "halloween", name: "Хеллоуин", gender: "I", avatar: getNomineeAvatarUrl("halloween") },
+    { id: "isada-birthday", name: "День Рождения Isada", gender: "I", avatar: getNomineeAvatarUrl("isada-birthday") },
+    { id: "loft", name: "Лофт", gender: "I", avatar: getNomineeAvatarUrl("loft") },
+    { id: "kemerovo-dumplings", name: "Кемеровские пельмени", gender: "I", avatar: getNomineeAvatarUrl("kemerovo-dumplings") },
+    { id: "burgomister-dacha", name: "Дача Burgomister", gender: "I", avatar: getNomineeAvatarUrl("burgomister-dacha") },
+    { id: "slenderman-mansion", name: "Особняк Слендермена", gender: "I", avatar: getNomineeAvatarUrl("slenderman-mansion") },
+    { id: "a-vy-verite", name: "А вы верити?", gender: "I", avatar: getNomineeAvatarUrl("a-vy-verite") },
+    { id: "tadc-voiceover", name: "Переозвучка TADC", gender: "I", avatar: getNomineeAvatarUrl("tadc-voiceover") },
+    { id: "metaverse", name: "Метавселенная", gender: "I", avatar: getNomineeAvatarUrl("metaverse") },
+    { id: "ip-picked", name: "IP подобрал", gender: "I", avatar: getNomineeAvatarUrl("ip-picked") }
 ];
 
 const GENDER_ORDER = Object.freeze({ F: 0, M: 1, I: 2 });
