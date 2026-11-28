@@ -72,19 +72,19 @@
     --app-space-12: 56px;
     --app-space-13: 64px;
 
-    /* Typography. */
+    /* Four fluid roles; rem + vw keeps scaling smooth and zoom-aware. */
     --app-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    --app-font-size-title: clamp(66px, 10vw, 148px);
-    --app-font-size-heading: clamp(32px, 4vw, 40px);
-    --app-font-size-main: 14px;
-    --app-font-size-accent: 16px;
+    --app-type-small: clamp(0.75rem, 0.72rem + 0.2vw, 0.875rem);
+    --app-type-normal: clamp(0.875rem, 0.82rem + 0.45vw, 1rem);
+    --app-type-large: clamp(1rem, 0.94rem + 0.65vw, 1.25rem);
+    --app-type-title: clamp(1.25rem, 1rem + 2.6vw, 3rem);
     --app-font-weight-regular: 400;
-    --app-font-weight-medium: 600;
-    --app-font-weight-semibold: 700;
-    --app-font-weight-bold: 800;
-    --app-font-weight-subtle: 450;
-    --app-font-weight-normal: 500;
-    --app-font-weight-display: 950;
+    --app-font-weight-medium: 400;
+    --app-font-weight-semibold: 400;
+    --app-font-weight-bold: 400;
+    --app-font-weight-subtle: 400;
+    --app-font-weight-normal: 400;
+    --app-font-weight-display: 400;
     --app-line-height-tight: 1;
     --app-line-height-snug: 1.2;
     --app-line-height-heading: 1.08;
@@ -129,7 +129,7 @@
     --app-button-secondary-color: var(--app-black);
     --app-button-background: var(--app-button-primary-background);
     --app-button-color: var(--app-button-primary-color);
-    --app-button-font-weight: 700;
+    --app-button-font-weight: 400;
     --app-button-transition: transform var(--app-duration-fast) var(--app-easing-standard), filter var(--app-duration-fast) ease, opacity var(--app-duration-fast) ease, background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease;
     --app-button-hover-brightness: 0.96;
     --app-button-pressed-scale: 0.97;
@@ -151,7 +151,6 @@
 @media (max-width: 640px) {
     :root {
         --app-container-padding: 14px;
-        --app-font-size-title: clamp(60px, 17vw, 92px);
     }
 }
 
@@ -333,7 +332,7 @@ body,
     background: var(--app-badge-background);
     color: var(--app-badge-color);
     box-shadow: none;
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
     font-weight: var(--app-font-weight-bold);
     font-variant-numeric: tabular-nums;
     line-height: var(--app-line-height-tight);
@@ -529,7 +528,7 @@ svg {
 
 /* Every text element starts at the main role; semantic classes below assign the other three roles. */
 body {
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
     text-transform: lowercase;
 }
 
@@ -539,7 +538,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-type-title);
 }
 
 /* Native buttons reset text-transform in browser stylesheets; explicitly inherit
@@ -702,7 +701,74 @@ h6,
 /* Single source of truth for descriptions and secondary date/time metadata. */
 .app-description {
     color: var(--app-hint);
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-type-large);
     font-weight: var(--app-font-weight-subtle);
     line-height: var(--app-line-height-label);
+}
+
+
+/* Typography: hierarchy comes from size and spacing, never bold. */
+body,
+body * {
+    font-weight: 400 !important;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+.event-card-title {
+    font-size: clamp(1.25rem, 5cqw, 2.75rem);
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.08;
+}
+.server-card-title {
+    font-size: clamp(1.25rem, 5.2cqw, 2.75rem);
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.08;
+}
+.squash-hero-title {
+    font-size: clamp(1.25rem, 12cqw, 3rem);
+}
+.section-page-title,
+.header-logo,
+.menu-panel-title,
+.vote-dialog-title {
+    font-size: var(--app-type-title);
+    text-wrap: balance;
+}
+.menu-item,
+.menu-item-label {
+    font-size: var(--app-type-large);
+    text-wrap: balance;
+}
+.ui-button {
+    font-size: var(--app-type-large);
+    font-weight: 400 !important;
+    white-space: normal;
+    text-wrap: balance;
+}
+.vote-button,
+.vote-action-button {
+    font-size: var(--app-type-normal);
+}
+.profile-nickname,
+.friend-card-name {
+    font-size: var(--app-type-large);
+}
+.event-card-meta,
+.event-card-date,
+.event-card-countdown,
+.event-countdown-part,
+.event-countdown-value,
+.event-countdown-unit,
+.squash-hero-date,
+.squash-countdown-title,
+.squash-countdown-number,
+.squash-countdown-label,
+.squash-countdown-separator {
+    font-size: var(--app-type-small);
+}
+.app-description {
+    font-size: var(--app-type-large);
+    line-height: 1.45;
 }

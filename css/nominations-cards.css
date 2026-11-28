@@ -65,7 +65,7 @@
     justify-content: center;
     background: var(--app-secondary);
     color: var(--app-on-secondary);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-type-title);
     font-weight: 400;
     line-height: var(--app-line-height-tight);
 }
@@ -140,19 +140,19 @@
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
     min-height: 2.4em;
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-type-large);
     line-height: var(--app-line-height-snug);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-selected-nominee {
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
 }
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-action-button {
     min-height: 36px;
     margin-top: var(--app-space-0-5);
     padding-inline: var(--app-space-2);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
 }
 
 /* Artwork frame: image container covers the full card width and exactly its top 75%. */

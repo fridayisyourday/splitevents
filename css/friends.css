@@ -94,7 +94,7 @@
 .friend-card-name {
     overflow: hidden;
     color: var(--app-text);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
     font-weight: var(--app-font-weight-semibold);
     line-height: var(--app-line-height-compact);
     text-overflow: ellipsis;
@@ -104,7 +104,7 @@
 .friend-card-tag {
     overflow: hidden;
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-type-normal);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-label);
     text-overflow: ellipsis;

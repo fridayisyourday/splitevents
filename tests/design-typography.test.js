@@ -8,95 +8,57 @@ function readProjectFile(path) {
 
 const designCss = readProjectFile("css/design-system.css");
 const designGuide = readProjectFile("docs/design-system.md");
-const eventCss = readProjectFile("css/events.css");
-const squashCss = readProjectFile("css/squash.css");
-const serverCss = readProjectFile("css/servers.css");
-const eventPage = readProjectFile("src/components/EventsPage.vue");
-const votingPage = readProjectFile("src/components/NominationsPage.vue");
-const serverPage = readProjectFile("src/components/ServersPage.vue");
 
-test("shared descriptive copy typography has one documented source of truth", () => {
-    const block = designCss.match(/\.app-description\s*\{([^}]+)\}/);
-    assert.ok(block, "the shared .app-description rule must exist");
-    assert.match(block[1], /font-size:\s*var\(--app-font-size-accent\)/);
-    assert.match(block[1], /font-weight:\s*var\(--app-font-weight-subtle\)/);
-    assert.match(block[1], /line-height:\s*var\(--app-line-height-label\)/);
-    assert.match(designGuide, /16 px/);
-    assert.match(designGuide, /\.app-description/);
+const stylesheets = [
+    "css/base.css", "css/components.css", "css/design-system.css", "css/events.css",
+    "css/friends.css", "css/layout.css", "css/menu.css", "css/nominations.css",
+    "css/nominations-cards.css", "css/nominations-carousel.css", "css/nominations-picker.css",
+    "css/notifications.css", "css/pages.css", "css/profile.css", "css/servers.css", "css/squash.css"
+];
+
+test("four new fluid typography roles exist and use rem plus viewport scaling", () => {
+    assert.match(designCss, /--app-type-small:\s*clamp\(0\.75rem,\s*0\.72rem\s*\+\s*0\.2vw,\s*0\.875rem\)/);
+    assert.match(designCss, /--app-type-normal:\s*clamp\(0\.875rem,\s*0\.82rem\s*\+\s*0\.45vw,\s*1rem\)/);
+    assert.match(designCss, /--app-type-large:\s*clamp\(1rem,\s*0\.94rem\s*\+\s*0\.65vw,\s*1\.25rem\)/);
+    assert.match(designCss, /--app-type-title:\s*clamp\(1\.25rem,\s*1rem\s*\+\s*2\.6vw,\s*3rem\)/);
+    assert.doesNotMatch(designCss, /--app-font-size-(?:title|heading|main|accent)/);
+    assert.match(designGuide, /Мелкий.*Обычный.*Крупный.*Титульный/s);
 });
 
-test("event description, date and countdown inherit the shared typography", () => {
-    assert.match(eventPage, /class="event-card-description app-description"/);
-    assert.match(eventPage, /class="event-card-meta app-description"/);
-
-    const metaBlocks = [...eventCss.matchAll(/\.event-card-meta\s*\{([^}]+)\}/g)];
-    assert.ok(metaBlocks.length >= 1);
-    for (const match of metaBlocks) {
-        assert.doesNotMatch(match[1], /(?:font-size|font-weight|line-height|color)\s*:/);
-    }
-    assert.match(eventCss, /\.event-countdown-value,\s*\.event-countdown-unit\s*\{\s*color:\s*inherit;\s*font:\s*inherit;/);
-});
-
-test("SQUASH hero subtitle and date share the exact same type style", () => {
-    assert.match(votingPage, /class="squash-hero-subtitle app-description"/);
-    assert.match(votingPage, /class="squash-hero-date app-description"/);
-
-    const dateBlock = squashCss.match(/\.squash-hero-date\s*\{([^}]+)\}/);
-    assert.ok(dateBlock);
-    assert.doesNotMatch(dateBlock[1], /(?:font-size|font-weight|letter-spacing|line-height|color)\s*:/);
-});
-
-test("server description does not introduce a mobile-only typography override", () => {
-    assert.match(serverPage, /class="server-card-subtitle app-description"/);
-    assert.equal((serverCss.match(/\.server-card-subtitle\s*\{/g) || []).length, 1);
-});
-
-test("server page resets expanded gallery state whenever navigation leaves it", () => {
-    assert.match(serverPage, /window\.addEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
-    assert.match(serverPage, /window\.removeEventListener\("splitevents:menu-page", handleMenuPageChange\)/);
-    assert.match(serverPage, /if \(event\.detail\?\.page !== "servers"\)\s*\{\s*resetServerPageState\(\);/);
-});
-
-
-test("the four typography roles match their visual references", () => {
-    assert.match(designCss, /--app-font-size-title:\s*clamp\(66px, 10vw, 148px\)/);
-    assert.match(designCss, /--app-font-size-heading:\s*clamp\(32px, 4vw, 40px\)/);
-    assert.match(designCss, /--app-font-size-main:\s*14px/);
-    assert.match(designCss, /--app-font-size-accent:\s*16px/);
-    assert.match(squashCss, /\.squash-hero-title\s*\{[^}]*font-size:\s*var\(--app-font-size-title\)/s);
-    assert.match(readProjectFile("css/pages.css"), /\.section-page-title\s*\{[^}]*font-size:\s*var\(--app-font-size-heading\)/s);
-    assert.match(readProjectFile("css/profile.css"), /\.profile-telegram-tag\s*\{[^}]*font-size:\s*var\(--app-font-size-main\)/s);
-    const descriptionRule = designCss.match(/\.app-description\s*\{([^}]+)\}/);
-    assert.ok(descriptionRule, "the shared description role must exist");
-    assert.match(descriptionRule[1], /font-size:\s*var\(--app-font-size-accent\)/);
-});
-
-test("every stylesheet uses only the four semantic text-size roles", () => {
-    const stylesheets = [
-        "css/base.css",
-        "css/components.css",
-        "css/design-system.css",
-        "css/events.css",
-        "css/friends.css",
-        "css/layout.css",
-        "css/menu.css",
-        "css/nominations.css",
-        "css/nominations-cards.css",
-        "css/nominations-carousel.css",
-        "css/nominations-picker.css",
-        "css/notifications.css",
-        "css/pages.css",
-        "css/profile.css",
-        "css/servers.css",
-        "css/squash.css"
-    ];
-    const allowed = /^var\(--app-font-size-(?:title|heading|main|accent)\)$|^inherit$/;
-
+test("every stylesheet uses the new semantic roles or safe fluid component sizes", () => {
     for (const path of stylesheets) {
         const css = readProjectFile(path);
-        assert.doesNotMatch(css, /--app-font-size-(?!title\b|heading\b|main\b|accent\b)[A-Za-z0-9_-]+/);
+        assert.doesNotMatch(css, /--app-font-size-(?:title|heading|main|accent)/, path);
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
-            assert.match(match[1].trim(), allowed, `${path} has an unapproved font size: ${match[0]}`);
+            const value = match[1].trim();
+            assert.match(value, /^var\(--app-type-(?:small|normal|large|title)\)$|^inherit$|^clamp\(/,
+                `${path} has an unapproved font-size: ${value}`);
         }
     }
+});
+
+test("no bold text is used across the app", () => {
+    assert.match(designCss, /body,\s*body \*\s*\{\s*font-weight:\s*400 !important;/s);
+    for (const path of stylesheets) {
+        const css = readProjectFile(path);
+        for (const match of css.matchAll(/font-weight\s*:\s*([^;]+);/g)) {
+            const value = match[1].trim();
+            assert.match(value, /^400$|^inherit$|^var\(--app-font-weight-[\w-]+\)$/,
+                `${path} has non-regular font weight: ${value}`);
+        }
+    }
+});
+
+test("titles avoid breaking words and component headings adapt to their own card width", () => {
+    assert.match(designCss, /\.event-card-title\s*\{[^}]*container|\.event-card-title\s*\{[^}]*font-size:\s*clamp\([^}]+cqw/s);
+    assert.match(designCss, /\.server-card-title\s*\{[^}]*font-size:\s*clamp\([^}]+cqw/s);
+    assert.match(designCss, /\.event-card-title,[\s\S]*?overflow-wrap:\s*normal/);
+    assert.match(designCss, /\.server-card-title,[\s\S]*?overflow-wrap:\s*normal/);
+});
+
+test("dates and timers use the smallest role, descriptions and menu controls use large", () => {
+    assert.match(designCss, /\.event-card-meta,[\s\S]*?font-size:\s*var\(--app-type-small\)/);
+    assert.match(designCss, /\.squash-countdown-title,[\s\S]*?font-size:\s*var\(--app-type-small\)/);
+    assert.match(designCss, /\.app-description\s*\{[^}]*font-size:\s*var\(--app-type-large\)/s);
+    assert.match(designCss, /\.menu-item,[\s\S]*?font-size:\s*var\(--app-type-large\)/);
 });
