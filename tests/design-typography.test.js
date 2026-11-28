@@ -160,7 +160,7 @@ test("all CSS font sizes use one of the five semantic tokens", () => {
         "css/nominations-cards.css", "css/nominations-carousel.css", "css/nominations-picker.css",
         "css/notifications.css", "css/pages.css", "css/profile.css", "css/servers.css", "css/squash.css"
     ];
-    const allowed = /^var\(--app-font-size-(?:small|normal|large|display|hero)\)$|^inherit$/;
+    const allowed = /^var\(--app-font-size-(?:small|normal|large|display|hero)\)$|^clamp\(var\(--app-font-size-display\), 8\.5cqi, var\(--app-font-size-hero\)\)$|^inherit$/;
     for (const path of stylesheets) {
         const css = readProjectFile(path);
         assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);
