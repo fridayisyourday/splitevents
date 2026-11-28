@@ -71,6 +71,7 @@ test("SQUASH masthead uses the shared hero role and its date remains small", () 
     assert.ok(dateBlock);
     assert.doesNotMatch(dateBlock[1], /(?:font-size|font-weight|letter-spacing|line-height|color)\s*:/);
     assert.match(squashCss, /\.squash-hero-title\s*\{[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
+    assert.match(squashCss, /\.squash-hero-title\.app-heading-hero\s*\{[^}]*line-height:\s*\.92/s);
 });
 
 test("server titles use the hero role and their text contributes to card height", () => {

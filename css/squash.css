@@ -50,6 +50,10 @@
     line-height: .92;
     color: var(--app-on-secondary);
 }
+
+.squash-hero-title.app-heading-hero {
+    line-height: .92;
+}
 .squash-hero-subtitle {
     margin: var(--app-space-4-5) 0 0;
 }
