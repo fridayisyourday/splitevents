@@ -155,13 +155,13 @@
 
 .server-card-title {
     --app-font-size-title: clamp(1.125rem, calc(0.8rem + 4cqi), 2.5rem);
-    max-width: none;
+    max-width: 100%;
     margin: 0;
     color: var(--app-text);
     font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-regular);
     letter-spacing: -0.035em;
-    line-height: 0.9;
+    line-height: 1.05;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
