@@ -79,12 +79,6 @@
     --app-font-size-large: clamp(1rem, calc(0.94rem + 0.35vw), 1.25rem);
     --app-font-size-title: clamp(1.5rem, calc(1.25rem + 1.8vw), 3rem);
     --app-font-weight-regular: 400;
-    --app-font-weight-medium: 400;
-    --app-font-weight-semibold: 400;
-    --app-font-weight-bold: 400;
-    --app-font-weight-subtle: 400;
-    --app-font-weight-normal: 400;
-    --app-font-weight-display: 400;
     --app-line-height-tight: 1;
     --app-line-height-snug: 1.2;
     --app-line-height-heading: 1.08;
@@ -129,7 +123,7 @@
     --app-button-secondary-color: var(--app-black);
     --app-button-background: var(--app-button-primary-background);
     --app-button-color: var(--app-button-primary-color);
-    --app-button-font-weight: 400;
+    --app-font-weight-regular: 400;
     --app-button-transition: transform var(--app-duration-fast) var(--app-easing-standard), filter var(--app-duration-fast) ease, opacity var(--app-duration-fast) ease, background-color var(--app-duration-fast) ease, color var(--app-duration-fast) ease;
     --app-button-hover-brightness: 0.96;
     --app-button-pressed-scale: 0.97;
@@ -457,7 +451,7 @@ svg {
     background: var(--app-nav-active-background);
     color: var(--app-nav-active-color);
     box-shadow: none;
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
     text-decoration: none;
 }
 
@@ -526,7 +520,7 @@ svg {
 }
 
 
-/* Every text element starts at the main role; semantic classes below assign the other three roles. */
+/* Every text element starts at the normal role; semantic classes assign small, large and title. */
 body {
     font-size: var(--app-font-size-normal);
     font-weight: var(--app-font-weight-regular);
@@ -709,14 +703,6 @@ h6,
 }
 
 
-/* Fluid four-role typography system.
-   Each role scales continuously with the viewport and stays within a readable range. */
-:root {
-    --app-font-size-small: clamp(0.75rem, calc(0.72rem + 0.12vw), 0.875rem);
-    --app-font-size-normal: clamp(0.875rem, calc(0.82rem + 0.18vw), 1rem);
-    --app-font-size-large: clamp(1rem, calc(0.94rem + 0.35vw), 1.25rem);
-}
-
 /* No text hierarchy depends on bold weight: all interface copy stays regular. */
 body,
 button,
@@ -743,6 +729,7 @@ b {
 .friend-card-name,
 .vote-selected-nominee,
 .vote-candidate-name,
+.vote-suggest-text,
 .app-notification__title {
     font-size: var(--app-font-size-large);
 }
@@ -788,6 +775,7 @@ input[type="reset"] {
 .squash-hero-date,
 .squash-countdown-label,
 .squash-partners-label,
+.server-details-label,
 .vote-dialog-eyebrow,
 .menu-item-badge {
     font-size: var(--app-font-size-small);
@@ -831,6 +819,26 @@ input[type="reset"] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.vote-candidate-name {
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    overflow-wrap: normal;
+    word-break: normal;
+    text-wrap: balance;
+}
+
+.friend-card-name,
+.profile-nickname,
+.menu-item-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: no-preference) {
