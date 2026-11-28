@@ -81,14 +81,21 @@ test("carousel clone normalization is committed before transitions are restored"
     assert.ok(restoreTransitionIndex > layoutFlushIndex, "animation must only be restored after the layout flush");
 });
 
-test("server card dimensions are increased to 1.2 times the compact layout", () => {
+test("server cards grow with large multi-line titles and keep the expanded gallery layout", () => {
     const styles = readFileSync(
         new URL("../css/servers.css", import.meta.url),
         "utf8"
     );
-    assert.match(styles, /\.server-card\s*\{[^}]*height:\s*220px;/s);
-    assert.match(styles, /\.server-card-title\s*\{[^}]*font-size:\s*var\(--app-font-size-display\);/s);
-    assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.server-card\s*\{[^}]*height:\s*264px;/);
+    const component = readFileSync(
+        new URL("../src/components/ServersPage.vue", import.meta.url),
+        "utf8"
+    );
+    assert.match(styles, /\.server-card\s*\{[^}]*min-height:\s*260px;[^}]*height:\s*auto;/s);
+    assert.match(styles, /\.server-card-content\s*\{[^}]*position:\s*relative;[^}]*grid-row:\s*1;/s);
+    assert.match(styles, /\.server-card-title\s*\{[^}]*text-wrap:\s*balance;/s);
+    assert.doesNotMatch(styles, /\.server-card-title\s*\{[^}]*text-overflow:\s*ellipsis|white-space:\s*nowrap/s);
+    assert.match(component, /class="server-card-title app-heading-hero"/);
+    assert.match(styles, /@media \(max-width: 640px\)[\s\S]*?\.server-card\s*\{[^}]*min-height:\s*300px;[^}]*height:\s*auto;/);
     assert.match(
         styles,
         /\.server-entry--expanded \.server-card\s*\{[^}]*height:\s*500px;[^}]*grid-template-rows:\s*minmax\(0, 1fr\) calc\(var\(--app-control-height\) \+ var\(--app-container-padding\) \+ var\(--app-container-padding\)\);/s
