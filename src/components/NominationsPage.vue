@@ -752,7 +752,7 @@ defineExpose({
                                         <article v-else-if="entry.type === 'add-card'" class="vote-candidate-card vote-add-card">
                                             <div
                                                 class="vote-add-symbol"
-                                                :class="{ 'vote-add-symbol--round': ['pumpkin-king', 'pumpkin-queen'].includes(activeNomination.id) }"
+                                                class="vote-add-symbol vote-add-symbol--round"
                                                 aria-hidden="true"
                                             >
                                                 <svg class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
