@@ -131,7 +131,7 @@ test("voting buttons wrap and candidate cards can grow to fit labels", () => {
     assert.match(suggestion[1], /overflow:\s*visible/);
     assert.doesNotMatch(suggestion[1], /max-height|overflow:\s*hidden/);
     assert.match(nominationCss, /\.vote-add-card \.vote-candidate-name--label\s*\{[^}]*font-size:\s*var\(--app-font-size-normal\)[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
-    assert.match(nominationCss, /\.vote-button\s*\{[^}]*font-size:\s*var\(--app-font-size-control\)[^}]*height:\s*auto/s);
+    assert.match(nominationCss, /\.vote-button\s*\{[^}]*height:\s*auto;[^}]*font-size:\s*var\(--app-font-size-control\)/s);
     assert.match(nominationPickerCss, /\.vote-candidate-card \.vote-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)/s);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-grid > \.vote-candidate-card\s*\{[^}]*height:\s*auto/s);
     assert.match(nominationCardsCss, /\.vote-nomination-card\.vote-carousel-card \.vote-nomination-content \.vote-action-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)/s);
