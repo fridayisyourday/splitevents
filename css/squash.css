@@ -210,7 +210,7 @@
 .squash-details-title {
     margin: 0 0 var(--app-space-5-5);
     color: var(--app-text);
-    font-size: var(--app-font-size-title);
+    font-size: var(--app-font-size-large);
     font-weight: var(--app-font-weight-medium);
     letter-spacing: -.025em;
     text-align: center;
