@@ -41,7 +41,7 @@
     margin: 0;
     color: var(--app-text);
     font-size: var(--app-font-size-title);
-    font-weight: var(--app-font-weight-bold);
+    font-weight: var(--app-font-weight-regular);
     letter-spacing: -0.045em;
     line-height: var(--app-line-height-heading);
     text-align: center;
@@ -81,7 +81,7 @@
     margin: 0;
     color: var(--app-hint);
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-semibold);
+    font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-label);
 }
 
