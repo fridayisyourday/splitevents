@@ -94,7 +94,7 @@ test("server cards share the hero title and animate between explicit mobile heig
     assert.match(styles, /\.server-card-content\s*\{[^}]*position:\s*relative;[^}]*grid-row:\s*1;/s);
     assert.match(styles, /\.server-card-title\s*\{[^}]*text-wrap:\s*balance;/s);
     assert.doesNotMatch(styles, /\.server-card-title\s*\{[^}]*font-size\s*:/);
-    assert.doesNotMatch(styles, /\.server-card-title\s*\{[^}]*text-overflow:\s*ellipsis|white-space:\s*nowrap/s);
+    assert.doesNotMatch(styles, /\.server-card-title\s*\{[^}]*(?:text-overflow:\s*ellipsis|white-space:\s*nowrap)/s);
     assert.match(component, /class="server-card-title app-heading-hero"/);
     assert.match(
         styles,
