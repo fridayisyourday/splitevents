@@ -21,7 +21,7 @@
 }
 
 .nominations-page-header .section-page-title {
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     letter-spacing: -0.045em;
 }
 
@@ -643,7 +643,8 @@
 .vote-nomination-card .vote-logo-wrap { box-sizing: border-box; flex-shrink: 0; }
 .vote-nomination-card .vote-nomination-title,
 .vote-nomination-card .vote-selected-nominee,
-.vote-nomination-card .vote-action-button { flex-shrink: 0;     font-size: var(--app-font-size-regular);
+.vote-nomination-card .vote-action-button {
+    flex-shrink: 0;
 }
 .vote-nomination-card .vote-nomination-title {
     min-height: 2.5em;
