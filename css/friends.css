@@ -8,7 +8,7 @@
 }
 
 .friends-page-body {
-    gap: var(--app-space-3-5);
+    gap: var(--app-content-gap-relaxed);
 }
 
 .friends-list {
@@ -25,7 +25,7 @@
     align-items: center;
     width: 100%;
     min-height: 84px;
-    gap: var(--app-space-3-5);
+    gap: var(--app-content-gap-relaxed);
     padding: var(--app-container-padding);
     border: 0;
     border-radius: var(--app-radius-card);
