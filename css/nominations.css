@@ -592,7 +592,8 @@
     }
 
     .vote-button {
-        font-size: var(--app-font-size-large);
+        /* Compact screens need the compact control role, not a larger heading-sized label. */
+        font-size: var(--app-font-size-control);
     }
 }
 
