@@ -15,7 +15,7 @@
     color: var(--app-button-primary-color);
     box-shadow: none;
     font-family: var(--app-font-family);
-    font-size: var(--app-font-size-normal);
+    font-size: var(--app-font-size-large);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-snug);
     text-align: center;
