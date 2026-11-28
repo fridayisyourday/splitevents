@@ -117,6 +117,7 @@
     margin: 0;
     overflow-wrap: anywhere;
     text-wrap: balance;
+    font-size: var(--app-font-size-large);
     font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
 }
 
@@ -142,6 +143,7 @@
 
 .vote-nomination-card.vote-carousel-card .vote-nomination-content .vote-nomination-title {
     min-height: 2.4em;
+    font-size: var(--app-font-size-large);
     font-size: clamp(var(--app-font-size-large), 8cqi, var(--app-font-size-title));
     line-height: var(--app-line-height-snug);
 }
