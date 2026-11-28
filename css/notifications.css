@@ -65,7 +65,7 @@
 .app-notification__title {
     color: var(--app-text);
     font-size: var(--app-font-size-large);
-    font-weight: var(--app-font-weight-medium);
+    font-weight: var(--app-font-weight-bold);
     line-height: var(--app-line-height-label);
 }
 
