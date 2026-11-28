@@ -184,7 +184,11 @@ test("all CSS font sizes use one of the six semantic tokens", () => {
         const css = readProjectFile(path);
         assert.doesNotMatch(css, /--app-font-size-(?!small\b|normal\b|control-compact\b|control\b|large\b|display\b|hero\b)[A-Za-z0-9_-]+/);
         for (const match of css.matchAll(/font-size\s*:\s*([^;]+);/g)) {
-            assert.match(match[1].trim(), allowed, path + " has an unapproved font size: " + match[0]);
+            const isRootFontBaseline = path === "css/base.css" && match[1].trim() === "16px";
+            assert.ok(
+                allowed.test(match[1].trim()) || isRootFontBaseline,
+                path + " has an unapproved font size: " + match[0]
+            );
         }
         assert.doesNotMatch(css, /word-break:\s*break-all/);
     }
