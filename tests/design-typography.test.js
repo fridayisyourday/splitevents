@@ -7,6 +7,7 @@ function readProjectFile(path) {
 }
 
 const designCss = readProjectFile("css/design-system.css");
+const baseCss = readProjectFile("css/base.css");
 const designGuide = readProjectFile("docs/design-system.md");
 const eventCss = readProjectFile("css/events.css");
 const squashCss = readProjectFile("css/squash.css");
@@ -25,7 +26,8 @@ const notificationCss = readProjectFile("css/notifications.css");
 const friendsCss = readProjectFile("css/friends.css");
 const componentsCss = readProjectFile("css/components.css");
 
-test("the six typography roles scale fluidly from a rem baseline", () => {
+test("the six typography roles scale fluidly from a fixed 16px rem baseline", () => {
+    assert.match(baseCss, /html\s*\{[^}]*font-size:\s*16px;[^}]*-webkit-text-size-adjust:\s*100%;[^}]*text-size-adjust:\s*100%;/s);
     assert.match(designCss, /--app-font-size-small:\s*clamp\(0\.75rem,/);
     assert.match(designCss, /--app-font-size-normal:\s*clamp\(1rem,/);
     assert.match(designCss, /--app-font-size-control:\s*clamp\(1rem,/);
@@ -135,6 +137,7 @@ test("voting buttons wrap and candidate cards can grow to fit labels", () => {
     assert.doesNotMatch(suggestion[1], /max-height|overflow:\s*hidden/);
     assert.match(nominationCss, /\.vote-add-card \.vote-candidate-name--label\s*\{[^}]*font-size:\s*var\(--app-font-size-normal\)[^}]*font-weight:\s*var\(--app-font-weight-bold\)/s);
     assert.match(nominationCss, /\.vote-button\s*\{[^}]*height:\s*auto;[^}]*font-size:\s*var\(--app-font-size-control\)/s);
+    assert.match(nominationCss, /@media \(max-width:\s*380px\)[\s\S]*?\.vote-button\s*\{[^}]*font-size:\s*var\(--app-font-size-control\)/);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-candidate-card > \.vote-button\s*\{[^}]*min-height:\s*var\(--app-control-height\)[^}]*font-size:\s*var\(--app-font-size-control-compact\)/s);
     assert.match(nominationPickerCss, /\.vote-dialog \.vote-grid > \.vote-candidate-card\s*\{[^}]*height:\s*auto/s);
     assert.match(votingPage, /предложить вариант/);
