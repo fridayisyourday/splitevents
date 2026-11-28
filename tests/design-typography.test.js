@@ -120,7 +120,7 @@ test("server detail labels are large, while capsule values stay compact", () => 
     assert.match(badge[1], /font-size:\s*var\(--app-font-size-small\)/);
     assert.match(badge[1], /font-weight:\s*var\(--app-font-weight-regular\)/);
     assert.match(serverCss, /grid-auto-rows:\s*minmax\(var\(--app-space-11\),\s*auto\)/);
-    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.9fr\) minmax\(0, 1\.1fr\)/);
+    assert.match(serverCss, /grid-template-columns:\s*minmax\(0, 0\.78fr\) minmax\(0, 1\.22fr\)/);
     assert.match(badge[1], /white-space:\s*nowrap/);
     assert.match(badge[1], /text-overflow:\s*ellipsis/);
     assert.match(serverCss, /\.server-details-ip-button\s*\{[^}]*min-height:\s*var\(--app-space-11\)/s);
