@@ -123,7 +123,8 @@ const availablePeople = computed(() => {
 
     const presetIds = new Set(nomination.nomineeIds || []);
     return NOMINEES.filter((person) => (
-        (!nomination.gender || person.gender === nomination.gender)
+        person.gender !== "I"
+        && (!nomination.gender || person.gender === nomination.gender)
         && !presetIds.has(person.id)
         && person.id !== nomination.selectedFromPoolId
     ));
