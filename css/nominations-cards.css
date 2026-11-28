@@ -1,6 +1,7 @@
 /* Nomination cards: keep the established card sizes, with full-bleed artwork. */
 .vote-nomination-card {
     position: relative;
+    container-type: inline-size;
     justify-content: flex-end;
     gap: 0;
     padding: 0;
