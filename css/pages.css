@@ -40,7 +40,7 @@
 .section-page-title {
     margin: 0;
     color: var(--app-text);
-    font-size: var(--app-font-size-heading);
+    font-size: var(--app-font-size-title);
     font-weight: var(--app-font-weight-bold);
     letter-spacing: -0.045em;
     line-height: var(--app-line-height-heading);
@@ -80,7 +80,7 @@
 .empty-state-message {
     margin: 0;
     color: var(--app-hint);
-    font-size: var(--app-font-size-accent);
+    font-size: var(--app-font-size-large);
     font-weight: var(--app-font-weight-semibold);
     line-height: var(--app-line-height-label);
 }
@@ -88,7 +88,7 @@
 .empty-state-note {
     margin: 0;
     color: var(--app-hint);
-    font-size: var(--app-font-size-main);
+    font-size: var(--app-font-size-regular);
     font-weight: var(--app-font-weight-regular);
     line-height: var(--app-line-height-body);
 }
