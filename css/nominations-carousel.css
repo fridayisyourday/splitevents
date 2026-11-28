@@ -131,7 +131,7 @@
     margin: 0;
     font-size: var(--app-font-size-large);
     line-height: var(--app-line-height-snug);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
 }
 
 .vote-nomination-card--featured .vote-selected-nominee {
