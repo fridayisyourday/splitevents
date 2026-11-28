@@ -23,7 +23,7 @@
     max-height: 280px;
     box-sizing: border-box;
     flex: 0 0 auto;
-    gap: var(--app-space-2);
+    gap: var(--app-content-gap);
     padding: var(--app-space-3);
     transform-origin: center center;
     transition: transform 220ms ease, opacity 220ms ease, filter 220ms ease;

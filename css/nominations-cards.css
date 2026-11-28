@@ -99,7 +99,7 @@
     min-width: 0;
     flex-direction: column;
     align-items: center;
-    gap: var(--app-space-2);
+    gap: var(--app-content-gap);
     margin-top: auto;
     padding: 132px var(--app-container-padding) var(--app-container-padding);
     color: var(--app-text);
