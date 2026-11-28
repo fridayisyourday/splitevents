@@ -78,14 +78,14 @@ const NOMINATION_RECORDS = [
         title: "МИТ",
         type: "image",
         gender: "I",
-        nomineeIds: ["a-vy-verite", "burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft"]
+        nomineeIds: ["burgomister-dacha", "isada-birthday", "kemerovo-dumplings", "loft", "halloween"]
     },
     {
         id: "mem",
         title: "МЕМ",
         type: "image",
         gender: "I",
-        nomineeIds: ["ip-picked", "metaverse", "slenderman-mansion", "tadc-voiceover", "a-vy-verite"]
+        nomineeIds: ["ip-picked", "a-vy-verite", "metaverse", "slenderman-mansion", "tadc-voiceover"]
     },
     {
         id: "mog",
