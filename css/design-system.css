@@ -841,16 +841,3 @@ input[type="reset"] {
     white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .section-page-title,
-    .header-logo,
-    .menu-panel-title,
-    .event-card-title,
-    .server-card-title,
-    .vote-nomination-title,
-    .vote-dialog-title,
-    .squash-hero-title,
-    .squash-details-title {
-        text-wrap: balance;
-    }
-}
