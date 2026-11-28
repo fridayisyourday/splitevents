@@ -827,7 +827,7 @@ input[type="reset"] {
     text-wrap: balance;
 }
 
- .vote-selected-nominee,
+.vote-selected-nominee,
 .vote-suggest-text {
     overflow-wrap: normal;
     word-break: normal;
