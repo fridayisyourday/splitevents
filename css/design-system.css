@@ -543,6 +543,11 @@ strong {
     font-weight: inherit;
 }
 
+small {
+    font-size: var(--app-font-size-small);
+    font-weight: var(--app-font-weight-regular);
+}
+
 .text-small {
     font-size: var(--app-font-size-small);
 }
